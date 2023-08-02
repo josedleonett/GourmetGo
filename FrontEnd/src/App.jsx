@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import './App.css'
+import { Outlet } from "react-router-dom";
+import "./App.css";
+import HeaderContainer from "./container/HeaderContainer";
+import FooterContainer from "./container/FooterContainer";
 
 function App() {
-
   return (
     <>
-      hola
+      <HeaderContainer />
+      <Outlet />
+      <FooterContainer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
