@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NotFoundDisplay = () => {
+const NotFoundDisplay = ({props}) => {
   return (
     <div>NotFoundDisplay</div>
   )

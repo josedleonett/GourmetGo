@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HomeDisplay = () => {
+const HomeDisplay = ({props}) => {
   return (
     <div>HomeDisplay</div>
   )

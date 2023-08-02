@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FooterDisplay = () => {
+const FooterDisplay = ({props}) => {
   return (
     <div>FooterDisplay</div>
   )
