@@ -6,6 +6,8 @@ import "./index.css";
 import NotFoundContainer from "./container/NotFoundContainer.jsx";
 import HomeContainer from "./container/HomeContainer.jsx";
 import { ContextProvider } from "./context/Global.context.jsx";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "./utils/theme.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +27,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </ContextProvider>
   </React.StrictMode>
 );
