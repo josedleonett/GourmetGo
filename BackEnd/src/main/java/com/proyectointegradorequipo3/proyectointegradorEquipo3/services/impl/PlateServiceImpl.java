@@ -2,14 +2,18 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.PlateNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IPlateRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IPlateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+
 @RequiredArgsConstructor
 @Service
 public class PlateServiceImpl implements IPlateService {
@@ -33,6 +37,13 @@ public class PlateServiceImpl implements IPlateService {
         return plateRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Plate searchPlateByName(String name) {
+        Optional<Plate> optionalPlate = plateRepository.findByName(name);
+        return optionalPlate.orElseThrow(() -> new PlateNotFoundException("Plate with name '" + name + "' not found"));
+    }
+
     //===================Create===================//
     @Override
     public Long savePlate(Plate newPlate) {
@@ -45,12 +56,6 @@ public class PlateServiceImpl implements IPlateService {
         plateRepository.save(plate);
     }
 
-    //===================Delete===================//
-
-    @Override
-    public void deletePlateById(Long id) {
-
-    }
 
     //===================Update===================//
 
@@ -58,21 +63,32 @@ public class PlateServiceImpl implements IPlateService {
     @Transactional
     public void modifyPlate(Long id, Plate request) {
         Plate plate = searchPlateById(id);
-       plate.setName(request.getName());
-       plate.setType(request.getType());
-       plate.setDescription(request.getDescription());
-       plate.setImage(request.getImage());
-       save(plate);
+        plate.setName(request.getName());
+        plate.setType(request.getType());
+        plate.setDescription(request.getDescription());
+        plate.setImage(request.getImage());
+        save(plate);
     }
 
     //===================Delete===================//
 
-    public void delete(Long id) {
+    @Override
+    public void deletePlateById(Long id) {
         Plate plate = searchPlateById(id);
         plateRepository.delete(plate);
     }
 
+
+    //===================Util===================//
     private void existsName(String name) {
         if (plateRepository.existsByName(name)) throw new ExistNameException(name);
+    }
+
+    public Plate validateAndGetPlate(String plateName, String plateType) {
+        Plate plate = searchPlateByName(plateName);
+        if (plate == null) {
+            throw new PlateNotFoundException(plateType + " not found: " + plateName);
+        }
+        return plate;
     }
 }

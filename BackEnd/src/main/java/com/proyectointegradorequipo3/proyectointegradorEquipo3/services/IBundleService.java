@@ -1,18 +1,20 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IBundleService {
     List<BundleDto> searchAllBundles();
 
-    Optional<BundleDto> searchBundleById(Long id);
+    BundleDto searchBundleDtoById(Long id);
 
-    BundleDto saveBundle(BundleDto newBundle);
+    void modifyBundle(Long id, BundleUpdateRequest request);
 
     void deleteBundleById(Long id);
 
-    BundleDto modifyBundle(BundleDto bundlesDTO);
+    Long saveBundle(BundleCreateRequest request);
+
 }

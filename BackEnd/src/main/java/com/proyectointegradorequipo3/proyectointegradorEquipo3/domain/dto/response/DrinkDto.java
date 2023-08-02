@@ -1,4 +1,4 @@
-package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto;
+package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

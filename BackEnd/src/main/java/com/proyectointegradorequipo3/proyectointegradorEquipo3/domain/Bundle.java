@@ -36,13 +36,11 @@ public class Bundle {
     @JoinColumn(name = "desserts_id")
     private Plate desserts;
 
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
-            name = "Bundle_Drink",
-            joinColumns =
-            @JoinColumn(name = "bundle_id", referencedColumnName = "bundle_id"),
-            inverseJoinColumns =
-            @JoinColumn(name = "drink_id", referencedColumnName = "drink_id")
+            name = "bundle_drink",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id")
     )
     private List<Drink> drinks;
 

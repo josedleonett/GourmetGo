@@ -4,6 +4,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.PlateNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.PlateServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -58,6 +60,17 @@ public class PlateController {
         return ResponseEntity.ok(mapper.map(plateService.searchPlateById(id), PlateDto.class));
     }
 
+    //====================Get one by name====================//
+    @GetMapping(path = "/search")
+    public ResponseEntity<PlateDto> getPlateByName(@RequestParam("name") String name) {
+        Plate plate = plateService.searchPlateByName(name);
+        if (plate != null) {
+            return ResponseEntity.ok(mapper.map(plate, PlateDto.class));
+        } else {
+            throw new PlateNotFoundException("Plate with name '" + name + "' not found");
+        }
+    }
+
     //====================Update====================//
 
     @PatchMapping(path = "/{id}")
@@ -71,7 +84,7 @@ public class PlateController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlate(@PathVariable @NotBlank @Valid Long id) {
-        plateService.delete(id);
+        plateService.deletePlateById(id);
     }
 
 }

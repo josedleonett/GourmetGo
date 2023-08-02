@@ -1,4 +1,4 @@
-package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto;
+package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
@@ -7,17 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BundleDto {
+    private Long id;
     private String name;
     private int numberDiners;
     private String bundleImage;
     private List<String> galleryImages;
 
-    private Long starter;
-    private Long mainCourse;
-    private Long desserts;
-    private List<Long> drinks;
+    private Plate starter;
+    private Plate mainCourse;
+    private Plate desserts;
+    private List<Drink> drinks;
 }
