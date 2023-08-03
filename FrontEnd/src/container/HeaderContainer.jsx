@@ -3,7 +3,9 @@ import HeaderDisplay from "../display/HeaderDisplay";
 
 const HeaderContainer = () => {
 
-  return <HeaderDisplay />;
+  
+
+  return <HeaderDisplay  />;
 };
 
 export default HeaderContainer;
