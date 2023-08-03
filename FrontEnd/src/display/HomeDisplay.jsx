@@ -1,6 +1,7 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import CardContainer from "../container/CardContainer";
 
@@ -10,12 +11,14 @@ const HomeDisplay = ({ props }) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        width: "100vw",
-        position: "absolute",
-        left: 0,
+        width: "100%",
+        position: "relative",
+        left: "0vw",
+        float: "left",
+        top: "10vw"
       }}
     >
-      <div style={{ width: "100vw", height: "3.5vw" }}>
+      <div style={{ width: "100%", height: "3.5vw" }}>
         <Paper
           variant="outlined"
           sx={{
@@ -25,21 +28,19 @@ const HomeDisplay = ({ props }) => {
             backgroundColor: "#E2D6D6",
           }}
         >
-          <Box
-            sx={{
+            <Typography             
+              sx={{
               position: "relative",
               left: "9vw",
               fontFamily: "Roboto, sans-serif",
-              bottom: "3vw",
               fontWeight: 700,
-              fontSize: "2.7vw",
-            }}
-          >
-            <p>Categories</p>
-          </Box>
+              fontSize: "2.4vw",
+            }}>
+              Categories
+            </Typography>
         </Paper>
       </div>
-      <Grid item container sx={{width: "100vw", position: "relative", top: "1vw", justifyContent: "space-evenly", gap: "1vw" }}>
+      <Grid item container sx={{width: "100%", position: "relative", top: "1vw", justifyContent: "space-evenly", gap: "1vw" }}>
         <CardContainer />
         <CardContainer />
         <CardContainer />
