@@ -1,8 +1,6 @@
 import React from "react";
 import CardCategoryContainer from "./CardCategoryContainer";
 import { Grid } from "@mui/material";
-import CardDisplay from "../display/CardCategoryDisplay";
-import CardGridDisplay from "../display/CardGridDisplay";
 import CardProductContainer from "./CardProductContainer";
 
 const CardGridContainer = ({ list, cardType }) => {

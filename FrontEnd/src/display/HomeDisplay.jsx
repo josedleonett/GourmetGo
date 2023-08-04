@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import CardContainer from "../container/CardContainer";
+import  CardGridContainer from "../container/CardGridContainer";
+import { category } from "../test/dataApiSample";
 
 const HomeDisplay = ({ props }) => {
   return (
@@ -40,7 +42,13 @@ const HomeDisplay = ({ props }) => {
             </Typography>
         </Paper>
       </div>
-      <Grid item container sx={{width: "100%", position: "relative", top: "1vw", justifyContent: "space-evenly", gap: "1vw" }}>
+
+
+      <CardGridContainer list={category} cardType="product" />
+
+
+
+      {/* <Grid item container sx={{width: "100%", position: "relative", top: "1vw", justifyContent: "space-evenly", gap: "1vw" }}>
         <CardContainer />
         <CardContainer />
         <CardContainer />
@@ -48,7 +56,7 @@ const HomeDisplay = ({ props }) => {
         <CardContainer />
         <CardContainer />
         <CardContainer />
-      </Grid>
+      </Grid> */}
     </section>
   );
 };

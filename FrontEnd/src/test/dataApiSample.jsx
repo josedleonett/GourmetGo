@@ -1,3 +1,5 @@
+//IN THIS FILE WE CAN PUT THE API DATA RESPONSE SAMPLES-
+
 export const category = [
   {
     id: 1,
