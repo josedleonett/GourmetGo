@@ -15,7 +15,7 @@ const CardCategoryDisplay = ({ img, title, description }) => {
           image={img}
           alt="green iguana"
         />
-        <CardContent>
+        <CardContent sx={{minHeight:153}}>
           <Typography gutterBottom variant="h5">
             {title}
           </Typography>

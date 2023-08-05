@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import CardProductContainer from "../container/CardProductContainer";
+import CardCategoryContainer from "../container/CardCategoryContainer";
 
 const CarouselCategoryDisplay = ({ elementsGroup }) => {
   return (
@@ -11,7 +11,7 @@ const CarouselCategoryDisplay = ({ elementsGroup }) => {
           <Grid container justifyContent={"space-evenly"} key={i}>
             {group.map((item, j) => (
               <Grid lg={2} key={j}>
-                <CardProductContainer
+                <CardCategoryContainer
                   img={item.img}
                   title={item.title}
                   description={item.description}
