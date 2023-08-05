@@ -20,7 +20,7 @@ const CardCategoryDisplay = ({ img, title, description }) => {
               alt={title + " cover"}
             />
             <CardContent sx={{ minHeight: 153 }}>
-              <Typography gutterBottom variant="h5">
+              <Typography gutterBottom  variant="h5">
                 {title}
               </Typography>
               <Typography variant="body2" color="text.secondary">

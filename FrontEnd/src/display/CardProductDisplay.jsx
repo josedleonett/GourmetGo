@@ -3,9 +3,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Chip, Stack } from "@mui/material";
+import { CardActionArea, Chip, Rating, Stack } from "@mui/material";
 
-const CardProductDisplay = ({ img, title, description, categoryList }) => {
+const CardProductDisplay = ({ img, title, description, categoryList, rating }) => {
   return (
     <Card raised>
       <CardActionArea>
@@ -26,9 +26,10 @@ const CardProductDisplay = ({ img, title, description, categoryList }) => {
           <Chip label="categoria" size="small" />
         </Stack>
         <CardContent sx={{ height: "60%" }}>
-          <Typography gutterBottom variant="h5">
+          <Typography variant="h5" fontWeight="bold">
             {title}
           </Typography>
+          <Rating name="valoration" value={rating} readOnly precision={0.5} />
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
