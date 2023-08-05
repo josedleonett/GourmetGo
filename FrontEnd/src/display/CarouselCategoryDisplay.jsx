@@ -10,7 +10,7 @@ const CarouselCategoryDisplay = ({ elementsGroup }) => {
         {elementsGroup.map((group, i) => (
           <Grid container justifyContent={"space-evenly"} key={i}>
             {group.map((item, j) => (
-              <Grid lg={2} key={j}>
+              <Grid item lg={2} key={j}>
                 <CardCategoryContainer
                   img={item.img}
                   title={item.title}

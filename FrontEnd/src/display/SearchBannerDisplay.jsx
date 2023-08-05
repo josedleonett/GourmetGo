@@ -20,7 +20,7 @@ const SearchBannerDisplay = ({
   return (
     <Box
       component="section"
-      backgroundColor="#E2D6D6"
+      backgroundColor="secondary.light"
       padding="20px"
       display="flex"
       justifyContent="center"

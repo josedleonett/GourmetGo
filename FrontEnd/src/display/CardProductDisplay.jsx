@@ -11,11 +11,11 @@ const CardProductDisplay = ({ img, title, description }) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="240px"
+          height="40%"
           image={img}
           alt="green iguana"
         />
-        <CardContent>
+        <CardContent sx={{ height: "60%" }}>
           <Typography gutterBottom variant="h5">
             {title}
           </Typography>
