@@ -9,6 +9,8 @@ const CardProductGridDisplay = ({ list }) => {
     setPage(value);
   };
 
+  console.log(list);
+
   return (
     <Container maxWidth="xl">
       <Grid container spacing={4} columns={{ lg: 5, md: 3, sm: 1 }}>
@@ -16,8 +18,8 @@ const CardProductGridDisplay = ({ list }) => {
           <Grid item key={item.id} lg={1} md={1} sm={1}>
             {
               <CardProductContainer
-                img={item.img}
-                title={item.title}
+                img={item.bundleImage}
+                title={item.name}
                 description={item.description}
               />
             }
