@@ -11,13 +11,13 @@ const CardCategoryDisplay = ({ img, title, description }) => {
       <Card>
         <CardActionArea>
           <Box
-            sx={{ display: "flex", flexDirection: { lg: "column", md: "row" } }}
+            sx={{ display: "flex", flexDirection: { lg: "column", md: "row", xs:"column" } }}
           >
             <CardMedia
               component="img"
               height="240px"
               image={img}
-              alt="green iguana"
+              alt={title + " cover"}
             />
             <CardContent sx={{ minHeight: 153 }}>
               <Typography gutterBottom variant="h5">
