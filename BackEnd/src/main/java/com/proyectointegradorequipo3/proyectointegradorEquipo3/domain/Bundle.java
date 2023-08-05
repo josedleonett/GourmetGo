@@ -22,6 +22,9 @@ public class Bundle {
     private String name;
     private int numberDiners;
     private String bundleImage;
+    @ElementCollection
+    @CollectionTable(name = "gallery")
+    @Column(name = "images")
     private List<String> galleryImages;
 
     @OneToOne

@@ -10,12 +10,15 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.E
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -33,6 +36,8 @@ public class BundleServiceImpl implements IBundleService {
     private final DrinkServiceImpl drinkService;
 
     private final ModelMapper mapper;
+
+    private final S3Service s3Service;
 
     Logger logger = Logger.getLogger(BundleServiceImpl.class.getName());
 
@@ -73,11 +78,19 @@ public class BundleServiceImpl implements IBundleService {
             throw new RuntimeException("No valid drinks found for the Bundle.");
         }
 
+        String keyImage = s3Service.putObject(request.getBundleImage());
+        List<String> keys = new ArrayList<>();
+
+        for (MultipartFile image : request.getGalleryImages()) {
+            String key = s3Service.putObject(image);
+            keys.add(key);
+        }
+
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
                 .numberDiners(request.getNumberDiners())
-                .bundleImage(request.getBundleImage())
-                .galleryImages(request.getGalleryImages())
+                .bundleImage(keyImage)
+                .galleryImages(keys)
                 .starter(starter)
                 .mainCourse(mainCourse)
                 .desserts(dessert)
@@ -132,6 +145,10 @@ public class BundleServiceImpl implements IBundleService {
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+        s3Service.deleteObject(bundle.getBundleImage());
+        for (String image : bundle.getGalleryImages()) {
+            s3Service.deleteObject(image);
+        }
         bundleRepository.delete(bundle);
     }
 
