@@ -1,6 +1,6 @@
 //IN THIS FILE WE CAN PUT THE API DATA RESPONSE SAMPLES-
 
-export const category = [
+export const categories = [
   {
     id: 1,
     title: "International Buffet",

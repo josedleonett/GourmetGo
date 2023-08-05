@@ -1,13 +1,13 @@
 import React from "react";
 import HomeDisplay from "../display/HomeDisplay";
-import { category } from "../test/dataApiSample";
+import { categories } from "../test/dataApiSample";
 
 const HomeContainer = () => {
 
-  const categoryFromTest = category;
+  const categoriesFromTest = categories;
   
   
-  return <HomeDisplay category={categoryFromTest} />;
+  return <HomeDisplay categories={categoriesFromTest} />;
 };
 
 export default HomeContainer;
