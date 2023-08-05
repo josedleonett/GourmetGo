@@ -71,4 +71,75 @@ export const categories = [
       "Start your event with a gourmet breakfast that will awaken the senses. From healthy options to indulgent dishes, we have the perfect breakfast for your special occasion.",
     img: "../../public/images/image 11.png",
   },
+  {
+    id: 11,
+    title: "Exquisite Seafood",
+    description:
+      "Indulge in our exquisite seafood catering that brings the flavors of the ocean to your event. Freshly caught seafood dishes that will leave your guests wanting more.",
+    img: "../../public/images/image 11.png",
+  },
+  {
+    id: 12,
+    title: "Mexican Fiesta",
+    description:
+      "Celebrate with a vibrant Mexican fiesta at your event. Our catering showcases authentic Mexican cuisine with spicy flavors and traditional dishes.",
+    img: "../../public/images/image 10.png",
+  },
+  {
+    id: 13,
+    title: "Mouthwatering BBQ",
+    description:
+      "Satisfy your guests' taste buds with our mouthwatering BBQ catering. Juicy meats, savory sauces, and sides that will make your event a memorable one.",
+    img: "../../public/images/image 3.png",
+  },
+  {
+    id: 14,
+    title: "Decadent Desserts",
+    description:
+      "Treat yourself and your guests to our decadent desserts. From rich chocolate delights to fruity pastries, our dessert catering is a sweet dream come true.",
+    img: "../../public/images/image 4.png",
+  },
+  {
+    id: 15,
+    title: "Plant-Based Delights",
+    description:
+      "Explore the world of plant-based delights with our vegan-friendly catering. Creative dishes that prove vegan food can be both delicious and nutritious.",
+    img: "../../public/images/image 5.png",
+  },
+  {
+    id: 16,
+    title: "Asian Fusion",
+    description:
+      "Embark on a culinary journey through Asia with our Asian fusion catering. A fusion of flavors from different Asian cuisines that will delight your guests.",
+    img: "../../public/images/image 6.png",
+  },
+  {
+    id: 17,
+    title: "Taste of Italy",
+    description:
+      "Experience the taste of Italy with our Italian-inspired catering. Pasta, pizza, and classic Italian dishes that capture the essence of Italian cuisine.",
+    img: "../../public/images/image 7.png",
+  },
+  {
+    id: 18,
+    title: "French Delicacies",
+    description:
+      "Indulge in the elegance of French delicacies with our catering. From escargot to croissants, our French-inspired dishes will transport you to Paris.",
+    img: "../../public/images/image 8.png",
+  },
+  {
+    id: 19,
+    title: "Exotic Flavors",
+    description:
+      "Discover the exotic flavors of our catering inspired by distant lands. Unique spices and ingredients that will add an adventurous touch to your event.",
+    img: "../../public/images/image 9.png",
+  },
+  {
+    id: 20,
+    title: "Brunch Bonanza",
+    description:
+      "Make your event special with a brunch bonanza featuring a delightful array of breakfast and lunch favorites.",
+    img: "../../public/images/image 11.png",
+  },
+  // Continue adding more categories...
 ];
