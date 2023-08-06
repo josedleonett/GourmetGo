@@ -4,14 +4,18 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box, CardActionArea } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const CardCategoryDisplay = ({ img, title, description }) => {
+const CardCategoryDisplay = ({ id, img, title, description }) => {
   return (
     <>
       <Card>
-        <CardActionArea>
+        <CardActionArea LinkComponent={Link} to={`/category/${id}`}>
           <Box
-            sx={{ display: "flex", flexDirection: { lg: "column", md: "row", xs:"column" } }}
+            sx={{
+              display: "flex",
+              flexDirection: { lg: "column", md: "row", xs: "column" },
+            }}
           >
             <CardMedia
               component="img"
@@ -20,7 +24,7 @@ const CardCategoryDisplay = ({ img, title, description }) => {
               alt={title + " cover"}
             />
             <CardContent sx={{ minHeight: 153 }}>
-              <Typography gutterBottom  variant="h5">
+              <Typography gutterBottom variant="h5">
                 {title}
               </Typography>
               <Typography variant="body2" color="text.secondary">

@@ -3,12 +3,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Chip, Rating, Stack } from "@mui/material";
+import { CardActionArea, Chip, Rating, Stack, Tooltip } from "@mui/material";
+import GroupsIcon from "@mui/icons-material/Groups";
+import { Link } from 'react-router-dom';
 
-const CardProductDisplay = ({ img, title, description, categoryList, rating }) => {
+const CardProductDisplay = ({
+  id,
+  img,
+  title,
+  description,
+  categoryList,
+  rating,
+  numberDiners,
+}) => {
   return (
     <Card raised>
-      <CardActionArea>
+      <CardActionArea
+        LinkComponent={Link} to={`/product/${id}`}
+      >
         <CardMedia
           component="img"
           height="40%"
@@ -33,6 +45,19 @@ const CardProductDisplay = ({ img, title, description, categoryList, rating }) =
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
+          <Tooltip title="Dinners numbers" placement="bottom-start">
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              color={"secondary.main"}
+            >
+              <GroupsIcon fontSize="small" />
+              <Typography variant="caption" fontFamily={"Roboto"}>
+                {numberDiners}
+              </Typography>
+            </Stack>
+          </Tooltip>
         </CardContent>
       </CardActionArea>
     </Card>

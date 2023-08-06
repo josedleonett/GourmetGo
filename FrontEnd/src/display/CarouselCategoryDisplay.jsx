@@ -12,6 +12,7 @@ const CarouselCategoryDisplay = ({ elementsGroup }) => {
             {group.map((item, j) => (
               <Grid item lg={2} key={j}>
                 <CardCategoryContainer
+                  id={item.id}
                   img={item.img}
                   title={item.title}
                   description={item.description}

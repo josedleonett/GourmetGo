@@ -26,11 +26,13 @@ const CardProductGridDisplay = ({ list }) => {
           <Grid item key={item.id} lg={1} md={1} sm={1}>
             {
               <CardProductContainer
+                id={item.id}
                 img={item.bundleImage}
                 title={item.name}
                 description={item.description}
                 categoryList={item.categoryList}
                 rating={item.rating}
+                numberDiners={item.numberDiners}
               />
             }
           </Grid>
