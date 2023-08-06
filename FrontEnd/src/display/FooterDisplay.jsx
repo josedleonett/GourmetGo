@@ -1,10 +1,10 @@
 import Container from "@mui/material/Container";
-import { Typography, IconButton } from '@mui/material';
-import { Grid } from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Typography, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const FooterDisplay = () => {
   const handleScrollToTop = () => {
@@ -16,13 +16,26 @@ const FooterDisplay = () => {
 
   return (
     <>
-      <Container sx={{ backgroundColor: "#AFC2C9", height: "149px" }}>
-        <Grid container justifyContent="space-between" alignItems="center" sx={{ height: "100%" }} spacing={2}>
+      <Container
+        component="section"
+        maxWidth="100vw"
+        sx={{ backgroundColor: "#AFC2C9", height: "149px" }}
+      >
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ height: "100%" }}
+          spacing={2}
+        >
           <Grid item>
             <Typography variant="h5" color="initial" sx={{ marginBottom: 1 }}>
               GOURMETGO
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: '12px', marginBottom: 1 }}>
+            <Typography
+              variant="body2"
+              sx={{ fontSize: "12px", marginBottom: 1 }}
+            >
               Copyright © 2023. GourmetGo. All rights reserved.
             </Typography>
           </Grid>
@@ -34,9 +47,9 @@ const FooterDisplay = () => {
                   target="_blank"
                   rel="noopener"
                   sx={{
-                    color: '#000000',
-                    '&:hover': {
-                      color: '#ffffff',
+                    color: "#000000",
+                    "&:hover": {
+                      color: "#ffffff",
                     },
                   }}
                 >
@@ -49,9 +62,9 @@ const FooterDisplay = () => {
                   target="_blank"
                   rel="noopener"
                   sx={{
-                    color: '#000000',
-                    '&:hover': {
-                      color: '#ffffff',
+                    color: "#000000",
+                    "&:hover": {
+                      color: "#ffffff",
                     },
                   }}
                 >
@@ -64,16 +77,19 @@ const FooterDisplay = () => {
                   target="_blank"
                   rel="noopener"
                   sx={{
-                    color: '#000000',
-                    '&:hover': {
-                      color: '#ffffff',
+                    color: "#000000",
+                    "&:hover": {
+                      color: "#ffffff",
                     },
                   }}
                 >
                   <FacebookIcon fontSize="small" />
                 </IconButton>
               </Grid>
-              <Grid item sx={{ display: { xs: 'none', sm: 'block' }, marginTop: -10 }}>
+              <Grid
+                item
+                sx={{ display: { xs: "none", sm: "block" }, marginTop: -10 }}
+              >
                 <IconButton onClick={handleScrollToTop}>
                   <KeyboardArrowUpIcon fontSize="small" />
                 </IconButton>
@@ -83,11 +99,7 @@ const FooterDisplay = () => {
         </Grid>
       </Container>
     </>
-  )
-}
+  );
+};
 
 export default FooterDisplay;
-
-
-
-
