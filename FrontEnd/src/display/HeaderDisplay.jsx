@@ -169,7 +169,7 @@ const HeaderDisplay = ({ props }) => {
         </div>
         {/* Contenido adicional que desees colocar debajo de la imagen */}
       </Box>
-      <Box
+      {/* <Box
         width="100%"
         height="10vw"
         backgroundColor="#E2D6D6"
@@ -178,7 +178,7 @@ const HeaderDisplay = ({ props }) => {
         alignItems="center"
       >
                 <TextField fullWidth label="Search bundle" id="fullWidth" sx={{ width: "50%", backgroundColor: "#FFFFFF"}}/>
-      </Box>
+      </Box> */}
     </>
   );
 };
