@@ -1,10 +1,11 @@
 import Container from "@mui/material/Container";
-import { Typography, IconButton } from "@mui/material";
+import { Typography, IconButton, Box } from "@mui/material";
 import { Grid } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { companyLogo } from "../utils/theme";
 
 const FooterDisplay = () => {
   const handleScrollToTop = () => {
@@ -19,7 +20,7 @@ const FooterDisplay = () => {
       <Container
         component="section"
         maxWidth="100vw"
-        sx={{ backgroundColor: "#AFC2C9", height: "149px" }}
+        sx={{ backgroundColor: "#AFC2C9", minHeight: "149px" }}
       >
         <Grid
           container
@@ -29,9 +30,10 @@ const FooterDisplay = () => {
           spacing={2}
         >
           <Grid item>
-            <Typography variant="h5" color="initial" sx={{ marginBottom: 1 }}>
+            <Box component="img" src={companyLogo.grayColor} alt="GourmetGo-logo" maxWidth={"200px"}/>
+            {/* <Typography variant="h5" color="initial" sx={{ marginBottom: 1 }}>
               GOURMETGO
-            </Typography>
+            </Typography> */}
             <Typography
               variant="body2"
               sx={{ fontSize: "12px", marginBottom: 1 }}

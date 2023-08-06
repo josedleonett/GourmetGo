@@ -1,8 +1,16 @@
-import "@fontsource/josefin-sans";
 
 // ESTA ES UN TEMA QUE ME GENERO CHAT GPT QUE ESTOY USANDO DE PRUEBA
 
+import "@fontsource/josefin-sans";
 import { createTheme } from "@mui/material";
+
+export const companyLogo = {
+  primaryColor: "/public/images/logo/GG_LOGO_AZUL.png",
+  secondaryColor: "/public/images/logo/GG_LOGO_ROSA.png",
+  grayColor: "/public/images/logo/GG_LOGO_GRIS.png",
+  positiveColor: "/public/images/logo/GG_LOGO_POSITIVO.png",
+  negativeColor: "/public/images/logo/GG_LOGO_NEGATIVO.png",
+};
 
 export const theme = createTheme({
   palette: {

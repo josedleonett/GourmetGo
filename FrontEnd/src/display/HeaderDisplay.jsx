@@ -19,6 +19,7 @@ import {
   styled,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { companyLogo } from "../utils/theme";
 
 
 const HeaderDisplay = ({ props }) => {
@@ -87,9 +88,10 @@ const HeaderDisplay = ({ props }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="body1" color="initial">
+            {/* <Typography variant="body1" color="initial">
               GOURMETGO
-            </Typography>
+            </Typography> */}
+            <Box component="img" src={companyLogo.grayColor} alt="GourmetGo-logo" maxHeight={"50px"}/>
             <Tabs
               variant="fullWidth"
               centered
