@@ -1,19 +1,3 @@
-import React from "react";
-import Container from "@mui/material/Container";
-import { Typography, IconButton } from "@mui/material";
-import { Grid } from "@mui/material";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
-const FooterDisplay = () => {
-  const handleScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };;
 import Container from "@mui/material/Container";
 import { Typography, IconButton } from '@mui/material';
 import { Grid } from '@mui/material';

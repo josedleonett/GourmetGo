@@ -10,7 +10,6 @@ function App() {
       <HeaderContainer />
       <HomeContainer />
       <FooterContainer />
-      <FooterContainer/>
     </>
   );
 }
