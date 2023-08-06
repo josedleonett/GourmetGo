@@ -1,97 +1,4 @@
-// import { createTheme } from "@mui/material";
-
-// export const theme = createTheme({
-//   palette: {
-//     mode: "light",
-//     primary: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     secondary: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     error: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     warning: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     info: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     success: {
-//       main: "",
-//       light: "",
-//       dark: "",
-//       contrastText: "",
-//     },
-//     grey: {
-//       50: "",
-//       100: "",
-//       200: "",
-//       300: "",
-//       400: "",
-//       500: "",
-//       600: "",
-//       700: "",
-//       800: "",
-//       900: "",
-//       A100: "",
-//       A200: "",
-//       A400: "",
-//       A700: "",
-//     },
-//     contrastThreshold: 3,
-//     text: {
-//       primary: "",
-//       secondary: "",
-//       disabled: "",
-//     },
-//     divider: "",
-//     background: {
-//       paper: "",
-//       default: "",
-//     },
-//     action: {
-//       active: "",
-//       hover: "",
-//       hoverOpacity: "",
-//       selected: "",
-//       selectedOpacity: "",
-//       disabled: "",
-//       disabledOpacity: "",
-//       focus: "",
-//       focusOpacity: "",
-//       activatedOpacity: "",
-//     },
-//   },
-//   shape: {
-//     borderRadius: 4,
-//   },
-//   typography: {
-//     htmlFontSize: 16,
-//     fontFamily: "Roboto",
-//     fontSize: 14,
-//     fontWeightLight: 300,
-//     fontWeightRegular: 400,
-//     fontWeightMedium: 500,
-//     fontWeightBold: 700,
-//   },
-// });
+import "@fontsource/josefin-sans";
 
 // ESTA ES UN TEMA QUE ME GENERO CHAT GPT QUE ESTOY USANDO DE PRUEBA
 
@@ -108,7 +15,7 @@ export const theme = createTheme({
     },
     secondary: {
       main: "#F76C6F",
-      light: "#FFA7AA",
+      light: "#E2D6D6",
       dark: "#C63B3E",
       contrastText: "#FFFFFF",
     },
@@ -181,7 +88,7 @@ export const theme = createTheme({
   },
   typography: {
     htmlFontSize: 16,
-    fontFamily: "Roboto",
+    fontFamily: "'Josefin Sans','Roboto'",
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
