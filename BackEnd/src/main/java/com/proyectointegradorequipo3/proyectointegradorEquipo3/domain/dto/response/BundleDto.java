@@ -14,6 +14,7 @@ import java.util.List;
 public class BundleDto {
     private Long id;
     private String name;
+    private String description;
     private int numberDiners;
     private String bundleImage;
     private List<String> galleryImages;

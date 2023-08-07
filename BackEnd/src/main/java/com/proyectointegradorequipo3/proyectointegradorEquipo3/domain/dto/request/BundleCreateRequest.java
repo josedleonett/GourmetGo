@@ -19,6 +19,8 @@ public class BundleCreateRequest {
     @NotNull
     private int numberDiners;
     @NotBlank
+    private String description;
+    @NotBlank
     private MultipartFile bundleImage;
     @NotNull
     private List<MultipartFile> galleryImages;

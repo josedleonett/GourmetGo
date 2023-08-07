@@ -89,6 +89,7 @@ public class BundleServiceImpl implements IBundleService {
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
                 .numberDiners(request.getNumberDiners())
+                .description(request.getDescription())
                 .bundleImage(keyImage)
                 .galleryImages(keys)
                 .starter(starter)

@@ -20,6 +20,7 @@ public class Bundle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
     private int numberDiners;
     private String bundleImage;
     @ElementCollection

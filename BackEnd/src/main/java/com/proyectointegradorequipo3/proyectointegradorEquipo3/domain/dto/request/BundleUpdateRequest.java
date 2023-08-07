@@ -18,6 +18,8 @@ public class BundleUpdateRequest {
     @NotNull
     private int numberDiners;
     @NotBlank
+    private String description;
+    @NotBlank
     private String bundleImage;
     @NotNull
     private List<String> galleryImages;
