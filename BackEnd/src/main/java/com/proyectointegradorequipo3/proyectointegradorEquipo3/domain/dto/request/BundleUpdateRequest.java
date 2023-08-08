@@ -31,4 +31,6 @@ public class BundleUpdateRequest {
     private String desserts;
     @NotNull
     private List<String> drinks;
+    @NotNull
+    private List<Integer> categories;
 }

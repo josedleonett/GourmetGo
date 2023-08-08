@@ -48,4 +48,14 @@ public class Bundle {
     )
     private List<Drink> drinks;
 
+    @ManyToMany
+    @JoinTable(
+            name = "bundle_category",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
+
+    private Double rating;
+
 }

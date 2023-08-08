@@ -1,6 +1,7 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
@@ -34,6 +35,8 @@ public class BundleServiceImpl implements IBundleService {
     private final PlateServiceImpl plateService;
 
     private final DrinkServiceImpl drinkService;
+
+    private final CategoryServiceImpl categoryService;
 
     private final ModelMapper mapper;
 
@@ -78,6 +81,17 @@ public class BundleServiceImpl implements IBundleService {
             throw new RuntimeException("No valid drinks found for the Bundle.");
         }
 
+
+        List<Integer> categoryIds = request.getCategories();
+
+        List<Category> categories = categoryIds.stream()
+                .map(categoryId -> categoryService.searchCategoryById(categoryId.longValue()))
+                .filter(Objects::nonNull).toList();
+
+        if (categories.isEmpty()) {
+            throw new RuntimeException("No valid categories found for the Bundle.");
+        }
+
         String keyImage = s3Service.putObject(request.getBundleImage());
         List<String> keys = new ArrayList<>();
 
@@ -96,6 +110,7 @@ public class BundleServiceImpl implements IBundleService {
                 .mainCourse(mainCourse)
                 .desserts(dessert)
                 .drinks(drinks)
+                .categories(categories)
                 .build();
 
         existsName(newBundle.getName());

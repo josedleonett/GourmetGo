@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,6 @@ public class BundleCreateRequest {
     private String desserts;
     @NotNull
     private List<String> drinks;
+    @NotNull
+    private List<Integer> categories;
 }
