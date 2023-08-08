@@ -19,9 +19,9 @@ public class BundleDto {
     private int numberDiners;
     private String bundleImage;
     private List<String> galleryImages;
-    private Plate starter;
-    private Plate mainCourse;
-    private Plate desserts;
+    private List<PlateDto> starter;
+    private List<PlateDto> mainCourse;
+    private List<PlateDto> desserts;
     private List<Drink> drinks;
     private List<Category> categories;
     private Double rating;

@@ -28,17 +28,29 @@ public class Bundle {
     @Column(name = "images")
     private List<String> galleryImages;
 
-    @OneToOne
-    @JoinColumn(name = "starter_id")
-    private Plate starter;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "bundle_starter",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "starter_id")
+    )
+    private List<Plate> starter;
 
-    @OneToOne
-    @JoinColumn(name = "main_course_id")
-    private Plate mainCourse;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "bundle_main_course",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "main_course_id")
+    )
+    private List<Plate> mainCourse;
 
-    @OneToOne
-    @JoinColumn(name = "desserts_id")
-    private Plate desserts;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "bundle_desserts",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "dessert_id")
+    )
+    private List<Plate> desserts;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -48,7 +60,7 @@ public class Bundle {
     )
     private List<Drink> drinks;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "bundle_category",
             joinColumns = @JoinColumn(name = "bundle_id"),

@@ -1,6 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,13 +25,13 @@ public class BundleCreateRequest {
     @NotNull
     private List<MultipartFile> galleryImages;
     @NotNull
-    private String starter;
+    private List<String> starter;
     @NotNull
-    private String mainCourse;
+    private List<String> mainCourse;
     @NotNull
-    private String desserts;
+    private List<String> desserts;
     @NotNull
     private List<String> drinks;
     @NotNull
-    private List<Integer> categories;
+    private List<Long> categories;
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
@@ -16,7 +17,8 @@ public class Category {
 
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Bundle> bundles;
+    private String description;
+
+    private String img;
 
 }

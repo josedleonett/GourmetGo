@@ -24,11 +24,11 @@ public class BundleUpdateRequest {
     @NotNull
     private List<String> galleryImages;
     @NotNull
-    private String starter;
+    private List<String> starter;
     @NotNull
-    private String mainCourse;
+    private List<String> mainCourse;
     @NotNull
-    private String desserts;
+    private List<String> desserts;
     @NotNull
     private List<String> drinks;
     @NotNull

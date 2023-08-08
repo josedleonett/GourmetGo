@@ -1,17 +1,19 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
 
 import java.util.List;
 
 public interface ICategoryService {
-    List<Category> searchAllCategory();
+    List<CategoryDto> searchAllCategory();
 
-    Category searchCategoryById(Long id);
+    CategoryDto searchCategoryById(Long id);
 
     Category searchCategoryByName(String name);
 
-    Long saveCategory(Category newCategory);
+    Long saveCategory(CategoryCreateRequest newCategory);
 
     void deleteCategoryById(Long id);
 

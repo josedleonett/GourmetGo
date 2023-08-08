@@ -7,9 +7,12 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,8 @@ public class BundleServiceImpl implements IBundleService {
 
     private final CategoryServiceImpl categoryService;
 
+    private final ICategoryRepository categoryRepository;
+
     private final ModelMapper mapper;
 
     private final S3Service s3Service;
@@ -52,9 +57,41 @@ public class BundleServiceImpl implements IBundleService {
     public List<BundleDto> searchAllBundles() {
         List<Bundle> bundles = bundleRepository.findAll();
         return bundles.stream()
-                .map(bundle -> modelMapper.map(bundle, BundleDto.class))
+                .map(bundle -> {
+                    BundleDto bundleDto = new BundleDto();
+
+                    bundleDto.setId(bundle.getId());
+                    bundleDto.setName(bundle.getName());
+                    bundleDto.setDescription(bundle.getDescription());
+                    bundleDto.setNumberDiners(bundle.getNumberDiners());
+                    bundleDto.setBundleImage(bundle.getBundleImage());
+                    bundleDto.setGalleryImages(bundle.getGalleryImages());
+                    bundleDto.setDrinks(bundle.getDrinks());
+                    bundleDto.setCategories(bundle.getCategories());
+                    bundleDto.setRating(bundle.getRating());
+
+                    List<PlateDto> starterDtoList = bundle.getStarter().stream()
+                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .collect(Collectors.toList());
+                    bundleDto.setStarter(starterDtoList);
+
+                    List<PlateDto> mainCourseDtoList = bundle.getMainCourse().stream()
+                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .collect(Collectors.toList());
+                    bundleDto.setMainCourse(mainCourseDtoList);
+
+                    List<PlateDto> dessertsDtoList = bundle.getDesserts().stream()
+                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .collect(Collectors.toList());
+                    bundleDto.setDesserts(dessertsDtoList);
+
+
+
+                    return bundleDto;
+                })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public BundleDto searchBundleDtoById(Long id) {
@@ -68,9 +105,9 @@ public class BundleServiceImpl implements IBundleService {
     @Override
     @Transactional
     public Long saveBundle(BundleCreateRequest request) {
-        Plate starter = plateService.validateAndGetPlate(request.getStarter(), "Starter");
-        Plate mainCourse = plateService.validateAndGetPlate(request.getMainCourse(), "Main course");
-        Plate dessert = plateService.validateAndGetPlate(request.getDesserts(), "Dessert");
+        List<Plate> starter = plateService.validateAndGetPlates(request.getStarter(), "Starter");
+        List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
+        List<Plate> dessert = plateService.validateAndGetPlates(request.getDesserts(), "Dessert");
 
         List<Drink> drinks = request.getDrinks().stream()
                 .map(drinkService::searchDrinkByName)
@@ -82,15 +119,8 @@ public class BundleServiceImpl implements IBundleService {
         }
 
 
-        List<Integer> categoryIds = request.getCategories();
-
-        List<Category> categories = categoryIds.stream()
-                .map(categoryId -> categoryService.searchCategoryById(categoryId.longValue()))
-                .filter(Objects::nonNull).toList();
-
-        if (categories.isEmpty()) {
-            throw new RuntimeException("No valid categories found for the Bundle.");
-        }
+        List<Long> categoryIds = request.getCategories();
+        List<Category> categories = categoryRepository.findAllById(categoryIds);
 
         String keyImage = s3Service.putObject(request.getBundleImage());
         List<String> keys = new ArrayList<>();
@@ -111,10 +141,11 @@ public class BundleServiceImpl implements IBundleService {
                 .desserts(dessert)
                 .drinks(drinks)
                 .categories(categories)
+                .rating(0.)
                 .build();
 
         existsName(newBundle.getName());
-        bundleRepository.save(newBundle);
+        save(newBundle);
         return newBundle.getId();
     }
 
@@ -131,9 +162,9 @@ public class BundleServiceImpl implements IBundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Bundle", id));
 
-        Plate starter = plateService.validateAndGetPlate(request.getStarter(), "Starter");
-        Plate mainCourse = plateService.validateAndGetPlate(request.getMainCourse(), "Main course");
-        Plate dessert = plateService.validateAndGetPlate(request.getDesserts(), "Dessert");
+        List<Plate> starter = plateService.validateAndGetPlates(request.getStarter(), "Starter");
+        List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
+        List<Plate> dessert = plateService.validateAndGetPlates(request.getDesserts(), "Dessert");
 
         List<Drink> drinks = request.getDrinks().stream()
                 .map(drinkService::searchDrinkByName)

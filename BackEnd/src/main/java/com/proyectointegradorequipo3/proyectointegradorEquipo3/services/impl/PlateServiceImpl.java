@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -84,11 +85,18 @@ public class PlateServiceImpl implements IPlateService {
         if (plateRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    public Plate validateAndGetPlate(String plateName, String plateType) {
-        Plate plate = searchPlateByName(plateName);
-        if (plate == null) {
-            throw new PlateNotFoundException(plateType + " not found: " + plateName);
+    public List<Plate> validateAndGetPlates(List<String> plateNames, String plateType) {
+        List<Plate> plates = new ArrayList<>();
+
+        for (String plateName : plateNames) {
+            Plate plate = searchPlateByName(plateName);
+            if (plate == null) {
+                throw new PlateNotFoundException(plateType + " not found: " + plateName);
+            }
+            plates.add(plate);
         }
-        return plate;
+
+        return plates;
     }
+
 }
