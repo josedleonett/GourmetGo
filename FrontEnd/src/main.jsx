@@ -8,6 +8,7 @@ import HomeContainer from "./container/HomeContainer.jsx";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utils/theme.jsx";
+import ProductDetailContainer from "./container/ProductDetailContainer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         index: true,
         path: "/",
         element: <HomeContainer />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDetailContainer />,
       },
     ],
   },

@@ -7,8 +7,8 @@ import FooterContainer from "./container/FooterContainer";
 function App() {
   return (
     <>
-      <HeaderContainer />
-      <HomeContainer />
+      {/* <HeaderContainer /> */}
+      <Outlet />
       <FooterContainer />
     </>
   );
