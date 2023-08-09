@@ -39,7 +39,6 @@ public class BundleServiceImpl implements IBundleService {
 
     private final DrinkServiceImpl drinkService;
 
-    private final CategoryServiceImpl categoryService;
 
     private final ICategoryRepository categoryRepository;
 
