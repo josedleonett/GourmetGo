@@ -1,10 +1,23 @@
+import { MdLocalBar } from "react-icons/md";
+import { GiWineBottle } from "react-icons/gi";
+import { GiPieSlice } from "react-icons/gi";
+import { GiCakeSlice } from "react-icons/gi";
+import { RiRestaurant2Line } from "react-icons/ri";
+import { MdRestaurantMenu } from "react-icons/md";
+import { FaUtensils } from "react-icons/fa";
+import { BiDish } from "react-icons/bi";
 import {
+  Avatar,
   Box,
   Button,
   Container,
+  Divider,
   Grid,
   ImageList,
   ImageListItem,
+  List,
+  ListItem,
+  ListItemText,
   Paper,
   Rating,
   Stack,
@@ -15,6 +28,8 @@ import { cateringPackages } from "../test/dataApiSample";
 import { useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CardCategoryContainer from "../container/CardCategoryContainer";
+import { display } from "@mui/system";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 
 const ProductDetailDisplay = () => {
   const packageList = cateringPackages;
@@ -64,32 +79,145 @@ const ProductDetailDisplay = () => {
         </Grid>
       </Grid>
 
-      <Container>
-        <Typography variant="h2">{packageList[mainPackageId].name}</Typography>
-        <Rating
-          name="valoration"
-          value={packageList[mainPackageId].rating}
-          readOnly
-          precision={0.5}
-        />
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          color={"secondary.main"}
-        >
-          <GroupsIcon fontSize="small" />
-          <Typography variant="caption" fontFamily={"Roboto"}>
-            {packageList[mainPackageId].numberDiners}
-          </Typography>
-        </Stack>
-      </Container>
+      <Grid container lg={12}>
+        <Grid item lg={8}>
+          <Container>
+            <Box>
+              <Typography variant="h4">
+                {packageList[mainPackageId].name}
+              </Typography>
+              <Typography variant="subtitle1" fontStyle="italic" fon>
+                {packageList[mainPackageId].description}
+              </Typography>
+            </Box>
 
-      <Box>
-        <Typography variant="h3">
-          {packageList[mainPackageId].description}
-        </Typography>
-      </Box>
+            <Divider light />
+
+            <Container >
+              <List>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <BiDish size="30" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Starter:"
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {packageList[mainPackageId].starter.name}
+                        </Typography>
+                        {` — ${packageList[mainPackageId].starter.description}`}
+                      </>
+                    }
+                  />
+                </ListItem>
+
+                <Divider variant="inset" component="li" />
+
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <RiRestaurant2Line size="30" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Main Course:"
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {packageList[mainPackageId].mainCourse.name}
+                        </Typography>
+                        {` — ${packageList[mainPackageId].mainCourse.description}`}
+                      </>
+                    }
+                  />
+                </ListItem>
+
+                <Divider variant="inset" component="li" />
+
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <GiPieSlice size="30" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Dessert:"
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {packageList[mainPackageId].dessert.name}
+                        </Typography>
+                        {` — ${packageList[mainPackageId].dessert.description}`}
+                      </>
+                    }
+                  />
+                </ListItem>
+
+                <Divider variant="inset" component="li" />
+
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <MdLocalBar size="30" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Drinks:"
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {packageList[mainPackageId].drinks
+                            .map((drink) => drink.name)
+                            .join(", ")}
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+
+                <Divider variant="inset" component="li" />
+              </List>
+            </Container>
+          </Container>
+        </Grid>
+
+        <Grid item lg={4}>
+          <Paper sx={{ display: "flex" }}>
+            <Rating
+              name="valoration"
+              value={packageList[mainPackageId].rating}
+              readOnly
+              precision={0.5}
+            />
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              color={"secondary.main"}
+            >
+              <GroupsIcon fontSize="small" />
+              <Typography variant="caption">
+                {packageList[mainPackageId].numberDiners}
+              </Typography>
+            </Stack>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
