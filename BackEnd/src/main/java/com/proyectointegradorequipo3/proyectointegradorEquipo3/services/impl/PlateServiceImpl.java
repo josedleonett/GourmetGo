@@ -1,15 +1,23 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.PlateNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IPlateRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IPlateService;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -20,6 +28,8 @@ public class PlateServiceImpl implements IPlateService {
 
     private static final String NAME = "Plate";
     private final IPlateRepository plateRepository;
+    private final S3Service s3Service;
+    private final ModelMapper mapper;
 
     Logger logger = Logger.getLogger(PlateServiceImpl.class.getName());
 
@@ -27,27 +37,36 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Plate> searchAllPlate() {
-        return plateRepository.findAll();
+    public List<PlateDto> searchAllPlate() {
+        return mapper.map(plateRepository.findAll(), new TypeToken<List<PlateDto>>(){}.getType());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Plate searchPlateById(Long id) {
-        return plateRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+    public PlateDto searchPlateById(Long id) {
+        Plate plate = plateRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+
+        return mapper.map(plate, PlateDto.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Plate searchPlateByName(String name) {
+    public PlateDto searchPlateByName(String name) {
         Optional<Plate> optionalPlate = plateRepository.findByName(name);
-        return optionalPlate.orElseThrow(() -> new PlateNotFoundException("Plate with name '" + name + "' not found"));
+
+        Plate plate = optionalPlate.orElseThrow(() -> new PlateNotFoundException("Plate with name '" + name + "' not found"));
+
+        return mapper.map(plate, PlateDto.class);
     }
 
     //===================Create===================//
     @Override
-    public Long savePlate(Plate newPlate) {
-        existsName(newPlate.getName());
+    public Long savePlate(PlateCreateRequest request) {
+        existsName(request.getName());
+        Plate newPlate = mapper.map(request, Plate.class);
+        String keyImage = s3Service.putObject(request.getImage());
+        newPlate.setImage(keyImage);
         save(newPlate);
         return newPlate.getId();
     }
@@ -61,21 +80,36 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional
-    public void modifyPlate(Long id, Plate request) {
-        Plate plate = searchPlateById(id);
-        plate.setName(request.getName());
-        plate.setType(request.getType());
-        plate.setDescription(request.getDescription());
-        plate.setImage(request.getImage());
-        save(plate);
+    public void modifyPlate(Long id, PlateUpdateRequest request) throws Exception {
+        try {
+            PlateDto plateDto = searchPlateById(id);
+
+            plateDto.setName(request.getName());
+            plateDto.setType(request.getType());
+            plateDto.setDescription(request.getDescription());
+
+            s3Service.deleteObject(plateDto.getImage());
+
+            MultipartFile newImage = request.getImage();
+            String newImageUrl = s3Service.putObject(newImage);
+            plateDto.setImage(newImageUrl);
+
+            Plate plate = mapper.map(plateDto, Plate.class);
+            plate.setId(id);
+            save(plate);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
+
+
 
     //===================Delete===================//
 
     @Override
     public void deletePlateById(Long id) {
-        Plate plate = searchPlateById(id);
-        plateRepository.delete(plate);
+        PlateDto plateDto = searchPlateById(id);
+        plateRepository.delete(mapper.map(plateDto, Plate.class));
     }
 
 
@@ -84,11 +118,18 @@ public class PlateServiceImpl implements IPlateService {
         if (plateRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    public Plate validateAndGetPlate(String plateName, String plateType) {
-        Plate plate = searchPlateByName(plateName);
-        if (plate == null) {
-            throw new PlateNotFoundException(plateType + " not found: " + plateName);
+    public List<Plate> validateAndGetPlates(List<String> plateNames, String plateType) {
+        List<Plate> plates = new ArrayList<>();
+
+        for (String plateName : plateNames) {
+            PlateDto plateDto = searchPlateByName(plateName);
+            if (plateDto == null) {
+                throw new PlateNotFoundException(plateType + " not found: " + plateName);
+            }
+            plates.add(mapper.map(plateDto, Plate.class));
         }
-        return plate;
+
+        return plates;
     }
+
 }

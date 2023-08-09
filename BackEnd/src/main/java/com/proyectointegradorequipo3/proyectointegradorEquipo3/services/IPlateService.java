@@ -2,19 +2,22 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 
 import java.util.List;
 
 public interface IPlateService {
-    List<Plate> searchAllPlate();
+    List<PlateDto> searchAllPlate();
 
-    Plate searchPlateById(Long id);
+    PlateDto searchPlateById(Long id);
 
-    Plate searchPlateByName(String name);
+    PlateDto searchPlateByName(String name);
 
-    Long savePlate(Plate newPlate);
+    Long savePlate(PlateCreateRequest request);
 
     void deletePlateById(Long id);
 
-    void modifyPlate(Long id, Plate plate);
+    void modifyPlate(Long id, PlateUpdateRequest plate) throws Exception;
 }
