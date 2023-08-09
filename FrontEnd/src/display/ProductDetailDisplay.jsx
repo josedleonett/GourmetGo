@@ -39,12 +39,6 @@ const ProductDetailDisplay = () => {
 
   const [currentImageIndex, setCurrentIndex] = useState(0);
 
-  const gotoPrevious = () =>
-    currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
-
-  const gotoNext = () =>
-    currentImageIndex + 1 < images.length &&
-    setCurrentIndex(currentImageIndex + 1);
 
   return (
     <Box sx={{ padding: 2 }}>
