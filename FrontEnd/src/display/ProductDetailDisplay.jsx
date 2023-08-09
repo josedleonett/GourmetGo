@@ -1,20 +1,12 @@
 import { MdLocalBar } from "react-icons/md";
-import { GiWineBottle } from "react-icons/gi";
 import { GiPieSlice } from "react-icons/gi";
-import { GiCakeSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
-import { MdRestaurantMenu } from "react-icons/md";
-import { FaUtensils } from "react-icons/fa";
 import { BiDish } from "react-icons/bi";
 import {
-  Avatar,
   Box,
-  Button,
   Container,
   Divider,
   Grid,
-  ImageList,
-  ImageListItem,
   List,
   ListItem,
   ListItemText,
@@ -23,13 +15,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { cateringPackages } from "../test/dataApiSample";
 import { useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
-import CardCategoryContainer from "../container/CardCategoryContainer";
-import { display } from "@mui/system";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+
 
 const ProductDetailDisplay = () => {
   const packageList = cateringPackages;
@@ -46,8 +37,18 @@ const ProductDetailDisplay = () => {
 
   const mainPackageId = findPackageById(packageList, id);
 
+  const [currentImageIndex, setCurrentIndex] = useState(0);
+
+  const gotoPrevious = () =>
+    currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+
+  const gotoNext = () =>
+    currentImageIndex + 1 < images.length &&
+    setCurrentIndex(currentImageIndex + 1);
+
   return (
     <Box sx={{ padding: 2 }}>
+
       <Grid container justifyContent="space-evenly">
         <Grid item pr={1} lg={6} md={6}>
           <Box
@@ -93,7 +94,7 @@ const ProductDetailDisplay = () => {
 
             <Divider light />
 
-            <Container >
+            <Container>
               <List>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
