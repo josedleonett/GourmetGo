@@ -1,6 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
@@ -23,6 +22,7 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 @RestController
 @RequestMapping(DRINK_URI)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class DrinkController {
 
     private final DrinkServiceImpl drinkService;

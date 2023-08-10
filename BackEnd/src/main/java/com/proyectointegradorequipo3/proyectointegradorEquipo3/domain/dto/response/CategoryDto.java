@@ -1,7 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
-import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

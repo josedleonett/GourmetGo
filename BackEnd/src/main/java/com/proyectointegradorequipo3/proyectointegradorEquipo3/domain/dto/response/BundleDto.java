@@ -2,7 +2,6 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.respo
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ public class BundleDto {
     private Long id;
     private String name;
     private String description;
-    private int numberDiners;
     private String bundleImage;
     private List<String> galleryImages;
     private List<PlateDto> starter;

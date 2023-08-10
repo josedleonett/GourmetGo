@@ -7,8 +7,6 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
@@ -21,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -64,7 +59,6 @@ public class BundleServiceImpl implements IBundleService {
                     bundleDto.setId(bundle.getId());
                     bundleDto.setName(bundle.getName());
                     bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setNumberDiners(bundle.getNumberDiners());
                     bundleDto.setBundleImage(bundle.getBundleImage());
                     bundleDto.setGalleryImages(bundle.getGalleryImages());
                     bundleDto.setDrinks(bundle.getDrinks());
@@ -126,7 +120,6 @@ public class BundleServiceImpl implements IBundleService {
 
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
-                .numberDiners(request.getNumberDiners())
                 .description(request.getDescription())
                 .bundleImage(keyImage)
                 .galleryImages(keys)
@@ -172,7 +165,6 @@ public class BundleServiceImpl implements IBundleService {
         }
 
         bundle.setName(request.getName());
-        bundle.setNumberDiners(request.getNumberDiners());
         bundle.setBundleImage(request.getBundleImage());
         bundle.setGalleryImages(request.getGalleryImages());
         bundle.setStarter(starter);

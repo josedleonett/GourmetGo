@@ -22,6 +22,4 @@ public class DrinkCreateRequest {
     @NotNull
     private Double price;
 
-    @NotNull
-    private Integer amount;
 }

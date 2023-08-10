@@ -1,7 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
