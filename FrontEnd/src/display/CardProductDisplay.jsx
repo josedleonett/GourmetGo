@@ -3,9 +3,18 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Chip, Rating, Stack, Tooltip } from "@mui/material";
+import {
+  CardActionArea,
+  Chip,
+  Grid,
+  Rating,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import Carousel from "react-material-ui-carousel";
+import CardCategoryContainer from "../container/CardCategoryContainer";
 
 const CardProductDisplay = ({
   id,
@@ -18,26 +27,48 @@ const CardProductDisplay = ({
 }) => {
   return (
     <Card raised>
-      <CardActionArea
-        LinkComponent={Link} to={`/product/${id}`}
+      <Carousel
+        autoPlay={false}
+        indicatorContainerProps={{
+          style: { position: "absolute", top: "115px", zIndex: 1 },
+        }}
       >
-        <CardMedia
+        {img.map((image, i) => (
+          <CardMedia
+            component="img"
+            height="150px"
+            id={`image-${i}`}
+            image={image}
+            alt={`image-${i}`}
+            sx={{ position: "relative" }}
+          />
+        ))}
+      </Carousel>
+      <CardActionArea
+        LinkComponent={Link}
+        to={`/product/${id}`}
+        sx={{
+          '& .MuiCardActionArea-focusHighlight': {
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        {/* <CardMedia
           component="img"
-          height="40%"
-          image={img}
-          alt="green iguana"
+          height="150px"
+          image={img[0]}
         />
         <Stack
           direction="row"
-          position="absolute" // Para posicionar los chips sobre la imagen
-          top={5} // Ajusta esta posición según tu preferencia
-          left={5} // Ajusta esta posición según tu preferencia
+          position="absolute"
+          top={5}
+          left={5}
         >
           <Chip label="categoria" size="small" />
           <Chip label="categoria" size="small" />
           <Chip label="categoria" size="small" />
-        </Stack>
-        <CardContent sx={{ height: "60%" }}>
+        </Stack> */}
+        <CardContent sx={{ minHeight: "160px" }}>
           <Typography variant="h5" fontWeight="bold">
             {title}
           </Typography>

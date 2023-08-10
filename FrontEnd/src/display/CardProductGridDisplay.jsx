@@ -27,7 +27,7 @@ const CardProductGridDisplay = ({ list }) => {
             {
               <CardProductContainer
                 id={item.id}
-                img={item.bundleImage}
+                img={item.galleryImages}
                 title={item.name}
                 description={item.description}
                 categoryList={item.categoryList}

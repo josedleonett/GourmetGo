@@ -283,7 +283,7 @@ const ProductDetailDisplay = () => {
             </Container>
           </Grid>
           <Grid item lg={4} md={5} xs={12}>
-            <Paper elevation={8} sx={{ padding: 2 }}>
+            <Paper elevation={6} sx={{ py: 4, px: 1 }}>
               <Container
                 sx={{ display: "flex", flexDirection: "column", gap: 1 }}
               >
@@ -305,13 +305,14 @@ const ProductDetailDisplay = () => {
                     {packageList[mainPackageId].numberDiners}
                   </Typography>
                 </Stack>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="secondary">
                   RESERVE
                 </Button>
               </Container>
             </Paper>
           </Grid>
         </Grid>
+        <Box height={50}/>
       </Container>
     </Box>
   );
