@@ -21,24 +21,6 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
 
   const mainPackageId = findPackageById(packageList, id);
 
-  //   const imgListMapped = (imagesArray) => {
-  //     const imgList = imagesArray.map((imagePath) => {
-  //       const img = new Image();
-  //       img.src = imagePath;
-
-  //       return {
-  //         largeURL: imagePath,
-  //         thumbnailURL: imagePath,
-  //         width: img.width,
-  //         height: img.height,
-  //       };
-  //     });
-  //     return imgList;
-  //   };
-
-  //   const imgList2 = imgListMapped(imgList);
-  //   console.log(imgList2);
-
   const imgListMapped = imgList.map((imageURL) => {
     const image = new Image();
     image.src = imageURL;
@@ -46,8 +28,8 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
     return {
       largeURL: imageURL,
       thumbnailURL: imageURL,
-      width: image.width, // Ancho calculado automáticamente
-      height: image.height, // Alto calculado automáticamente
+      width: image.width,
+      height: image.height,
     };
   });
 
