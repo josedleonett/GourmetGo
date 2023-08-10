@@ -89,11 +89,8 @@ const ProductDetailDisplay = () => {
         <ArrowBackIcon />
       </IconButton>
 
-      <Container>
-        <Grid container justifyContent="space-evenly">
-          
-
-          
+      <Container >
+        <Grid container justifyContent="space-evenly" width="100%" >
           <Grid
             item
             lg={packageList[mainPackageId].galleryImages.length > 1 ? 6 : 12}
@@ -103,13 +100,19 @@ const ProductDetailDisplay = () => {
                 ? { md: { width: "100%", objectFit: "cover" } }
                 : { pr: 1 }
             }
+            mb={1}
           >
             <Box
               component="img"
               src={packageList[mainPackageId].galleryImages[0]}
               alt="Image 1"
               width="100%"
-            ></Box>
+              height="100%"
+              sx={{ 
+                objectFit: "cover",
+                objectPosition: "center center"
+              }}
+            />
           </Grid>
 
           {packageList[mainPackageId].galleryImages.length > 1 && (
@@ -119,28 +122,38 @@ const ProductDetailDisplay = () => {
               spacing={1}
               lg={6}
               md={6}
+              mb={1}
             >
               {packageList[mainPackageId].galleryImages
                 .slice(1)
                 .map((image, i) => (
-                  <Grid item key={i} xs={3} lg={6} md={6} flexDirection={"column"}>
+                  <Grid
+                    item
+                    key={i}
+                    xs={3}
+                    lg={6}
+                    md={6}
+                    flexDirection={"column"}
+                  >
                     <Box
                       component="img"
                       src={`${image}?&fit=crop&auto=format`}
                       alt={`Image ${i + 2}`}
                       width="100%"
-                    ></Box>
+                      height="100%"
+                      sx={{
+                        objectFit: "cover",
+                        objectPosition: "center center",
+                      }}
+                    />
                   </Grid>
                 ))}
             </Grid>
-            
           )}
         </Grid>
 
-        <Divider sx={{pt: 2}}/>
+        <Divider sx={{ pt: 2 }} />
       </Container>
-
-      
 
       <Container>
         <Grid container padding={2} lg={12}>
