@@ -69,12 +69,17 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
 
   return (
     <Container className="pswp-gallery" id={galleryId}>
-      <Grid container justifyContent="space-evenly" width="100%">
+      <Grid container justifyContent="center" width="100%">
         <Grid
           item
           lg={imgList.length > 1 ? 6 : 12}
           md={imgList.length > 1 ? 6 : 12}
-          sx={imgList.length === 1 ? { md: { objectFit: "cover" } } : { pr: 1 }}
+          xs={12}
+          sx={{
+            ...(imgList.length > 1
+              ? { objectFit: "cover", paddingRight: { md: 1, xs: 0 } }
+              : { paddingRight: 0 }),
+          }}
           mb={1}
         >
           <Box
@@ -103,7 +108,7 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
         {imgListMapped.length > 1 && (
           <Grid
             container
-            justifyContent="space-evenly"
+            justifyContent="center"
             spacing={1}
             lg={6}
             md={6}
