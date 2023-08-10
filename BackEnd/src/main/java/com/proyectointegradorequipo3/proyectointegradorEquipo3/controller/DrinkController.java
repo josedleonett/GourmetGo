@@ -1,6 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
@@ -23,6 +22,7 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 @RestController
 @RequestMapping(DRINK_URI)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class DrinkController {
 
     private final DrinkServiceImpl drinkService;
@@ -31,8 +31,8 @@ public class DrinkController {
     //====================Create====================//
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createPlate(@RequestBody @Valid DrinkCreateRequest request) {
-        long id = drinkService.saveDrink(mapper.map(request, Drink.class));
+    public ResponseEntity<Void> createPlate( @Valid DrinkCreateRequest request) {
+        long id = drinkService.saveDrink(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
@@ -42,21 +42,17 @@ public class DrinkController {
 
     @GetMapping
     public ResponseEntity<List<DrinkDto>> getAllDrinks() {
-        List<Drink> drinks = drinkService.searchAllDrinks();
-        List<DrinkDto> drinkDtos = drinks.stream()
-                .map(drink -> mapper.map(drink, DrinkDto.class))
-                .toList();
-
-        return ResponseEntity.ok(drinkDtos);
+        List<DrinkDto> drinks = drinkService.searchAllDrinks();
+        return ResponseEntity.ok(drinks);
     }
 
     //====================Get one by id====================//
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getById(@Valid @NotNull @PathVariable("id") Long id) {
-        Drink drink = drinkService.searchDrinkById(id);
+        DrinkDto drink = drinkService.searchDrinkById(id);
         if (drink != null) {
-            return ResponseEntity.ok(mapper.map(drink, DrinkDto.class));
+            return ResponseEntity.ok(drink);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -65,7 +61,7 @@ public class DrinkController {
     //====================Get one by name====================//
     @GetMapping(path = "/search")
     public ResponseEntity<DrinkDto> getDrinkByName(@RequestParam("name") String name) {
-        Drink drink = drinkService.searchDrinkByName(name);
+        DrinkDto drink = drinkService.searchDrinkByName(name);
         if (drink != null) {
             return ResponseEntity.ok(mapper.map(drink, DrinkDto.class));
         } else {
@@ -77,8 +73,8 @@ public class DrinkController {
 
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateDrink(@PathVariable("id") @NotNull Long id, @RequestBody @Valid DrinkUpdateRequest request) {
-        drinkService.modifyDrink(id, mapper.map(request, Drink.class));
+    public void updateDrink(@PathVariable("id") @NotNull Long id, @Valid DrinkUpdateRequest request) throws Exception {
+        drinkService.modifyDrink(id, request);
     }
 
     //====================Deletes====================//

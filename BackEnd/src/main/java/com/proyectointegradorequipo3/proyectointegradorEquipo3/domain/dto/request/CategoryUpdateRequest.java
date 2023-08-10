@@ -10,17 +10,11 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlateCreateRequest {
-
+public class CategoryUpdateRequest {
     @NotBlank
     private String name;
-
-    @NotBlank
-    private String type;
-
     @NotBlank
     private String description;
-
     @NotBlank
-    private MultipartFile image;
+    private MultipartFile img;
 }

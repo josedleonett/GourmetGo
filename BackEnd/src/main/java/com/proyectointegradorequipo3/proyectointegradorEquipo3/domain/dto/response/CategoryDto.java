@@ -4,12 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DrinkDto {
-    private String id;
+public class CategoryDto {
+    private Long id;
+
     private String name;
-    private String image;
-    private Double price;
+
+    private String description;
+
+    private String img;
+
+    private List<Long> bundles;
 }

@@ -3,20 +3,21 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Drink {
-
+public class Category {
     @Id
-    @Column(name = "drink_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private String image;
-    private Double price;
+
+    private String description;
+
+    private String img;
 
 }

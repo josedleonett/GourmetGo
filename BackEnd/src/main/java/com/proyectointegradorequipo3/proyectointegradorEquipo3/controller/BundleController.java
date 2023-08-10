@@ -7,6 +7,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Bun
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 @RestController
 @RequestMapping(BUNDLE_URI)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class BundleController {
 
     private final BundleServiceImpl bundleService;
@@ -25,7 +27,12 @@ public class BundleController {
     //====================Create====================//
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createBundle(@RequestBody @Valid BundleCreateRequest request) {
+    public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
+                                             @RequestPart MultipartFile bundleImage,
+                                             @RequestPart List<MultipartFile> galleryImages) {
+        request.setBundleImage(bundleImage);
+        request.setGalleryImages(galleryImages);
+
         Long bundleId = bundleService.saveBundle(request);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()

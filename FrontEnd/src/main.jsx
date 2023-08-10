@@ -8,7 +8,9 @@ import HomeContainer from "./container/HomeContainer.jsx";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utils/theme.jsx";
-import ProductDetailContainer from "./container/ProductDetailContainer.jsx";
+import { AdministratorPanelContainer } from "./container/AdministratorPanelContainer.jsx";
+import ElementAdministratorPanelContainer from "./container/ElementAdministratorPanelContainer.jsx";
+import CreateElementPanelContainer from "./container/CreateElementPanelContainer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,8 +24,16 @@ const router = createBrowserRouter([
         element: <HomeContainer />,
       },
       {
-        path: "/product/:id",
-        element: <ProductDetailContainer />,
+        path: "/administration-panel",
+        element: <AdministratorPanelContainer/>
+      },
+      {
+        path: '/administration-panel/:category',
+        element: <ElementAdministratorPanelContainer/>,
+      },
+      {
+        path: '/administration-panel/:category/edit',
+        element: <CreateElementPanelContainer/>,
       },
     ],
   },

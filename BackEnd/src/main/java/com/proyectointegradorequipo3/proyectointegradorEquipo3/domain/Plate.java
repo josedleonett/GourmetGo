@@ -1,10 +1,9 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +20,13 @@ public class Plate {
     private String type;
     private String description;
     private String image;
+
+    @ManyToMany(mappedBy = "starter")
+    private List<Bundle> bundlesAsStarter;
+
+    @ManyToMany(mappedBy = "mainCourse")
+    private List<Bundle> bundlesAsMainCourse;
+
+    @ManyToMany(mappedBy = "desserts")
+    private List<Bundle> bundlesAsDesserts;
 }

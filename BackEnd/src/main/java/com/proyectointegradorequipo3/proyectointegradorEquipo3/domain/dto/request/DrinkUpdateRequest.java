@@ -3,6 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reque
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,11 +17,8 @@ public class DrinkUpdateRequest {
     private String name;
 
     @NotBlank
-    private String image;
+    private MultipartFile image;
 
     @NotNull
     private Double price;
-
-    @NotNull
-    private Integer amount;
 }
