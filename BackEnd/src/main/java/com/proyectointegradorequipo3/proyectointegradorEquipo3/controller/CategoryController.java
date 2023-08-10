@@ -1,15 +1,13 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.CategoryNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiConstants.CATEGORY_URI;
 
@@ -27,8 +26,6 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
-
-    private final ModelMapper mapper;
 
     //====================Create====================//
 
@@ -57,4 +54,31 @@ public class CategoryController {
         CategoryDto categoryDto = categoryService.searchCategoryById(id);
         return ResponseEntity.ok(categoryDto);
     }
+
+    //====================Get one by name====================//
+    @GetMapping("/search")
+    public ResponseEntity<CategoryDto> searchCategoryByName(@RequestParam String name) {
+        CategoryDto categoryDto = categoryService.searchCategoryByName(name);
+
+        if (categoryDto != null) {
+            return ResponseEntity.ok(categoryDto);
+        }
+
+        throw new CategoryNotFoundException("Category with name '" + name + "' not found");
+    }
+
+    //====================Update====================//
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void modifyCategory(@PathVariable Long id, @ModelAttribute @Valid CategoryUpdateRequest updateModel) {
+        categoryService.modifyCategory(id, updateModel);
+    }
+
+    //===================Delete===================//
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategoryById(@PathVariable Long id) {
+        categoryService.deleteCategoryById(id);
+    }
+
 }

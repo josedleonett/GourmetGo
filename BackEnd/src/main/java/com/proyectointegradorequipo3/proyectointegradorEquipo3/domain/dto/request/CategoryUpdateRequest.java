@@ -6,22 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DrinkUpdateRequest {
-
+public class CategoryUpdateRequest {
     @NotBlank
     private String name;
-
     @NotBlank
-    private MultipartFile image;
-
-    @NotNull
-    private Double price;
-
-    @NotNull
-    private Integer amount;
+    private String description;
+    @NotBlank
+    private MultipartFile img;
 }

@@ -2,21 +2,23 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.CategoryNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICategoryService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -42,48 +44,49 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public List<CategoryDto> searchAllCategory() {
-        List<Category> categories = categoryRepository.findAll();
-
-        return categories.stream()
+        return categoryRepository.findAll().stream()
                 .map(category -> {
-                    List<Bundle> bundles = bundleRepository.findAllBundlesByCategoryId(category.getId());
-                    List<Long> bundleIds = bundles.stream()
-                            .map(Bundle::getId)
-                            .collect(Collectors.toList());
+                    List<Long> bundleIds = getBundleIdsByCategoryId(category.getId());
 
-                    CategoryDto categoryDto = new CategoryDto();
-                    categoryDto.setId(category.getId());
-                    categoryDto.setName(category.getName());
-                    categoryDto.setDescription(category.getDescription());
-                    categoryDto.setImg(category.getImg());
-                    categoryDto.setBundles(bundleIds);
-
-                    return categoryDto;
+                    return new CategoryDto(
+                            category.getId(),
+                            category.getName(),
+                            category.getDescription(),
+                            category.getImg(),
+                            bundleIds
+                    );
                 })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public CategoryDto searchCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        List<Bundle> bundles = bundleRepository.findAllBundlesByCategoryId(category.getId());
-        List<Long> bundleIds = bundles.stream()
-                .map(Bundle::getId)
-                .collect(Collectors.toList());
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(category.getId());
-        categoryDto.setName(category.getName());
-        categoryDto.setDescription(category.getDescription());
-        categoryDto.setImg(category.getImg());
-        categoryDto.setBundles(bundleIds);
-        return categoryDto;
+
+        List<Long> bundleIds = getBundleIdsByCategoryId(category.getId());
+
+        return new CategoryDto(
+                category.getId(),
+                category.getName(),
+                category.getDescription(),
+                category.getImg(),
+                bundleIds
+        );
     }
 
+
     @Override
-    public Category searchCategoryByName(String name) {
-        Optional<Category> optionalCategory = categoryRepository.findByName(name);
-        return optionalCategory.orElseThrow(() -> new CategoryNotFoundException("Category with name '" + name + "' not found"));
+    public CategoryDto searchCategoryByName(String name) {
+        Category category = categoryRepository.findByName(name)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with name '" + name + "' not found"));
+
+        CategoryDto categoryDto = mapper.map(category, CategoryDto.class);
+        categoryDto.setBundles(getBundleIdsByCategoryId(category.getId()));
+
+        return categoryDto;
+
     }
 
     //===================Create===================//
@@ -108,9 +111,22 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Update===================//
 
     @Override
-    public void modifyCategory(Long id, Category request) {
-        Optional<Category> category = categoryRepository.findById(id);
+    public void modifyCategory(Long id, CategoryUpdateRequest request) {
+        CategoryDto categoryDto = searchCategoryById(id);
+
+        categoryDto.setName(request.getName());
+        categoryDto.setDescription(request.getDescription());
+
+        s3Service.deleteObject(categoryDto.getImg());
+
+        String newImageUrl = s3Service.putObject(request.getImg());
+        categoryDto.setImg(newImageUrl);
+
+        Category category = mapper.map(categoryDto, Category.class);
+        category.setId(id);
+        save(category);
     }
+
 
     //===================Delete===================//
     @Override
@@ -124,4 +140,12 @@ public class CategoryServiceImpl implements ICategoryService {
     private void existsName(String name) {
         if (categoryRepository.existsByName(name)) throw new ExistNameException(name);
     }
+
+    private List<Long> getBundleIdsByCategoryId(Long categoryId) {
+        return bundleRepository.findAllBundlesByCategoryId(categoryId)
+                .stream()
+                .map(Bundle::getId)
+                .collect(Collectors.toList());
+    }
+
 }

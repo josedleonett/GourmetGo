@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlateDto {
+    private Long id;
     private String name;
     private String type;
     private String description;

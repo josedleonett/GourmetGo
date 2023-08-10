@@ -3,25 +3,38 @@ import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
 
 const CreatePlatesPanelDisplay = () => {
-  const [platesObject, setPlatesObject] = useState({
-    name: "",
-    images: "",
-    type: "",
-    description: "",
-  });
 
-  const handleSubmit = (e) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('type', type);
+  formData.append('description', description);
+  formData.append('image', image);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(platesObject)
-  };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('type', type);
+    formData.append('description', description);
+    formData.append('image', image);
 
-  const handleChange = (e) => {
-    setPlatesObject({
-      ...platesObject,
-      [e.target.name]: e.target.value,
-    });
-    console.log(platesObject)
+    try {
+      const response = await fetch('http://localhost:8080/v1/plate/create', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.status === 201) {
+        console.log('Plate created successfully.');
+
+      } else {
+        console.log('Plate creation failed.');
+    
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
   };
 
   return (
@@ -40,32 +53,32 @@ const CreatePlatesPanelDisplay = () => {
               placeholder="Name"
               name="name"
               label="Name"
-              value={platesObject.name}
-              onChange={handleChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
             <TextField
               placeholder="Image"
               name="image"
               label="Image"
-              value={platesObject.mainImage}
-              onChange={handleChange}
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
               required
             />
             <TextField
               placeholder="Type"
               name="type"
               label="Type"
-              value={platesObject.galleryImages}
-              onChange={handleChange}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               required
             />
             <TextField
               placeholder="Description"
               name="description"
               label="Description"
-              value={platesObject.starter}
-              onChange={handleChange}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               required
             /> 
             <Button variant="contained" type='submit' onClick={handleSubmit}>Add</Button>
