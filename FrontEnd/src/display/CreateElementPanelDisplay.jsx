@@ -14,13 +14,13 @@ const CreateElementPanelDisplay = () => {
   let modalContent;
 
   switch (category) {
-    case 'bundles':
+    case 'bundle':
       modalContent = <CreateBundlePanelDisplay />;
       break;
-    case 'drinks':
+    case 'drink':
       modalContent = <CreateDrinksPanelDisplay />;
       break;
-    case 'plates':
+    case 'plate':
       modalContent = <CreatePlatesPanelDisplay />;
       break;
     default:

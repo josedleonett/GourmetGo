@@ -29,21 +29,21 @@ export const AdministratorPanelDisplay = () => {
         return (
             <React.Fragment>
             <Grid item xs={4}>
-              <Link to="/administration-panel/bundles">
+              <Link to="/administration-panel/bundle">
                 <ButtonPanel>
                     Bundle
                 </ButtonPanel>
               </Link>
             </Grid>
             <Grid item xs={4}>
-              <Link to="/administration-panel/drinks">
+              <Link to="/administration-panel/drink">
                 <ButtonPanel>
                     Drinks
                 </ButtonPanel>
               </Link>
             </Grid>
             <Grid item xs={4}>
-              <Link to="/administration-panel/plates">
+              <Link to="/administration-panel/plate">
                 <ButtonPanel>
                     Plates
                 </ButtonPanel>

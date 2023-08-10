@@ -4,16 +4,24 @@ import { Box, Button } from '@mui/material';
 
 const CreateDrinksPanelDisplay = () => {
 
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [image, setImage] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('image', image);
+
     try {
       const response = await fetch('http://localhost:8080/v1/drink/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(drinkObject),
+        body: formData,
       });
+
       if (response.ok) {
         console.log('Drink added successfully');
       } else {
@@ -24,17 +32,9 @@ const CreateDrinksPanelDisplay = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setDrinkObject({
-      ...drinkObject,
-      [e.target.name]: e.target.value,
-    });
-    console.log(drinkObject)
-  };
-
   return (
-        <>
-          <Box component="form" onSubmit={handleSubmit} sx={{
+    <>
+      <Box component="form" onSubmit={handleSubmit} sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -44,40 +44,11 @@ const CreateDrinksPanelDisplay = () => {
                 textAlign: 'center',
                 gap: "3vw"
           }}>
-            <TextField
-              placeholder="Name"
-              name="name"
-              label="Name"
-              value={drinkObject.name}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              placeholder="Image"
-              name="image"
-              label="Image"
-              value={drinkObject.image}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              placeholder="Price"
-              name="price"
-              label="Price"
-              value={drinkObject.price}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              placeholder="Amount"
-              name="amount"
-              label="Amount"
-              value={drinkObject.amount}
-              onChange={handleChange}
-              required
-            />
-            <Button variant="contained" type='submit' onClick={handleSubmit}>Add</Button>
-          </Box>
+          <TextField type="text" value={name} label="Name" placeholder='Name' onChange={(e) => setName(e.target.value)} />
+          <TextField type="text" value={price} label="Price" placeholder='Price' onChange={(e) => setPrice(e.target.value)} />
+          <TextField type="file" label="Image" placeholder='Image' onChange={(e) => setImage(e.target.files[0])} />
+        <button type="submit" onClick={handleSubmit}>Create Drink</button>
+      </Box>
     </>
   );
 };

@@ -3,12 +3,10 @@ import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
 
 const CreatePlatesPanelDisplay = () => {
-
-  const formData = new FormData();
-  formData.append('name', name);
-  formData.append('type', type);
-  formData.append('description', description);
-  formData.append('image', image);
+  const [name, setName] = useState('');
+  const [type, setType] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,8 +36,8 @@ const CreatePlatesPanelDisplay = () => {
   };
 
   return (
-        <>
-          <Box component="form" onSubmit={handleSubmit} sx={{
+    <>
+      <Box component="form" onSubmit={handleSubmit} sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -49,40 +47,12 @@ const CreatePlatesPanelDisplay = () => {
                 textAlign: 'center',
                 gap: "3vw"
           }}>
-            <TextField
-              placeholder="Name"
-              name="name"
-              label="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <TextField
-              placeholder="Image"
-              name="image"
-              label="Image"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              required
-            />
-            <TextField
-              placeholder="Type"
-              name="type"
-              label="Type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
-            />
-            <TextField
-              placeholder="Description"
-              name="description"
-              label="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            /> 
-            <Button variant="contained" type='submit' onClick={handleSubmit}>Add</Button>
-          </Box>
+          <TextField type="text" value={name} label="Name" placeholder='Name' onChange={(e) => setName(e.target.value)} />
+          <TextField type="text" value={type} label="Type" placeholder='Type of plate' onChange={(e) => setType(e.target.value)} />
+          <TextField type="text" value={description} label="Description" placeholder='Description' onChange={(e) => setDescription(e.target.value)} />
+          <TextField type="file" label="Image" placeholder='Image' onChange={(e) => setImage(e.target.files[0])} />
+        <button type="submit">Create Plate</button>
+      </Box>
     </>
   );
 }
