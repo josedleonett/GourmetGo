@@ -29,6 +29,7 @@ const CardProductDisplay = ({
     <Card raised>
       <Carousel
         autoPlay={false}
+        animation="slide"
         indicatorContainerProps={{
           style: { position: "absolute", top: "115px", zIndex: 1 },
         }}
