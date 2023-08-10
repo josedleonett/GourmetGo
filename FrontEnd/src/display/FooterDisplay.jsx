@@ -29,11 +29,14 @@ const FooterDisplay = () => {
           sx={{ height: "100%" }}
           spacing={2}
         >
-          <Grid item>
-            <Box component="img" src={companyLogo.grayColor} alt="GourmetGo-logo" maxWidth={"200px"}/>
-            {/* <Typography variant="h5" color="initial" sx={{ marginBottom: 1 }}>
-              GOURMETGO
-            </Typography> */}
+          <Grid item xs={12} sm={6} md={4} textAlign="center">
+            <Box
+              component="img"
+              src={companyLogo.grayColor}
+              alt="GourmetGo-logo"
+              maxWidth={"200px"}
+              sx={{ margin: "0 auto" }}
+            />
             <Typography
               variant="body2"
               sx={{ fontSize: "12px", marginBottom: 1 }}
@@ -41,8 +44,13 @@ const FooterDisplay = () => {
               Copyright © 2023. GourmetGo. All rights reserved.
             </Typography>
           </Grid>
-          <Grid item>
-            <Grid container alignItems="center" spacing={1}>
+          <Grid item xs={12} sm={6} md={8}>
+            <Grid
+              container
+              alignItems="center"
+              spacing={1}
+              justifyContent={{ xs: "center", sm: "flex-end" }}
+            >
               <Grid item>
                 <IconButton
                   href="https://twitter.com/"

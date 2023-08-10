@@ -2,7 +2,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, useTheme, useMediaQuery } from "@mui/material";
 import CardContainer from "../container/CardContainer";
 import CardProductGridContainer from "../container/CardProductGridContainer";
 import Carousel from "react-material-ui-carousel";
@@ -12,6 +12,8 @@ import CarouselCategoryContainer from "../container/CarouselCategoryContainer";
 import SearchBannerContainer from "../container/SearchBannerContainer";
 
 const HomeDisplay = ({ props }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
   return (
     <>
       <SearchBannerContainer filterList={categories} />
@@ -25,6 +27,7 @@ const HomeDisplay = ({ props }) => {
           paddingX={3}
           maxWidth="30vw"
           textAlign="right"
+          sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
         >
           Categories
         </Typography>
@@ -42,6 +45,7 @@ const HomeDisplay = ({ props }) => {
           paddingX={3}
           maxWidth="30vw"
           textAlign="right"
+          sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
         >
           Packages
         </Typography>
