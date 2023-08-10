@@ -53,6 +53,7 @@ public class PlateServiceImpl implements IPlateService {
     @Override
     @Transactional(readOnly = true)
     public PlateDto searchPlateByName(String name) {
+
         Optional<Plate> optionalPlate = plateRepository.findByName(name);
 
         Plate plate = optionalPlate.orElseThrow(() -> new PlateNotFoundException("Plate with name '" + name + "' not found"));
@@ -109,7 +110,9 @@ public class PlateServiceImpl implements IPlateService {
     @Override
     public void deletePlateById(Long id) {
         PlateDto plateDto = searchPlateById(id);
-        plateRepository.delete(mapper.map(plateDto, Plate.class));
+        Plate plate = mapper.map(plateDto, Plate.class);
+        plateRepository.delete(plate);
+        s3Service.deleteObject(plateDto.getImage());
     }
 
 

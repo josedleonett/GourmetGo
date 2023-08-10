@@ -73,7 +73,7 @@ public class PlateController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePlate(@PathVariable @NotBlank @Valid Long id) {
+    public void deletePlate(@PathVariable @NotBlank @Valid Long id) throws Exception {
         plateService.deletePlateById(id);
     }
 

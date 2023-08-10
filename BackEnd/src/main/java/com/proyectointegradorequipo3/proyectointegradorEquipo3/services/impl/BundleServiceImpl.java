@@ -8,6 +8,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -70,17 +72,17 @@ public class BundleServiceImpl implements IBundleService {
                     bundleDto.setRating(bundle.getRating());
 
                     List<PlateDto> starterDtoList = bundle.getStarter().stream()
-                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .map(plate -> new PlateDto(plate.getId(), plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
                             .collect(Collectors.toList());
                     bundleDto.setStarter(starterDtoList);
 
                     List<PlateDto> mainCourseDtoList = bundle.getMainCourse().stream()
-                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .map(plate -> new PlateDto(plate.getId(), plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
                             .collect(Collectors.toList());
                     bundleDto.setMainCourse(mainCourseDtoList);
 
                     List<PlateDto> dessertsDtoList = bundle.getDesserts().stream()
-                            .map(plate -> new PlateDto(plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
+                            .map(plate -> new PlateDto(plate.getId(), plate.getName(), plate.getType(), plate.getDescription(), plate.getImage()))
                             .collect(Collectors.toList());
                     bundleDto.setDesserts(dessertsDtoList);
 
@@ -100,6 +102,7 @@ public class BundleServiceImpl implements IBundleService {
     }
 
 
+
     //===================Create===================//
     @Override
     @Transactional
@@ -111,23 +114,15 @@ public class BundleServiceImpl implements IBundleService {
         List<Drink> drinks = request.getDrinks().stream()
                 .map(drinkService::searchDrinkByName)
                 .filter(Objects::nonNull)
+                .map(dto -> mapper.map(dto, Drink.class))
                 .collect(Collectors.toList());
 
-        if (drinks.isEmpty()) {
-            throw new RuntimeException("No valid drinks found for the Bundle.");
-        }
-
-
-        List<Long> categoryIds = request.getCategories();
-        List<Category> categories = categoryRepository.findAllById(categoryIds);
+        List<Category> categories = categoryRepository.findAllById(request.getCategories());
 
         String keyImage = s3Service.putObject(request.getBundleImage());
-        List<String> keys = new ArrayList<>();
-
-        for (MultipartFile image : request.getGalleryImages()) {
-            String key = s3Service.putObject(image);
-            keys.add(key);
-        }
+        List<String> keys = request.getGalleryImages().stream()
+                .map(s3Service::putObject)
+                .collect(Collectors.toList());
 
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
@@ -140,13 +135,14 @@ public class BundleServiceImpl implements IBundleService {
                 .desserts(dessert)
                 .drinks(drinks)
                 .categories(categories)
-                .rating(0.)
+                .rating(0.0)
                 .build();
 
         existsName(newBundle.getName());
         save(newBundle);
         return newBundle.getId();
     }
+
 
 
     public void save(Bundle bundle) {
@@ -168,6 +164,7 @@ public class BundleServiceImpl implements IBundleService {
         List<Drink> drinks = request.getDrinks().stream()
                 .map(drinkService::searchDrinkByName)
                 .filter(Objects::nonNull)
+                .map(dto -> mapper.map(dto, Drink.class))
                 .collect(Collectors.toList());
 
         if (drinks.isEmpty()) {
@@ -185,6 +182,7 @@ public class BundleServiceImpl implements IBundleService {
 
         bundleRepository.save(bundle);
     }
+
 
     //===================Delete===================//
     @Override

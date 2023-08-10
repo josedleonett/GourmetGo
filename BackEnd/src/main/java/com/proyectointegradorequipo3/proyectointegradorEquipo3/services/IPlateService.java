@@ -17,7 +17,7 @@ public interface IPlateService {
 
     Long savePlate(PlateCreateRequest request);
 
-    void deletePlateById(Long id);
+    void deletePlateById(Long id) throws Exception;
 
     void modifyPlate(Long id, PlateUpdateRequest plate) throws Exception;
 }
