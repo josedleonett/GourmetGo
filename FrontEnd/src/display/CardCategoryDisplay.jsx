@@ -9,8 +9,33 @@ import { Link } from "react-router-dom";
 const CardCategoryDisplay = ({ id, img, title, description }) => {
   return (
     <>
-      <Card>
-        <CardActionArea LinkComponent={Link} to={`/category/${id}`}>
+      <Card >
+        <CardActionArea LinkComponent={Link} to={`/category/${id}`} sx={{
+                width: {
+                  lg: '17vw',
+                  md: '100%',
+                  xs: '100%',
+                  
+                },
+                height: {
+                  lg: '100%',
+                  md: '100%',
+                  xs: '40vh',
+                  
+                },
+                minWidth: {
+                  lg: '17vw',
+                  md: '100%',
+                  xs: '100%',
+                  
+                },
+                minHeight: {
+                  lg: '20vw',
+                  md: "200px",
+                  xs: '40vh',
+                  
+                },
+              }}>
           <Box
             sx={{
               display: "flex",
@@ -19,11 +44,39 @@ const CardCategoryDisplay = ({ id, img, title, description }) => {
           >
             <CardMedia
               component="img"
-              height="240px"
               image={img}
               alt={title + " cover"}
+              sx={{
+                width: {
+                  lg: '100%',
+                  md: '60%',
+                  xs: '100%',
+                  
+                },
+                height: {
+                  lg: '100%',
+                  md: '100%',
+                  xs: '200px',
+                  
+                },
+                objectFit: "cover",
+                objectPosition: "center center",
+              }}
             />
-            <CardContent sx={{ minHeight: 153 }}>
+            <CardContent sx={{
+                width: {
+                  lg: '100%',
+                  md: '40%',
+                  xs: '100%',
+                  
+                },
+                height: {
+                  lg: '100%',
+                  md: '100%',
+                  xs: '100%',
+                  
+                },
+              }}>
               <Typography gutterBottom variant="h5">
                 {title}
               </Typography>
