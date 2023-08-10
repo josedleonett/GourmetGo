@@ -12,14 +12,14 @@ const CardProductGridDisplay = ({ list }) => {
 
     containerRef.current.scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      block: "end",
     });
   };
 
   console.log(list);
 
   return (
-    <Container maxWidth="xl" ref={containerRef}>
+    <Container maxWidth="xl" ref={containerRef} >
       <Grid container spacing={4} columns={{ lg: 5, md: 3, sm: 1 }}>
         {list[page - 1].map((item) => (
           
@@ -39,7 +39,7 @@ const CardProductGridDisplay = ({ list }) => {
         ))}
       </Grid>
       <Box
-        padding={2}
+        padding={5}
         display="flex"
         alignContent="center"
         justifyContent="center"

@@ -49,16 +49,13 @@ const CardProductDisplay = ({
         LinkComponent={Link}
         to={`/product/${id}`}
         sx={{
-          '& .MuiCardActionArea-focusHighlight': {
-            backgroundColor: 'transparent',
+          "& .MuiCardActionArea-focusHighlight": {
+            backgroundColor: "transparent",
           },
+          minHeight: "200px",
         }}
       >
-        {/* <CardMedia
-          component="img"
-          height="150px"
-          image={img[0]}
-        />
+        {/* 
         <Stack
           direction="row"
           position="absolute"
@@ -77,19 +74,27 @@ const CardProductDisplay = ({
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
-          <Tooltip title="Dinners numbers" placement="bottom-start">
+
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            color={"secondary.main"}
+          >
+            <Tooltip title="Dinners numbers" placement="bottom-start" >
             <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              color={"secondary.main"}
-            >
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            color={"secondary.main"}
+          >
               <GroupsIcon fontSize="small" />
               <Typography variant="caption" fontFamily={"Roboto"}>
                 {numberDiners}
               </Typography>
-            </Stack>
-          </Tooltip>
+              </Stack>
+            </Tooltip>
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>
