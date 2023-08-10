@@ -1,6 +1,5 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;

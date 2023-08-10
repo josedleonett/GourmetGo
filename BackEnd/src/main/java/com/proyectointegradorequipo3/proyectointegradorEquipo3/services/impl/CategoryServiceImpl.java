@@ -2,13 +2,10 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.CategoryNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
@@ -20,7 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 

@@ -3,7 +3,6 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity
 @Data

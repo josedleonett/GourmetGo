@@ -21,7 +21,4 @@ public class DrinkUpdateRequest {
 
     @NotNull
     private Double price;
-
-    @NotNull
-    private Integer amount;
 }

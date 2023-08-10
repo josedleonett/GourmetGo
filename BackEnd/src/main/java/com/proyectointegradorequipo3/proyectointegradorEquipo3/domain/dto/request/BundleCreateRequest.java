@@ -16,8 +16,6 @@ public class BundleCreateRequest {
 
     @NotBlank
     private String name;
-    @NotNull
-    private int numberDiners;
     @NotBlank
     private String description;
     @NotBlank

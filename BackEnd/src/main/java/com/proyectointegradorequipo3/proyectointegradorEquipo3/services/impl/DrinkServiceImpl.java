@@ -1,11 +1,9 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,7 +85,6 @@ public class DrinkServiceImpl implements IDrinkService {
 
             drinkDto.setName(request.getName());
             drinkDto.setPrice(request.getPrice());
-            drinkDto.setAmount(request.getAmount());
 
             s3Service.deleteObject(drinkDto.getImage());
 

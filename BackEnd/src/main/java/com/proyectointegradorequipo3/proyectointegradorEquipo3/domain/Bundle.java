@@ -21,14 +21,13 @@ public class Bundle {
     private Long id;
     private String name;
     private String description;
-    private int numberDiners;
     private String bundleImage;
     @ElementCollection
     @CollectionTable(name = "gallery")
     @Column(name = "images")
     private List<String> galleryImages;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "bundle_starter",
             joinColumns = @JoinColumn(name = "bundle_id"),
@@ -36,7 +35,7 @@ public class Bundle {
     )
     private List<Plate> starter;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "bundle_main_course",
             joinColumns = @JoinColumn(name = "bundle_id"),
@@ -44,7 +43,7 @@ public class Bundle {
     )
     private List<Plate> mainCourse;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "bundle_desserts",
             joinColumns = @JoinColumn(name = "bundle_id"),
@@ -52,7 +51,7 @@ public class Bundle {
     )
     private List<Plate> desserts;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "bundle_drink",
             joinColumns = @JoinColumn(name = "bundle_id"),

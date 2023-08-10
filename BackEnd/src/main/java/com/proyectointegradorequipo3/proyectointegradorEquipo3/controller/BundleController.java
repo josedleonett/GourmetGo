@@ -19,6 +19,7 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 @RestController
 @RequestMapping(BUNDLE_URI)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class BundleController {
 
     private final BundleServiceImpl bundleService;
