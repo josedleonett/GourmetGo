@@ -14,17 +14,48 @@ import {
   Rating,
   Stack,
   Typography,
+  Button,
+  IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
 import { cateringPackages } from "../test/dataApiSample";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+//import { Gallery } from "react-grid-gallery";
+import Lightbox from "react-lightbox-component";
 
+const images = [
+  {
+    src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
+    width: "45vw",
+    height: "auto",
+    isSelected: false,
+    caption: "After Rain (Jeshu John - designerspics.com)",
+  },
+  {
+    src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
+    width: 320,
+    height: 212,
+    tags: [
+      { value: "Ocean", title: "Ocean" },
+      { value: "People", title: "People" },
+    ],
+    alt: "Boats (Jeshu John - designerspics.com)",
+  },
+
+  {
+    src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
+    width: 320,
+    height: 212,
+  },
+];
 
 const ProductDetailDisplay = () => {
   const packageList = cateringPackages;
   const { id } = useParams();
+  const navigate = useNavigate();
 
   function findPackageById(array, idToFind) {
     for (let i = 0; i < array.length; i++) {
@@ -35,16 +66,31 @@ const ProductDetailDisplay = () => {
     return -1;
   }
 
+  const goBackOnClick = () => {
+    navigate("/");
+  };
+
   const mainPackageId = findPackageById(packageList, id);
 
   const [currentImageIndex, setCurrentIndex] = useState(0);
 
-
   return (
     <Box sx={{ padding: 2 }}>
+      {/* <Gallery images={images}/> */}
+
+      {/* <Lightbox
+        images={images}
+        thumbnailWidth="200px" // Establece el ancho de las miniaturas
+        showImageModifiers={false} // Desactiva los botones de navegación
+        currentIndex={currentImageIndex} // Índice de la imagen inicial
+      /> */}
+
+      <IconButton aria-label="Back" onClick={goBackOnClick}>
+        <ArrowBackIcon />
+      </IconButton>
 
       <Grid container justifyContent="space-evenly">
-        <Grid item pr={1} lg={6} md={6}>
+        <Grid item pr={1} lg={6} md={6} >
           <Box
             component="img"
             src={packageList[mainPackageId].galleryImages[0]}
@@ -53,14 +99,7 @@ const ProductDetailDisplay = () => {
           ></Box>
         </Grid>
 
-        <Grid
-          container
-          item
-          justifyContent="space-evenly"
-          spacing={1}
-          lg={6}
-          md={6}
-        >
+        <Grid container justifyContent="space-evenly" spacing={1} lg={6} md={6}>
           {packageList[mainPackageId].galleryImages.slice(1).map((image, i) => (
             <Grid item key={i} xs={3} lg={6} md={6}>
               <Box
@@ -74,8 +113,8 @@ const ProductDetailDisplay = () => {
         </Grid>
       </Grid>
 
-      <Grid container lg={12}>
-        <Grid item lg={8}>
+      <Grid container padding={2} lg={12}>
+        <Grid item lg={8} md={7}>
           <Container>
             <Box>
               <Typography variant="h4">
@@ -88,7 +127,7 @@ const ProductDetailDisplay = () => {
 
             <Divider light />
 
-            <Container>
+            <Container >
               <List>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
@@ -191,25 +230,33 @@ const ProductDetailDisplay = () => {
           </Container>
         </Grid>
 
-        <Grid item lg={4}>
-          <Paper sx={{ display: "flex" }}>
-            <Rating
-              name="valoration"
-              value={packageList[mainPackageId].rating}
-              readOnly
-              precision={0.5}
-            />
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              color={"secondary.main"}
+        <Grid item lg={4} md={5} xs={12}>
+          <Paper elevation={8} sx={{ padding: 2 }}>
+            <Container
+              sx={{ display: "flex", flexDirection: "column", gap: 1 }}
             >
-              <GroupsIcon fontSize="small" />
-              <Typography variant="caption">
-                {packageList[mainPackageId].numberDiners}
-              </Typography>
-            </Stack>
+              <Rating
+                name="valoration"
+                value={packageList[mainPackageId].rating}
+                readOnly
+                precision={0.5}
+              />
+
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                color={"secondary.main"}
+              >
+                <GroupsIcon fontSize="small" color="primary" />
+                <Typography variant="caption" color="primary">
+                  {packageList[mainPackageId].numberDiners}
+                </Typography>
+              </Stack>
+              <Button variant="contained" color="primary">
+                RESERVE
+              </Button>
+            </Container>
           </Paper>
         </Grid>
       </Grid>
