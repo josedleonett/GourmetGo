@@ -7,6 +7,7 @@ export const categories = [
     description:
       "Our catering service offers an international buffet that will take you on a culinary journey around the world. Enjoy a wide variety of flavors and exquisite dishes from different cultures to delight your guests.",
     img: "../../public/images/image 7.png",
+    bundleList: []
   },
   {
     id: 2,
@@ -154,6 +155,8 @@ export const cateringPackages = [
       "../../public/images/image 1.png",
       "../../public/images/image 2.png",
       "../../public/images/image 3.png",
+      "../../public/images/image 10.png",
+      "../../public/images/image 12.png",
     ],
     categoryList: [1, 2],
     starter: {
@@ -216,8 +219,6 @@ export const cateringPackages = [
     bundleImage: "../../public/images/image 4.png",
     galleryImages: [
       "../../public/images/image 4.png",
-      "../../public/images/image 5.png",
-      "../../public/images/image 6.png",
     ],
     categoryList: [1, 2],
     starter: {
@@ -342,7 +343,6 @@ export const cateringPackages = [
     galleryImages: [
       "../../public/images/image 10.png",
       "../../public/images/image 11.png",
-      "../../public/images/image 12.png",
     ],
     categoryList: [1, 2],
     starter: {
