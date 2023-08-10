@@ -25,6 +25,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //import { Gallery } from "react-grid-gallery";
 import Lightbox from "react-lightbox-component";
+import CoverProductGalleryContainer from "../container/CoverProductGalleryContainer";
 
 const images = [
   {
@@ -85,12 +86,22 @@ const ProductDetailDisplay = () => {
         currentIndex={currentImageIndex} // Índice de la imagen inicial
       /> */}
 
+      
+
       <IconButton aria-label="Back" onClick={goBackOnClick}>
         <ArrowBackIcon />
       </IconButton>
 
-      <Container >
-        <Grid container justifyContent="space-evenly" width="100%" >
+      <CoverProductGalleryContainer
+        imgList={packageList[mainPackageId].galleryImages}
+        galleryId={"productGallery"}
+      />
+
+      <Container>
+
+
+
+        {/* <Grid container justifyContent="space-evenly" width="100%">
           <Grid
             item
             lg={packageList[mainPackageId].galleryImages.length > 1 ? 6 : 12}
@@ -108,9 +119,9 @@ const ProductDetailDisplay = () => {
               alt="Image 1"
               width="100%"
               height="100%"
-              sx={{ 
+              sx={{
                 objectFit: "cover",
-                objectPosition: "center center"
+                objectPosition: "center center",
               }}
             />
           </Grid>
@@ -150,26 +161,25 @@ const ProductDetailDisplay = () => {
                 ))}
             </Grid>
           )}
-        </Grid>
-
-        <Divider sx={{ pt: 2 }} />
+        </Grid> */}
+{/* 
+        <Divider sx={{ pt: 2 }} /> */}
       </Container>
 
       <Container>
         <Grid container padding={2} lg={12}>
+          <Box>
+            <Typography variant="h4">
+              {packageList[mainPackageId].name}
+            </Typography>
+            <Typography variant="subtitle1" fontStyle="italic" fon>
+              {packageList[mainPackageId].description}
+            </Typography>
+          </Box>
+          <Divider light />
+
           <Grid item lg={8} md={7}>
             <Container>
-              <Box>
-                <Typography variant="h4">
-                  {packageList[mainPackageId].name}
-                </Typography>
-                <Typography variant="subtitle1" fontStyle="italic" fon>
-                  {packageList[mainPackageId].description}
-                </Typography>
-              </Box>
-
-              <Divider light />
-
               <Container>
                 <List>
                   <ListItem alignItems="flex-start">
@@ -272,7 +282,6 @@ const ProductDetailDisplay = () => {
               </Container>
             </Container>
           </Grid>
-
           <Grid item lg={4} md={5} xs={12}>
             <Paper elevation={8} sx={{ padding: 2 }}>
               <Container

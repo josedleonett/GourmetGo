@@ -343,7 +343,6 @@ export const cateringPackages = [
     galleryImages: [
       "../../public/images/image 10.png",
       "../../public/images/image 11.png",
-      "../../public/images/image 12.png",
     ],
     categoryList: [1, 2],
     starter: {
