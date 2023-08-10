@@ -8,7 +8,7 @@ const CarouselCategoryDisplay = ({ elementsGroup }) => {
     <Box>
       <Carousel animation="fade" navButtonsAlwaysVisible={true}>
         {elementsGroup.map((group, i) => (
-          <Grid container justifyContent={"space-evenly"} key={i}>
+          <Grid container justifyContent="space-evenly" key={i}>
             {group.map((item, j) => (
               <Grid item lg={2} key={j}>
                 <CardCategoryContainer
