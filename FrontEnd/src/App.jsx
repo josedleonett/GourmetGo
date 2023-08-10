@@ -4,12 +4,12 @@ import HeaderContainer from "./container/HeaderContainer";
 import HomeContainer from "./container/HomeContainer";
 import FooterContainer from "./container/FooterContainer";
 
-
 function App() {
   return (
     <>
       <HeaderContainer />
-      <HomeContainer/>
+      <HomeContainer />
+      <FooterContainer />
     </>
   );
 }

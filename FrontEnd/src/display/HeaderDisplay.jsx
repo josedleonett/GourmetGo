@@ -19,6 +19,7 @@ import {
   styled,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { companyLogo } from "../utils/theme";
 
 
 const HeaderDisplay = ({ props }) => {
@@ -87,9 +88,10 @@ const HeaderDisplay = ({ props }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="body1" color="initial">
+            {/* <Typography variant="body1" color="initial">
               GOURMETGO
-            </Typography>
+            </Typography> */}
+            <Box component="img" src={companyLogo.grayColor} alt="GourmetGo-logo" maxHeight={"50px"}/>
             <Tabs
               variant="fullWidth"
               centered
@@ -169,7 +171,7 @@ const HeaderDisplay = ({ props }) => {
         </div>
         {/* Contenido adicional que desees colocar debajo de la imagen */}
       </Box>
-      <Box
+      {/* <Box
         width="100%"
         height="10vw"
         backgroundColor="#E2D6D6"
@@ -178,7 +180,7 @@ const HeaderDisplay = ({ props }) => {
         alignItems="center"
       >
                 <TextField fullWidth label="Search bundle" id="fullWidth" sx={{ width: "50%", backgroundColor: "#FFFFFF"}}/>
-      </Box>
+      </Box> */}
     </>
   );
 };
