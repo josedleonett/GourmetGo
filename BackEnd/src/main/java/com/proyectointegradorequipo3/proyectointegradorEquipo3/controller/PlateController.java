@@ -1,13 +1,10 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.PlateNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.PlateServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,25 +15,24 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiConstants.*;
 
 @RestController
 @RequestMapping(PLATE_URI)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class PlateController {
 
     private final PlateServiceImpl plateService;
-    private final ModelMapper mapper;
 
     //====================Create====================//
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createPlate(@RequestBody @Valid PlateCreateRequest request) {
-        long id = plateService.savePlate(mapper.map(request, Plate.class));
+    public ResponseEntity<Void> createPlate(@Valid PlateCreateRequest request) {
+        long id = plateService.savePlate(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("{id}").buildAndExpand(id).toUri();
+                .path("/{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -44,11 +40,7 @@ public class PlateController {
 
     @GetMapping
     public ResponseEntity<List<PlateDto>> getAllPlates() {
-        List<Plate> plates = plateService.searchAllPlate();
-        List<PlateDto> plateDtos = plates.stream()
-                .map(plate -> mapper.map(plate, PlateDto.class))
-                .collect(Collectors.toList());
-
+        List<PlateDto> plateDtos = plateService.searchAllPlate();
         return ResponseEntity.ok(plateDtos);
     }
 
@@ -57,33 +49,31 @@ public class PlateController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<PlateDto> getById(@Valid @NotNull @PathVariable("id") Long id) {
-        return ResponseEntity.ok(mapper.map(plateService.searchPlateById(id), PlateDto.class));
+        return ResponseEntity.ok(plateService.searchPlateById(id));
     }
 
     //====================Get one by name====================//
     @GetMapping(path = "/search")
     public ResponseEntity<PlateDto> getPlateByName(@RequestParam("name") String name) {
-        Plate plate = plateService.searchPlateByName(name);
-        if (plate != null) {
-            return ResponseEntity.ok(mapper.map(plate, PlateDto.class));
-        } else {
-            throw new PlateNotFoundException("Plate with name '" + name + "' not found");
-        }
+        PlateDto plateDto = plateService.searchPlateByName(name);
+
+        return ResponseEntity.ok(plateDto);
     }
+
 
     //====================Update====================//
 
-    @PatchMapping(path = "/{id}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePlate(@PathVariable("id") @NotNull Long id, @RequestBody @Valid PlateUpdateRequest request) {
-        plateService.modifyPlate(id, mapper.map(request, Plate.class));
+    public void updatePlate(@PathVariable("id") @NotNull Long id, @ModelAttribute @Valid PlateUpdateRequest request) throws Exception {
+        plateService.modifyPlate(id, request);
     }
 
-    //====================Deletes====================//
+    //====================Delete====================//
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePlate(@PathVariable @NotBlank @Valid Long id) {
+    public void deletePlate(@PathVariable @NotBlank @Valid Long id) throws Exception {
         plateService.deletePlateById(id);
     }
 

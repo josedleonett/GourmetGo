@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import lombok.AllArgsConstructor;
@@ -14,12 +15,14 @@ import java.util.List;
 public class BundleDto {
     private Long id;
     private String name;
+    private String description;
     private int numberDiners;
     private String bundleImage;
     private List<String> galleryImages;
-
-    private Plate starter;
-    private Plate mainCourse;
-    private Plate desserts;
+    private List<PlateDto> starter;
+    private List<PlateDto> mainCourse;
+    private List<PlateDto> desserts;
     private List<Drink> drinks;
+    private List<Category> categories;
+    private Double rating;
 }
