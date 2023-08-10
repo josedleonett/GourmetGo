@@ -7,7 +7,6 @@ import { useParams, useNavigate  } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
-import { width } from '@mui/system';
 
 export const ElementAdministratorPanelDisplay = () => {
 
@@ -41,19 +40,6 @@ const Item = styled(Paper)(({ theme }) => ({
         gap: "10vw"
       }));
 
-    function ParamsRow() {
-        const parameters = categoriesParameters[category] || [];
-
-        return (
-            <React.Fragment>                    
-              <Grid item xs={4}>
-                {parameters.map((param, index) => (
-                        <Item key={index}>{param}</Item>
-        ))}</Grid>
-          </React.Fragment>
-        );
-      }
-
       const [data, setData] = useState([]);
       let apiUrl = `http://localhost:8080/v1/${category}/`;
     
@@ -73,7 +59,7 @@ const Item = styled(Paper)(({ theme }) => ({
             console.error('Error fetching data:', error);
           }
         };
-    
+        console.log(data)
         fetchData();
       }, [apiURLMemoized]);
 
@@ -84,27 +70,27 @@ const Item = styled(Paper)(({ theme }) => ({
       function DataRow() {
         return (
           <React.Fragment>
-            <Grid sx={{width: "100%"}}>
-            {data.map((item, index) => (
-              <Grid container item>
-                {Object.entries(item).map(([key, value]) => (
-                  <Grid item xs={2} key={key} sx={{display: "flex", justifyContent:"space-evenly"}}>
-                    <Item key={index}>
-                      <strong>{key}:</strong> {value}
-                    </Item>
-                  </Grid>
-                ))}
-              </Grid>
-            ))}
+            <Grid sx={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "space-evenly", gap: "1vw" }}>
+              {data.map((item, index) => (
+                <Grid container item key={index}>
+                  {Object.entries(item).map(([key, value]) => (
+                    <Grid item xs={2} key={key} sx={{ width: "100%", display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
+                      <Item key={index}>
+                        <strong>{key}:</strong> {key === "image" ? <img src={`http://localhost:8080/asset/get-object?key=${item.image}`} alt={item.name} style={{ maxWidth: "100%", maxHeight: "100px" }} /> : value}
+                      </Item>
+                    </Grid>
+                  ))}
+                </Grid>
+              ))}
             </Grid>
           </React.Fragment>
         );
-      }
+      }      
 
   return (
     <Box>
         <Grid container spacing={1}>
-            <Grid container item spacing={3} sx={{flexWrap: "nowrap"}}>
+            <Grid container item spacing={3} sx={{flexWrap: "nowrap", width: "100%"}}>
                   <DataRow  ></DataRow  >
             </Grid>
         </Grid>

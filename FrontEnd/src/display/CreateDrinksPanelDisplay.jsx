@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useMemo  } from 'react';
 import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
+import { useNavigate  } from 'react-router-dom';
 
 const CreateDrinksPanelDisplay = () => {
+
+  const navigateTo = useNavigate();
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -24,6 +27,7 @@ const CreateDrinksPanelDisplay = () => {
 
       if (response.ok) {
         console.log('Drink added successfully');
+        navigateTo(`/administration-panel/drink`);
       } else {
         console.error('Failed to add drink');
       }
@@ -31,6 +35,8 @@ const CreateDrinksPanelDisplay = () => {
       console.error('Error:', error);
     }
   };
+
+  
 
   return (
     <>

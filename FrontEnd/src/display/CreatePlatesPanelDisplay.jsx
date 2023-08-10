@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
+import { useNavigate  } from 'react-router-dom';
 
 const CreatePlatesPanelDisplay = () => {
+
+  const navigateTo = useNavigate();
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
@@ -25,6 +28,7 @@ const CreatePlatesPanelDisplay = () => {
 
       if (response.status === 201) {
         console.log('Plate created successfully.');
+        navigateTo(`/administration-panel/plate`);
 
       } else {
         console.log('Plate creation failed.');
