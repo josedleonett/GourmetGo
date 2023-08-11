@@ -26,7 +26,7 @@ const TitleBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.primary,
   fontWeight: 'bold',
-  marginTop: -150,
+  marginTop: -252,
   marginBottom: 50, // Elimina el margen superior
 }));
 
