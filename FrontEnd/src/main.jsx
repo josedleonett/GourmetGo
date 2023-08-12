@@ -12,7 +12,8 @@ import HomeContainer from "./pages/container/HomeContainer.jsx";
 import ProductDetailContainer from "./pages/container/ProductDetailContainer.jsx";
 import { AdministratorPanelContainer } from "./pages/container/AdministratorPanelContainer.jsx";
 import ElementAdministratorPanelContainer from "./pages/container/ElementAdministratorPanelContainer.jsx";
-import CreateElementPanelContainer from "./pages/container/CreateElementPanelContainer.jsx";
+import CreateElementPanelContainer from "./components/container/CreateElementPanelContainer.jsx";
+import AdminContainer from "./pages/container/AdminContainer";
 
 const router = createBrowserRouter([
   {
@@ -22,10 +23,14 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/",
+        path: "",
         element: <HomeContainer />,
       },
       { path: "/product/:id", element: <ProductDetailContainer /> },
+      {
+        path: "/admin/*",
+        element: <AdminContainer />,
+      },
       {
         path: "/administration-panel",
         element: <AdministratorPanelContainer />,
@@ -37,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/administration-panel/:category/edit",
         element: <CreateElementPanelContainer />,
+      },
+      {
+        path: "*",
+        element: <NotFoundContainer />,
       },
     ],
   },

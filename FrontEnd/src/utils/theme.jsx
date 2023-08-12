@@ -76,7 +76,7 @@ export const theme = createTheme({
     divider: "#BDBDBD",
     background: {
       paper: "#FFFFFF",
-      default: "#F5F5F5",
+      default: "#F8F2F2",
     },
     action: {
       active: "#274556",
