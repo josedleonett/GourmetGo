@@ -146,11 +146,11 @@ const HeaderDisplay = ({ props }) => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Hidden mdDown>
+      {/* <Hidden mdDown>
       <Box marginTop={`${headerHeight / 200000}px`}
   style={{
     transition: "margin 0.3s ease-out", // Añade una transición suave cuando cambia la posición
-  }}> {/* 64px es la altura del AppBar, ajusta este valor según sea necesario */}
+  }}>
         <div className="image-container">
           <div className="circle">
             <h2>
@@ -174,19 +174,8 @@ const HeaderDisplay = ({ props }) => {
           
           <img src="/images/cateringdishes 1.png" alt="dishes" className="img-dishes" />
         </div>
-        {/* Contenido adicional que desees colocar debajo de la imagen */}
       </Box>
-      </Hidden>
-      {/* <Box
-        width="100%"
-        height="10vw"
-        backgroundColor="#E2D6D6"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-                <TextField fullWidth label="Search bundle" id="fullWidth" sx={{ width: "50%", backgroundColor: "#FFFFFF"}}/>
-      </Box> */}
+      </Hidden> */}
     </>
   );
 };
