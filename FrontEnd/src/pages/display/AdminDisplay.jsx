@@ -11,7 +11,7 @@ const AdminDisplay = ({sidebarMenu}) => {
       <Box sx={{ display: "flex" }}>
 
         <AdminPanelDrawerContainer sidebarMenuList={sidebarMenu}/>
-
+        {}
         <AdminPanelMainContainer/>
 
         
