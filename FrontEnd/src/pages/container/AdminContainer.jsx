@@ -5,9 +5,13 @@ import AdminDisplay from "../display/AdminDisplay";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
 import { GiPieSlice } from "react-icons/gi";
+//import { useParams, useRouteMatch } from "react-router-dom";
 
 const AdminContainer = () => {
+  //const { path } = useRouteMatch();
+  //const {"*"} = useParams();
   const [platesIsOpen, setPlatesIsOpen] = useState(true);
+  const menuSelected = "admin"
   
   const sidebarMenu = [
     {
@@ -52,7 +56,7 @@ const AdminContainer = () => {
       icon: <CgList size="30" />,
     },
   ];
-  return <AdminDisplay sidebarMenu={sidebarMenu} />;
+  return <AdminDisplay sidebarMenu={sidebarMenu} menuSelected={menuSelected}/>;
 };
 
 export default AdminContainer;

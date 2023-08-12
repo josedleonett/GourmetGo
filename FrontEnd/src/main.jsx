@@ -28,8 +28,21 @@ const router = createBrowserRouter([
       },
       { path: "/product/:id", element: <ProductDetailContainer /> },
       {
-        path: "/admin/*",
+        path: "/admin",
         element: <AdminContainer />,
+        children: [
+          { path: "/admin/:bundles" },
+          {
+            path: "/admin/plates",
+            children: [
+              { path: "/admin/plates/:starter" },
+              { path: "/admin/plates/:mainCourse" },
+              { path: "/admin/plates/:dessert" },
+            ],
+          },
+          { path: "/admin/:drinks" },
+          { path: "/admin/:categories" },
+        ],
       },
       {
         path: "/administration-panel",
