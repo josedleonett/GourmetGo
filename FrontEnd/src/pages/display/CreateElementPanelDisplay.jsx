@@ -4,9 +4,9 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
-import CreateBundlePanelDisplay from './CreateBundlePanelDisplay';
-import CreateDrinksPanelDisplay from './CreateDrinksPanelDisplay';
-import CreatePlatesPanelDisplay from './CreatePlatesPanelDisplay';
+import CreateBundlePanelDisplay from '../../components/display/CreateBundlePanelDisplay';
+import CreateDrinksPanelDisplay from '../../components/display/CreateDrinksPanelDisplay';
+import CreatePlatesPanelDisplay from '../../components/display/CreatePlatesPanelDisplay';
 
 const CreateElementPanelDisplay = () => {
   const { category } = useParams();

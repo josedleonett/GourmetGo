@@ -1,4 +1,3 @@
-import React from 'react'
 import SearchBannerDisplay from '../display/SearchBannerDisplay'
 
 const SearchBannerContainer = ({filterList}) => {

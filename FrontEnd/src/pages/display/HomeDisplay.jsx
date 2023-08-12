@@ -3,13 +3,13 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Container, Grid, useTheme, useMediaQuery } from "@mui/material";
-import CardContainer from "../container/CardContainer";
-import CardProductGridContainer from "../container/CardProductGridContainer";
+import CardContainer from "../../components/container/CardContainer";
+import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import Carousel from "react-material-ui-carousel";
-import { categories, cateringPackages } from "../test/dataApiSample";
-import CardProductContainer from "../container/CardProductContainer";
-import CarouselCategoryContainer from "../container/CarouselCategoryContainer";
-import SearchBannerContainer from "../container/SearchBannerContainer";
+import { categories, cateringPackages } from "../../test/dataApiSample";
+import CardProductContainer from "../../components/container/CardProductContainer";
+import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
+import SearchBannerContainer from "../../components/container/SearchBannerContainer";
 
 const HomeDisplay = ({ props }) => {
   const theme = useTheme();
