@@ -21,7 +21,7 @@ import {
   Hidden
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { companyLogo } from "../utils/theme";
+import { companyLogo } from "../../utils/theme";
 
 
 const HeaderDisplay = ({ props }) => {
