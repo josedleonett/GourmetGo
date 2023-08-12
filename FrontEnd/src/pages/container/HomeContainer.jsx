@@ -1,6 +1,6 @@
 import React from "react";
 import HomeDisplay from "../display/HomeDisplay";
-import { categories } from "../test/dataApiSample";
+import { categories } from "../../test/dataApiSample";
 
 const HomeContainer = () => {
 
