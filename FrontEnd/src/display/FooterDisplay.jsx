@@ -5,7 +5,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { companyLogo } from "../../utils/theme";
+import { companyLogo } from "../utils/theme";
 
 const FooterDisplay = () => {
   const handleScrollToTop = () => {
