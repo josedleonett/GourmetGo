@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Collapse, ListSubheader } from "@mui/material";
+import { Collapse, ListSubheader, Stack } from "@mui/material";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
@@ -47,7 +47,7 @@ const AdminPanelDrawerDisplay = ({sidebarMenuList}) => {
               }
             >
               {sidebarMenuList.map((menuItem, index) => (
-                <>
+                <Stack key={index}>
                   <ListItemButton
                     key={index}
                     to={menuItem.url || null}
@@ -76,7 +76,7 @@ const AdminPanelDrawerDisplay = ({sidebarMenuList}) => {
                       </List>
                     </Collapse>
                   )}
-                </>
+                </Stack>
               ))}
             </List>
           </Box>
