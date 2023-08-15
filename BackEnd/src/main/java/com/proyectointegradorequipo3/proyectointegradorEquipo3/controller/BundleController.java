@@ -59,7 +59,7 @@ public class BundleController {
     //====================Update====================//
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateBundle(@PathVariable Long id, @RequestBody @Valid BundleUpdateRequest request) {
+    public ResponseEntity<Void> updateBundle(@PathVariable Long id, @ModelAttribute @Valid BundleUpdateRequest request) {
         bundleService.modifyBundle(id, request);
         return ResponseEntity.noContent().build();
     }

@@ -3,6 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reque
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,10 +18,10 @@ public class BundleUpdateRequest {
     private String name;
     @NotBlank
     private String description;
-    @NotBlank
-    private String bundleImage;
-    @NotNull
-    private List<String> galleryImages;
+
+    private MultipartFile bundleImage;
+
+    private List<MultipartFile> galleryImages;
     @NotNull
     private List<String> starter;
     @NotNull
@@ -30,5 +31,5 @@ public class BundleUpdateRequest {
     @NotNull
     private List<String> drinks;
     @NotNull
-    private List<Integer> categories;
+    private List<Long> categories;
 }
