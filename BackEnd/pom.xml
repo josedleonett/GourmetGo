@@ -72,10 +72,19 @@
 			<artifactId>spring-cloud-starter-aws-messaging</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.amazonaws.auth</groupId>
+			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.434</version>
+			<version>1.12.429</version>
 		</dependency>
+
+		<!--IMAGE REDIMENTION-->
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<dependencyManagement>
