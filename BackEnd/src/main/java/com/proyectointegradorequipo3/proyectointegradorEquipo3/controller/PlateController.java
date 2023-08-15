@@ -63,7 +63,7 @@ public class PlateController {
 
     //====================Update====================//
 
-    @PutMapping(path = "/{id}")
+    @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePlate(@PathVariable("id") @NotNull Long id, @ModelAttribute @Valid PlateUpdateRequest request) throws Exception {
         plateService.modifyPlate(id, request);
