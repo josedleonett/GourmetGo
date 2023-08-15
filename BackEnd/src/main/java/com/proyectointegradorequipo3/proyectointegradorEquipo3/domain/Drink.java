@@ -3,12 +3,12 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Drink {
 
     @Id
