@@ -67,7 +67,7 @@ public class CategoryController {
     }
 
     //====================Update====================//
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCategory(@PathVariable Long id, @ModelAttribute @Valid CategoryUpdateRequest updateModel) {
         categoryService.modifyCategory(id, updateModel);

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +63,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long saveDrink(DrinkCreateRequest request) {
         existsName(request.getName());
         Drink newDrink = mapper.map(request, Drink.class);
@@ -83,13 +85,21 @@ public class DrinkServiceImpl implements IDrinkService {
         try {
             DrinkDto drinkDto = searchDrinkById(id);
 
-            drinkDto.setName(request.getName());
-            drinkDto.setPrice(request.getPrice());
+            if (request.getName() != null) {
+                drinkDto.setName(request.getName());
+            }
 
-            s3Service.deleteObject(drinkDto.getImage());
+            if (request.getPrice() != null) {
+                drinkDto.setPrice(request.getPrice());
+            }
 
-            String newImageUrl = s3Service.putObject(request.getImage());
-            drinkDto.setImage(newImageUrl);
+            MultipartFile newImage = request.getImage();
+            if (newImage != null && !newImage.isEmpty()) {
+                s3Service.deleteObject(drinkDto.getImage());
+
+                String newImageUrl = s3Service.putObject(newImage);
+                drinkDto.setImage(newImageUrl);
+            }
 
             Drink drink = mapper.map(drinkDto, Drink.class);
             drink.setId(id);
@@ -97,11 +107,12 @@ public class DrinkServiceImpl implements IDrinkService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-
     }
+
 
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteDrinkById(Long id) {
         DrinkDto drinkDto = searchDrinkById(id);
         Drink drink = mapper.map(drinkDto, Drink.class);
