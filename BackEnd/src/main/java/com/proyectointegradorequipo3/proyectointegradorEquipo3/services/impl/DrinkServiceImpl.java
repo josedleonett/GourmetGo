@@ -63,6 +63,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long saveDrink(DrinkCreateRequest request) {
         existsName(request.getName());
         Drink newDrink = mapper.map(request, Drink.class);
@@ -111,6 +112,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteDrinkById(Long id) {
         DrinkDto drinkDto = searchDrinkById(id);
         Drink drink = mapper.map(drinkDto, Drink.class);

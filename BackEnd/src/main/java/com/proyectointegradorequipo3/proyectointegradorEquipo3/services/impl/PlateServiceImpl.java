@@ -63,6 +63,7 @@ public class PlateServiceImpl implements IPlateService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long savePlate(PlateCreateRequest request) {
         existsName(request.getName());
         Plate newPlate = mapper.map(request, Plate.class);
@@ -116,6 +117,7 @@ public class PlateServiceImpl implements IPlateService {
     //===================Delete===================//
 
     @Override
+    @Transactional
     public void deletePlateById(Long id) {
         PlateDto plateDto = searchPlateById(id);
         Plate plate = mapper.map(plateDto, Plate.class);

@@ -15,6 +15,8 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Servic
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -87,6 +89,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long saveCategory(CategoryCreateRequest request) {
         String keyImage = s3Service.putObject(request.getImg());
         Category category = Category.builder()
@@ -107,25 +110,35 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Update===================//
 
     @Override
+    @Transactional
     public void modifyCategory(Long id, CategoryUpdateRequest request) {
         CategoryDto categoryDto = searchCategoryById(id);
 
-        categoryDto.setName(request.getName());
-        categoryDto.setDescription(request.getDescription());
+        if (request.getName() != null) {
+            categoryDto.setName(request.getName());
+        }
 
-        s3Service.deleteObject(categoryDto.getImg());
+        if (request.getDescription() != null) {
+            categoryDto.setDescription(request.getDescription());
+        }
 
-        String newImageUrl = s3Service.putObject(request.getImg());
-        categoryDto.setImg(newImageUrl);
+        MultipartFile newImage = request.getImg();
+        if (newImage != null && !newImage.isEmpty()) {
+
+            s3Service.deleteObject(categoryDto.getImg());
+
+            String newImageUrl = s3Service.putObject(newImage);
+            categoryDto.setImg(newImageUrl);
+        }
 
         Category category = mapper.map(categoryDto, Category.class);
         category.setId(id);
         save(category);
     }
 
-
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteCategoryById(Long id) {
         Category category = mapper.map(searchCategoryById(id), Category.class);
         categoryRepository.delete(category);

@@ -147,6 +147,7 @@ public class BundleServiceImpl implements IBundleService {
 
     //===================Update===================//
     @Override
+    @Transactional
     public void modifyBundle(Long bundleId, BundleUpdateRequest request) {
         Optional<Bundle> bundleOptional = bundleRepository.findById(bundleId);
 
@@ -211,6 +212,7 @@ public class BundleServiceImpl implements IBundleService {
 
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
