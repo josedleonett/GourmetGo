@@ -71,7 +71,7 @@ public class DrinkController {
 
     //====================Update====================//
 
-    @PutMapping(path = "/{id}")
+    @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateDrink(@PathVariable("id") @NotNull Long id, @Valid DrinkUpdateRequest request) throws Exception {
         drinkService.modifyDrink(id, request);
