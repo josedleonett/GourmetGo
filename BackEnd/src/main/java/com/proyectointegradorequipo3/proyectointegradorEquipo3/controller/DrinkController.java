@@ -71,11 +71,12 @@ public class DrinkController {
 
     //====================Update====================//
 
-    @PatchMapping(path = "/{id}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateDrink(@PathVariable("id") @NotNull Long id, @Valid DrinkUpdateRequest request) throws Exception {
         drinkService.modifyDrink(id, request);
     }
+
 
     //====================Deletes====================//
 
