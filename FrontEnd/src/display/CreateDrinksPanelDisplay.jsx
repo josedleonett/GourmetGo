@@ -40,20 +40,43 @@ const CreateDrinksPanelDisplay = () => {
 
   return (
     <>
-      <Box component="form" onSubmit={handleSubmit} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                textAlign: 'center',
-                gap: "3vw"
-          }}>
-          <TextField type="text" value={name} label="Name" placeholder='Name' onChange={(e) => setName(e.target.value)} />
-          <TextField type="text" value={price} label="Price" placeholder='Price' onChange={(e) => setPrice(e.target.value)} />
-          <TextField type="file" label="Image" placeholder='Image' onChange={(e) => setImage(e.target.files[0])} />
-        <button type="submit" onClick={handleSubmit}>Create Drink</button>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+          textAlign: "center",
+          gap: "3vw",
+        }}
+      >
+        <TextField
+          type="text"
+          value={name}
+          label="Name"
+          placeholder="Name"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <TextField
+          type="text"
+          value={price}
+          label="Price"
+          placeholder="Price"
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <TextField
+          type="file"
+          label="Image"
+          placeholder="Image"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+        <button type="submit" onClick={handleSubmit}>
+          Create Drink
+        </button>
       </Box>
     </>
   );

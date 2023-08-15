@@ -3,15 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
-import NotFoundContainer from "./container/NotFoundContainer.jsx";
-import HomeContainer from "./container/HomeContainer.jsx";
-import ProductDetailContainer from "./container/ProductDetailContainer.jsx";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utils/theme.jsx";
-import { AdministratorPanelContainer } from "./container/AdministratorPanelContainer.jsx";
-import ElementAdministratorPanelContainer from "./container/ElementAdministratorPanelContainer.jsx";
-import CreateElementPanelContainer from "./container/CreateElementPanelContainer.jsx";
+import NotFoundContainer from "./pages/container/NotFoundContainer.jsx";
+import HomeContainer from "./pages/container/HomeContainer.jsx";
+import ProductDetailContainer from "./pages/container/ProductDetailContainer.jsx";
+import { AdministratorPanelContainer } from "./pages/container/AdministratorPanelContainer.jsx";
+import ElementAdministratorPanelContainer from "./pages/container/ElementAdministratorPanelContainer.jsx";
+import CreateElementPanelContainer from "./pages/container/CreateElementPanelContainer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,10 +21,28 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/",
+        path: "",
         element: <HomeContainer />,
       },
       { path: "/product/:id", element: <ProductDetailContainer /> },
+      {
+        path: "admin/*",
+        element: <AdminContainer />,
+        // children: [
+        //   { path: "bundles", Component: <AdminContainer /> },
+        //   {
+        //     path: "plates",
+        //     Component: <AdminContainer />,
+        //     children: [
+        //       { path: "starter", Component: <AdminContainer /> },
+        //       { path: "mainCourse", Component: <AdminContainer /> },
+        //       { path: "dessert", Component: <AdminContainer /> },
+        //     ],
+        //   },
+        //   { path: "drinks", Component: <AdminContainer /> },
+        //   { path: "categories", Component: <AdminContainer /> },
+        // ],
+      },
       {
         path: "/administration-panel",
         element: <AdministratorPanelContainer />,
@@ -36,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/administration-panel/:category/edit",
         element: <CreateElementPanelContainer />,
+      },
+      {
+        path: "*",
+        element: <NotFoundContainer />,
       },
     ],
   },

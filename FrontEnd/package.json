@@ -16,6 +16,7 @@
     "@fontsource/roboto": "^5.0.5",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
+    "@mui/x-data-grid": "^6.11.1",
     "axios": "^1.4.0",
     "photoswipe": "^5.3.8",
     "react": "^18.2.0",
