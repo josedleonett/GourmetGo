@@ -12,6 +12,7 @@ import { theme } from "./utils/theme.jsx";
 import { AdministratorPanelContainer } from "./container/AdministratorPanelContainer.jsx";
 import ElementAdministratorPanelContainer from "./container/ElementAdministratorPanelContainer.jsx";
 import CreateElementPanelContainer from "./container/CreateElementPanelContainer.jsx";
+import UserRegisterDisplay from "./display/UserRegisterDisplay.jsx"
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/administration-panel/:category/edit",
         element: <CreateElementPanelContainer />,
+      },
+      {
+        path: "/signup",
+        element: <UserRegisterDisplay/>,
       },
     ],
   },
