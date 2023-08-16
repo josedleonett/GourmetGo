@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #AFC2C9;
             margin: 0;
             padding: 0;
         }
@@ -14,7 +14,7 @@
         .container {
             max-width: 600px;
             margin: 50px auto;
-            background-color: #fff;
+            background-color: #E2D6D6;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
@@ -23,6 +23,9 @@
         .header {
             text-align: center;
             margin-bottom: 20px;
+        }
+        .header img {
+            width: 60%;
         }
 
         .message {
@@ -36,25 +39,28 @@
             max-width: 200px;
             margin: 20px auto;
             padding: 10px 15px;
-            background-color: #333;
+            background-color: #001b30;
             text-align: center;
             border-radius: 5px;
             color: white;
             text-decoration: none;
             font-weight: bold;
         }
+        a{
+            color: white;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <img src="https://path-to-your-logo.com/logo.png" alt="GourmetGo Logo"> <!-- Si tienes un logo, cámbialo aquí -->
-        <h2>Bienvenido a GourmetGo</h2>
+        <img src="https://gourmetgo.s3.amazonaws.com/EMA_LOGO_POSITIVO.png" alt="GourmetGo Logo">
+        <h2>Welcome to GourmetGo</h2>
     </div>
     <div class="message">
-        <p>¡Estamos emocionados de tenerte con nosotros! Solo queda un paso más para completar tu registro y sumergirte en la experiencia culinaria que te espera.</p>
-        <p>Por favor, haz clic en el botón de abajo para confirmar tu dirección de correo electrónico y activar tu cuenta.</p>
-        <a href="{{token}}" class="button">Confirmar mi cuenta</a>
+        <p>We are excited to have you with us! There is only one more step left to complete your registration and immerse yourself in the culinary experience that awaits you.</p>
+        <p>Please click the button below to confirm your email address and activate your account.</p>
+        <a href="{{token}}" class="button">Confirm my account</a>
     </div>
 </div>
 </body>
