@@ -1,7 +1,9 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.security;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.filters.JwtAuthenticationFilter;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.filters.JwtAuthorizationFilter;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt.JwtUtils;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +40,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(config -> config.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/hello").permitAll();
+                    auth.requestMatchers("/auth/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

@@ -11,10 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -23,20 +26,15 @@ public class AuthController {
     @Autowired
     private IUserRepository userRepository;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "Hello World Not Secured";
-    }
-
-    @GetMapping("/helloSecured")
-    public String helloSecured(){
-        return "Hello World Secured";
-    }
 
     @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateRequest createUserDTO){
 
-        Set<RoleEntity> roles = createUserDTO.getRoles().stream()
+        Set<String> userRoles = Optional.ofNullable(createUserDTO.getRoles()).orElse(new HashSet<>());
+
+        userRoles.add(ERole.USER.name());
+
+        Set<RoleEntity> roles = userRoles.stream()
                 .map(role -> RoleEntity.builder()
                         .name(ERole.valueOf(role))
                         .build())
@@ -44,6 +42,7 @@ public class AuthController {
 
         UserEntity userEntity = UserEntity.builder()
                 .name(createUserDTO.getName())
+                .lastName(createUserDTO.getLastName())
                 .password(passwordEncoder.encode(createUserDTO.getPassword()))
                 .email(createUserDTO.getEmail())
                 .roles(roles)
@@ -54,9 +53,10 @@ public class AuthController {
         return ResponseEntity.ok(userEntity);
     }
 
+
     @DeleteMapping("/deleteUser")
     public String deleteUser(@RequestParam String id){
         userRepository.deleteById(Long.parseLong(id));
-        return "Se ha borrado el user con id".concat(id);
+        return "User with id".concat(id) + " deleted.";
     }
 }
