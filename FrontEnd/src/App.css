@@ -1,19 +1,12 @@
 
 #root {
-  margin: 0 auto;
+  margin: 0;
   width: 100%;
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
 }
 
 body {
   margin: 0;
 }
-
-/* h2 {
-  color: #1E1E1E;
-  font-weight: bold;
-  font-size: 3vw;
-  position: absolute;
-  width: 40vw;
-  top: 3vw;
-  left: 6vw;
-} */
