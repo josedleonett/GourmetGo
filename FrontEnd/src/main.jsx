@@ -1,17 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utils/theme.jsx";
+
+import App from "./App.jsx";
 import NotFoundContainer from "./pages/container/NotFoundContainer.jsx";
 import HomeContainer from "./pages/container/HomeContainer.jsx";
 import ProductDetailContainer from "./pages/container/ProductDetailContainer.jsx";
 import { AdministratorPanelContainer } from "./pages/container/AdministratorPanelContainer.jsx";
 import ElementAdministratorPanelContainer from "./pages/container/ElementAdministratorPanelContainer.jsx";
-import CreateElementPanelContainer from "./pages/container/CreateElementPanelContainer.jsx";
+import CreateElementPanelContainer from "./components/container/CreateElementPanelContainer.jsx";
+import AdminContainer from "./pages/container/AdminContainer";
 
 const router = createBrowserRouter([
   {
