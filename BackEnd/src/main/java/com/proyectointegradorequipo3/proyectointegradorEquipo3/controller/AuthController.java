@@ -126,7 +126,10 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtUtils.generateAccesToken(authentication.getPrincipal().toString());
-        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+        String name = optionalUser.get().getName();
+        String lastName = optionalUser.get().getLastName();
+        String email = optionalUser.get().getEmail();
+        return new ResponseEntity<>(new AuthResponse(token, name, lastName, email), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser")
