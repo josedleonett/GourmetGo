@@ -6,6 +6,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.LoginRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.UserCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.AuthResponse;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.InvalidCredentialsException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IRoleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt.JwtUtils;
@@ -119,7 +120,7 @@ public class AuthController {
 
         Optional<UserEntity> optionalUser = userRepository.findByEmailAndIsConfirmedTrue(loginRequest.getUsername());
         if (!optionalUser.isPresent()) {
-            throw new AuthenticationCredentialsNotFoundException("An account with the provided credentials was not found. Please check and try again.");
+            throw new InvalidCredentialsException();
         }
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
