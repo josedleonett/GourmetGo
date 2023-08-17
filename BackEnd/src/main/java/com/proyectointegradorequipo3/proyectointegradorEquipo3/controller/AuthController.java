@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -94,6 +94,40 @@ public class AuthController {
 
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
+
+    @PostMapping("/resendConfirmationEmail")
+    public ResponseEntity<?> resendConfirmationEmail(@RequestParam String email) throws IOException {
+
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
+
+        if (!optionalUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with the provided email.");
+        }
+
+        UserEntity userEntity = optionalUser.get();
+
+        if (userEntity.isConfirmed()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user has already confirmed their account.");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneHourAgo = now.minusHours(1);
+
+        if (userEntity.getLastEmailResendDate() == null || userEntity.getLastEmailResendDate().isBefore(oneHourAgo)) {
+            userEntity.setEmailResendAttempts(0);
+        } else if (userEntity.getEmailResendAttempts() >= 3) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You have exceeded the maximum number of resend attempts. Please try again later.");
+        }
+
+        emailService.sendConfirmationEmail(userEntity, userEntity.getConfirmationToken());
+
+        userEntity.setEmailResendAttempts(userEntity.getEmailResendAttempts() + 1);
+        userEntity.setLastEmailResendDate(now);
+        userRepository.save(userEntity);
+
+        return ResponseEntity.ok().body("Confirmation email has been resent.");
+    }
+
 
 
     @GetMapping("/confirm")
