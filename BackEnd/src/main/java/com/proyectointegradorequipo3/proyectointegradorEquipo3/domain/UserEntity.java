@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -38,5 +39,7 @@ public class UserEntity {
 
     private String confirmationToken;
     private boolean isConfirmed;
+    private int emailResendAttempts = 0;
+    private LocalDateTime lastEmailResendDate;
 
 }
