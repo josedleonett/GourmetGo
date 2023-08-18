@@ -37,9 +37,7 @@ function EditToolbar(props) {
   const handleClose = () => setOpen(false);
 
   const [payload, setPayload] = useState({name: "", price: 0, image: null})
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState(null);
+
 
 
   const modalFieldInputs = [
@@ -48,23 +46,22 @@ function EditToolbar(props) {
       title: "Name",
       formLabel: "Name",
       variant: "",
-      value: name,
-      onChange: (e) => setName(e.target.value)
+      onChange: (e) =>
+        setPayload((prevState) => ({ ...prevState, name: e.target.value})),
     },
     {
       type: "number",
       title: "Price",
       formLabel: "Price",
       variant: "",
-      value: price,
-      onChange: (e) => setPrice(e.target.value)
+      onChange: (e) =>
+        setPayload((prevState) => ({ ...prevState, price: e.target.value})),
     },
     {
       type: "file",
       title: "Image",
       formLabel: "Image",
       variant: "",
-      value: image,
       onChange: (e) =>
         setPayload((prevState) => ({ ...prevState, image: e.target.files[0]})),
     },
@@ -146,7 +143,6 @@ function EditToolbar(props) {
 }
 
 export default function FullFeaturedCrudGrid() {
-  //const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -185,7 +181,7 @@ export default function FullFeaturedCrudGrid() {
     try {
       await axios.delete(API_BASE_URL + targetToDeleteId);
     } catch (error) {
-      console.error("Error delete data:", error);
+      console.error("Error delete data:", error.response);
     }
   };
 
@@ -280,7 +276,7 @@ export default function FullFeaturedCrudGrid() {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", width: 180, editable: true },
+    { field: "name", headerName: "Name", width: 500, editable: true },
     {
       field: "price",
       headerName: "Price",
