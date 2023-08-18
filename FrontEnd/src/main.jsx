@@ -14,6 +14,8 @@ import { AdministratorPanelContainer } from "./pages/container/AdministratorPane
 import ElementAdministratorPanelContainer from "./pages/container/ElementAdministratorPanelContainer.jsx";
 import CreateElementPanelContainer from "./components/container/CreateElementPanelContainer.jsx";
 import AdminContainer from "./pages/container/AdminContainer";
+import UserRegisterContainer from "./container/UserRegisterContainer.jsx";
+import UserLoginContainer from "./container/UserLoginContainer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +58,14 @@ const router = createBrowserRouter([
       {
         path: "/administration-panel/:category/edit",
         element: <CreateElementPanelContainer />,
+      },
+      {
+        path: "/user-register",
+        element: <UserRegisterContainer />,
+      },
+      {
+        path: "/user-login",
+        element: <UserLoginContainer />,
       },
       {
         path: "*",
