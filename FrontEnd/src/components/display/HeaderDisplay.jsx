@@ -61,7 +61,9 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                       <ListItemText primary="LOG OUT" onClick={handleLogout} />
                     </ListItem>
                     <ListItem button onClick={handleMobileMenuClose}>
-                      <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
+                      <Avatar sx={{ backgroundColor: "green" }} onClick={() => setUserDrawerOpen(true)}>
+                        {initials}
+                      </Avatar>
                     </ListItem>
                   </>
                 ) : (
@@ -120,10 +122,23 @@ const HeaderDisplay = ({ hasAccessToken }) => {
             >
               {hasAccessToken ? (
                 <>
-                  <Button variant="contained" onClick={handleLogout}>
+                  <Button
+                    variant="contained"
+                    onClick={handleLogout}
+                    sx={{ "&:hover": { backgroundColor: "red" }, transition: "background-color 0.3s" }}
+                  >
                     LOG OUT
                   </Button>
-                  <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
+                  <Avatar
+                    onClick={() => setUserDrawerOpen(true)}
+                    sx={{
+                      backgroundColor: "green",
+                      cursor: "pointer",
+                      "&:hover": { transform: "scale(1.1)", transition: "transform 0.3s" },
+                    }}
+                  >
+                    {initials}
+                  </Avatar>
                 </>
               ) : (
                 <>
