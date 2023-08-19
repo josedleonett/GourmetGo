@@ -6,5 +6,7 @@ public interface ApiConstants {
     String CATEGORY_URI = "/v1/category/";
     String BUNDLE_URI = "/v1/bundle/";
 
+    String CHARACTERISTIC_URI = "/v1/characteristic/";
+
     String ASSET_URI = "/v1/asset/";
 }

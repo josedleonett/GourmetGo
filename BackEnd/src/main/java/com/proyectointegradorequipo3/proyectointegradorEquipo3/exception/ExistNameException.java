@@ -1,4 +1,4 @@
-package com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error;
+package com.proyectointegradorequipo3.proyectointegradorEquipo3.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
