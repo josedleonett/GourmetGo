@@ -60,7 +60,7 @@ public class BundleServiceImpl implements IBundleService {
                     bundleDto.setId(bundle.getId());
                     bundleDto.setName(bundle.getName());
                     bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setBundleImage(bundle.getBundleImage());
+                    bundleDto.setBundleImage(bundle.getImage());
                     bundleDto.setGalleryImages(bundle.getGalleryImages());
                     bundleDto.setDrinks(bundle.getDrinks());
                     bundleDto.setCategories(bundle.getCategories());
@@ -112,7 +112,7 @@ public class BundleServiceImpl implements IBundleService {
 
         List<Category> categories = categoryRepository.findAllById(request.getCategories());
 
-        String keyImage = s3Service.putObject(request.getBundleImage());
+        String keyImage = s3Service.putObject(request.getImage());
         List<String> keys = request.getGalleryImages().stream()
                 .map(s3Service::putObject)
                 .collect(Collectors.toList());
@@ -120,7 +120,7 @@ public class BundleServiceImpl implements IBundleService {
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .bundleImage(keyImage)
+                .image(keyImage)
                 .galleryImages(keys)
                 .starter(starter)
                 .mainCourse(mainCourse)
@@ -183,9 +183,9 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setCategories(categories);
         }
 
-        if (request.getBundleImage() != null) {
-            String keyImage = s3Service.putObject(request.getBundleImage());
-            existingBundle.setBundleImage(keyImage);
+        if (request.getImage() != null) {
+            String keyImage = s3Service.putObject(request.getImage());
+            existingBundle.setImage(keyImage);
         }
 
         if (request.getGalleryImages() != null) {
@@ -214,7 +214,7 @@ public class BundleServiceImpl implements IBundleService {
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        s3Service.deleteObject(bundle.getBundleImage());
+        s3Service.deleteObject(bundle.getImage());
         for (String image : bundle.getGalleryImages()) {
             s3Service.deleteObject(image);
         }

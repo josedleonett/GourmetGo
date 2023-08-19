@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements ICategoryService {
                             category.getId(),
                             category.getName(),
                             category.getDescription(),
-                            category.getImg(),
+                            category.getImage(),
                             bundleIds
                     );
                 })
@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 category.getId(),
                 category.getName(),
                 category.getDescription(),
-                category.getImg(),
+                category.getImage(),
                 bundleIds
         );
     }
@@ -91,11 +91,11 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     @Transactional
     public Long saveCategory(CategoryCreateRequest request) {
-        String keyImage = s3Service.putObject(request.getImg());
+        String keyImage = s3Service.putObject(request.getImage());
         Category category = Category.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .img(keyImage)
+                .image(keyImage)
                 .build();
         existsName(category.getName());
         save(category);
@@ -122,13 +122,13 @@ public class CategoryServiceImpl implements ICategoryService {
             categoryDto.setDescription(request.getDescription());
         }
 
-        MultipartFile newImage = request.getImg();
+        MultipartFile newImage = request.getImage();
         if (newImage != null && !newImage.isEmpty()) {
 
-            s3Service.deleteObject(categoryDto.getImg());
+            s3Service.deleteObject(categoryDto.getImage());
 
             String newImageUrl = s3Service.putObject(newImage);
-            categoryDto.setImg(newImageUrl);
+            categoryDto.setImage(newImageUrl);
         }
 
         Category category = mapper.map(categoryDto, Category.class);
