@@ -5,9 +5,9 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.CategoryNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.CategoryNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICategoryService;
@@ -15,6 +15,8 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Servic
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -48,7 +50,7 @@ public class CategoryServiceImpl implements ICategoryService {
                             category.getId(),
                             category.getName(),
                             category.getDescription(),
-                            category.getImg(),
+                            category.getImage(),
                             bundleIds
                     );
                 })
@@ -67,7 +69,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 category.getId(),
                 category.getName(),
                 category.getDescription(),
-                category.getImg(),
+                category.getImage(),
                 bundleIds
         );
     }
@@ -87,12 +89,13 @@ public class CategoryServiceImpl implements ICategoryService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long saveCategory(CategoryCreateRequest request) {
-        String keyImage = s3Service.putObject(request.getImg());
+        String keyImage = s3Service.putObject(request.getImage());
         Category category = Category.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .img(keyImage)
+                .image(keyImage)
                 .build();
         existsName(category.getName());
         save(category);
@@ -107,25 +110,35 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Update===================//
 
     @Override
+    @Transactional
     public void modifyCategory(Long id, CategoryUpdateRequest request) {
         CategoryDto categoryDto = searchCategoryById(id);
 
-        categoryDto.setName(request.getName());
-        categoryDto.setDescription(request.getDescription());
+        if (request.getName() != null) {
+            categoryDto.setName(request.getName());
+        }
 
-        s3Service.deleteObject(categoryDto.getImg());
+        if (request.getDescription() != null) {
+            categoryDto.setDescription(request.getDescription());
+        }
 
-        String newImageUrl = s3Service.putObject(request.getImg());
-        categoryDto.setImg(newImageUrl);
+        MultipartFile newImage = request.getImage();
+        if (newImage != null && !newImage.isEmpty()) {
+
+            s3Service.deleteObject(categoryDto.getImage());
+
+            String newImageUrl = s3Service.putObject(newImage);
+            categoryDto.setImage(newImageUrl);
+        }
 
         Category category = mapper.map(categoryDto, Category.class);
         category.setId(id);
         save(category);
     }
 
-
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteCategoryById(Long id) {
         Category category = mapper.map(searchCategoryById(id), Category.class);
         categoryRepository.delete(category);
@@ -137,7 +150,8 @@ public class CategoryServiceImpl implements ICategoryService {
         if (categoryRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    private List<Long> getBundleIdsByCategoryId(Long categoryId) {
+
+    public List<Long> getBundleIdsByCategoryId(Long categoryId) {
         return bundleRepository.findAllBundlesByCategoryId(categoryId)
                 .stream()
                 .map(Bundle::getId)

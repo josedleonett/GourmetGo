@@ -1,12 +1,15 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.DrinkNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.PlateNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IDrinkRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IDrinkService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
@@ -14,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -62,6 +67,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long saveDrink(DrinkCreateRequest request) {
         existsName(request.getName());
         Drink newDrink = mapper.map(request, Drink.class);
@@ -83,13 +89,21 @@ public class DrinkServiceImpl implements IDrinkService {
         try {
             DrinkDto drinkDto = searchDrinkById(id);
 
-            drinkDto.setName(request.getName());
-            drinkDto.setPrice(request.getPrice());
+            if (request.getName() != null) {
+                drinkDto.setName(request.getName());
+            }
 
-            s3Service.deleteObject(drinkDto.getImage());
+            if (request.getPrice() != null) {
+                drinkDto.setPrice(request.getPrice());
+            }
 
-            String newImageUrl = s3Service.putObject(request.getImage());
-            drinkDto.setImage(newImageUrl);
+            MultipartFile newImage = request.getImage();
+            if (newImage != null && !newImage.isEmpty()) {
+                s3Service.deleteObject(drinkDto.getImage());
+
+                String newImageUrl = s3Service.putObject(newImage);
+                drinkDto.setImage(newImageUrl);
+            }
 
             Drink drink = mapper.map(drinkDto, Drink.class);
             drink.setId(id);
@@ -97,11 +111,12 @@ public class DrinkServiceImpl implements IDrinkService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-
     }
+
 
     //===================Delete===================//
     @Override
+    @Transactional
     public void deleteDrinkById(Long id) {
         DrinkDto drinkDto = searchDrinkById(id);
         Drink drink = mapper.map(drinkDto, Drink.class);
@@ -112,5 +127,19 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Util===================//
     private void existsName(String name) {
         if (drinkRepository.existsByName(name)) throw new ExistNameException(name);
+    }
+
+    public List<Drink> validateAndGetDrink(List<String> drinkNames) {
+        List<Drink> drinks = new ArrayList<>();
+
+        for (String drinkName : drinkNames) {
+            DrinkDto drinkDto = searchDrinkByName(drinkName);
+            if (drinkDto == null) {
+                throw new DrinkNotFoundException("Drink with name '" + drinkName + "' not found");
+            }
+            drinks.add(mapper.map(drinkDto, Drink.class));
+        }
+
+        return drinks;
     }
 }

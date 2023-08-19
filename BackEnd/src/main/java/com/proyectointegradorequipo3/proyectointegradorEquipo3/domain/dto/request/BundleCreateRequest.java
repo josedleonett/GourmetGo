@@ -19,7 +19,7 @@ public class BundleCreateRequest {
     @NotBlank
     private String description;
     @NotBlank
-    private MultipartFile bundleImage;
+    private MultipartFile image;
     @NotNull
     private List<MultipartFile> galleryImages;
     @NotNull
@@ -30,6 +30,8 @@ public class BundleCreateRequest {
     private List<String> desserts;
     @NotNull
     private List<String> drinks;
+    @NotNull
+    private List<Long> characteristics;
     @NotNull
     private List<Long> categories;
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Registro - GourmetGo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #AFC2C9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #E2D6D6;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 60%;
+        }
+
+        .message {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            padding: 10px 15px;
+            background-color: #001b30;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="https://gourmetgo.s3.amazonaws.com/EMA_LOGO_POSITIVO.png" alt="GourmetGo Logo">
+        <h2>Welcome to GourmetGo</h2>
+    </div>
+    <div class="message">
+        <p>We are excited to have you with us! There is only one more step left to complete your registration and immerse yourself in the culinary experience that awaits you.</p>
+        <p>Please click the button below to confirm your email address and activate your account.</p>
+        <a href="{{token}}" class="button">Confirm my account</a>
+    </div>
+</div>
+</body>
+</html>

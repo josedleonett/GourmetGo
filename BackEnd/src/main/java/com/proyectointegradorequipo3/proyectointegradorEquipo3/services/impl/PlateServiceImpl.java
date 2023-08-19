@@ -4,9 +4,9 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.PlateNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.PlateNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IPlateRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IPlateService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
@@ -63,6 +63,7 @@ public class PlateServiceImpl implements IPlateService {
 
     //===================Create===================//
     @Override
+    @Transactional
     public Long savePlate(PlateCreateRequest request) {
         existsName(request.getName());
         Plate newPlate = mapper.map(request, Plate.class);
@@ -85,15 +86,25 @@ public class PlateServiceImpl implements IPlateService {
         try {
             PlateDto plateDto = searchPlateById(id);
 
-            plateDto.setName(request.getName());
-            plateDto.setType(request.getType());
-            plateDto.setDescription(request.getDescription());
+            if (request.getName() != null) {
+                plateDto.setName(request.getName());
+            }
 
-            s3Service.deleteObject(plateDto.getImage());
+            if (request.getType() != null) {
+                plateDto.setType(request.getType());
+            }
+
+            if (request.getDescription() != null) {
+                plateDto.setDescription(request.getDescription());
+            }
 
             MultipartFile newImage = request.getImage();
-            String newImageUrl = s3Service.putObject(newImage);
-            plateDto.setImage(newImageUrl);
+            if (newImage != null && !newImage.isEmpty()) {
+                s3Service.deleteObject(plateDto.getImage());
+
+                String newImageUrl = s3Service.putObject(newImage);
+                plateDto.setImage(newImageUrl);
+            }
 
             Plate plate = mapper.map(plateDto, Plate.class);
             plate.setId(id);
@@ -103,11 +114,10 @@ public class PlateServiceImpl implements IPlateService {
         }
     }
 
-
-
     //===================Delete===================//
 
     @Override
+    @Transactional
     public void deletePlateById(Long id) {
         PlateDto plateDto = searchPlateById(id);
         Plate plate = mapper.map(plateDto, Plate.class);

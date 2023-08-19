@@ -3,7 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CategoryUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.CategoryNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.CategoryNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,8 @@ public class CategoryController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@ModelAttribute @Valid CategoryCreateRequest request,
-                                               @RequestPart MultipartFile categoryImage) {
-        request.setImg(categoryImage);
+                                               @RequestPart MultipartFile image) {
+        request.setImage(image);
         long id = categoryService.saveCategory(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}").buildAndExpand(id).toUri();
@@ -67,7 +67,7 @@ public class CategoryController {
     }
 
     //====================Update====================//
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCategory(@PathVariable Long id, @ModelAttribute @Valid CategoryUpdateRequest updateModel) {
         categoryService.modifyCategory(id, updateModel);
