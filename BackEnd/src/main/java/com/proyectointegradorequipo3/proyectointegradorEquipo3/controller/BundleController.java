@@ -33,9 +33,9 @@ public class BundleController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
-                                             @RequestPart MultipartFile bundleImage,
+                                             @RequestPart MultipartFile image,
                                              @RequestPart List<MultipartFile> galleryImages) {
-        request.setBundleImage(bundleImage);
+        request.setImage(image);
         request.setGalleryImages(galleryImages);
 
         Long bundleId = bundleService.saveBundle(request);

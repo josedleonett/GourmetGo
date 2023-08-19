@@ -22,7 +22,7 @@ public class Bundle {
     private Long id;
     private String name;
     private String description;
-    private String bundleImage;
+    private String image;
     @ElementCollection
     @CollectionTable(name = "gallery")
     @Column(name = "images")

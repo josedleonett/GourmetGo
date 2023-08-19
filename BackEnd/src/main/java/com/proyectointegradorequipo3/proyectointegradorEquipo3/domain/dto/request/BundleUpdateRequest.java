@@ -19,7 +19,7 @@ public class BundleUpdateRequest {
     @NotBlank
     private String description;
 
-    private MultipartFile bundleImage;
+    private MultipartFile image;
 
     private List<MultipartFile> galleryImages;
     @NotNull

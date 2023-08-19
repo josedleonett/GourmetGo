@@ -30,8 +30,8 @@ public class CategoryController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@ModelAttribute @Valid CategoryCreateRequest request,
-                                               @RequestPart MultipartFile categoryImage) {
-        request.setImg(categoryImage);
+                                               @RequestPart MultipartFile image) {
+        request.setImage(image);
         long id = categoryService.saveCategory(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}").buildAndExpand(id).toUri();

@@ -19,7 +19,7 @@ public class BundleCreateRequest {
     @NotBlank
     private String description;
     @NotBlank
-    private MultipartFile bundleImage;
+    private MultipartFile image;
     @NotNull
     private List<MultipartFile> galleryImages;
     @NotNull
