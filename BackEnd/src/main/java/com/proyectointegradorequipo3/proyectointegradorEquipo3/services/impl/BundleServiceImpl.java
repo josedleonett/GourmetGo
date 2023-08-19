@@ -1,9 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
@@ -12,6 +9,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNa
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,6 +36,7 @@ public class BundleServiceImpl implements IBundleService {
 
     private final DrinkServiceImpl drinkService;
 
+    private final ICharacteristicRepository characteristicRepository;
 
     private final ICategoryRepository categoryRepository;
 
@@ -107,11 +106,9 @@ public class BundleServiceImpl implements IBundleService {
         List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
         List<Plate> dessert = plateService.validateAndGetPlates(request.getDesserts(), "Dessert");
 
-        List<Drink> drinks = request.getDrinks().stream()
-                .map(drinkService::searchDrinkByName)
-                .filter(Objects::nonNull)
-                .map(dto -> mapper.map(dto, Drink.class))
-                .collect(Collectors.toList());
+        List<Drink> drinks = drinkService.validateAndGetDrink(request.getDrinks());
+
+        List<Characteristic> characteristics = characteristicRepository.findAllById(request.getCharacteristics());
 
         List<Category> categories = categoryRepository.findAllById(request.getCategories());
 
@@ -129,6 +126,7 @@ public class BundleServiceImpl implements IBundleService {
                 .mainCourse(mainCourse)
                 .desserts(dessert)
                 .drinks(drinks)
+                .characteristics(characteristics)
                 .categories(categories)
                 .rating(0.0)
                 .build();

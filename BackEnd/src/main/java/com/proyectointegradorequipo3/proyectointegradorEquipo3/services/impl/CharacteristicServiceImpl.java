@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Characteristic;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CharacteristicCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.CharacteristicUpdateRequest;
@@ -98,11 +99,11 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
         if (characteristicRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    /*private List<Long> getBundleIdsByCharacteristicId(Long characteristicId) {
+    public List<Long> getBundleIdsByCharacteristicId(Long characteristicId) {
         return bundleRepository.findAllBundlesByCharacteristicId(characteristicId)
                 .stream()
                 .map(Bundle::getId)
                 .collect(Collectors.toList());
-    }*/
+    }
 
 }

@@ -21,6 +21,7 @@ public class BundleDto {
     private List<PlateDto> mainCourse;
     private List<PlateDto> desserts;
     private List<Drink> drinks;
+    private List<CharacteristicDto> characteristics;
     private List<Category> categories;
     private Double rating;
 }

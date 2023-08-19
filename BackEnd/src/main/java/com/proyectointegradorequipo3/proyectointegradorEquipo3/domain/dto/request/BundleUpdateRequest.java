@@ -31,5 +31,7 @@ public class BundleUpdateRequest {
     @NotNull
     private List<String> drinks;
     @NotNull
+    private List<Long> characteristics;
+    @NotNull
     private List<Long> categories;
 }

@@ -150,7 +150,8 @@ public class CategoryServiceImpl implements ICategoryService {
         if (categoryRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    private List<Long> getBundleIdsByCategoryId(Long categoryId) {
+
+    public List<Long> getBundleIdsByCategoryId(Long categoryId) {
         return bundleRepository.findAllBundlesByCategoryId(categoryId)
                 .stream()
                 .map(Bundle::getId)

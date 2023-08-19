@@ -18,6 +18,6 @@ public interface IBundleRepository extends JpaRepository<Bundle, Long> {
     @Query("SELECT b FROM Bundle b JOIN b.categories c WHERE c.id = :categoryId")
     List<Bundle> findAllBundlesByCategoryId(Long categoryId);
 
-    //@Query("SELECT b FROM Bundle b JOIN b.characteristics c WHERE c.id = :characteristicId")
-    //List<Bundle> findAllBundlesByCharacteristicId(Long characteristicId);
+    @Query("SELECT b FROM Bundle b JOIN b.characteristics c WHERE c.id = :characteristicId")
+    List<Bundle> findAllBundlesByCharacteristicId(Long characteristicId);
 }
