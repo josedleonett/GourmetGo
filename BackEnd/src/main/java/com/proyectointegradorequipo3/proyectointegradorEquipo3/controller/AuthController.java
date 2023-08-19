@@ -145,7 +145,7 @@ public class AuthController {
         userEntity.setConfirmationToken(null);
         userRepository.save(userEntity);
 
-        return new RedirectView("https://google.com");
+        return new RedirectView("http://localhost:5173/user-login");
 
     }
 
