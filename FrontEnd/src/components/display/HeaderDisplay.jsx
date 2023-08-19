@@ -10,6 +10,7 @@ import { companyLogo } from "../../utils/theme";
 
 const HeaderDisplay = ({ hasAccessToken }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
 
   const handleMobileMenuOpen = () => {
@@ -27,6 +28,19 @@ const HeaderDisplay = ({ hasAccessToken }) => {
 
   const headerHeight = 500;
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("name");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("tokenType");
+    window.location.reload();
+  };
+
+  const initials = localStorage.getItem("name")?.charAt(0) + localStorage.getItem("lastName")?.charAt(0);
+  const userFullName = `${localStorage.getItem("name")} ${localStorage.getItem("lastName")}`;
+  const userEmail = localStorage.getItem("email");
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -41,15 +55,29 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             <Drawer anchor="left" open={isMobileMenuOpen} onClose={handleMobileMenuClose}>
               <List>
-                <ListItem button onClick={handleMobileMenuClose}>
-                  <ListItemText primary="HOME" />
-                </ListItem>
-                <ListItem button onClick={handleMobileMenuClose}>
-                  <ListItemText primary="ABOUT US" />
-                </ListItem>
-                <ListItem button onClick={handleMobileMenuClose}>
-                  <ListItemText primary="CONTACT US" />
-                </ListItem>
+                {hasAccessToken ? (
+                  <>
+                    <ListItem button onClick={handleMobileMenuClose}>
+                      <ListItemText primary="LOG OUT" onClick={handleLogout} />
+                    </ListItem>
+                    <ListItem button onClick={handleMobileMenuClose}>
+                      <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
+                    </ListItem>
+                  </>
+                ) : (
+                  <>
+                    <ListItem button onClick={handleMobileMenuClose}>
+                      <Button component={Link} to="/user-login" variant="contained">
+                        LOG IN
+                      </Button>
+                    </ListItem>
+                    <ListItem button onClick={handleMobileMenuClose}>
+                      <Button component={Link} to="/user-register" variant="contained">
+                        SIGN UP
+                      </Button>
+                    </ListItem>
+                  </>
+                )}
               </List>
             </Drawer>
 
@@ -83,19 +111,19 @@ const HeaderDisplay = ({ hasAccessToken }) => {
 
             <Box
               sx={{
-                display: "flex",
+                display: { xs: "none", md: "flex" },
                 alignItems: "center",
                 justifyContent: "space-evenly",
                 gap: "0.5vw",
-                "& > *": { marginLeft: "8px" },
+                marginLeft: "auto",
               }}
             >
               {hasAccessToken ? (
                 <>
-                  <Button variant="contained">
+                  <Button variant="contained" onClick={handleLogout}>
                     LOG OUT
                   </Button>
-                  <Avatar />
+                  <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
                 </>
               ) : (
                 <>
@@ -111,6 +139,22 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           </Toolbar>
         </Container>
       </AppBar>
+
+      <Drawer anchor="right" open={isUserDrawerOpen} onClose={() => setUserDrawerOpen(false)}>
+        <Box
+          sx={{
+            width: 300,
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
+          <h3>{userFullName}</h3>
+          <p>{userEmail}</p>
+        </Box>
+      </Drawer>
     </>
   );
 };
