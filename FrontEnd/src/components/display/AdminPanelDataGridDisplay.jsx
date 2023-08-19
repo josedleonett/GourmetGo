@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useFormik } from "formik";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,143 +13,174 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
   GridRowEditStopReasons,
+  useGridApiContext,
 } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { CameraAlt, Create, DeleteForever } from "@mui/icons-material";
 import {
+  CircularProgress,
   FormLabel,
   Input,
   Modal,
   Stack,
   Toolbar,
-  Typography,
+  Typography, IconButton, LinearProgress, Autocomplete, TextField,
 } from "@mui/material";
 
-const API_BASE_URL = "http://localhost:8080/v1/drink/";
-const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
+export default function AdminPanelDataGridDisplay({ props }) {
+  const API_BASE_URL = props.API_BASE_URL;
+  const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
+  const modalFormInputs = props.modal.formInputs;
+  const dataGridColumns = props.dataGridColumns;
 
-function EditToolbar(props) {
-  const { createApiData } = props;
-  //MODAL:
-  const [open, setOpen] = useState(false);
-  const openModal = () => setOpen(true);
-  const closeModal = () => setOpen(false);
+  function EditToolbar(props) {
+    const { apiDataCreate } = props;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => {
+      setIsModalOpen(false);
+      setIsFormSubmitted(false);
+      setIsResponseSuccess(false);
+    };
 
-  const [payload, setPayload] = useState({ name: "", price: 0, image: null });
-  const modalFieldInputs = [
-    {
-      type: "text",
-      title: "Name",
-      formLabel: "Name",
-      variant: "",
-      isRequired: true,
-      onChange: (e) =>
-        setPayload((prevState) => ({ ...prevState, name: e.target.value })),
-    },
-    {
-      type: "number",
-      title: "Price",
-      formLabel: "Price",
-      variant: "",
-      onChange: (e) =>
-        setPayload((prevState) => ({ ...prevState, price: e.target.value })),
-    },
-    {
-      type: "file",
-      title: "Image",
-      formLabel: "Image",
-      variant: "",
-      onChange: (e) =>
-        setPayload((prevState) => ({ ...prevState, image: e.target.files[0] })),
-    },
-  ];
+    const [isLoading, setIsLoading] = useState(false);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const [isResponseSuccess, setIsResponseSuccess] = useState(false);
 
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-    console.log(event);
-    console.log(createApiData(payload));
-  };
+    const formik = useFormik({
+      initialValues: {},
+      onSubmit: async (values) => {
+        setIsLoading(true);
+        alert(JSON.stringify(values, null, 2));
+        console.log(values);
+        const responseCode = await apiDataCreate(values);
 
+        console.log(responseCode + " codigo respuesta");
+        setIsFormSubmitted(true);
 
-  return (
-    <GridToolbarContainer>
-      <Button
-        color="secondary"
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={openModal}
-      >
-        Add new
-      </Button>
-      <Modal
-        open={open}
-        onClose={closeModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "40vw",
-            minWidth: "400",
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 4,
-          }}
+        if (responseCode === 201) {
+          setIsResponseSuccess(true);
+        } else {
+          setIsResponseSuccess(false);
+        }
+
+        setIsLoading(false);
+      },
+    });
+
+    return (
+      <GridToolbarContainer>
+        <Button
+          color="secondary"
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={openModal}
         >
-          <form onSubmit={onSubmitHandler}>
-            <Stack gap={3}>
+          Add new
+        </Button>
+        <Modal
+          open={isModalOpen}
+          onClose={closeModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "40vw",
+              minWidth: "400px",
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Typography variant="h5" mb={1}>
                 <Create /> Add new item:
               </Typography>
-              {modalFieldInputs.map((input, index) => (
-                <Stack key={index}>
-                  <FormLabel>{input.formLabel}</FormLabel>
-                  <Input
-                    name={input.title}
-                    type={input.type}
-                    value={input.value}
-                    onChange={input.onChange}
-                    required
-                  />
-                </Stack>
-              ))}
-              <Toolbar />
-              <Box display="flex" gap={1} justifyContent="right">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  onClick={onSubmitHandler}
-                >
-                  SAVE
-                </Button>
-                <Button
-                  type="reset"
-                  variant="contained"
-                  color="error"
-                  startIcon={<CancelIcon />}
-                  onClick={closeModal}
-                >
-                  CANCEL
-                </Button>
-              </Box>
-            </Stack>
-          </form>
-        </Box>
-      </Modal>
-    </GridToolbarContainer>
-  );
-}
+              <IconButton aria-label="Close" onClick={closeModal}>
+                <CancelIcon />
+              </IconButton>
+            </Box>
+            <form onSubmit={formik.handleSubmit}>
+              <Stack gap={3}>
+                {modalFormInputs.map((input, index) => (
+                  <Stack key={index}>
+                    <FormLabel>{input.formLabel}</FormLabel>
+                    <Input
+                      id={input.name}
+                      name={input.name}
+                      type={input.type}
+                      onChange={
+                        input.type === "file"
+                          ? (event) =>
+                              formik.setFieldValue(
+                                input.name,
+                                input.isMultiple
+                                  ? event.currentTarget.files
+                                  : event.currentTarget.files[0]
+                              )
+                          : formik.handleChange
+                      }
+                      disabled={isLoading}
+                      required={input.isRequired}
+                      inputProps={{
+                        multiple: input.isMultiple,
+                        accept: input.accept,
+                      }}
+                    />
+                  </Stack>
+                ))}
+                <Box>
+                  <Toolbar />
+                  {isFormSubmitted && !isResponseSuccess && (
+                    <Typography variant="body1" color="error">
+                      An was error occurred
+                    </Typography>
+                  )}
+                  {isResponseSuccess && (
+                    <Typography variant="body1" color="initial">
+                      Item was saved successfully
+                    </Typography>
+                  )}
+                </Box>
+                <Box display="flex" gap={1} justifyContent="flex-end">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isLoading}
+                    startIcon={
+                      isLoading ? <CircularProgress size={24} /> : <SaveIcon />
+                    }
+                  >
+                    {isLoading ? "SAVING..." : "SAVE"}
+                  </Button>
 
+                  <Button
+                    type="reset"
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<CancelIcon />}
+                    onClick={closeModal}
+                  >
+                    CANCEL
+                  </Button>
+                </Box>
+              </Stack>
+            </form>
+          </Box>
+        </Modal>
+      </GridToolbarContainer>
+    );
+  }
 
-
-export default function AdminPanelDrinksDisplay() {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -281,35 +315,7 @@ export default function AdminPanelDrinksDisplay() {
   };
 
   const columns = [
-    {
-      field: "image",
-      headerName: "Image",
-      type: "image",
-      width: 80,
-      renderCell: (params) => (
-        <Box
-          component="img"
-          height="90%"
-          src={API_BASE_IMAGE_URL + params.value}
-        />
-      ),
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      minWidth: 500,
-      editable: true,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      type: "number",
-      width: 80,
-      align: "left",
-      headerAlign: "left",
-      editable: true,
-    },
-
+    ...dataGridColumns,
     {
       field: "actions",
       type: "actions",
@@ -356,7 +362,7 @@ export default function AdminPanelDrinksDisplay() {
           <GridActionsCellItem
             icon={<CameraAlt />}
             label="Delete"
-            onClick={console.log("change image form")}
+            //onClick={console.log("change image form")}
             color="inherit"
           />,
         ];
@@ -364,10 +370,14 @@ export default function AdminPanelDrinksDisplay() {
     },
   ];
 
+
+
+  console.log(rows);
+
   return (
     <Box
       sx={{
-        height: "100%",
+        height: "75vh",
         width: "100%",
         "& .actions": {
           color: "text.secondary",
@@ -379,6 +389,7 @@ export default function AdminPanelDrinksDisplay() {
     >
       <DataGrid
         rows={rows}
+        loading={!rows.length}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
@@ -387,11 +398,34 @@ export default function AdminPanelDrinksDisplay() {
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar,
+          loadingOverlay: LinearProgress,
         }}
         slotProps={{
-          toolbar: { createApiData: apiDataCreate },
+          toolbar: { apiDataCreate },
         }}
       />
     </Box>
+  );
+}
+
+
+export function multiSelectColumn(params) {
+  const apiRef = useGridApiContext();
+
+  console.log(params);
+  apiRef.current.getCellValue
+
+  return (
+    <Autocomplete
+      multiple
+      fullWidth
+      limitTags={3}
+      size="small"
+      defaultValue={params.value}
+      options={params.value}
+      renderInput={(params) => <TextField {...params} variant="standard" />}
+      //onChange={(e, nv) => console.log("New", nv)}
+      onChange={(e, nv) => console.log("New", nv)}
+    />
   );
 }
