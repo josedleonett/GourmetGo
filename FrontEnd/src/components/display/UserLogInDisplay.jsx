@@ -42,6 +42,10 @@ const UserLogInDisplay = () => {
                 const authorizationHeader = response.headers.get("authorization");
                 localStorage.setItem("tokenType", data.tokenType);
                 localStorage.setItem("accessToken", data.accessToken);
+                localStorage.setItem("name", data.name);
+                localStorage.setItem("lastName", data.lastName);
+                localStorage.setItem("email", data.email);
+                window.location.reload();
             } else {
                 console.error("Login failed");
             }

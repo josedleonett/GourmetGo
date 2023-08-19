@@ -1,4 +1,4 @@
-import UserLogInDisplay from "../display/UserLoginDisplay"
+import UserLogInDisplay from "../display/UserLogInDisplay"
 
 const UserLoginContainer = () => {
   return (
