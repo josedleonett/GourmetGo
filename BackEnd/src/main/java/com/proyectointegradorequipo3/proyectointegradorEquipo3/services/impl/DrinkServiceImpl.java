@@ -1,12 +1,15 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ExistNameException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.ResourceNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.DrinkNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.PlateNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IDrinkRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IDrinkService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -123,5 +127,19 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Util===================//
     private void existsName(String name) {
         if (drinkRepository.existsByName(name)) throw new ExistNameException(name);
+    }
+
+    public List<Drink> validateAndGetDrink(List<String> drinkNames) {
+        List<Drink> drinks = new ArrayList<>();
+
+        for (String drinkName : drinkNames) {
+            DrinkDto drinkDto = searchDrinkByName(drinkName);
+            if (drinkDto == null) {
+                throw new DrinkNotFoundException("Drink with name '" + drinkName + "' not found");
+            }
+            drinks.add(mapper.map(drinkDto, Drink.class));
+        }
+
+        return drinks;
     }
 }

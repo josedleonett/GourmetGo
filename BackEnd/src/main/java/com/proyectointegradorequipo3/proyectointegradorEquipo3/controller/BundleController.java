@@ -4,6 +4,8 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CharacteristicServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +25,17 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 public class BundleController {
 
     private final BundleServiceImpl bundleService;
+    private final CategoryServiceImpl categoryService;
+
+    private final CharacteristicServiceImpl characteristicService;
 
     //====================Create====================//
 
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
-                                             @RequestPart MultipartFile bundleImage,
+                                             @RequestPart MultipartFile image,
                                              @RequestPart List<MultipartFile> galleryImages) {
-        request.setBundleImage(bundleImage);
+        request.setImage(image);
         request.setGalleryImages(galleryImages);
 
         Long bundleId = bundleService.saveBundle(request);
@@ -48,7 +53,25 @@ public class BundleController {
         return ResponseEntity.ok(bundleDtos);
     }
 
+    //====================Display all by category id====================//
+
+    @GetMapping("/byCategory/{id}")
+    public ResponseEntity<List<Long>> getAllBundlesByCategory(@PathVariable Long id) {
+        List<Long> bundles = categoryService.getBundleIdsByCategoryId(id);
+        return ResponseEntity.ok(bundles);
+    }
+
+    //====================Display all by characteristic id====================//
+
+    @GetMapping("/byCharacteristic/{id}")
+    public ResponseEntity<List<Long>> getAllBundlesByCharacteristic(@PathVariable Long id) {
+        List<Long> bundles = characteristicService.getBundleIdsByCharacteristicId(id);
+        return ResponseEntity.ok(bundles);
+    }
+
+
     //====================Get one by id====================//
+
 
     @GetMapping("/{id}")
     public ResponseEntity<BundleDto> getBundleById(@PathVariable Long id) {

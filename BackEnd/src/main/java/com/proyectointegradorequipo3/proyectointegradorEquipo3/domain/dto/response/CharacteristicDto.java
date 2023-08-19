@@ -4,19 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDto {
+public class CharacteristicDto {
+    @NotNull
     private Long id;
-
+    @NotBlank
     private String name;
-
-    private String description;
-
-    private String image;
-
-    private List<Long> bundles;
 }
