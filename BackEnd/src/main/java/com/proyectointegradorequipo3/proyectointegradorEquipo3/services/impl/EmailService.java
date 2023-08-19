@@ -32,7 +32,7 @@ public class EmailService {
 
     public void sendConfirmationEmail(UserEntity userEntity, String token) throws IOException {
         Email from = new Email("noreplygourmetgo@gmail.com");
-        String subject = "Confirmación de Registro";
+        String subject = "Confirmation of registration";
         Email to = new Email(userEntity.getEmail());
 
         String htmlContent;
