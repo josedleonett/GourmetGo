@@ -7,116 +7,216 @@ import AdminPanelPlatesMainCourseContainer from "../../components/container/Admi
 import AdminPanelPlatesDessertContainer from "../../components/container/AdminPanelPlatesDessertContainer";
 import AdminPanelDrinksContainer from "../../components/container/AdminPanelDrinksContainer";
 import AdminPanelCategoriesContainer from "../../components/container/AdminPanelCategoriesContainer";
-import AdminPanelDataGridDisplay, { multiSelectColumn } from "../../components/display/AdminPanelDataGridDisplay";
+import AdminPanelDataGridDisplay from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
 import { useState } from "react";
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
+  const API_BASE_URL = "http://localhost:8080/v1/"
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
 
-  const dataGridPropsCategory = {
-    API_BASE_URL: "http://localhost:8080/v1/category/",
-    API_BASE_IMAGE_URL: "http://localhost:8080/asset/get-object?key=",
-    modal: {
-      initialValues: { name: "", price: 0, image: null },
-      formInputs: [
-        {
-          name: "name",
-          type: "text",
-          formLabel: "Name",
-          isRequired: true,
-        },
-        {
-          name: "price",
-          type: "number",
-          formLabel: "Price",
-        },
-        {
-          name: "categoryImage",
-          type: "file",
-          formLabel: "Image",
-          isMultiple: false,
-          accept: "image/*",
-        },
-      ],
-    },
-    dataGridColumns: [
+  // const dataGridPropsCategory = {
+  //   API_BASE_URL: "http://localhost:8080/v1/category/",
+  //   API_BASE_IMAGE_URL: "http://localhost:8080/asset/get-object?key=",
+  //   modal: {
+  //     initialValues: { name: "", price: 0, image: null },
+  //     formInputs: [
+  //       {
+  //         name: "name",
+  //         type: "text",
+  //         formLabel: "Name",
+  //         isRequired: true,
+  //       },
+  //       {
+  //         name: "price",
+  //         type: "number",
+  //         formLabel: "Price",
+  //       },
+  //       {
+  //         name: "categoryImage",
+  //         type: "file",
+  //         formLabel: "Image",
+  //         isMultiple: false,
+  //         accept: "image/*",
+  //       },
+  //     ],
+  //   },
+  //   dataGridColumns: [
+  //     {
+  //       field: "img",
+  //       headerName: "Image",
+  //       type: "image",
+  //       width: 80,
+  //       renderCell: (params) => (
+  //         <Box
+  //           component="img"
+  //           height="90%"
+  //           src={API_BASE_IMAGE_URL + params.value}
+  //         />
+  //       ),
+  //     },
+  //     {
+  //       field: "name",
+  //       headerName: "Name",
+  //       minWidth: 400,
+  //       editable: true,
+  //     },
+  //     {
+  //       field: "description",
+  //       headerName: "Description",
+  //       type: "text",
+  //       width: 400,
+  //       align: "left",
+  //       headerAlign: "left",
+  //       editable: true,
+  //     },
+  //     // {
+  //     //   field: "bundles",
+  //     //   headerName: "Bundles",
+  //     //   type: "multiSelect",
+  //     //   width: 400,
+  //     //   align: "left",
+  //     //   headerAlign: "left",
+  //     //   editable: true,
+  //     // },
+  //     {
+  //       field: "bundles",
+  //       headerName: "Bundles",
+  //       type: "number",
+  //       width: 500,
+  //       renderCell: multiSelectColumn,
+  //       editable: true,
+  //     },
+  //   ],
+  // };
+
+
+  // const dataGridPropsDrinks = {
+  //   API_BASE_URL: "http://localhost:8080/v1/drink/",
+  //   API_BASE_IMAGE_URL: "http://localhost:8080/asset/get-object?key=",
+  //   modal: {
+  //     initialValues: { name: "", price: 0, image: null },
+  //     formInputs: [
+  //       {
+  //         name: "name",
+  //         type: "text",
+  //         formLabel: "Name",
+  //         isRequired: true,
+  //       },
+  //       {
+  //         name: "price",
+  //         type: "number",
+  //         formLabel: "Price",
+  //       },
+  //       {
+  //         name: "image",
+  //         type: "file",
+  //         formLabel: "Image",
+  //         isMultiple: false,
+  //         accept: "image/*"
+  //       },
+  //     ]
+  //   },
+  // };
+
+
+  const categoryDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "category/",
+    API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    columns: [
       {
-        field: "img",
-        headerName: "Image",
-        type: "image",
-        width: 80,
-        renderCell: (params) => (
+        accessor: "img", 
+        id: "img",
+        isFileType: true,
+        imgPostDir: "categoryImage",
+        header: "Image",
+        size: 50,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          type: "file"
+          //...getCommonEditTextFieldProps(cell),
+        }),
+        Cell: ({ renderedCellValue, row }) => (
           <Box
-            component="img"
-            height="90%"
-            src={API_BASE_IMAGE_URL + params.value}
-          />
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {/* {console.log(row.original.img)} */}
+            <img
+              alt="avatar"
+              height={30}
+              src={API_BASE_IMAGE_URL + row.original.img }
+              loading="lazy"
+            />
+            {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
+            <span>{renderedCellValue}</span>
+          </Box>
         ),
       },
       {
-        field: "name",
-        headerName: "Name",
-        minWidth: 400,
-        editable: true,
+        accessorKey: "id",
+        header: "ID",
+        enableColumnOrdering: false,
+        enableEditing: false, //disable editing on this column
+        enableSorting: false,
+        size: 80,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          disable: true
+          //...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
-        field: "description",
-        headerName: "Description",
-        type: "text",
-        width: 400,
-        align: "left",
-        headerAlign: "left",
-        editable: true,
+        accessorKey: "name",
+        header: "Name",
+        size: 140,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          //...getCommonEditTextFieldProps(cell),
+        }),
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+        size: 140,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          //...getCommonEditTextFieldProps(cell),
+        }),
+      },
+      {
+        accessorKey: "bundles",
+        header: "Bundles",
+        Edit: ({ row }) => {
+          return (
+            <Autocomplete
+              multiple
+              defaultValue={row.value}
+              options={[11, 2, 1, 5]}
+              autoComplete
+              renderInput={(params) => (
+                <TextField {...params} label="Bundles" />
+              )}
+              onChange={(event, value) => {
+                row._valuesCache["state"] = value;
+              }}
+            />
+          );
+        },
       },
       // {
-      //   field: "bundles",
-      //   headerName: "Bundles",
-      //   type: "multiSelect",
-      //   width: 400,
-      //   align: "left",
-      //   headerAlign: "left",
-      //   editable: true,
+      //   accessorKey: 'state',
+      //   header: 'State',
+      //   muiTableBodyCellEditTextFieldProps: {
+      //     select: true, //change to select for a dropdown
+      //     children: states.map((state) => (
+      //       <MenuItem key={state} value={state}>
+      //         {state}
+      //       </MenuItem>
+      //     )),
+      //   },
       // },
-      {
-        field: "bundles",
-        headerName: "Bundles",
-        type: "number",
-        width: 500,
-        renderCell: multiSelectColumn,
-        editable: true,
-      },
     ],
-  };
-
-
-  const dataGridPropsDrinks = {
-    API_BASE_URL: "http://localhost:8080/v1/drink/",
-    API_BASE_IMAGE_URL: "http://localhost:8080/asset/get-object?key=",
-    modal: {
-      initialValues: { name: "", price: 0, image: null },
-      formInputs: [
-        {
-          name: "name",
-          type: "text",
-          formLabel: "Name",
-          isRequired: true,
-        },
-        {
-          name: "price",
-          type: "number",
-          formLabel: "Price",
-        },
-        {
-          name: "image",
-          type: "file",
-          formLabel: "Image",
-          isMultiple: false,
-          accept: "image/*"
-        },
-      ]
-    },
   };
 
   return (
@@ -142,7 +242,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
           <Route
             path="categories"
             element={
-              <AdminPanelDataGridDisplay props={dataGridPropsCategory} />
+              <AdminPanelDataGridDisplay 
+              props={categoryDataGridProps} 
+              />
             }
           />
           <Route path="/*" element={<NotFoundContainer />} />
