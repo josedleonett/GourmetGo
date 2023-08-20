@@ -132,38 +132,6 @@ const AdminPanelDataGridDisplay = ({ props }) => {
     [data],
   );
 
-  // const getCommonEditTextFieldProps = useCallback(
-  //   (cell) => {
-  //     console.log(cell);
-  //     return {
-  //       error: !!validationErrors[cell.id],
-  //       helperText: validationErrors[cell.id],
-  //       onBlur: (event) => {
-  //         const isValid =
-  //           cell.column.id === 'email'
-  //             ? validateEmail(event.target.value)
-  //             : cell.column.id === 'age'
-  //             ? validateAge(+event.target.value)
-  //             : validateRequired(event.target.value);
-  //         if (!isValid) {
-  //           //set validation error for cell if invalid
-  //           setValidationErrors({
-  //             ...validationErrors,
-  //             [cell.id]: `${cell.column.columnDef.header} is required`,
-  //           });
-  //         } else {
-  //           //remove validation error for cell if valid
-  //           delete validationErrors[cell.id];
-  //           setValidationErrors({
-  //             ...validationErrors,
-  //           });
-  //         }
-  //       },
-  //     };
-  //   },
-  //   [validationErrors],
-  // );
-
   const columns = useMemo(() => PropsColumns,
   //[getCommonEditTextFieldProps]
   );
@@ -185,6 +153,7 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         enableColumnOrdering
         enableStickyHeader
         enableEditing
+        enableRowDragging
         onEditingRowSave={handleSaveRowEdits}
         onEditingRowCancel={handleCancelRowEdits}
         renderRowActions={({ row, table }) => (
@@ -214,8 +183,8 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         muiToolbarAlertBannerProps={
           isError
             ? {
-                color: 'error',
-                children: 'Error loading data',
+                color: "error",
+                children: "Error loading data",
               }
             : undefined
         }
@@ -224,7 +193,17 @@ const AdminPanelDataGridDisplay = ({ props }) => {
           showProgressBars: isRefetching,
           showAlertBanner: isError,
         }}
-        enableRowDragging
+        muiTableContainerProps={({ table }) => ({
+          sx: {
+            height: `calc(100% - ${table.refs.topToolbarRef.current?.offsetHeight}px - ${table.refs.bottomToolbarRef.current?.offsetHeight}px)`,
+          },
+        })}
+        muiTablePaperProps={{
+          sx: {
+            height: "100%",
+            width: "100%",
+          },
+        }}
       />
       <CreateNewItemModal
         columns={columns}
