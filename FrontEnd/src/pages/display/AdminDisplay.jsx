@@ -203,6 +203,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
             />
           );
         },
+        
       },
       // {
       //   accessorKey: 'state',
