@@ -3,6 +3,8 @@ import { MaterialReactTable } from 'material-react-table';
 import axios from 'axios';
 import { useFormik } from "formik";
 import {
+  Alert,
+  AlertTitle,
   Autocomplete,
   Box,
   Button,
@@ -181,6 +183,7 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         data={data}
         editingMode="modal" //default
         enableColumnOrdering
+        enableStickyHeader
         enableEditing
         onEditingRowSave={handleSaveRowEdits}
         onEditingRowCancel={handleCancelRowEdits}
@@ -221,6 +224,7 @@ const AdminPanelDataGridDisplay = ({ props }) => {
           showProgressBars: isRefetching,
           showAlertBanner: isError,
         }}
+        enableRowDragging
       />
       <CreateNewItemModal
         columns={columns}
@@ -241,6 +245,7 @@ export const CreateNewItemModal = ({ open, columns, onClose, onSubmitHandler, is
 
   const onCloseHandler = () => {
     setIsResponseSuccess(null);
+    formik.resetForm()
     onClose();
   };
 
@@ -318,23 +323,17 @@ export const CreateNewItemModal = ({ open, columns, onClose, onSubmitHandler, is
             ))}
           </Stack>
         </form>
+
         <Toolbar />
-        <Box
-          display={isResponseSuccess === null ? "none" : "flex"}
-          alignItems="center"
-          bgcolor={isResponseSuccess ? "success.light" : "error.light"}
-          borderRadius={1}
-          p={2}
-          gap={2}
-          maxHeight="100%"
-        >
-          {isResponseSuccess ? <Check /> : <Error sx={{ fontSize: 40 }} />}
-          <Typography variant="body1" color="initial">
+        <Box display={isResponseSuccess === null ? "none" : "flex"}>
+          <Alert severity={isResponseSuccess ? "success" : "error"}  sx={{width: "100%"}}>
+            <AlertTitle>{isResponseSuccess ? "Success" : "Error"}</AlertTitle>
             {isResponseSuccess
-              ? "Item added successfully!"
+              ? "Item added successfully!."
               : "Oops! An error occurred while adding the item."}
-          </Typography>
+          </Alert>
         </Box>
+
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button type="reset" onClick={onCloseHandler} startIcon={<Cancel />}>
