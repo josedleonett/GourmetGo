@@ -3,3 +3,14 @@
 [2023-08-19 13:47:21] [ ERROR] [GlobalHandlerException:18] java.lang.IllegalStateException: Shutdown in progress
 [2023-08-19 14:17:32] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
 [2023-08-19 14:17:40] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
+[2023-08-19 17:33:33] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
+[2023-08-19 17:34:38] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
+[2023-08-19 17:36:03] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
+[2023-08-19 17:43:07] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-19 17:44:42] [ ERROR] [GlobalHandlerException:18] 404 NOT_FOUND "User not found with the provided email."
+[2023-08-19 17:45:22] [ ERROR] [GlobalHandlerException:18] 404 NOT_FOUND "User not found with the provided email."
+[2023-08-19 17:59:58] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30109ms.] [n/a]
+[2023-08-19 18:27:32] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30164ms.] [n/a]
+[2023-08-19 18:48:36] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-19 19:33:40] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-19 19:33:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."

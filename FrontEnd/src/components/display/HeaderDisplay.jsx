@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
-import { Box, Tabs, Tab, IconButton, Drawer, List, ListItem, ListItemText, Avatar } from "@mui/material";
+import { Box, Tabs, Tab, IconButton, Drawer, List, ListItem, ListItemText, Avatar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { companyLogo } from "../../utils/theme";
 
@@ -69,14 +69,31 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                 ) : (
                   <>
                     <ListItem button onClick={handleMobileMenuClose}>
-                      <Button component={Link} to="/user-login" variant="contained">
+                      <Typography
+                        component={Link}
+                        to="/user-login"
+                        variant="body1"
+                        sx={{ color: "black", cursor: "pointer", textDecoration: "none"  }}
+                      >
                         LOG IN
-                      </Button>
+                      </Typography>
                     </ListItem>
                     <ListItem button onClick={handleMobileMenuClose}>
-                      <Button component={Link} to="/user-register" variant="contained">
-                        SIGN UP
-                      </Button>
+                      <Typography
+                        component={Link}
+                        to="/user-register"
+                        variant="body1"
+                        sx={{
+                          color: "black",
+                          cursor: "pointer",
+                          marginBottom: "1rem",
+                          textTransform: "uppercase",
+                          textDecoration: "none",
+                          borderBottom: "none",
+                        }}
+                      >
+                        Sign Up
+                      </Typography>
                     </ListItem>
                   </>
                 )}
@@ -145,7 +162,18 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                   <Button component={Link} to="/user-login" variant="contained">
                     LOG IN
                   </Button>
-                  <Button component={Link} to="/user-register" variant="contained">
+                  <Button
+                    component={Link}
+                    to="/user-register"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "#f5f5f5",
+                      },
+                    }}
+                  >
                     SIGN UP
                   </Button>
                 </>
@@ -165,9 +193,45 @@ const HeaderDisplay = ({ hasAccessToken }) => {
             alignItems: "center",
           }}
         >
-          <Avatar onClick={() => setUserDrawerOpen(true)}>{initials}</Avatar>
-          <h3>{userFullName}</h3>
-          <p>{userEmail}</p>
+          <Avatar onClick={() => setUserDrawerOpen(true)} sx={{ backgroundColor: "green" }}>
+            {initials}
+          </Avatar>
+          <Typography><h3>{userFullName}</h3></Typography>
+          <Typography><h4>{userEmail}</h4></Typography>
+          <Typography><p>Favourites</p></Typography>
+          <Typography><p>Reservations</p></Typography>
+          <Typography sx={{ color: "red", cursor: "pointer" }} onClick={handleLogout}>
+            Log out
+          </Typography>
+          {!hasAccessToken && (
+            <>
+              <Typography
+                component={Link}
+                to="/user-login"
+                variant="body1"
+                sx={{ color: "black", cursor: "pointer", }}
+                onClick={handleMobileMenuClose}
+              >
+                LOG IN
+              </Typography>
+              <Typography
+                component={Link}
+                to="/user-register"
+                variant="body1"
+                sx={{
+                  color: "black",
+                  cursor: "pointer",
+                  marginBottom: "1rem",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  borderBottom: "none",
+                }}
+                onClick={handleMobileMenuClose}
+              >
+                SIGN UP
+              </Typography>
+            </>
+          )}
         </Box>
       </Drawer>
     </>
