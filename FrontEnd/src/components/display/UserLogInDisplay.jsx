@@ -25,9 +25,6 @@ const UserLogInDisplay = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(inputs.username)
-        console.log(inputs.password)
-
         try {
             const response = await fetch("http://localhost:8080/auth/login", {
                 method: "POST",
