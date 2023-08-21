@@ -31,20 +31,6 @@ const router = createBrowserRouter([
       {
         path: "admin/*",
         element: <AdminContainer />,
-        // children: [
-        //   { path: "bundles", Component: <AdminContainer /> },
-        //   {
-        //     path: "plates",
-        //     Component: <AdminContainer />,
-        //     children: [
-        //       { path: "starter", Component: <AdminContainer /> },
-        //       { path: "mainCourse", Component: <AdminContainer /> },
-        //       { path: "dessert", Component: <AdminContainer /> },
-        //     ],
-        //   },
-        //   { path: "drinks", Component: <AdminContainer /> },
-        //   { path: "categories", Component: <AdminContainer /> },
-        // ],
       },
       {
         path: "/administration-panel",

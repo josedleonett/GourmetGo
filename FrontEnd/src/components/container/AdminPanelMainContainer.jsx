@@ -4,7 +4,6 @@ import AdminPanelMainDisplay from "../display/AdminPanelMainDisplay";
 const AdminPanelMainContainer = () => {
   const { plateType, menuSelected } = useParams();
 
-  console.log(plateType + " si " + menuSelected);
   return <AdminPanelMainDisplay />;
 }
 

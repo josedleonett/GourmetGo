@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import CardProductContainer from "../container/CardProductContainer";
 import { Grid, Pagination, Container, Box } from "@mui/material";
 
@@ -15,8 +15,6 @@ const CardProductGridDisplay = ({ list }) => {
       block: "end",
     });
   };
-
-  console.log(list);
 
   return (
     <Container maxWidth="xl" ref={containerRef} >

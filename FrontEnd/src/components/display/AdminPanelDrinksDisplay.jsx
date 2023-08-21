@@ -68,12 +68,8 @@ const AdminPanelDrinksDisplay = () => {
     
   };
 
-  // const handleSaveClick = (id) => () => {
-  //   setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  // };
   const handleSaveClick = (id) => async () => {
     const updatedRow = rows.find((row) => row.id === id);
-    console.log(updatedRow);
     try {
       await axios.post(`http://localhost:8080/v1/drink/${id}`, updatedRow);
       loadData();
@@ -82,8 +78,6 @@ const AdminPanelDrinksDisplay = () => {
     }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
-
-
 
   const handleDeleteClick = (id) => () => {
     setRows(rows.filter((row) => row.id !== id));

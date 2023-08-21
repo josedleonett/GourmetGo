@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, TextField, Button } from "@mui/material";
 
 const UserLogInDisplay = () => {
     const [inputs, setInputs] = useState({
