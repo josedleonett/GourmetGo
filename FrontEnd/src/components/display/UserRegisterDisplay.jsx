@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import Swal from "sweetalert2";
 
 const UserRegisterDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -132,7 +133,7 @@ const UserRegisterDisplay = () => {
         ...prevBorderStyles,
         name: {
           width: "20vw",
-          border: "1px solid red", 
+          border: "1px solid red",
           borderRadius: "5px",
         },
         lastName: {
@@ -149,7 +150,6 @@ const UserRegisterDisplay = () => {
         lastName: { width: "20vw", border: "none" },
       }));
     }
-    
 
     if (Object.values(inputSuccess).every((success) => success)) {
       try {
@@ -162,7 +162,12 @@ const UserRegisterDisplay = () => {
         });
 
         if (response.ok) {
-          console.log("User created successfully!");
+          // Mostrar un modal de éxito usando SweetAlert2
+          Swal.fire({
+            icon: "success",
+            title: "Successful registration",
+            text: "Please check your email for further instructions.",
+          });
         } else {
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
