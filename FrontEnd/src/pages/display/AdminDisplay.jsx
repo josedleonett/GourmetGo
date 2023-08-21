@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Chip, TextField } from "@mui/material";
+import { Autocomplete, Box, Chip, Input, TextField } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
 import AdminPanelBundlesContainer from "../../components/container/AdminPanelBundlesContainer";
@@ -126,34 +126,56 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "img", 
+        accessor: "img",
         id: "img",
         isFileType: true,
         imgPostDir: "categoryImage",
         header: "Image",
         size: 50,
+        Edit: ({ row }) => {
+          return (
+            <Input
+              id={row.accessorKey}
+              type="file"
+              key={row.accessorKey}
+              label={row.header}
+              name={row.categoryImg || row.accessorKey}
+              onChange={(e) =>
+                formik.setFieldValue(
+                  row.imgPostDir || row.accessor,
+                  row.isMultiple
+                    ? e.currentTarget.files
+                    : e.currentTarget.files[0]
+                )
+              }
+              disabled={ row.enableEditing === false}
+            />
+          );
+        },
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          type: "file"
+          type: "file",
           //...getCommonEditTextFieldProps(cell),
         }),
         Cell: ({ renderedCellValue, row }) => (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1rem",
-            }}
-          >
-            {/* {console.log(row.original.img)} */}
-            <img
-              alt="avatar"
-              height={30}
-              src={API_BASE_IMAGE_URL + row.original.img }
-              loading="lazy"
-            />
-            {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-            <span>{renderedCellValue}</span>
-          </Box>
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
+              {/* {console.log(row.original.img)} */}
+              <img
+                alt="cover"
+                height={30}
+                src={API_BASE_IMAGE_URL + row.original.img}
+                loading="lazy"
+              />
+              {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
+              <span>{renderedCellValue}</span>
+            </Box>
+          </>
         ),
       },
       {
@@ -164,7 +186,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         enableSorting: false,
         size: 80,
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          disable: true
+          disable: true,
           //...getCommonEditTextFieldProps(cell),
         }),
       },
@@ -198,12 +220,11 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 <TextField {...params} label="Bundles" />
               )}
               onChange={(event, value) => {
-                row._valuesCache["state"] = value;
+                row._valuesCache["bundles"] = value;
               }}
             />
           );
         },
-        
       },
       // {
       //   accessorKey: 'state',

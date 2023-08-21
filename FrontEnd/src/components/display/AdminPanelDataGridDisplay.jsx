@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { MaterialReactTable } from 'material-react-table';
-import axios from 'axios';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { MaterialReactTable } from "material-react-table";
+import axios from "axios";
 import { useFormik } from "formik";
 import {
   Alert,
@@ -19,9 +19,18 @@ import {
   Stack,
   TextField,
   Toolbar,
-  Tooltip, Typography,
-} from '@mui/material';
-import { Delete, Edit, Add, Save, Cancel, Error, Check } from '@mui/icons-material';
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import {
+  Delete,
+  Edit,
+  Add,
+  Save,
+  Cancel,
+  Error,
+  Check,
+} from "@mui/icons-material";
 
 const AdminPanelDataGridDisplay = ({ props }) => {
   const API_BASE_URL = props.API_BASE_URL;
@@ -30,7 +39,9 @@ const AdminPanelDataGridDisplay = ({ props }) => {
   // const modalFormInputs = props.modal.formInputs;
 
   const [data, setData] = useState([]);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [rowToUpdate, setRowToUpdate] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,16 +52,14 @@ const AdminPanelDataGridDisplay = ({ props }) => {
   }, []);
 
   const getApiData = async () => {
-
     !data.length ? setIsLoading(true) : setIsRefetching(true);
 
     try {
       const response = await axios.get(API_BASE_URL);
       setData(response.data);
       console.log(response.data);
-
     } catch (error) {
-      setIsError(true)
+      setIsError(true);
       console.error("Error fetching data:", error);
     }
 
@@ -69,8 +78,6 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         }
       }
 
-
-      
       //CHECK OUTPUT
       for (const [key, value] of formData.entries()) {
         console.log("aqui");
@@ -78,23 +85,39 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         console.log("aqui");
       }
 
-
-
-
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
 
       getApiData();
       return responseCode;
-      
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error create data:", error);
 
       return responseCode;
     }
-  }
+  };
 
+  const updateApiData = async (targetIdToUpdate, propertiesToUpdate = {}) => {
+    try {
+      const formData = new FormData();
+
+      console.log("entra a actualizar");
+      console.log(propertiesToUpdate);
+
+      for (const key in propertiesToUpdate) {
+        if (propertiesToUpdate.hasOwnProperty(key)) {
+          formData.append(key, propertiesToUpdate[key]);
+        }
+      }
+      await axios.patch(API_BASE_URL + targetIdToUpdate, formData);
+      await getApiData();
+
+      console.log(formData);
+    } catch (error) {
+      console.error("Error update data:", error);
+    }
+  };
 
   const handleCreateNewRow = (values) => {
     data.push(values);
@@ -102,13 +125,23 @@ const AdminPanelDataGridDisplay = ({ props }) => {
 
     const responseCode = postApiData(values);
     return responseCode;
+  };
 
+  const handleUpdateRow = (values) => {
+    setRowToUpdate(values)
+    setIsUpdateModalOpen(true)
+    // data.push(values);
+    // setData([...data]);
   };
 
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (!Object.keys(validationErrors).length) {
       data[row.index] = values;
       //send/receive api updates here, then refetch or update local table data for re-render
+      console.log(row);
+      console.log(values);
+      updateApiData(values.id, values);
+
       setData([...data]);
       exitEditingMode(); //required to exit editing mode and close modal
     }
@@ -121,7 +154,7 @@ const AdminPanelDataGridDisplay = ({ props }) => {
   const handleDeleteRow = useCallback(
     (row) => {
       if (
-        !confirm(`Are you sure you want to delete ${row.getValue('firstName')}`)
+        !confirm(`Are you sure you want to delete ${row.getValue("firstName")}`)
       ) {
         return;
       }
@@ -129,11 +162,12 @@ const AdminPanelDataGridDisplay = ({ props }) => {
       data.splice(row.index, 1);
       setData([...data]);
     },
-    [data],
+    [data]
   );
 
-  const columns = useMemo(() => PropsColumns,
-  //[getCommonEditTextFieldProps]
+  const columns = useMemo(
+    () => PropsColumns
+    //[getCommonEditTextFieldProps]
   );
 
   return (
@@ -153,33 +187,9 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         enableColumnOrdering
         enableStickyHeader
         enableEditing
-        enableRowDragging
+        //enableRowDragging
         onEditingRowSave={handleSaveRowEdits}
         onEditingRowCancel={handleCancelRowEdits}
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement="right" title="Delete">
-              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-            startIcon={<Add />}
-          >
-            Create new item
-          </Button>
-        )}
         muiToolbarAlertBannerProps={
           isError
             ? {
@@ -204,12 +214,47 @@ const AdminPanelDataGridDisplay = ({ props }) => {
             width: "100%",
           },
         }}
+        renderTopToolbarCustomActions={() => (
+          <Button
+            color="primary"
+            onClick={() => setIsCreateModalOpen(true)}
+            variant="contained"
+            startIcon={<Add />}
+          >
+            Create new item
+          </Button>
+        )}
+        renderRowActions={({ row, table }) => (
+          <Box sx={{ display: "flex", gap: "1rem" }}>
+            {/* <Tooltip arrow placement="left" title="Edit">
+              <IconButton onClick={() => table.setEditingRow(row)}>
+                <Edit />
+              </IconButton>
+            </Tooltip> */}
+            <Tooltip arrow placement="left" title="Edit">
+              <IconButton onClick={() => handleUpdateRow(row.original)}>
+                <Edit />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow placement="right" title="Delete">
+              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
       />
-      <CreateNewItemModal
+      <CreateUpdateItemModal
+        open={isCreateModalOpen || isUpdateModalOpen}
+        rowToUpdate={rowToUpdate}
         columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmitHandler={handleCreateNewRow}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setIsUpdateModalOpen(false);
+          setRowToUpdate({})
+        }}
+        onSubmitCreateHandler={handleCreateNewRow}
+        onSubmitUpdateHandler={handleUpdateRow}
         isLoading={isLoading}
       />
     </>
@@ -217,40 +262,46 @@ const AdminPanelDataGridDisplay = ({ props }) => {
 };
 
 //example of creating a mui dialog modal for creating new rows
-export const CreateNewItemModal = ({ open, columns, onClose, onSubmitHandler, isLoading }) => {
+export const CreateUpdateItemModal = ({
+  open,
+  rowToUpdate,
+  columns,
+  onClose,
+  onSubmitCreateHandler,
+  isLoading,
+}) => {
   const [isFormSending, setIsFormSending] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isResponseSuccess, setIsResponseSuccess] = useState(null);
 
-  const onCloseHandler = () => {
-    setIsResponseSuccess(null);
-    formik.resetForm()
-    onClose();
-  };
-
   const formik = useFormik({
-    initialValues: {},
+    initialValues: rowToUpdate,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      setIsFormSending(true)
+      setIsFormSending(true);
       alert(JSON.stringify(values, null, 2));
 
-      const responseCode = await onSubmitHandler(values);
-      console.log(responseCode + " codigo respuesta");
-        setIsFormSubmitted(true);
+      const responseCode = await onSubmitCreateHandler(values);
+      setIsFormSubmitted(true);
 
-        if (responseCode === 201) {
-          setIsResponseSuccess(true);
-          setTimeout(async () => {
-            await onCloseHandler();
-          }, 1500);
+      if (responseCode === 201) {
+        setIsResponseSuccess(true);
+        setTimeout(async () => {
+          await onCloseHandler();
+        }, 1500);
+      } else {
+        setIsResponseSuccess(false);
+      }
 
-        } else {
-          setIsResponseSuccess(false);
-        }
-        
-        setIsFormSending(false);
-    }
-  })
+      setIsFormSending(false);
+    },
+  });
+
+  const onCloseHandler = () => {
+    setIsResponseSuccess(null);
+    formik.resetForm();
+    onClose();
+  };
 
   return (
     <Dialog open={open}>
@@ -289,6 +340,7 @@ export const CreateNewItemModal = ({ open, columns, onClose, onSubmitHandler, is
                     key={column.accessorKey}
                     label={column.header}
                     name={column.accessorKey}
+                    value={formik.values[column.accessorKey]}
                     onChange={formik.handleChange}
                     inputProps={{
                       disabled:
@@ -305,14 +357,16 @@ export const CreateNewItemModal = ({ open, columns, onClose, onSubmitHandler, is
 
         <Toolbar />
         <Box display={isResponseSuccess === null ? "none" : "flex"}>
-          <Alert severity={isResponseSuccess ? "success" : "error"}  sx={{width: "100%"}}>
+          <Alert
+            severity={isResponseSuccess ? "success" : "error"}
+            sx={{ width: "100%" }}
+          >
             <AlertTitle>{isResponseSuccess ? "Success" : "Error"}</AlertTitle>
             {isResponseSuccess
               ? "Item added successfully!."
               : "Oops! An error occurred while adding the item."}
           </Alert>
         </Box>
-
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button type="reset" onClick={onCloseHandler} startIcon={<Cancel />}>
