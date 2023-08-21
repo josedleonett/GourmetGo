@@ -17,14 +17,12 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-//import { Gallery } from "react-grid-gallery";
-import Lightbox from "react-lightbox-component";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 
 const images = [

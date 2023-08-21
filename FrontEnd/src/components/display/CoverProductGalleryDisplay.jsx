@@ -33,8 +33,6 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
     };
   });
 
-  console.log(imgListMapped);
-
   useEffect(() => {
     let lightbox = new PhotoSwipeLightbox({
       gallery: "#" + galleryId,
@@ -129,7 +127,6 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
                       objectPosition: "center center",
                     }}
                   />
-                  {console.log(imgList.length + "nr")}
                 </Box>
               </Grid>
             ))}

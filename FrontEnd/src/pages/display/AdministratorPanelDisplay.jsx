@@ -1,33 +1,32 @@
-import React from 'react';
-import { Paper, Box, Button, Typography } from '@mui/material';
+import { Paper, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
 const ButtonPanel = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
-  padding: theme.spacing(2), // Mayor padding para más espacio
+  padding: theme.spacing(2),
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  fontSize: '2vw', // Mayor tamaño de fuente para botones más grandes
+  fontSize: '2vw',
   textDecoration: 'none',
-  marginBottom: theme.spacing(6), // Mayor margen inferior
-  borderRadius: theme.spacing(2), // Bordes redondeados
-  transition: 'transform 0.2s ease-in-out', // Animación de transformación
+  marginBottom: theme.spacing(6),
+  borderRadius: theme.spacing(2),
+  transition: 'transform 0.2s ease-in-out',
   '&:hover': {
-    transform: 'scale(1.05)', // Aumentar tamaño al pasar el cursor
+    transform: 'scale(1.05)',
   },
 }));
 
 const TitleBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.light, // Color de fondo deseado
+  backgroundColor: theme.palette.secondary.light,
   padding: theme.spacing(2),
   width: '100%',
   textAlign: 'center',
   color: theme.palette.text.primary,
   fontWeight: 'bold',
   marginTop: -252,
-  marginBottom: 50, // Elimina el margen superior
+  marginBottom: 50, 
 }));
 
 const ContainerBox = styled(Box)(({ theme }) => ({
@@ -36,7 +35,7 @@ const ContainerBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  height: '100vh', // Ajusta la altura según tus necesidades
+  height: '100vh', 
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
