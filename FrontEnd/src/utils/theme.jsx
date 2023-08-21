@@ -5,11 +5,11 @@ import "@fontsource/josefin-sans";
 import { createTheme } from "@mui/material";
 
 export const companyLogo = {
-  primaryColor: "/public/images/logo/GG_LOGO_AZUL.png",
-  secondaryColor: "/public/images/logo/GG_LOGO_ROSA.png",
-  grayColor: "/public/images/logo/GG_LOGO_GRIS.png",
-  positiveColor: "/public/images/logo/GG_LOGO_POSITIVO.png",
-  negativeColor: "/public/images/logo/GG_LOGO_NEGATIVO.png",
+  primaryColor: "/images/logo/GG_LOGO_AZUL.png",
+  secondaryColor: "/images/logo/GG_LOGO_ROSA.png",
+  grayColor: "/images/logo/GG_LOGO_GRIS.png",
+  positiveColor: "/images/logo/GG_LOGO_POSITIVO.png",
+  negativeColor: "/images/logo/GG_LOGO_NEGATIVO.png",
 };
 
 export const theme = createTheme({
