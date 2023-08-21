@@ -16,7 +16,7 @@ public class CategoryDto {
 
     private String description;
 
-    private String img;
+    private String image;
 
     private List<Long> bundles;
 }

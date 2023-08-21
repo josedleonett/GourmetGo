@@ -259,7 +259,7 @@ export const cateringPackages = [
       },
       {
         id: 6,
-        name: "Soda",
+        name: "Coca cola",
         image: "../../public/images/image 20.png",
         price: 100,
         amount: 120,
@@ -633,7 +633,7 @@ export const cateringPackages = [
       },
       {
         id: 23,
-        name: "Italian Soda",
+        name: "Italian Coca cola",
         image: "../../public/images/image 5.png",
         price: 140,
         amount: 60,

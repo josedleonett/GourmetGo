@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,7 +22,7 @@ public class Bundle {
     private Long id;
     private String name;
     private String description;
-    private String bundleImage;
+    private String image;
     @ElementCollection
     @CollectionTable(name = "gallery")
     @Column(name = "images")
@@ -58,6 +59,14 @@ public class Bundle {
             inverseJoinColumns = @JoinColumn(name = "drink_id")
     )
     private List<Drink> drinks;
+
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(
+            name = "bundle_characteristic",
+            joinColumns = @JoinColumn(name = "bundle_id"),
+            inverseJoinColumns = @JoinColumn(name = "characteristic_id")
+    )
+    private List<Characteristic> characteristics = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(

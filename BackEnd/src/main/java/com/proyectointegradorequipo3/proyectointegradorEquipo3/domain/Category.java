@@ -18,6 +18,6 @@ public class Category {
 
     private String description;
 
-    private String img;
+    private String image;
 
 }

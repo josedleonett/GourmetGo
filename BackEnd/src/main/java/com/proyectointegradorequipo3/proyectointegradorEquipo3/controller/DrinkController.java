@@ -3,7 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.error.DrinkNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.DrinkServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

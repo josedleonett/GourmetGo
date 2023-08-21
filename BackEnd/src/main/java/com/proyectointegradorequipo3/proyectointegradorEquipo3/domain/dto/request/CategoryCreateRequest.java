@@ -16,5 +16,5 @@ public class CategoryCreateRequest {
     @NotBlank
     private String description;
     @NotBlank
-    private MultipartFile img;
+    private MultipartFile image;
 }

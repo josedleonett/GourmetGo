@@ -37,15 +37,13 @@ const HeaderDisplay = ({ props }) => {
   };
 
   const handleScroll = () => {
-    // Calcula la posición actual del scroll
     const scrollY = window.scrollY;
 
-    // Establece el estado de 'isSticky' según la posición del scroll
     setIsSticky(scrollY >= headerHeight);
   };
 
   // Altura del header para cambiar a posición fixed
-  const headerHeight = 500; // Ajusta este valor según la altura de tu header
+  const headerHeight = 500;
 
   useEffect(() => {
     // Agrega un listener al evento 'scroll' del window
@@ -121,6 +119,7 @@ const HeaderDisplay = ({ props }) => {
                 "& > *": { marginLeft: "8px" },
               }}
             >
+              <Link to="/" style={{ textDecoration: 'none' }}>
               <Button variant="contained" sx={{
                     padding: "0.8vw 3vw 0.8vw 3vw",
                     backgroundColor: "#222222",
@@ -130,6 +129,8 @@ const HeaderDisplay = ({ props }) => {
     }}>
                 LOG IN
               </Button>
+              </Link>
+              <Link to="/signup" style={{ textDecoration: 'none' }}>
               <Button variant="contained" sx={{
                     padding: "0.8vw 3vw 0.8vw 3vw",
                     backgroundColor: "#FFFFFF",
@@ -140,6 +141,7 @@ const HeaderDisplay = ({ props }) => {
               }}>
                 SIGN UP
               </Button>
+              </Link>
             </Box>
             </Tabs>
             
