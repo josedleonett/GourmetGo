@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Box, TextField, Button } from "@mui/material";
+import Swal from 'sweetalert2';
+
 
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -44,7 +46,11 @@ const UserLogInDisplay = () => {
         localStorage.setItem("email", data.email);
         window.location.href = "/";
       } else {
-        console.error("Login failed");
+        Swal.fire({
+          icon: 'error',
+          title: 'Login error',
+          text: 'The login was not successful. Please verify your credentials and try again.',
+        });
       }
     } catch (error) {
       console.error("Error:", error);
