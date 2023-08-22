@@ -167,6 +167,15 @@ const UserRegisterDisplay = () => {
             icon: "success",
             title: "Successful registration",
             text: "Please check your email for further instructions.",
+            footer: (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleResendEmailClick}
+              >
+                Resend Email
+              </Button>
+            ),
           });
         } else {
           const errorResponse = await response.json();

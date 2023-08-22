@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import Swal from 'sweetalert2';
 
-
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
     username: "",
