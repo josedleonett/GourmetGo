@@ -3,3 +3,6 @@
 [2023-08-19 13:47:21] [ ERROR] [GlobalHandlerException:18] java.lang.IllegalStateException: Shutdown in progress
 [2023-08-19 14:17:32] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
 [2023-08-19 14:17:40] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
+[2023-08-21 23:37:42] [ ERROR] [GlobalHandlerException:18] class org.springframework.security.core.userdetails.User cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity (org.springframework.security.core.userdetails.User and com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity are in unnamed module of loader 'app')
+[2023-08-21 23:43:11] [ ERROR] [GlobalHandlerException:18] Cannot invoke "java.util.Collection.iterator()" because the return value of "com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity.getAuthorities()" is null
+[2023-08-21 23:50:51] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
