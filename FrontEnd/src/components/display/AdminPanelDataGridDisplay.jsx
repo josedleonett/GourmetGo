@@ -8,6 +8,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -16,6 +17,7 @@ import {
   IconButton,
   Input,
   MenuItem,
+  Snackbar,
   Stack,
   TextField,
   Toolbar,
@@ -35,14 +37,12 @@ import {
 const AdminPanelDataGridDisplay = ({ props }) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
-  const PropsColumns = props.columns;
-  // const modalFormInputs = props.modal.formInputs;
+  const columns = useMemo(() => props.columns);
 
   const [data, setData] = useState([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [rowToUpdate, setRowToUpdate] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
@@ -80,20 +80,19 @@ const AdminPanelDataGridDisplay = ({ props }) => {
 
       //CHECK OUTPUT
       for (const [key, value] of formData.entries()) {
-        console.log("aqui");
+        console.log("POSTING");
         console.log(key, value);
-        console.log("aqui");
+        console.log("POSTING");
       }
+      //CHECK OUTPUT
 
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
-
-      getApiData();
       return responseCode;
+
     } catch (error) {
       const responseCode = error.response.status;
-      console.error("Error create data:", error);
-
+      console.error("Error create data:", error.response);
       return responseCode;
     }
   };
@@ -102,22 +101,35 @@ const AdminPanelDataGridDisplay = ({ props }) => {
     try {
       const formData = new FormData();
 
-      console.log("entra a actualizar");
-      console.log(propertiesToUpdate);
-
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
           formData.append(key, propertiesToUpdate[key]);
         }
       }
-      await axios.patch(API_BASE_URL + targetIdToUpdate, formData);
-      await getApiData();
 
-      console.log(formData);
+      const response = await axios.patch(API_BASE_URL + targetIdToUpdate, formData);
+      const responseCode = response.status;
+      return responseCode;
+
     } catch (error) {
-      console.error("Error update data:", error);
+      const responseCode = error.response.status;
+      console.error("Error Update data:", error.response);
+      return responseCode;
     }
   };
+
+  const deleteApiData = async (targetIdToDelete) => {
+    try {
+      const response = await axios.delete(API_BASE_URL + targetIdToDelete);
+      const responseCode = response.status;
+      return responseCode;
+
+    } catch (error) {
+      const responseCode = error.response.status;
+      console.error("Error delete data:", error.response);
+      return responseCode;
+    }
+  }
 
   const handleCreateNewRow = (values) => {
     data.push(values);
@@ -129,45 +141,25 @@ const AdminPanelDataGridDisplay = ({ props }) => {
 
   const handleUpdateRow = (values) => {
     setRowToUpdate(values)
-    setIsUpdateModalOpen(true)
-    // data.push(values);
-    // setData([...data]);
+    setIsModalOpen(true)
   };
 
-  const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-    if (!Object.keys(validationErrors).length) {
-      data[row.index] = values;
-      //send/receive api updates here, then refetch or update local table data for re-render
-      console.log(row);
-      console.log(values);
-      updateApiData(values.id, values);
-
-      setData([...data]);
-      exitEditingMode(); //required to exit editing mode and close modal
-    }
-  };
-
-  const handleCancelRowEdits = () => {
-    setValidationErrors({});
-  };
 
   const handleDeleteRow = useCallback(
-    (row) => {
-      if (
-        !confirm(`Are you sure you want to delete ${row.getValue("firstName")}`)
-      ) {
+    async (row) => {
+      if (!confirm(`Are you sure you want to delete item?}`)) {
         return;
       }
-      //send api delete request here, then refetch or update local table data for re-render
+
+      const responseCode = await deleteApiData(row.original.id);
+      
+      if (responseCode === 204) {
+        
+      }
       data.splice(row.index, 1);
       setData([...data]);
     },
     [data]
-  );
-
-  const columns = useMemo(
-    () => PropsColumns
-    //[getCommonEditTextFieldProps]
   );
 
   return (
@@ -183,13 +175,13 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         }}
         columns={columns}
         data={data}
-        editingMode="modal" //default
+        editingMode="modal"
         enableColumnOrdering
         enableStickyHeader
         enableEditing
         //enableRowDragging
-        onEditingRowSave={handleSaveRowEdits}
-        onEditingRowCancel={handleCancelRowEdits}
+        //onEditingRowSave={handleSaveRowEdits}
+        //onEditingRowCancel={handleCancelRowEdits}
         muiToolbarAlertBannerProps={
           isError
             ? {
@@ -217,7 +209,7 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         renderTopToolbarCustomActions={() => (
           <Button
             color="primary"
-            onClick={() => setIsCreateModalOpen(true)}
+            onClick={() => setIsModalOpen(true)}
             variant="contained"
             startIcon={<Add />}
           >
@@ -226,11 +218,6 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         )}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            {/* <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip> */}
             <Tooltip arrow placement="left" title="Edit">
               <IconButton onClick={() => handleUpdateRow(row.original)}>
                 <Edit />
@@ -245,34 +232,47 @@ const AdminPanelDataGridDisplay = ({ props }) => {
         )}
       />
       <CreateUpdateItemModal
-        open={isCreateModalOpen || isUpdateModalOpen}
+        open={isModalOpen || isModalOpen}
         rowToUpdate={rowToUpdate}
         columns={columns}
         onClose={() => {
-          setIsCreateModalOpen(false);
-          setIsUpdateModalOpen(false);
+          setIsModalOpen(false);
           setRowToUpdate({})
         }}
         onSubmitCreateHandler={handleCreateNewRow}
-        onSubmitUpdateHandler={handleUpdateRow}
+        onSubmitUpdateHandler={updateApiData}
         isLoading={isLoading}
       />
     </>
   );
 };
 
-//example of creating a mui dialog modal for creating new rows
+//MODAL
 export const CreateUpdateItemModal = ({
   open,
   rowToUpdate,
   columns,
   onClose,
   onSubmitCreateHandler,
+  onSubmitUpdateHandler,
   isLoading,
 }) => {
   const [isFormSending, setIsFormSending] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [isResponseSuccess, setIsResponseSuccess] = useState(null);
+  const isRowToUpdateEmpty = Object.keys(rowToUpdate).length === 0;
+  const [responseStatus, setResponseStatus] = useState({
+    status: null,
+    message: "",
+    messageTitle: "",
+  });
+  const submitButtonLabel = isFormSending
+    ? isRowToUpdateEmpty
+      ? "SAVING..."
+      : "UPDATING..."
+    : isRowToUpdateEmpty
+    ? "SAVE"
+    : "UPDATE";
+
 
   const formik = useFormik({
     initialValues: rowToUpdate,
@@ -281,109 +281,227 @@ export const CreateUpdateItemModal = ({
       setIsFormSending(true);
       alert(JSON.stringify(values, null, 2));
 
-      const responseCode = await onSubmitCreateHandler(values);
-      setIsFormSubmitted(true);
+      let responseCode = -1;
+      if (isRowToUpdateEmpty) {
+        responseCode = await onSubmitCreateHandler(values);
+        
+      } else {
+        const modifiedProperties = getModifiedProperties(values, rowToUpdate);
+        if (modifiedProperties != null) {
+          responseCode = await onSubmitUpdateHandler(
+            values.id,
+            modifiedProperties
+          );
+          
+        } else {
+          onCloseHandler();
+        }
+      }
 
-      if (responseCode === 201) {
-        setIsResponseSuccess(true);
-        setTimeout(async () => {
-          await onCloseHandler();
+      setIsFormSubmitted(true);
+      console.log(responseCode);
+
+      if ((responseCode === -1)) {
+        setResponseStatus({
+          status: "info",
+          message: "Anything was modified",
+          messageTitle: "Info",
+        });
+
+      } else if (responseCode === 201 || responseCode === 204) {
+        setResponseStatus({
+          ...responseStatus,
+          status: "success",
+          message: "Item added successfully!.",
+          messageTitle: "Success",
+        });
+        setTimeout(() => {
+          onCloseHandler();
         }, 1500);
       } else {
-        setIsResponseSuccess(false);
+        setResponseStatus({
+          ...responseStatus,
+          status: "error",
+          message: "Oops! An error occurred while procesing the item.",
+          messageTitle: "Error",
+        });
       }
 
       setIsFormSending(false);
     },
   });
 
-  const onCloseHandler = () => {
-    setIsResponseSuccess(null);
+  const getModifiedProperties = (newRow = {}, oldRow = {}) => {
+    const modifiedProperties = {};
+
+    for (const key in newRow) {
+      if (newRow.hasOwnProperty(key) && oldRow.hasOwnProperty(key)) {
+        if (newRow[key] !== oldRow[key]) {
+          modifiedProperties[key] = newRow[key];
+        }
+      }
+    }
+
+    if (Object.keys(modifiedProperties).length === 0) {
+      return null;
+    }
+
+    if ("img" in rowToUpdate) {
+      delete rowToUpdate.img;
+    }
+
+    return modifiedProperties;
+  };
+
+
+  const onCloseHandler = () => {    
     formik.resetForm();
     onClose();
+    setTimeout( () => {
+      // setResponseStatus({
+      //   ...responseStatus,
+      //   status: null,
+      //   message: "",
+      //   messageTitle: "",
+      // });
+      setIsFormSubmitted(false);
+    }, 5000);
   };
 
   return (
-    <Dialog open={open}>
-      <DialogTitle textAlign="center">Create New Item</DialogTitle>
-      <DialogContent>
-        <form onSubmit={formik.handleSubmit}>
-          <Stack
-            sx={{
-              width: "100%",
-              minWidth: { xs: "300px", sm: "360px", md: "400px" },
-              gap: "1.5rem",
-            }}
-          >
-            {columns.map((column) => (
-              <>
-                {column.isFileType ? (
-                  <Input
-                    id={column.accessorKey}
-                    type="file"
-                    key={column.accessorKey}
-                    label={column.header}
-                    name={column.categoryImg || column.accessorKey}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        column.imgPostDir || column.accessor,
-                        column.isMultiple
-                          ? e.currentTarget.files
-                          : e.currentTarget.files[0]
-                      )
-                    }
-                    disabled={isFormSending && column.enableEditing === false}
-                  />
-                ) : (
-                  <TextField
-                    id={column.accessorKey}
-                    key={column.accessorKey}
-                    label={column.header}
-                    name={column.accessorKey}
-                    value={formik.values[column.accessorKey]}
-                    onChange={formik.handleChange}
-                    inputProps={{
-                      disabled:
-                        isFormSending ||
-                        column.enableEditing === false ||
-                        false,
-                    }}
-                  />
-                )}
-              </>
-            ))}
-          </Stack>
-        </form>
+    <>
+      <Dialog open={open}>
+        <DialogTitle textAlign="center">
+          {isRowToUpdateEmpty ? "Create" : "Update"} New Item
+        </DialogTitle>
+        <DialogContent>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack
+              sx={{
+                width: "100%",
+                minWidth: { xs: "300px", sm: "360px", md: "400px" },
+                gap: "1.5rem",
+              }}
+            >
+              {columns.map((column, index) => (
+                <>
+                  {column.isFileType ? (
+                    <Input
+                      id={column.accessorKey}
+                      type="file"
+                      key={index}
+                      label={column.header}
+                      name={column.categoryImg || column.accessorKey}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          column.imgPostDir || column.accessor,
+                          column.isMultiple
+                            ? e.currentTarget.files
+                            : e.currentTarget.files[0]
+                        )
+                      }
+                      disabled={isFormSending && column.enableEditing === false}
+                    />
+                  ) : column.isMultiple ? (
+                    <>
+                      <Autocomplete
+                        multiple
+                        autoComplete
+                        //id={column.accessorKey}
+                        key={index}
+                        value={formik.values[column.accessorKey] || []}
+                        //defaultValue={formik.values[column.accessorKey] || []}
+                        //defaultValue={[1, 2, 3, 4, 5, 6]}
+                        filterSelectedOptions
+                        options={column.options}
+                        renderInput={(params) => (
+                          <TextField
+                            key={`input-${index}`}
+                            name={column.header}
+                            label={column.header}
+                            disabled={
+                              isFormSending && column.enableEditing === false
+                            }
+                            {...params}
+                          />
+                        )}
+                        renderTags={(value, getTagProps) =>
+                          value.map((option, index) => (
+                            <Chip
+                              key={`chip-${index}`}
+                              variant="filled"
+                              label={option}
+                              color="secondary"
+                            />
+                          ))
+                        }
+                        onChange={(event, newValue) => {
+                          formik.setFieldValue(column.accessorKey, newValue);
+                        }}
+                        disabled={
+                          isFormSending || column.enableEditing === false
+                        }
+                      />
+                    </>
+                  ) : (
+                    <TextField
+                      key={index}
+                      label={column.header}
+                      name={column.accessorKey}
+                      value={formik.values[column.accessorKey]}
+                      onChange={formik.handleChange}
+                      multiline={column.isMultiline}
+                      inputProps={{
+                        disabled:
+                          isFormSending ||
+                          column.enableEditing === false ||
+                          false,
+                      }}
+                    />
+                  )}
+                </>
+              ))}
+            </Stack>
+          </form>
 
-        <Toolbar />
-        <Box display={isResponseSuccess === null ? "none" : "flex"}>
-          <Alert
-            severity={isResponseSuccess ? "success" : "error"}
-            sx={{ width: "100%" }}
+          <Toolbar />
+        </DialogContent>
+        <DialogActions sx={{ p: "1.25rem" }}>
+          <Button type="reset" onClick={onCloseHandler} startIcon={<Cancel />}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            onClick={formik.handleSubmit}
+            variant="contained"
+            startIcon={
+              isFormSending ? (
+                <CircularProgress size={24} />
+              ) : isRowToUpdateEmpty ? (
+                <Save />
+              ) : (
+                <Edit />
+              )
+            }
+            disabled={isFormSending}
           >
-            <AlertTitle>{isResponseSuccess ? "Success" : "Error"}</AlertTitle>
-            {isResponseSuccess
-              ? "Item added successfully!."
-              : "Oops! An error occurred while adding the item."}
-          </Alert>
-        </Box>
-      </DialogContent>
-      <DialogActions sx={{ p: "1.25rem" }}>
-        <Button type="reset" onClick={onCloseHandler} startIcon={<Cancel />}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          onClick={formik.handleSubmit}
-          variant="contained"
-          startIcon={isFormSending ? <CircularProgress size={24} /> : <Save />}
-          disabled={isFormSending}
+            {submitButtonLabel}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar open={isFormSubmitted}>
+        <Alert
+          severity={responseStatus.status}
+          variant="filled"
+          sx={{ width: "100%" }}
+          onClose={() => setIsFormSubmitted(false)}
         >
-          {isFormSending ? "SAVING..." : "SAVE"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <AlertTitle>{responseStatus.messageTitle}</AlertTitle>
+          {responseStatus.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
