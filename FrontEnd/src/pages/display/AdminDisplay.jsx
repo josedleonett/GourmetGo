@@ -42,6 +42,65 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
 
   //COLUMNS DEFINITION:
 
+  const bundlesDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "bundle/",
+    API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    columns: [
+      {
+        accessor: "galleryImages",
+        id: "image",
+        isFileType: true,
+        type: "file",
+        header: "Image",
+        size: 50,
+        Cell: ({ renderedCellValue, row }) => (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
+              <img
+                alt="cover"
+                width={"90%"}
+                loading="lazy"
+                src={API_BASE_IMAGE_URL + row.original.galleryImages[0]}
+              />
+              <span>{renderedCellValue}</span>
+            </Box>
+          </>
+        ),
+      },
+      {
+        accessorKey: "id",
+        header: "ID",
+        enableColumnOrdering: false,
+        enableEditing: false,
+        enableSorting: false,
+        size: 30,
+      },
+      {
+        accessorKey: "name",
+        header: "Name",
+        size: 140,
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "type",
+        header: "Plate type",
+        isMultiline: false,
+        size: 80,
+      },
+    ],
+  };
+
   const plateDataGridProps = {
     API_BASE_URL: API_BASE_URL + "plate/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
@@ -51,7 +110,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         id: "image",
         isFileType: true,
         type: "file",
-        //imgPostDir: "image",
         header: "Image",
         size: 50,
         Cell: ({ renderedCellValue, row }) => (
@@ -69,7 +127,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
               <span>{renderedCellValue}</span>
             </Box>
           </>
@@ -275,7 +332,10 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         <AdminPanelDrawerContainer sidebarMenuList={sidebarMenu} />
 
         <Routes>
-          <Route path="bundles" element={<AdminPanelBundlesContainer />} />
+          <Route
+            path="bundles"
+            element={<AdminPanelDataGridDisplay props={bundlesDataGridProps} />}
+          />
           <Route
             path="plates/starter"
             element={
