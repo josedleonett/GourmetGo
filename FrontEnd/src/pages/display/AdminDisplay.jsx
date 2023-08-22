@@ -3,20 +3,15 @@ import {
   Box,
   Chip,
   Input,
-  ListItem,
   TextField,
 } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
 import AdminPanelBundlesContainer from "../../components/container/AdminPanelBundlesContainer";
-import AdminPanelPlatesStarterContainer from "../../components/container/AdminPanelPlatesStarterContainer";
-import AdminPanelPlatesMainCourseContainer from "../../components/container/AdminPanelPlatesMainCourseContainer";
-import AdminPanelPlatesDessertContainer from "../../components/container/AdminPanelPlatesDessertContainer";
-import AdminPanelDrinksContainer from "../../components/container/AdminPanelDrinksContainer";
-import AdminPanelCategoriesContainer from "../../components/container/AdminPanelCategoriesContainer";
-import AdminPanelDataGridDisplay, { AdminPanelDataGridLoader } from "../../components/display/AdminPanelDataGridDisplay";
+import AdminPanelDataGridDisplay, {
+  //AdminPanelDataGridLoader,
+} from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
-import { useState } from "react";
 
 export const fakeBundlesIds = [
   "1",

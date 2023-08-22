@@ -60,3 +60,5 @@
 [2023-08-22 00:16:54] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
 [2023-08-22 00:24:05] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
 [2023-08-22 00:24:11] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-22 00:55:36] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
+[2023-08-22 00:56:13] [ ERROR] [GlobalHandlerException:18] Unsupported file format: jfif

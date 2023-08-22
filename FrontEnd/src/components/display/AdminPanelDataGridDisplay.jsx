@@ -34,7 +34,36 @@ import {
   Check,
 } from "@mui/icons-material";
 
-const AdminPanelDataGridDisplay = ({ props }) => {
+//FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
+// export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
+//   !data.length ? setIsLoading(true) : setIsRefetching(true);
+
+//   try {
+//     const response = await axios.get(API_BASE_URL);
+
+//     if (filter !== undefined) {
+//       const dataFiltered = response.data.filter(
+//         (item) => item.hasOwnProperty("type") && item.type === filter
+//       );
+//       setData(dataFiltered);
+//     } else {
+//       setData(response.data);
+//     }
+//     console.log(response.data);
+//   } catch (error) {
+//     setIsError(true);
+//     console.error("Error fetching data:", error);
+//   }
+
+//   setIsError(false);
+//   setIsLoading(false);
+//   setIsRefetching(false);
+
+//   return;
+// };
+
+
+const AdminPanelDataGridDisplay = ({ props, filter }) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
@@ -48,15 +77,26 @@ const AdminPanelDataGridDisplay = ({ props }) => {
   const [isRefetching, setIsRefetching] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
+    setIsRefetching(true);
+    
     getApiData();
-  }, []);
+  }, [columns]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
 
     try {
       const response = await axios.get(API_BASE_URL);
-      setData(response.data);
+
+      if (filter !== undefined) {
+        const dataFiltered = response.data.filter(
+          (item) => item.hasOwnProperty("type") && item.type === filter
+        );
+        setData(dataFiltered);
+      } else {
+        setData(response.data);
+      }
       console.log(response.data);
     } catch (error) {
       setIsError(true);
@@ -136,6 +176,10 @@ const AdminPanelDataGridDisplay = ({ props }) => {
     setData([...data]);
 
     const responseCode = postApiData(values);
+    if (responseCode===201) {
+      getApiData(); 
+    }
+    
     return responseCode;
   };
 
