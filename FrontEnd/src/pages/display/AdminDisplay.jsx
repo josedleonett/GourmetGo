@@ -54,7 +54,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   //RENDER DETAIL PANEL:
   const bundlesRenderDetailPanel = ({row}) => (
     <Container>
-      {console.log(row)}
       <Container>
         <List>
           <ListItem alignItems="flex-start">
@@ -163,7 +162,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                       >
                         {drinksItem.name}
                       </Typography>
-                      {` — ${drinksItem.description}`}
+                      {` — `}
                     </>
                   ))}
                 </>
@@ -174,9 +173,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       </Container>
     </Container>
   )
-
-  console.log("bundlesRenderDetailPanel:");
-  console.log(bundlesRenderDetailPanel);
 
   //COLUMNS DEFINITION:
   const bundlesDataGridProps = {

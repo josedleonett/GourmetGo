@@ -91,7 +91,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     setIsRefetching(true);
 
     getApiData();
-  }, [columns]);
+  }, [props]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
@@ -161,6 +161,14 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
         formData
       );
       const responseCode = response.status;
+      if (
+        responseCode === 200 ||
+        responseCode === 201 ||
+        responseCode === 204
+      ) {
+        console.log(responseCode);
+        getApiData();
+      }
       return responseCode;
     } catch (error) {
       const responseCode = error.response.status;
@@ -326,6 +334,7 @@ export const CreateUpdateItemModal = ({
     ? "SAVE"
     : "UPDATE";
 
+  console.log(rowToUpdate);
 
   const formik = useFormik({
     initialValues: rowToUpdate,
@@ -410,6 +419,7 @@ export const CreateUpdateItemModal = ({
   const onCloseHandler = () => {    
     formik.resetForm();
     onClose();
+    setIsFormSending(false)
     setTimeout( () => {
       // setResponseStatus({
       //   ...responseStatus,
@@ -512,6 +522,24 @@ export const CreateUpdateItemModal = ({
                       }}
                     />
                   )}
+
+                  {/* {!isRowToUpdateEmpty &&
+                    column.children.map((childrenSubField, index) => (
+                      <TextField
+                        key={index}
+                        label={`${formik.values}${childrenSubField}`}
+                        name={`${formik.values}${childrenSubField}`}
+                        value={`${formik.values[column.accessorKey.replace(".", "")][childrenSubField]}`}
+                        onChange={formik.handleChange}
+                        multiline={column.isMultiline}
+                        inputProps={{
+                          disabled:
+                            isFormSending ||
+                            column.enableEditing === false ||
+                            false,
+                        }}
+                      />
+                    ))} */}
                 </>
               ))}
             </Stack>
