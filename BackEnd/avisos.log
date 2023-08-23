@@ -120,3 +120,22 @@
 [2023-08-22 02:47:29] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
 [2023-08-22 02:47:38] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: MZCPZGT82G3T9DQ4; S3 Extended Request ID: f8Idmgv41GbyhmJPROcmc4+ieb7g6EuCkAITnoSaVq1D86WP/1TaGPCUWJjDavNvoOBvyGXWoWA=; Proxy: null)
 [2023-08-22 02:53:05] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: SVNDHYFF96MAPCWQ; S3 Extended Request ID: eD8MX3VWxrUtOlgsBeyRvD7hu9p0654Qlrl1TDwtaEiW7B63mkEQ3u6yl0LjwOx/wYxSD9/Y0zU=; Proxy: null)
+[2023-08-22 18:53:19] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-22 18:53:39] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-22 18:55:27] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 9K4QQC17FRSCKF7K; S3 Extended Request ID: j5mciMj22HgOg9/sVgST15KwV097BjUnoezas3DyXIWV2nC1L3Q8wWAbavj9pRZvpIXuXZyiTHw=; Proxy: null)
+[2023-08-22 21:04:28] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 1PZY3P5TMJ1W9YS6; S3 Extended Request ID: gM9onuTTfjHlFWqhXw7pfIbUrivjZIhri+k559ANhWI5wrPgtQe3ChNIiAIs3+/lUEvORnvi4+Q=; Proxy: null)
+[2023-08-22 21:16:45] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: WWZRQSRC13H4SWMH; S3 Extended Request ID: 1CMhWq/WW//tTVY0a5C77boEBSxmgujhXHh7/KXIWL6nSE1bD0fSHA7iwhui9caqxxZw83R7yt0=; Proxy: null)
+[2023-08-22 21:19:56] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:20:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:20:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:20:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:20:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:20:01] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:08] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: XSY2TTDY03340B5F; S3 Extended Request ID: e9SFt3VBEohLUr1yrWBnrA0skTKfkYtkqZFL6X0Oy6TkDDoLSm5Yoil7aT10PIt/Hbc2r61fRvg=; Proxy: null)
+[2023-08-22 21:23:09] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:23:11] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 21:34:03] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
