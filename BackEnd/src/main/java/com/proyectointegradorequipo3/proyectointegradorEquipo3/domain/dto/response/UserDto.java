@@ -3,21 +3,27 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.respo
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDto {
+public class UserDto {
+
     private Long id;
 
     private String name;
 
-    private String description;
+    private String lastName;
 
-    private String image;
+    private String email;
 
-    private Map<Long, String> bundles;
+    private String role;
+
+    private boolean isConfirmed;
+
+    private int emailResendAttempts = 0;
+
+    private LocalDateTime lastEmailResendDate;
+
 }

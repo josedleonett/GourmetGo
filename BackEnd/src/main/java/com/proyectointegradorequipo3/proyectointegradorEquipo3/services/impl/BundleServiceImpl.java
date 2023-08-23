@@ -88,12 +88,43 @@ public class BundleServiceImpl implements IBundleService {
                 .collect(Collectors.toList());
     }
 
+    public List<BundleDto> searchAllBundlesForCards() {
+        List<Bundle> bundles = bundleRepository.findAll();
+        return bundles.stream()
+                .map(bundle -> {
+                    BundleDto bundleDto = new BundleDto();
+
+                    bundleDto.setId(bundle.getId());
+                    bundleDto.setName(bundle.getName());
+                    bundleDto.setDescription(bundle.getDescription());
+                    bundleDto.setBundleImage(bundle.getImage());
+                    bundleDto.setGalleryImages(bundle.getGalleryImages());
+                    bundleDto.setRating(bundle.getRating());
+                    return bundleDto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public BundleDto searchBundleDtoById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return modelMapper.map(bundle, BundleDto.class);
+    }
+
+    public BundleDto searchBundleDtoByIdForCards(Long id) {
+        Bundle bundle = bundleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+        BundleDto bundleDto = new BundleDto();
+
+        bundleDto.setId(bundle.getId());
+        bundleDto.setName(bundle.getName());
+        bundleDto.setDescription(bundle.getDescription());
+        bundleDto.setBundleImage(bundle.getImage());
+        bundleDto.setGalleryImages(bundle.getGalleryImages());
+        bundleDto.setRating(bundle.getRating());
+        return bundleDto;
     }
 
 
