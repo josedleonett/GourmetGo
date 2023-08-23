@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,10 +8,13 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Component
@@ -24,14 +28,24 @@ public class JwtUtils {
     private String timeExpiration;
 
 
-    public String generateAccesToken(String username){
+    public String generateAccesToken(UserEntity userEntity) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userEntity.getEmail());
+        claims.put("name", userEntity.getName());
+        claims.put("lastName", userEntity.getLastName());
+        claims.put("role", userEntity.getAuthorities().iterator().next().getAuthority());
+
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject(userEntity.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+
 
 
     public boolean isTokenValid(String token){
