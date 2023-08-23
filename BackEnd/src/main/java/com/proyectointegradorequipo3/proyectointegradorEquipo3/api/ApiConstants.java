@@ -8,5 +8,7 @@ public interface ApiConstants {
 
     String CHARACTERISTIC_URI = "/v1/characteristic/";
 
+    String USER_URI = "/v1/user/";
+
     String ASSET_URI = "/v1/asset/";
 }

@@ -6,3 +6,20 @@
 [2023-08-21 23:37:42] [ ERROR] [GlobalHandlerException:18] class org.springframework.security.core.userdetails.User cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity (org.springframework.security.core.userdetails.User and com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity are in unnamed module of loader 'app')
 [2023-08-21 23:43:11] [ ERROR] [GlobalHandlerException:18] Cannot invoke "java.util.Collection.iterator()" because the return value of "com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity.getAuthorities()" is null
 [2023-08-21 23:50:51] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-23 12:11:01] [ ERROR] [GlobalHandlerException:60] User not found with id: 1
+[2023-08-23 12:48:13] [ ERROR] [GlobalHandlerException:18] User with name 'Leonard' not found
+[2023-08-23 12:48:20] [ ERROR] [GlobalHandlerException:18] User with name Leonard and lastnamedsaf not found
+[2023-08-23 12:52:07] [ ERROR] [GlobalHandlerException:18] User with name Leonard and lastname dsaf not found
+[2023-08-23 12:52:19] [ ERROR] [GlobalHandlerException:18] User with lastname 'dsaf' not found
+[2023-08-23 12:52:24] [ ERROR] [GlobalHandlerException:18] Fields empty
+[2023-08-23 13:06:40] [ ERROR] [GlobalHandlerException:18] Required request body is missing: public void com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.UserController.updateUser(java.lang.Long,com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.UserUpdateRequest)
+[2023-08-23 13:10:24] [ ERROR] [GlobalHandlerException:18] Required request parameter 'updateRequest' for method parameter type UserUpdateRequest is not present
+[2023-08-23 13:16:42] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
+[2023-08-23 13:17:14] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
+[2023-08-23 13:21:13] [ ERROR] [GlobalHandlerException:18] Content-Type 'multipart/form-data;boundary=--------------------------751443533092663558043125;charset=UTF-8' is not supported
+[2023-08-23 13:21:38] [ ERROR] [GlobalHandlerException:18] Content-Type 'multipart/form-data;boundary=--------------------------978009713487684147551396;charset=UTF-8' is not supported
+[2023-08-23 13:21:53] [ ERROR] [GlobalHandlerException:18] Required request body is missing: public void com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.UserController.modifyUser(java.lang.Long,com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.UserUpdateRequest)
+[2023-08-23 16:00:10] [ ERROR] [GlobalHandlerException:18] User with name 'Leonardo' not found
+[2023-08-23 16:02:57] [ ERROR] [GlobalHandlerException:18] User with id '17' not found
+[2023-08-23 16:03:09] [ ERROR] [GlobalHandlerException:18] Argument [ADMIN] of type [java.lang.String] did not match parameter type [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.ERole (n/a)]
+[2023-08-23 16:06:59] [ ERROR] [GlobalHandlerException:18] Argument [ADMIN] of type [java.lang.String] did not match parameter type [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.ERole (n/a)]
