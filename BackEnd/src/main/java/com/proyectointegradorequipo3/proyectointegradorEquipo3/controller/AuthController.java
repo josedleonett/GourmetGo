@@ -19,6 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -160,11 +162,10 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtUtils.generateAccesToken(authentication.getPrincipal().toString());
-        String name = optionalUser.get().getName();
-        String lastName = optionalUser.get().getLastName();
-        String email = optionalUser.get().getEmail();
-        return new ResponseEntity<>(new AuthResponse(token, name, lastName, email), HttpStatus.OK);
+        UserEntity userEntity = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        String token = jwtUtils.generateAccesToken(userEntity);
+
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser")
