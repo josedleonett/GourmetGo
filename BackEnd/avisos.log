@@ -23,3 +23,7 @@
 [2023-08-23 16:02:57] [ ERROR] [GlobalHandlerException:18] User with id '17' not found
 [2023-08-23 16:03:09] [ ERROR] [GlobalHandlerException:18] Argument [ADMIN] of type [java.lang.String] did not match parameter type [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.ERole (n/a)]
 [2023-08-23 16:06:59] [ ERROR] [GlobalHandlerException:18] Argument [ADMIN] of type [java.lang.String] did not match parameter type [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.ERole (n/a)]
+[2023-08-23 16:40:13] [ ERROR] [GlobalHandlerException:18] Could not write JSON: class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')
+[2023-08-23 16:47:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 6
+[2023-08-23 16:47:50] [ ERROR] [GlobalHandlerException:60] Category not found with id: 1
+[2023-08-23 18:48:21] [ ERROR] [GlobalHandlerException:18] java.nio.channels.ClosedChannelException

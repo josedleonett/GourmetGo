@@ -53,6 +53,14 @@ public class BundleController {
         return ResponseEntity.ok(bundleDtos);
     }
 
+    //====================Display all for card====================//
+
+    @GetMapping("/getAllForCard")
+    public ResponseEntity<List<BundleDto>> getAllBundlesForCard() {
+        List<BundleDto> bundleDtos = bundleService.searchAllBundlesForCards();
+        return ResponseEntity.ok(bundleDtos);
+    }
+
     //====================Display all by category id====================//
 
     @GetMapping("/byCategory/{id}")
@@ -60,6 +68,7 @@ public class BundleController {
         List<Long> bundles = categoryService.getBundleIdsByCategoryId(id);
         return ResponseEntity.ok(bundles);
     }
+
 
     //====================Display all by characteristic id====================//
 
@@ -72,10 +81,17 @@ public class BundleController {
 
     //====================Get one by id====================//
 
-
     @GetMapping("/{id}")
     public ResponseEntity<BundleDto> getBundleById(@PathVariable Long id) {
         BundleDto bundleDto = bundleService.searchBundleDtoById(id);
+        return ResponseEntity.ok(bundleDto);
+    }
+
+    //====================Get one by id For cards====================//
+
+    @GetMapping("/getByIdForCard/{id}")
+    public ResponseEntity<BundleDto> getBundleByIdForCards(@PathVariable Long id) {
+        BundleDto bundleDto = bundleService.searchBundleDtoByIdForCards(id);
         return ResponseEntity.ok(bundleDto);
     }
 
