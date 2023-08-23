@@ -10,12 +10,18 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Input,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   MenuItem,
   Snackbar,
   Stack,
@@ -33,6 +39,10 @@ import {
   Error,
   Check,
 } from "@mui/icons-material";
+import { BiDish } from "react-icons/bi";
+import { RiRestaurant2Line } from "react-icons/ri";
+import { GiPieSlice } from "react-icons/gi";
+import { MdLocalBar } from "react-icons/md";
 
 //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
 // export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
@@ -63,7 +73,7 @@ import {
 // };
 
 
-const AdminPanelDataGridDisplay = ({ props, filter }) => {
+const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
@@ -79,7 +89,7 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
-    
+
     getApiData();
   }, [columns]);
 
@@ -129,7 +139,6 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
       return responseCode;
-
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error create data:", error.response);
@@ -147,10 +156,12 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
         }
       }
 
-      const response = await axios.patch(API_BASE_URL + targetIdToUpdate, formData);
+      const response = await axios.patch(
+        API_BASE_URL + targetIdToUpdate,
+        formData
+      );
       const responseCode = response.status;
       return responseCode;
-
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error Update data:", error.response);
@@ -163,31 +174,29 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
       const response = await axios.delete(API_BASE_URL + targetIdToDelete);
       const responseCode = response.status;
       return responseCode;
-
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error delete data:", error.response);
       return responseCode;
     }
-  }
+  };
 
   const handleCreateNewRow = (values) => {
     data.push(values);
     setData([...data]);
 
     const responseCode = postApiData(values);
-    if (responseCode===201) {
-      getApiData(); 
+    if (responseCode === 201) {
+      getApiData();
     }
-    
+
     return responseCode;
   };
 
   const handleUpdateRow = (values) => {
-    setRowToUpdate(values)
-    setIsModalOpen(true)
+    setRowToUpdate(values);
+    setIsModalOpen(true);
   };
-
 
   const handleDeleteRow = useCallback(
     async (row) => {
@@ -196,9 +205,8 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
       }
 
       const responseCode = await deleteApiData(row.original.id);
-      
+
       if (responseCode === 204) {
-        
       }
       data.splice(row.index, 1);
       setData([...data]);
@@ -250,6 +258,7 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
             width: "100%",
           },
         }}
+        renderDetailPanel={renderDetailPanel}
         renderTopToolbarCustomActions={() => (
           <Button
             color="primary"
@@ -281,7 +290,7 @@ const AdminPanelDataGridDisplay = ({ props, filter }) => {
         columns={columns}
         onClose={() => {
           setIsModalOpen(false);
-          setRowToUpdate({})
+          setRowToUpdate({});
         }}
         onSubmitCreateHandler={handleCreateNewRow}
         onSubmitUpdateHandler={updateApiData}

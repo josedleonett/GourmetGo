@@ -117,3 +117,6 @@
 [2023-08-22 02:39:33] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
 [2023-08-22 02:39:34] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
 [2023-08-22 02:39:34] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 02:47:29] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 02:47:38] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: MZCPZGT82G3T9DQ4; S3 Extended Request ID: f8Idmgv41GbyhmJPROcmc4+ieb7g6EuCkAITnoSaVq1D86WP/1TaGPCUWJjDavNvoOBvyGXWoWA=; Proxy: null)
+[2023-08-22 02:53:05] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: SVNDHYFF96MAPCWQ; S3 Extended Request ID: eD8MX3VWxrUtOlgsBeyRvD7hu9p0654Qlrl1TDwtaEiW7B63mkEQ3u6yl0LjwOx/wYxSD9/Y0zU=; Proxy: null)

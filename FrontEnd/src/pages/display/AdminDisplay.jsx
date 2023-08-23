@@ -2,8 +2,15 @@ import {
   Autocomplete,
   Box,
   Chip,
+  Container,
+  Divider,
   Input,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
@@ -12,6 +19,10 @@ import AdminPanelDataGridDisplay, {
   //AdminPanelDataGridLoader,
 } from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
+import { BiDish } from "react-icons/bi";
+import { RiRestaurant2Line } from "react-icons/ri";
+import { GiPieSlice } from "react-icons/gi";
+import { MdLocalBar } from "react-icons/md";
 
 export const fakeBundlesIds = [
   "1",
@@ -40,19 +51,145 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
-  //COLUMNS DEFINITION:
+  //RENDER DETAIL PANEL:
+  const bundlesRenderDetailPanel = ({row}) => (
+    <Container>
+      {console.log(row)}
+      <Container>
+        <List>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <BiDish size="30" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Starter:"
+              secondary={
+                <>
+                  {row.original.starter && row.original.starter.map((starterItem) => (
+                    <>
+                      <Typography
+                        key={`starterItemId_${starterItem.id}`}
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {starterItem.name}
+                      </Typography>
+                      {` — ${starterItem.description}`}
+                    </>
+                  ))}
+                </>
+              }
+            />
+          </ListItem>
 
+          <Divider variant="inset" component="li" />
+
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <RiRestaurant2Line size="30" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Main Course:"
+              secondary={
+                <>
+                  {row.original.mainCourse && row.original.mainCourse.map((mainCourseItem) => (
+                    <>
+                      <Typography
+                        key={`mainCourseItemId_${mainCourseItem.id}`}
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {mainCourseItem.name}
+                      </Typography>
+                      {` — ${mainCourseItem.description}`}
+                    </>
+                  ))}
+                </>
+              }
+            />
+          </ListItem>
+
+          <Divider variant="inset" component="li" />
+
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <GiPieSlice size="30" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Dessert:"
+              secondary={
+                <>
+                  {row.original.desserts && row.original.desserts.map((dessertsItem) => (
+                    <>
+                      <Typography
+                        key={`dessertsItemId_${dessertsItem.id}`}
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {dessertsItem.name}
+                      </Typography>
+                      {` — ${dessertsItem.description}`}
+                    </>
+                  ))}
+                </>
+              }
+            />
+          </ListItem>
+
+          <Divider variant="inset" component="li" />
+
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <MdLocalBar size="30" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Drinks:"
+              secondary={
+                <>
+                  {row.original.drinks && row.original.drinks.map((drinksItem) => (
+                    <>
+                      <Typography
+                        key={`drinksItemId_${drinksItem.id}`}
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {drinksItem.name}
+                      </Typography>
+                      {` — ${drinksItem.description}`}
+                    </>
+                  ))}
+                </>
+              }
+            />
+          </ListItem>
+        </List>
+      </Container>
+    </Container>
+  )
+
+  console.log("bundlesRenderDetailPanel:");
+  console.log(bundlesRenderDetailPanel);
+
+  //COLUMNS DEFINITION:
   const bundlesDataGridProps = {
     API_BASE_URL: API_BASE_URL + "bundle/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "galleryImages",
+        accessor: "bundleImages",
         id: "image",
         isFileType: true,
         type: "file",
         header: "Image",
-        size: 50,
+        size: 30,
         Cell: ({ renderedCellValue, row }) => (
           <>
             <Box
@@ -66,7 +203,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 alt="cover"
                 width={"90%"}
                 loading="lazy"
-                src={API_BASE_IMAGE_URL + row.original.galleryImages[0]}
+                src={API_BASE_IMAGE_URL + row.original.bundleImage}
               />
               <span>{renderedCellValue}</span>
             </Box>
@@ -92,12 +229,12 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      {
-        accessorKey: "type",
-        header: "Plate type",
-        isMultiline: false,
-        size: 80,
-      },
+      // {
+      //   accessorKey: "starter",
+      //   header: "Starter",
+      //   isMultiline: false,
+      //   size: 80,
+      // },
     ],
   };
 
@@ -111,7 +248,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isFileType: true,
         type: "file",
         header: "Image",
-        size: 50,
+        size: 30,
         Cell: ({ renderedCellValue, row }) => (
           <>
             <Box
@@ -171,7 +308,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isFileType: true,
         type: "file",
         header: "Image",
-        size: 50,
+        size: 30,
         Cell: ({ renderedCellValue, row }) => (
           <>
             <Box
@@ -226,7 +363,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         type: "file",
         //imgPostDir: "image",
         header: "Image",
-        size: 50,
+        size: 30,
         Edit: ({ row }) => {
           return (
             <Input
@@ -334,7 +471,12 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         <Routes>
           <Route
             path="bundles"
-            element={<AdminPanelDataGridDisplay props={bundlesDataGridProps} />}
+            element={
+              <AdminPanelDataGridDisplay
+                props={bundlesDataGridProps}
+                renderDetailPanel={bundlesRenderDetailPanel}
+              />
+            }
           />
           <Route
             path="plates/starter"
