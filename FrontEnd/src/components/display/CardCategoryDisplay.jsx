@@ -44,7 +44,7 @@ const CardCategoryDisplay = ({ id, img, title, description }) => {
           >
             <CardMedia
               component="img"
-              image={img}
+              image={`http://localhost:8080/asset/get-object?key=${img}`}
               alt={title + " cover"}
               sx={{
                 width: {

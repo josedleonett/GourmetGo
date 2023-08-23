@@ -17,7 +17,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -54,9 +54,19 @@ const images = [
 ];
 
 const ProductDetailDisplay = () => {
+  const [bundles, setBundles] = useState();
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/v1/bundle/${id}`)
+      .then(response => response.json())
+      .then(data => setBundles(data))
+      .catch(error => console.error("Error fetching bundles:", error));
+  }, []);
+
+  console.log(bundles)
 
   function findPackageById(array, idToFind) {
     for (let i = 0; i < array.length; i++) {

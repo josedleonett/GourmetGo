@@ -25,26 +25,32 @@ const CardProductDisplay = ({
   rating,
   numberDiners,
 }) => {
+
   return (
     <Card raised>
-      <Carousel
-        autoPlay={false}
-        animation="slide"
-        indicatorContainerProps={{
-          style: { position: "absolute", top: "115px", zIndex: 1 },
-        }}
-      >
-        {img.map((image, i) => (
-          <CardMedia
-            component="img"
-            height="150px"
-            id={`image-${i}`}
-            image={image}
-            alt={`image-${i}`}
-            sx={{ position: "relative" }}
-          />
-        ))}
-      </Carousel>
+            {Array.isArray(img) && img.length > 0 ? (
+        <Carousel
+          autoPlay={false}
+          animation="slide"
+          indicatorContainerProps={{
+            style: { position: "absolute", top: "115px", zIndex: 1 },
+          }}
+        >
+          {img.map((img, i) => (
+            <CardMedia
+              key={`image-${i}`}
+              component="img"
+              height="150px"
+              id={`image-${i}`}
+              image={`http://localhost:8080/asset/get-object?key=${img}`}
+              alt={`image-${i}`}
+              sx={{ position: "relative" }}
+            />
+          ))}
+        </Carousel>
+      ) : (
+        <p>No images available</p>
+      )}
       <CardActionArea
         LinkComponent={Link}
         to={`/product/${id}`}
