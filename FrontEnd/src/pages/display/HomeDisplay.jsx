@@ -11,8 +11,6 @@ const HomeDisplay = ({ categories, bundles }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
 
-  console.log(categories)  
-
   return (
     <>
       <SearchBannerContainer filterList={categories} />

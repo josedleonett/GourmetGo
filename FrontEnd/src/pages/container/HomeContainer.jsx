@@ -11,7 +11,7 @@ const HomeContainer = () => {
       .then(data => setCategories(data))
       .catch(error => console.error("Error fetching categories:", error));
       
-    fetch("http://localhost:8080/v1/bundle/")
+    fetch("http://localhost:8080/v1/bundle/getAllForCard")
       .then(response => response.json())
       .then(data => setBundles(data))
       .catch(error => console.error("Error fetching bundles:", error));

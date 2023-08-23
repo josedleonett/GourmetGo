@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Asumiendo que estás utilizando React Router
+import { useParams } from 'react-router-dom';
 import ProductDetailDisplay from '../display/ProductDetailDisplay';
 
 const ProductDetailContainer = () => {
@@ -18,4 +18,4 @@ const ProductDetailContainer = () => {
   );
 }
 
-export default ProductDetailContainer;
+export default React.memo(ProductDetailContainer);

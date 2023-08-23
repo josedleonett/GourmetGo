@@ -53,7 +53,7 @@ const images = [
   },
 ];
 
-const ProductDetailDisplay = () => {
+const ProductDetailDisplay = ({productData}) => {
   const [bundles, setBundles] = useState();
   const packageList = cateringPackages;
   const { id } = useParams();

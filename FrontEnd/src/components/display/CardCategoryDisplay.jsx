@@ -77,10 +77,10 @@ const CardCategoryDisplay = ({ id, img, title, description }) => {
                   
                 },
               }}>
-              <Typography gutterBottom variant="h5">
+              <Typography gutterBottom variant="h6">
                 {title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{width: '85%'}}>
                 {description}
               </Typography>
             </CardContent>

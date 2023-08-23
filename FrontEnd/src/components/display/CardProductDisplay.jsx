@@ -80,27 +80,6 @@ const CardProductDisplay = ({
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
-
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            color={"secondary.main"}
-          >
-            <Tooltip title="Dinners numbers" placement="bottom-start" >
-            <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            color={"secondary.main"}
-          >
-              <GroupsIcon fontSize="small" />
-              <Typography variant="caption" fontFamily={"Roboto"}>
-                {numberDiners}
-              </Typography>
-              </Stack>
-            </Tooltip>
-          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>

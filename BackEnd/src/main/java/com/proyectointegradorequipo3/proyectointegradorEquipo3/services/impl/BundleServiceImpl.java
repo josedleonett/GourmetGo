@@ -88,23 +88,6 @@ public class BundleServiceImpl implements IBundleService {
                 .collect(Collectors.toList());
     }
 
-    public List<BundleDto> searchAllBundlesForCards() {
-        List<Bundle> bundles = bundleRepository.findAll();
-        return bundles.stream()
-                .map(bundle -> {
-                    BundleDto bundleDto = new BundleDto();
-
-                    bundleDto.setId(bundle.getId());
-                    bundleDto.setName(bundle.getName());
-                    bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setBundleImage(bundle.getImage());
-                    bundleDto.setGalleryImages(bundle.getGalleryImages());
-                    bundleDto.setRating(bundle.getRating());
-                    return bundleDto;
-                })
-                .collect(Collectors.toList());
-    }
-
 
     @Override
     public BundleDto searchBundleDtoById(Long id) {
@@ -126,6 +109,25 @@ public class BundleServiceImpl implements IBundleService {
         bundleDto.setRating(bundle.getRating());
         return bundleDto;
     }
+
+    public List<BundleDto> searchAllBundlesForCards() {
+        List<Bundle> bundles = bundleRepository.findAll();
+        return bundles.stream()
+                .map(bundle -> {
+                    BundleDto bundleDto = new BundleDto();
+
+                    bundleDto.setId(bundle.getId());
+                    bundleDto.setName(bundle.getName());
+                    bundleDto.setDescription(bundle.getDescription());
+                    bundleDto.setBundleImage(bundle.getImage());
+                    bundleDto.setGalleryImages(bundle.getGalleryImages());
+                    bundleDto.setRating(bundle.getRating());
+                    return bundleDto;
+                })
+                .collect(Collectors.toList());
+    }
+
+
 
 
 

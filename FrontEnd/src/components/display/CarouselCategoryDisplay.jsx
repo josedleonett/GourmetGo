@@ -4,17 +4,6 @@ import Carousel from "react-material-ui-carousel";
 import CardCategoryContainer from "../container/CardCategoryContainer";
 
 const CarouselCategoryDisplay = ({ elementsGroup }) => {
-
-  const CardSkeleton = () => {
-    return(
-      <Stack spacing={1}>
-      <Skeleton variant="rectangular" width={210} height={40} />
-      <Skeleton variant="circular" width={40} height={40} />
-      <Skeleton variant="rectangular" width={210} height={60} />
-      <Skeleton variant="rounded" width={210} height={60} />
-    </Stack>
-    )
-  }
   
   return (
     <Box>
