@@ -143,3 +143,7 @@
 [2023-08-22 22:09:45] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
 [2023-08-22 22:36:35] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
 [2023-08-22 22:36:38] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-24 02:08:06] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
+[2023-08-24 02:08:51] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
+[2023-08-24 02:10:25] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
+[2023-08-24 02:11:58] [ ERROR] [GlobalHandlerException:18] Required URI template variable 'userId' for method parameter type Long is not present

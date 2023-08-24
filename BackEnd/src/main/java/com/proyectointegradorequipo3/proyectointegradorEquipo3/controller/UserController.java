@@ -69,8 +69,9 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void modifyUser(@PathVariable Long userId, @RequestBody UserUpdateRequest updateRequest) throws RoleNotFoundException {
+    public void modifyUser(@PathVariable Long userId, @ModelAttribute UserUpdateRequest updateRequest) throws RoleNotFoundException {
         userService.modifyUser(userId, updateRequest);
     }
+
 
 }
