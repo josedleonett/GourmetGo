@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -18,5 +19,5 @@ public class CategoryDto {
 
     private String image;
 
-    private List<Long> bundles;
+    private Map<Long, String> bundles;
 }

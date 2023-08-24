@@ -200,7 +200,7 @@ export const cateringPackages = [
       },
       {
         id: 3,
-        name: "Wine",
+        name: "Red Wine",
         image: "../../public/images/image 15.png",
         price: 180,
         amount: 80,
@@ -633,7 +633,7 @@ export const cateringPackages = [
       },
       {
         id: 23,
-        name: "Italian Coca cola",
+        name: "Coca cola",
         image: "../../public/images/image 5.png",
         price: 140,
         amount: 60,
@@ -1129,7 +1129,7 @@ export const cateringPackages = [
       },
       {
         id: 47,
-        name: "Fruit Juice",
+        name: "Orange Juice",
         image: "../../public/images/image 4.png",
         price: 80,
         amount: 120,
@@ -1316,7 +1316,7 @@ export const cateringPackages = [
       },
       {
         id: 56,
-        name: "Fruit Juice",
+        name: "Orange Juice",
         image: "../../public/images/image 4.png",
         price: 80,
         amount: 120,

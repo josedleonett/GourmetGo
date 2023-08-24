@@ -17,7 +17,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -27,10 +27,46 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Lightbox from "react-lightbox-component";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 
-const ProductDetailDisplay = () => {
+const images = [
+  {
+    src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
+    width: "45vw",
+    height: "auto",
+    isSelected: false,
+    caption: "After Rain (Jeshu John - designerspics.com)",
+  },
+  {
+    src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
+    width: 320,
+    height: 212,
+    tags: [
+      { value: "Ocean", title: "Ocean" },
+      { value: "People", title: "People" },
+    ],
+    alt: "Boats (Jeshu John - designerspics.com)",
+  },
+
+  {
+    src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
+    width: 320,
+    height: 212,
+  },
+];
+
+const ProductDetailDisplay = ({productData}) => {
+  const [bundles, setBundles] = useState();
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/v1/bundle/${id}`)
+      .then(response => response.json())
+      .then(data => setBundles(data))
+      .catch(error => console.error("Error fetching bundles:", error));
+  }, []);
+
+  console.log(bundles)
 
   function findPackageById(array, idToFind) {
     for (let i = 0; i < array.length; i++) {

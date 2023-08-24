@@ -4,6 +4,7 @@ import Carousel from "react-material-ui-carousel";
 import CardCategoryContainer from "../container/CardCategoryContainer";
 
 const CarouselCategoryDisplay = ({ elementsGroup }) => {
+  
   return (
     <Box>
       <Carousel animation="fade" navButtonsAlwaysVisible={true}>
@@ -13,8 +14,8 @@ const CarouselCategoryDisplay = ({ elementsGroup }) => {
               <Grid item lg={2} key={j}>
                 <CardCategoryContainer
                   id={item.id}
-                  img={item.img}
-                  title={item.title}
+                  img={item.image}
+                  title={item.name}
                   description={item.description}
                 />
               </Grid>

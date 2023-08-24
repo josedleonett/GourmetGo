@@ -3,17 +3,14 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Container, Grid, useTheme, useMediaQuery } from "@mui/material";
-import CardContainer from "../../components/container/CardContainer";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
-import Carousel from "react-material-ui-carousel";
-import { categories, cateringPackages } from "../../test/dataApiSample";
-import CardProductContainer from "../../components/container/CardProductContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
 
-const HomeDisplay = ({ props }) => {
+const HomeDisplay = ({ categories, bundles }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
+
   return (
     <>
       <SearchBannerContainer filterList={categories} />
@@ -50,7 +47,7 @@ const HomeDisplay = ({ props }) => {
           Packages
         </Typography>
         <Container component="section" maxWidth="100vw">
-          <CardProductGridContainer list={cateringPackages} />
+          <CardProductGridContainer list={bundles} />
         </Container>
       </Box>
     </>
