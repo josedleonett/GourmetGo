@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +52,7 @@ public class BundleServiceImpl implements IBundleService {
 
 
     @Override
+    @Cacheable(value = "bundles", unless = "#result == null")
     public List<BundleDto> searchAllBundles() {
         List<Bundle> bundles = bundleRepository.findAll();
         return bundles.stream()
@@ -90,12 +92,14 @@ public class BundleServiceImpl implements IBundleService {
 
 
     @Override
+    @Cacheable(value = "bundleById", unless = "#result == null")
     public BundleDto searchBundleDtoById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return modelMapper.map(bundle, BundleDto.class);
     }
 
+    @Cacheable(value = "bundleForCardById", unless = "#result == null")
     public BundleDto searchBundleDtoByIdForCards(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
@@ -110,6 +114,7 @@ public class BundleServiceImpl implements IBundleService {
         return bundleDto;
     }
 
+    @Cacheable(value = "bundlesForCard", unless = "#result == null")
     public List<BundleDto> searchAllBundlesForCards() {
         List<Bundle> bundles = bundleRepository.findAll();
         return bundles.stream()
