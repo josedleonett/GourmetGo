@@ -35,6 +35,10 @@ const UserRegisterDisplay = () => {
     email: "",
   });
 
+  const [resendButtonVisible, setResendButtonVisible] = useState(false);
+  const [attemptsCount, setAttemptsCount] = useState(0);
+  const [showRetryMessage, setShowRetryMessage] = useState(false);
+
   const regex = /^[A-Za-z]+$/;
 
   const handleInputChange = (field, value) => {
@@ -64,6 +68,45 @@ const UserRegisterDisplay = () => {
               inputFields.find((input) => input.name === field).label
             }`,
     }));
+  };
+
+  const handleResendConfirmationEmail = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
+        {
+          method: "POST", 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Email Resent",
+          text: "A confirmation email has been resent to your email address.",
+        });
+        
+
+         if (attemptsCount < 2) {
+           console.log(attemptsCount)
+          
+           // Muestra el botón de reenvío y oculta el mensaje de reintentar
+           setShowRetryMessage(false);
+           setResendButtonVisible(true);
+           console.log(resendButtonVisible)
+            console.log(showRetryMessage)
+           setAttemptsCount(attemptsCount + 1);
+        } else if (attemptsCount === 2) {
+          // Oculta el botón de reenvío y muestra el mensaje de reintentar
+          setResendButtonVisible(false);
+          setShowRetryMessage(true);
+         }
+        }} catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -168,10 +211,31 @@ const UserRegisterDisplay = () => {
             title: "Successful registration",
             text: "Please check your email for further instructions.",
           });
+          setResendButtonVisible(true);
         } else {
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
         }
+        
+        // const newAttemptsCount = attemptsCount + 1;
+
+        // if (newAttemptsCount < 2) {
+        //   console.log(newAttemptsCount)
+          
+        //   // Muestra el botón de reenvío y oculta el mensaje de reintentar
+        //   setShowRetryMessage(false);
+        //   setResendButtonVisible(true);
+        //   console.log(resendButtonVisible)
+        //   console.log(showRetryMessage)
+        //   setAttemptsCount(newAttemptsCount);
+        // } else if (newAttemptsCount === 2) {
+        //   // Oculta el botón de reenvío y muestra el mensaje de reintentar
+        //   setResendButtonVisible(false);
+        //   setShowRetryMessage(true);
+        // }
+
+
+        
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -239,6 +303,21 @@ const UserRegisterDisplay = () => {
         >
           Create Account
         </Button>
+        {resendButtonVisible && (
+          <Button
+            variant="text"
+            type="button"
+            onClick={handleResendConfirmationEmail}
+            // ... (button styling)
+          >
+            Resend email
+          </Button>
+        )}
+        {showRetryMessage && (
+          <Typography sx={{ marginTop: "1rem", color: "red" }}>
+            You have reached the maximum number of resend attempts. Try again later.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
