@@ -119,6 +119,9 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   };
 
   const postApiData = async (propertiesToCreate) => {
+
+    //console.log(propertiesToCreate);
+    //console.log(typeOf, propertiesToCreate);
     try {
       const formData = new FormData();
 
@@ -345,14 +348,20 @@ export const CreateUpdateItemModal = ({
 
       let responseCode = -1;
       if (isRowToUpdateEmpty) {
-        responseCode = await onSubmitCreateHandler(values);
+        const convertedToArrayPlates = convertPropertiesToArray(values);
+        console.log(convertedToArrayPlates);
+        responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
         
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
-        if (modifiedProperties != null) {
+        console.log(modifiedProperties);
+        const convertedToArrayPlates = convertPropertiesToArray(modifiedProperties);
+        console.log(convertedToArrayPlates);
+
+        if (convertedToArrayPlates != null) {
           responseCode = await onSubmitUpdateHandler(
             values.id,
-            modifiedProperties
+            convertedToArrayPlates
           );
           
         } else {
@@ -415,6 +424,28 @@ export const CreateUpdateItemModal = ({
     return modifiedProperties;
   };
 
+  function convertPropertiesToArray(obj) {
+    const newObj = { ...obj };
+  
+    if (newObj.starter) {
+      newObj.starter = [newObj.starter.name];
+    }
+  
+    if (newObj.mainCourse) {
+      newObj.mainCourse = [newObj.mainCourse.name];
+    }
+  
+    if (newObj.desserts) {
+      newObj.desserts = [newObj.desserts.name];
+    }
+  
+    if (newObj.drinks) {
+      newObj.drinks = [newObj.drinks.name];
+    }
+  
+    return newObj;
+  };
+
 
   const onCloseHandler = () => {    
     formik.resetForm();
@@ -452,18 +483,21 @@ export const CreateUpdateItemModal = ({
                     <Input
                       id={column.accessorKey}
                       type="file"
-                      key={index}
+                      key={column.accessorKey}
                       label={column.header}
                       name={column.categoryImg || column.accessorKey}
                       onChange={(e) =>
                         formik.setFieldValue(
-                          column.imgPostDir || column.accessor,
-                          column.isMultiple
+                          column.accessor,
+                          column.isMultiple === true
                             ? e.currentTarget.files
                             : e.currentTarget.files[0]
                         )
                       }
                       disabled={isFormSending && column.enableEditing === false}
+                      inputProps={{
+                        multiple: column.isMultiple,
+                      }}
                     />
                   ) : column.isMultiple ? (
                     <>
@@ -474,7 +508,7 @@ export const CreateUpdateItemModal = ({
                         key={index}
                         value={formik.values[column.accessorKey] || []}
                         //defaultValue={formik.values[column.accessorKey] || []}
-                        //defaultValue={[1, 2, 3, 4, 5, 6]}
+                        defaultValue={[1, 2, 3, 4, 5, 6]}
                         filterSelectedOptions
                         options={column.options}
                         renderInput={(params) => (

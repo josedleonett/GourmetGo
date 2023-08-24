@@ -4,12 +4,14 @@ import {
   Chip,
   Container,
   Divider,
+  IconButton,
   Input,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
@@ -23,6 +25,7 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
+import { Delete, Edit } from "@mui/icons-material";
 
 export const fakeBundlesIds = [
   "1",
@@ -52,7 +55,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
   //RENDER DETAIL PANEL:
-  const bundlesRenderDetailPanel = ({row}) => (
+  const bundlesRenderDetailPanel = ({ row }) => (
     <Container>
       <Container>
         <List>
@@ -64,20 +67,41 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               primary="Starter:"
               secondary={
                 <>
-                  {row.original.starter && row.original.starter.map((starterItem) => (
-                    <>
-                      <Typography
-                        key={`starterItemId_${starterItem.id}`}
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {starterItem.name}
-                      </Typography>
-                      {` — ${starterItem.description}`}
-                    </>
-                  ))}
+                  {row.original.starter &&
+                    row.original.starter.map((starterItem) => (
+                      <>
+                        <Typography
+                          key={`starterItemId_${starterItem.id}`}
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {starterItem.name}
+                        </Typography>
+                        {` — ${starterItem.description}`}
+
+                        <Box sx={{ display: "flex", gap: "1rem" }}>
+                          <Tooltip arrow placement="left" title="Edit">
+                            <IconButton
+                              size="small"
+                              onClick={() => handleUpdateRow(row.original)}
+                            >
+                              <Edit fontSize="inherit" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip arrow placement="right" title="Delete">
+                            <IconButton
+                              color="error"
+                              size="small"
+                              onClick={() => handleDeleteRow(row)}
+                            >
+                              <Delete fontSize="inherit"/>
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      </>
+                    ))}
                 </>
               }
             />
@@ -93,20 +117,21 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               primary="Main Course:"
               secondary={
                 <>
-                  {row.original.mainCourse && row.original.mainCourse.map((mainCourseItem) => (
-                    <>
-                      <Typography
-                        key={`mainCourseItemId_${mainCourseItem.id}`}
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {mainCourseItem.name}
-                      </Typography>
-                      {` — ${mainCourseItem.description}`}
-                    </>
-                  ))}
+                  {row.original.mainCourse &&
+                    row.original.mainCourse.map((mainCourseItem) => (
+                      <>
+                        <Typography
+                          key={`mainCourseItemId_${mainCourseItem.id}`}
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {mainCourseItem.name}
+                        </Typography>
+                        {` — ${mainCourseItem.description}`}
+                      </>
+                    ))}
                 </>
               }
             />
@@ -122,20 +147,21 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               primary="Dessert:"
               secondary={
                 <>
-                  {row.original.desserts && row.original.desserts.map((dessertsItem) => (
-                    <>
-                      <Typography
-                        key={`dessertsItemId_${dessertsItem.id}`}
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {dessertsItem.name}
-                      </Typography>
-                      {` — ${dessertsItem.description}`}
-                    </>
-                  ))}
+                  {row.original.desserts &&
+                    row.original.desserts.map((dessertsItem) => (
+                      <>
+                        <Typography
+                          key={`dessertsItemId_${dessertsItem.id}`}
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {dessertsItem.name}
+                        </Typography>
+                        {` — ${dessertsItem.description}`}
+                      </>
+                    ))}
                 </>
               }
             />
@@ -151,20 +177,21 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               primary="Drinks:"
               secondary={
                 <>
-                  {row.original.drinks && row.original.drinks.map((drinksItem) => (
-                    <>
-                      <Typography
-                        key={`drinksItemId_${drinksItem.id}`}
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {drinksItem.name}
-                      </Typography>
-                      {` — `}
-                    </>
-                  ))}
+                  {row.original.drinks &&
+                    row.original.drinks.map((drinksItem) => (
+                      <>
+                        <Typography
+                          key={`drinksItemId_${drinksItem.id}`}
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {drinksItem.name}
+                        </Typography>
+                        {` — `}
+                      </>
+                    ))}
                 </>
               }
             />
@@ -172,7 +199,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         </List>
       </Container>
     </Container>
-  )
+  );
 
   //COLUMNS DEFINITION:
   const bundlesDataGridProps = {
@@ -180,7 +207,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "bundleImages",
+        accessor: "image",
         id: "image",
         isFileType: true,
         type: "file",
@@ -199,12 +226,15 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 alt="cover"
                 width={"90%"}
                 loading="lazy"
-                src={API_BASE_IMAGE_URL + row.original.bundleImage}
+                src={API_BASE_IMAGE_URL + row.original.image}
               />
               <span>{renderedCellValue}</span>
             </Box>
           </>
         ),
+        // children: [
+        //   "categories", "desserts",
+        // ]
       },
       {
         accessorKey: "id",
@@ -225,12 +255,31 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      // {
-      //   accessorKey: "starter",
-      //   header: "Starter",
-      //   isMultiline: false,
-      //   size: 80,
-      // },
+      {
+        accessorKey: "starter[id]",
+        header: "Starter id",
+        isMultiple: true,
+        isMultiline: false,
+        options: [1,2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "starter[name]",
+        header: "Starter",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "galleryImages",
+        header: "Gallery",
+        isMultiline: false,
+        type: "file",
+        isFileType: true,
+        isMultiple: true,
+        size: 80,
+      },
     ],
   };
 
