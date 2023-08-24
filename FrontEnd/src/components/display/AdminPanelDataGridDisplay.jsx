@@ -38,6 +38,7 @@ import {
   Cancel,
   Error,
   Check,
+  Label,
 } from "@mui/icons-material";
 import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -120,12 +121,16 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
 
   const postApiData = async (propertiesToCreate) => {
 
-    //console.log(propertiesToCreate);
-    //console.log(typeOf, propertiesToCreate);
     try {
       const formData = new FormData();
 
       for (const key in propertiesToCreate) {
+        if (key === "galleryImages") {
+          propertiesToCreate.galleryImages.forEach((image) => {
+            formData.append("galleryImages", image);
+          });
+          continue;
+        }
         if (propertiesToCreate.hasOwnProperty(key)) {
           formData.append(key, propertiesToCreate[key]);
         }
@@ -155,6 +160,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
 
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
+
           formData.append(key, propertiesToUpdate[key]);
         }
       }
@@ -351,11 +357,11 @@ export const CreateUpdateItemModal = ({
         const convertedToArrayPlates = convertPropertiesToArray(values);
         console.log(convertedToArrayPlates);
         responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
-        
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
         console.log(modifiedProperties);
-        const convertedToArrayPlates = convertPropertiesToArray(modifiedProperties);
+        const convertedToArrayPlates =
+          convertPropertiesToArray(modifiedProperties);
         console.log(convertedToArrayPlates);
 
         if (convertedToArrayPlates != null) {
@@ -363,7 +369,6 @@ export const CreateUpdateItemModal = ({
             values.id,
             convertedToArrayPlates
           );
-          
         } else {
           onCloseHandler();
         }
@@ -372,13 +377,12 @@ export const CreateUpdateItemModal = ({
       setIsFormSubmitted(true);
       console.log(responseCode);
 
-      if ((responseCode === -1)) {
+      if (responseCode === -1) {
         setResponseStatus({
           status: "info",
           message: "Anything was modified",
           messageTitle: "Info",
         });
-
       } else if (responseCode === 201 || responseCode === 204) {
         setResponseStatus({
           ...responseStatus,
@@ -424,34 +428,57 @@ export const CreateUpdateItemModal = ({
     return modifiedProperties;
   };
 
-  function convertPropertiesToArray(obj) {
-    const newObj = { ...obj };
-  
-    if (newObj.starter) {
-      newObj.starter = [newObj.starter.name];
-    }
-  
-    if (newObj.mainCourse) {
-      newObj.mainCourse = [newObj.mainCourse.name];
-    }
-  
-    if (newObj.desserts) {
-      newObj.desserts = [newObj.desserts.name];
-    }
-  
-    if (newObj.drinks) {
-      newObj.drinks = [newObj.drinks.name];
-    }
-  
-    return newObj;
-  };
+  function convertPropertiesToArray(inputObject) {
+    const outputObject = { ...inputObject };
 
+    if (outputObject.starter && typeof outputObject.starter === "object") {
+      outputObject.starter = [outputObject.starter.name];
+    }
 
-  const onCloseHandler = () => {    
+    if (
+      outputObject.mainCourse &&
+      typeof outputObject.mainCourse === "object"
+    ) {
+      outputObject.mainCourse = [outputObject.mainCourse.name];
+    }
+
+    if (outputObject.desserts && typeof outputObject.desserts === "object") {
+      outputObject.desserts = [outputObject.desserts.name];
+    }
+
+    if (outputObject.drinks && typeof outputObject.drinks === "object") {
+      outputObject.drinks = [outputObject.drinks.name];
+    }
+
+    if (
+      outputObject.characteristics &&
+      typeof outputObject.drinks === "object"
+    ) {
+      outputObject.characteristics = [outputObject.characteristics.id];
+    }
+
+    if (
+      outputObject.categories &&
+      typeof outputObject.drinks === "object"
+    ) {
+      outputObject.categories = [outputObject.categories.id];
+    }
+
+    if (
+      outputObject.galleryImages &&
+      outputObject.galleryImages instanceof FileList
+    ) {
+      outputObject.galleryImages = Array.from(outputObject.galleryImages);
+    }
+
+    return outputObject;
+  }
+
+  const onCloseHandler = () => {
     formik.resetForm();
     onClose();
-    setIsFormSending(false)
-    setTimeout( () => {
+    setIsFormSending(false);
+    setTimeout(() => {
       // setResponseStatus({
       //   ...responseStatus,
       //   status: null,
@@ -480,25 +507,30 @@ export const CreateUpdateItemModal = ({
               {columns.map((column, index) => (
                 <>
                   {column.isFileType ? (
-                    <Input
-                      id={column.accessorKey}
-                      type="file"
-                      key={column.accessorKey}
-                      label={column.header}
-                      name={column.categoryImg || column.accessorKey}
-                      onChange={(e) =>
-                        formik.setFieldValue(
-                          column.accessor,
-                          column.isMultiple === true
-                            ? e.currentTarget.files
-                            : e.currentTarget.files[0]
-                        )
-                      }
-                      disabled={isFormSending && column.enableEditing === false}
-                      inputProps={{
-                        multiple: column.isMultiple,
-                      }}
-                    />
+                    <>
+                      <Typography>{column.accessorKey}</Typography>
+                      <Input
+                        id={column.accessorKey}
+                        type="file"
+                        key={column.accessorKey}
+                        label={column.header}
+                        name={column.categoryImg || column.accessorKey}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            column.accessorKey,
+                            column.isMultiple === true
+                              ? e.currentTarget.files
+                              : e.currentTarget.files[0]
+                          )
+                        }
+                        disabled={
+                          isFormSending && column.enableEditing === false
+                        }
+                        inputProps={{
+                          multiple: column.isMultiple,
+                        }}
+                      />
+                    </>
                   ) : column.isMultiple ? (
                     <>
                       <Autocomplete
@@ -556,24 +588,6 @@ export const CreateUpdateItemModal = ({
                       }}
                     />
                   )}
-
-                  {/* {!isRowToUpdateEmpty &&
-                    column.children.map((childrenSubField, index) => (
-                      <TextField
-                        key={index}
-                        label={`${formik.values}${childrenSubField}`}
-                        name={`${formik.values}${childrenSubField}`}
-                        value={`${formik.values[column.accessorKey.replace(".", "")][childrenSubField]}`}
-                        onChange={formik.handleChange}
-                        multiline={column.isMultiline}
-                        inputProps={{
-                          disabled:
-                            isFormSending ||
-                            column.enableEditing === false ||
-                            false,
-                        }}
-                      />
-                    ))} */}
                 </>
               ))}
             </Stack>

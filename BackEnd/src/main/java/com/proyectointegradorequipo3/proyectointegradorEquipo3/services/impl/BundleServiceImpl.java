@@ -60,7 +60,7 @@ public class BundleServiceImpl implements IBundleService {
                     bundleDto.setId(bundle.getId());
                     bundleDto.setName(bundle.getName());
                     bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setBundleImage(bundle.getImage());
+                    bundleDto.setImage(bundle.getImage());
                     bundleDto.setGalleryImages(bundle.getGalleryImages());
                     bundleDto.setDrinks(bundle.getDrinks());
                     bundleDto.setCategories(bundle.getCategories());
@@ -104,7 +104,7 @@ public class BundleServiceImpl implements IBundleService {
         bundleDto.setId(bundle.getId());
         bundleDto.setName(bundle.getName());
         bundleDto.setDescription(bundle.getDescription());
-        bundleDto.setBundleImage(bundle.getImage());
+        bundleDto.setImage(bundle.getImage());
         bundleDto.setGalleryImages(bundle.getGalleryImages());
         bundleDto.setRating(bundle.getRating());
         return bundleDto;
@@ -119,7 +119,7 @@ public class BundleServiceImpl implements IBundleService {
                     bundleDto.setId(bundle.getId());
                     bundleDto.setName(bundle.getName());
                     bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setBundleImage(bundle.getImage());
+                    bundleDto.setImage(bundle.getImage());
                     bundleDto.setGalleryImages(bundle.getGalleryImages());
                     bundleDto.setRating(bundle.getRating());
                     return bundleDto;

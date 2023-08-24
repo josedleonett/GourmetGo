@@ -80,26 +80,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           {starterItem.name}
                         </Typography>
                         {` — ${starterItem.description}`}
-
-                        <Box sx={{ display: "flex", gap: "1rem" }}>
-                          <Tooltip arrow placement="left" title="Edit">
-                            <IconButton
-                              size="small"
-                              onClick={() => handleUpdateRow(row.original)}
-                            >
-                              <Edit fontSize="inherit" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip arrow placement="right" title="Delete">
-                            <IconButton
-                              color="error"
-                              size="small"
-                              onClick={() => handleDeleteRow(row)}
-                            >
-                              <Delete fontSize="inherit"/>
-                            </IconButton>
-                          </Tooltip>
-                        </Box>
                       </>
                     ))}
                 </>
@@ -207,7 +187,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "image",
+        accessorKey: "image",
         id: "image",
         isFileType: true,
         type: "file",
@@ -232,9 +212,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
             </Box>
           </>
         ),
-        // children: [
-        //   "categories", "desserts",
-        // ]
       },
       {
         accessorKey: "id",
@@ -266,6 +243,46 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "starter[name]",
         header: "Starter",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "mainCourse[name]",
+        header: "Main Course",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "desserts[name]",
+        header: "Desserts",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "drinks[name]",
+        header: "Drinks",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "characteristics[id]",
+        header: "Characteristics",
+        //isMultiple: true,
+        isMultiline: false,
+        options: ["Caprese Salad",2,5,4],
+        size: 80,
+      },
+      {
+        accessorKey: "categories[id]",
+        header: "Categories",
         //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad",2,5,4],
