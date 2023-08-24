@@ -12,6 +12,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUser
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt.JwtUtils;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.EmailService;
 import jakarta.transaction.Transactional;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,7 @@ public class AuthController {
 
 
     @PostMapping("/createUser")
+    @Synchronized
     public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateRequest createUserDTO) throws IOException {
 
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {
