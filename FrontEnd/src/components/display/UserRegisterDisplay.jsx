@@ -210,41 +210,12 @@ const UserRegisterDisplay = () => {
             icon: "success",
             title: "Successful registration",
             text: "Please check your email for further instructions.",
-            footer: (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleResendEmailClick}
-              >
-                Resend Email
-              </Button>
-            ),
           });
           setResendButtonVisible(true);
         } else {
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
-        }
-        
-        // const newAttemptsCount = attemptsCount + 1;
-
-        // if (newAttemptsCount < 2) {
-        //   console.log(newAttemptsCount)
-          
-        //   // Muestra el botón de reenvío y oculta el mensaje de reintentar
-        //   setShowRetryMessage(false);
-        //   setResendButtonVisible(true);
-        //   console.log(resendButtonVisible)
-        //   console.log(showRetryMessage)
-        //   setAttemptsCount(newAttemptsCount);
-        // } else if (newAttemptsCount === 2) {
-        //   // Oculta el botón de reenvío y muestra el mensaje de reintentar
-        //   setResendButtonVisible(false);
-        //   setShowRetryMessage(true);
-        // }
-
-
-        
+        }        
       } catch (error) {
         console.error("An error occurred:", error);
       }

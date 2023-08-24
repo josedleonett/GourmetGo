@@ -15,141 +15,131 @@
 [2023-08-19 18:48:36] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
 [2023-08-19 19:33:40] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
 [2023-08-19 19:33:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
-=======
-[2023-08-19 18:44:11] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Red wine
-[2023-08-19 19:31:34] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-19 19:45:21] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Key lime pie
-[2023-08-21 14:42:31] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 15:14:14] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
-[2023-08-21 15:14:30] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
-[2023-08-21 15:20:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 15:21:46] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
-[2023-08-21 15:22:10] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
-[2023-08-21 15:22:54] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.List' for property 'categories'; For input string: "InternationalBuffet"]] 
-[2023-08-21 15:23:20] [ ERROR] [GlobalHandlerException:54] Plate with name 'Wedding cake' not found
-[2023-08-21 15:23:39] [ ERROR] [GlobalHandlerException:54] Plate with name 'Wedding Cake' not found
-[2023-08-21 15:26:12] [ ERROR] [GlobalHandlerException:18] Ids must not be null
-[2023-08-21 15:27:57] [ ERROR] [GlobalHandlerException:18] Ids must not be null
-[2023-08-21 15:28:05] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
-[2023-08-21 15:29:55] [ ERROR] [GlobalHandlerException:18] Ids must not be null
-[2023-08-21 15:30:22] [ ERROR] [GlobalHandlerException:18] Ids must not be null
-[2023-08-21 15:39:17] [ ERROR] [GlobalHandlerException:54] Plate with name 'Churros
-churros' not found
-[2023-08-21 15:51:14] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mediterranean Platter' not found
-[2023-08-21 15:51:28] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mediterranean platter' not found
-[2023-08-21 16:34:20] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mango sticky rice' not found
-[2023-08-21 16:34:42] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mango sticky rise' not found
-[2023-08-21 16:45:43] [ ERROR] [GlobalHandlerException:54] Plate with name 'Cornbread' not found
-[2023-08-21 16:56:40] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 16:57:09] [ ERROR] [GlobalHandlerException:54] Plate with name 'Creme Brulée' not found
-[2023-08-21 16:57:36] [ ERROR] [GlobalHandlerException:54] Plate with name 'Creme brulée' not found
-[2023-08-21 17:06:56] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 17:07:21] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
-[2023-08-21 17:07:41] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
-[2023-08-21 17:10:44] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
-[2023-08-21 17:16:01] [ ERROR] [GlobalHandlerException:54] Plate with name 'Chicken tikka masala' not found
-[2023-08-21 17:19:49] [ ERROR] [GlobalHandlerException:54] Plate with name 'Gulab jamun' not found
-[2023-08-21 21:13:49] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 21:19:07] [ ERROR] [GlobalHandlerException:54] Plate with name 'Chicken nuggets' not found
-[2023-08-21 21:37:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 21:40:02] [ ERROR] [GlobalHandlerException:42] Drink with name 'Orange juice' not found
-[2023-08-21 21:47:29] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 21:51:00] [ ERROR] [GlobalHandlerException:42] Drink with name 'Soft drinks' not found
-[2023-08-21 22:01:54] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
-[2023-08-21 22:11:58] [ ERROR] [GlobalHandlerException:54] Plate with name 'Lobster bisque' not found
-[2023-08-21 22:23:16] [ ERROR] [GlobalHandlerException:54] Plate with name 'Stuffed mushrooms' not found
-[2023-08-21 23:40:21] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-21 23:41:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:07:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: S4ZVBP9GC7MPD1T7; S3 Extended Request ID: HXMVHZ1XV2UnAOp6wQ+SpMMloY3DI2U9/WQGwYe3+sSxjVFFTcNHXwymAsqHnZHiwVCY84RoTHg=; Proxy: null)
-[2023-08-22 19:08:10] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: HDCBB993QFNMDV3V; S3 Extended Request ID: mSYkmYcbGA5LSV7mvdhGRKnySbVU7NctLn7TD99QgTJDwoQ5IcSjOWwxGJlYFway7Rxan9IsDP8=; Proxy: null)
-[2023-08-22 19:10:37] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: C0GP23EXF2ANHXQB; S3 Extended Request ID: A6Px9CSgKU3TmtQVla0mv2yCenRIsoEMviI07AUkDKVfZVTZdq4NZ24QTa9ZbElg+SQyfNHXHfQ=; Proxy: null)
-[2023-08-22 19:13:28] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: YCCENJZR0W91SQGA; S3 Extended Request ID: MrhDNjSp+SnF4OD76mfpkjs/z1HNqisSwFgsqRsSahZueWcCtax/Y1UHjq4/9eByus+BueWy4hI=; Proxy: null)
-[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:28:02] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:28:42] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:17] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:49] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:29:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:30:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:31:18] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:31:53] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:44:45] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:44:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:44:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:09] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:43] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:51:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:52:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:52:29] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:55:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:37] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 19:56:45] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:04:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:41:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
-[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
->>>>>>> b706de9aee98efa42235e3f4ac51bfab6b326094
+[2023-08-20 16:31:15] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30117ms.] [n/a]
+[2023-08-20 16:43:15] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30072ms.] [n/a]
+[2023-08-21 19:01:43] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30258ms.] [n/a]
+[2023-08-21 19:01:47] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-21 19:15:06] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:15:06] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:15:07] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30117ms.] [n/a]
+[2023-08-21 19:15:13] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:15:18] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:15:25] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:15:33] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:23] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:28] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:30] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:42] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:55] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 19:16:57] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:01:56] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:05:18] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:06:40] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:15:44] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:15:48] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:30:57] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-21 20:37:50] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30429ms.] [n/a]
+[2023-08-21 20:37:52] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 20:38:00] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 21:00:55] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30168ms.] [n/a]
+[2023-08-21 21:53:26] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 21:53:27] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 21:53:27] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30173ms.] [n/a]
+[2023-08-21 21:53:57] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-21 21:57:01] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+[2023-08-22 20:06:28] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30215ms.] [n/a]
+[2023-08-22 20:07:10] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:07:38] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:08:37] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:10:16] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:10:17] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:10:19] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:10:19] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-08-22 20:16:15] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30110ms.] [n/a]
+[2023-08-22 20:18:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:18:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:18:51] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:29:55] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30144ms.] [n/a]
+[2023-08-22 20:30:02] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:30:03] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:30:33] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:30:52] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:31:07] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:31:22] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:31:22] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:31:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:31:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:31:43] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:31:43] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:33:18] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:33:18] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:33:30] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 20:33:31] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:48:03] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30159ms.] [n/a]
+[2023-08-22 20:48:27] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:48:41] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:48:43] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:48:45] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:48:45] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:49:09] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:49:21] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:49:28] [ ERROR] [GlobalHandlerException:18] query did not return a unique result: 2
+[2023-08-22 20:52:25] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:29] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:31] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:33] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:37] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:48] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 20:52:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:02:34] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30171ms.] [n/a]
+[2023-08-22 21:02:37] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 21:04:24] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:04:26] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:10] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30132ms.] [n/a]
+[2023-08-22 21:18:11] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 21:18:48] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:50] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:51] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:53] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:55] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:18:57] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:21:55] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:21:56] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:49] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:53] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:53] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:54] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:27:56] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:38:21] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 21:40:24] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:40:26] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:49:36] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30109ms.] [n/a]
+[2023-08-22 21:49:46] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+[2023-08-22 21:52:27] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 21:59:09] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30563ms.] [n/a]
+[2023-08-22 22:03:15] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:03:16] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:03:16] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:03:16] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:03:18] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:03:25] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:09:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:09:45] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:36:35] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."
+[2023-08-22 22:36:38] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "You have exceeded the maximum number of resend attempts. Please try again later."

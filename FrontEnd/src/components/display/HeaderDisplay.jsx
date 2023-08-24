@@ -195,6 +195,15 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                   >
                     HOME
                   </Button>
+                  {localStorage.getItem("role") === "ADMIN" && (
+                  <Button component={Link} to="/administration-panel" variant="contained"
+                  sx={{
+                    "&:hover": { backgroundColor: "blue" },
+                    transition: "background-color 0.3s",
+                  }}>
+                    Administration Panel
+                  </Button>
+                  )}
                   <Button
                     variant="contained"
                     onClick={handleLogout}
@@ -203,8 +212,10 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                       transition: "background-color 0.3s",
                     }}
                   >
+                    
                     LOG OUT
                   </Button>
+                  
                   <Avatar
                     onClick={() => setUserDrawerOpen(true)}
                     sx={{

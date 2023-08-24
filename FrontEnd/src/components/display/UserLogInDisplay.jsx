@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import Swal from 'sweetalert2';
+import jwtDecode from 'jwt-decode';
 
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
   });
+
+  const [accessToken, setAccessToken] = useState ();
 
   const [inputSuccess, setInputSuccess] = useState({
     password: false,
@@ -38,11 +41,20 @@ const UserLogInDisplay = () => {
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
+        
+        // Guarda el token en el local storage
         localStorage.setItem("tokenType", data.tokenType);
         localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("name", data.name);
-        localStorage.setItem("lastName", data.lastName);
-        localStorage.setItem("email", data.email);
+      
+        // Decodifica el token para obtener los datos
+        const decodedToken = jwtDecode(data.accessToken);
+      
+        // Guarda los datos en el local storage
+        localStorage.setItem("name", decodedToken.name);
+        localStorage.setItem("lastName", decodedToken.lastName);
+        localStorage.setItem("email", decodedToken.email);
+        localStorage.setItem("role", decodedToken.role);
+      
         window.location.href = "/";
       } else {
         Swal.fire({
