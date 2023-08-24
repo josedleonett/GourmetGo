@@ -64,8 +64,6 @@ const ProductDetailDisplay = ({productData}) => {
       .catch(error => console.error("Error fetching bundles:", error));
   }, []);
 
-  console.log(bundles)
-
   function findPackageById(array, idToFind) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].id == idToFind) {
