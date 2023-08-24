@@ -202,6 +202,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 gap: "1rem",
               }}
             >
+              {console.log(row)}
               <img
                 alt="cover"
                 width={"90%"}
@@ -232,14 +233,14 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      {
-        accessorKey: "starter[id]",
-        header: "Starter id",
-        isMultiple: true,
-        isMultiline: false,
-        options: [1,2,5,4],
-        size: 80,
-      },
+      // {
+      //   accessorKey: "starter[id]",
+      //   header: "Starter id",
+      //   isMultiple: true,
+      //   isMultiline: false,
+      //   options: [1,2,5,4],
+      //   size: 80,
+      // },
       {
         accessorKey: "starter[name]",
         header: "Starter",
@@ -489,8 +490,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "bundles",
         header: "Bundles",
-        isMultiple: true,
-        options: fakeBundlesIds,
+        //isMultiple: true,
+        //options: fakeBundlesIds,
         enableEditing: false,
         size: 140,
         Cell: ({ renderedCellValue, row }) => (
