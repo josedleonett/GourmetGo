@@ -81,14 +81,9 @@ export const theme = createTheme({
     action: {
       active: "#274556",
       hover: "#688B9A",
-      // hoverOpacity: 0.8,
       selected: "#EEEEEE",
-      // selectedOpacity: 0.8,
       disabled: "#BDBDBD",
-      // disabledOpacity: 0.6,
       focus: "#222222",
-      // focusOpacity: 0.8,
-      // activatedOpacity: 0.8,
     },
   },
   shape: {

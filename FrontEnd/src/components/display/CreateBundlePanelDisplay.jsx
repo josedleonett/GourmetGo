@@ -90,7 +90,6 @@ const CreateBundlePanelDisplay = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("Bundle created successfully!", response);
     } catch (error) {
       console.error("There was an error creating the bundle:", error);
     }

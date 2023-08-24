@@ -29,7 +29,6 @@ const CreatePlatesPanelDisplay = () => {
       });
 
       if (response.status === 201) {
-        console.log('Plate created successfully.');
         navigateTo(`/administration-panel/plate`);
       } else {
         console.log('Plate creation failed.');

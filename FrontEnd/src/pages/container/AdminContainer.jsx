@@ -1,6 +1,6 @@
 import { CgList } from "react-icons/cg"; 
 import { MdLocalBar, MdMenuBook } from "react-icons/md"; 
-import React, { useState } from "react";
+import { useState } from "react";
 import AdminDisplay from "../display/AdminDisplay";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";

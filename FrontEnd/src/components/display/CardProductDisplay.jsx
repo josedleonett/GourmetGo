@@ -1,12 +1,9 @@
-import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import {
   CardActionArea,
-  Chip,
-  Grid,
   Rating,
   Stack,
   Tooltip,
@@ -14,7 +11,6 @@ import {
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
-import CardCategoryContainer from "../container/CardCategoryContainer";
 
 const CardProductDisplay = ({
   id,
@@ -61,17 +57,6 @@ const CardProductDisplay = ({
           minHeight: "200px",
         }}
       >
-        {/* 
-        <Stack
-          direction="row"
-          position="absolute"
-          top={5}
-          left={5}
-        >
-          <Chip label="categoria" size="small" />
-          <Chip label="categoria" size="small" />
-          <Chip label="categoria" size="small" />
-        </Stack> */}
         <CardContent sx={{ minHeight: "160px" }}>
           <Typography variant="h5" fontWeight="bold">
             {title}

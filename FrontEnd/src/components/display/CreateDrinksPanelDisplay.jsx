@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo  } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate  } from 'react-router-dom';
 
 const CreateDrinksPanelDisplay = () => {
@@ -26,7 +26,6 @@ const CreateDrinksPanelDisplay = () => {
       });
 
       if (response.ok) {
-        console.log('Drink added successfully');
         navigateTo(`/administration-panel/drink`);
       } else {
         console.error('Failed to add drink');
