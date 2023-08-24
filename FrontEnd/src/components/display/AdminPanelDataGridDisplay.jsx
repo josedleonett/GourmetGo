@@ -87,6 +87,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
 
+  console.log(props);
+
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
@@ -108,7 +110,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       } else {
         setData(response.data);
       }
-      console.log(response.data);
+      //console.log(response.data);
     } catch (error) {
       setIsError(true);
       console.error("Error fetching data:", error);
