@@ -15,7 +15,7 @@ public class BundleDto {
     private Long id;
     private String name;
     private String description;
-    private String bundleImage;
+    private String image;
     private List<String> galleryImages;
     private List<PlateDto> starter;
     private List<PlateDto> mainCourse;
