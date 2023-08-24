@@ -13,7 +13,6 @@ const CarouselCategoryContainer = ({ elementsList }) => {
   const screenIsUpLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   const chunkedCategories = chunk(elementsList, screenIsUpLg ? 5 : 1);
-  console.log(chunkedCategories)
   return <CarouselCategoryDisplay elementsGroup={chunkedCategories} />;
 };
 

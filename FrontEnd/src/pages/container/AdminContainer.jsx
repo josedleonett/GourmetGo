@@ -56,8 +56,6 @@ const AdminContainer = () => {
     },
   ];
 
-  //console.log(menuSelected);
-
   return <AdminDisplay sidebarMenu={sidebarMenu} menuSelected={menuSelected}/>;
 };
 
