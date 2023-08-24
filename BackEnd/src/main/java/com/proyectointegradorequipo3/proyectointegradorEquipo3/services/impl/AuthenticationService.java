@@ -1,5 +1,7 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +24,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(username, password)
         );
 
-        User user = (User) auth.getPrincipal();
-        return jwtUtils.generateAccesToken(user.getUsername());
+        UserEntity user = (UserEntity) auth.getPrincipal();
+        return jwtUtils.generateAccesToken(user);
     }
 }

@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -44,18 +46,19 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<CategoryDto> searchAllCategory() {
         return categoryRepository.findAll().stream()
                 .map(category -> {
-                    List<Long> bundleIds = getBundleIdsByCategoryId(category.getId());
+                    Map<Long, String> bundleMap = getBundleMapByCategoryId(category.getId());
 
                     return new CategoryDto(
                             category.getId(),
                             category.getName(),
                             category.getDescription(),
                             category.getImage(),
-                            bundleIds
+                            bundleMap
                     );
                 })
                 .collect(Collectors.toList());
     }
+
 
 
     @Override
@@ -63,14 +66,14 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
 
-        List<Long> bundleIds = getBundleIdsByCategoryId(category.getId());
+        Map<Long, String> bundleMap = getBundleMapByCategoryId(category.getId());
 
         return new CategoryDto(
                 category.getId(),
                 category.getName(),
                 category.getDescription(),
                 category.getImage(),
-                bundleIds
+                bundleMap
         );
     }
 
@@ -81,7 +84,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException("Category with name '" + name + "' not found"));
 
         CategoryDto categoryDto = mapper.map(category, CategoryDto.class);
-        categoryDto.setBundles(getBundleIdsByCategoryId(category.getId()));
+        categoryDto.setBundles(getBundleMapByCategoryId(category.getId()));
 
         return categoryDto;
 
@@ -157,5 +160,18 @@ public class CategoryServiceImpl implements ICategoryService {
                 .map(Bundle::getId)
                 .collect(Collectors.toList());
     }
+
+    public Map<Long, String> getBundleMapByCategoryId(Long categoryId) {
+        List<Bundle> bundles = bundleRepository.findAllBundlesByCategoryId(categoryId);
+        Map<Long, String> bundleMap = new HashMap<>();
+
+        for (Bundle bundle : bundles) {
+            bundleMap.put(bundle.getId(), bundle.getName());
+        }
+
+        return bundleMap;
+    }
+
+
 
 }

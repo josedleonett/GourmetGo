@@ -1,14 +1,13 @@
 import React from "react";
 import CardProductDisplay from "../display/CardProductDisplay";
 
-const CardProductContainer = ({
+const  CardProductContainer = ({
   id,
   img,
   title,
   description,
   categoryList,
   rating,
-  numberDiners,
 }) => {
   return (
     <CardProductDisplay
@@ -19,7 +18,6 @@ const CardProductContainer = ({
       description={description}
       categoryList={categoryList}
       rating={rating}
-      numberDiners={numberDiners}
     />
   );
 };

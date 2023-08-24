@@ -3,6 +3,7 @@
 [2023-08-19 13:47:21] [ ERROR] [GlobalHandlerException:18] java.lang.IllegalStateException: Shutdown in progress
 [2023-08-19 14:17:32] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
 [2023-08-19 14:17:40] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "byCategory"
+<<<<<<< HEAD
 [2023-08-19 17:33:33] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
 [2023-08-19 17:34:38] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
 [2023-08-19 17:36:03] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot add or update a child row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`user_roles`, CONSTRAINT `FK6hdcxig28sjux082ekdae5wnj` FOREIGN KEY (`user_id`) REFERENCES `usuario` (`id_user`))] [insert into user_roles (user_id,role_id) values (?,?)]; SQL [insert into user_roles (user_id,role_id) values (?,?)]; constraint [null]
@@ -14,3 +15,141 @@
 [2023-08-19 18:48:36] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
 [2023-08-19 19:33:40] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
 [2023-08-19 19:33:42] [ ERROR] [GlobalHandlerException:18] 400 BAD_REQUEST "There is already a user with that email."
+=======
+[2023-08-19 18:44:11] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Red wine
+[2023-08-19 19:31:34] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-19 19:45:21] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Key lime pie
+[2023-08-21 14:42:31] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 15:14:14] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
+[2023-08-21 15:14:30] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
+[2023-08-21 15:20:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 15:21:46] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
+[2023-08-21 15:22:10] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
+[2023-08-21 15:22:54] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.List' for property 'categories'; For input string: "InternationalBuffet"]] 
+[2023-08-21 15:23:20] [ ERROR] [GlobalHandlerException:54] Plate with name 'Wedding cake' not found
+[2023-08-21 15:23:39] [ ERROR] [GlobalHandlerException:54] Plate with name 'Wedding Cake' not found
+[2023-08-21 15:26:12] [ ERROR] [GlobalHandlerException:18] Ids must not be null
+[2023-08-21 15:27:57] [ ERROR] [GlobalHandlerException:18] Ids must not be null
+[2023-08-21 15:28:05] [ ERROR] [GlobalHandlerException:18] Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.Void> com.proyectointegradorequipo3.proyectointegradorEquipo3.controller.BundleController.createBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest,org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>): [Field error in object 'bundleCreateRequest' on field 'categories': rejected value [French delicacies,International Buffet]; codes [typeMismatch.bundleCreateRequest.categories,typeMismatch.categories,typeMismatch.java.util.List,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [bundleCreateRequest.categories,categories]; arguments []; default message [categories]]; default message [Failed to convert property value of type 'java.lang.String[]' to required type 'java.util.List' for property 'categories'; For input string: "Frenchdelicacies"]] 
+[2023-08-21 15:29:55] [ ERROR] [GlobalHandlerException:18] Ids must not be null
+[2023-08-21 15:30:22] [ ERROR] [GlobalHandlerException:18] Ids must not be null
+[2023-08-21 15:39:17] [ ERROR] [GlobalHandlerException:54] Plate with name 'Churros
+churros' not found
+[2023-08-21 15:51:14] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mediterranean Platter' not found
+[2023-08-21 15:51:28] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mediterranean platter' not found
+[2023-08-21 16:34:20] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mango sticky rice' not found
+[2023-08-21 16:34:42] [ ERROR] [GlobalHandlerException:54] Plate with name 'Mango sticky rise' not found
+[2023-08-21 16:45:43] [ ERROR] [GlobalHandlerException:54] Plate with name 'Cornbread' not found
+[2023-08-21 16:56:40] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 16:57:09] [ ERROR] [GlobalHandlerException:54] Plate with name 'Creme Brulée' not found
+[2023-08-21 16:57:36] [ ERROR] [GlobalHandlerException:54] Plate with name 'Creme brulée' not found
+[2023-08-21 17:06:56] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 17:07:21] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
+[2023-08-21 17:07:41] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
+[2023-08-21 17:10:44] [ ERROR] [GlobalHandlerException:18] Cannot invoke "String.toLowerCase()" because "extension" is null
+[2023-08-21 17:16:01] [ ERROR] [GlobalHandlerException:54] Plate with name 'Chicken tikka masala' not found
+[2023-08-21 17:19:49] [ ERROR] [GlobalHandlerException:54] Plate with name 'Gulab jamun' not found
+[2023-08-21 21:13:49] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 21:19:07] [ ERROR] [GlobalHandlerException:54] Plate with name 'Chicken nuggets' not found
+[2023-08-21 21:37:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 21:40:02] [ ERROR] [GlobalHandlerException:42] Drink with name 'Orange juice' not found
+[2023-08-21 21:47:29] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 21:51:00] [ ERROR] [GlobalHandlerException:42] Drink with name 'Soft drinks' not found
+[2023-08-21 22:01:54] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-21 22:11:58] [ ERROR] [GlobalHandlerException:54] Plate with name 'Lobster bisque' not found
+[2023-08-21 22:23:16] [ ERROR] [GlobalHandlerException:54] Plate with name 'Stuffed mushrooms' not found
+[2023-08-21 23:40:21] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-21 23:41:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:07:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: S4ZVBP9GC7MPD1T7; S3 Extended Request ID: HXMVHZ1XV2UnAOp6wQ+SpMMloY3DI2U9/WQGwYe3+sSxjVFFTcNHXwymAsqHnZHiwVCY84RoTHg=; Proxy: null)
+[2023-08-22 19:08:10] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: HDCBB993QFNMDV3V; S3 Extended Request ID: mSYkmYcbGA5LSV7mvdhGRKnySbVU7NctLn7TD99QgTJDwoQ5IcSjOWwxGJlYFway7Rxan9IsDP8=; Proxy: null)
+[2023-08-22 19:10:37] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: C0GP23EXF2ANHXQB; S3 Extended Request ID: A6Px9CSgKU3TmtQVla0mv2yCenRIsoEMviI07AUkDKVfZVTZdq4NZ24QTa9ZbElg+SQyfNHXHfQ=; Proxy: null)
+[2023-08-22 19:13:28] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: YCCENJZR0W91SQGA; S3 Extended Request ID: MrhDNjSp+SnF4OD76mfpkjs/z1HNqisSwFgsqRsSahZueWcCtax/Y1UHjq4/9eByus+BueWy4hI=; Proxy: null)
+[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:26] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:27:59] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:28:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:28:02] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:28:42] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:17] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:48] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:49] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:29:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:23] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:30:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:31:18] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:31:53] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:44:45] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:44:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:44:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:09] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:43] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:50] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:51:58] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:52:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:52:29] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:53:08] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:55:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:37] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:38] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 19:56:45] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:04:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:04:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:05] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:41:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-22 20:43:06] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+>>>>>>> b706de9aee98efa42235e3f4ac51bfab6b326094

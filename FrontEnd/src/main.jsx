@@ -16,6 +16,7 @@ import CreateElementPanelContainer from "./components/container/CreateElementPan
 import AdminContainer from "./pages/container/AdminContainer";
 import UserRegisterContainer from "./components/container/UserRegisterContainer";
 import UserLoginContainer from "./components/container/UserLoginContainer"
+import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/user-login",
         element: <UserLoginContainer />,
+      },
+      {
+        path: "/category/:id",
+        element: <CategoryFilterContainer/>,
       },
       {
         path: "*",
