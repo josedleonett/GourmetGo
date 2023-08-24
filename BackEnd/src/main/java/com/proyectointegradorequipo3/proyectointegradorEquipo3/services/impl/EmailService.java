@@ -39,6 +39,9 @@ public class EmailService {
         try {
             htmlContent = loadHtmlContent("templates/confirmationEmail.html");
             htmlContent = htmlContent.replace("{{token}}", "http://localhost:8080/auth/confirm?token=" + token);
+            htmlContent = htmlContent.replace("{{name}}", userEntity.getName());
+            htmlContent = htmlContent.replace("{{lastName}}", userEntity.getLastName());
+            htmlContent = htmlContent.replace("{{email}}", userEntity.getEmail());
         } catch (IOException e) {
             return;
         }
