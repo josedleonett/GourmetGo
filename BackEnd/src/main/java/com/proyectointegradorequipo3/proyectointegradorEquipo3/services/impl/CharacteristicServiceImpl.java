@@ -12,6 +12,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBund
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICharacteristicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
 
     //===================Find===================//
     @Override
+    @Cacheable(value = "characteristics", unless = "#result == null")
     public List<CharacteristicDto> searchAllCharacteristic() {
         return characteristicRepository.findAll().stream()
                 .map(characteristic -> mapper.map(characteristic, CharacteristicDto.class))
@@ -41,12 +43,14 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
     }
 
     @Override
+    @Cacheable(value = "characteristicById", unless = "#result == null")
     public CharacteristicDto searchCharacteristicById(Long id) {
         Characteristic characteristic = characteristicRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return characteristic != null ? mapper.map(characteristic, CharacteristicDto.class) : null;
     }
 
     @Override
+    @Cacheable(value = "characteristicByName", unless = "#result == null")
     public CharacteristicDto searchCharacteristicByName(String name) {
         Optional<Characteristic> optionalCharacteristic = characteristicRepository.findByName(name);
         if (optionalCharacteristic.isPresent()) {
@@ -98,6 +102,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
         if (characteristicRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
+    @Cacheable(value = "bundleIdByCharacteristicId", unless = "#result == null")
     public List<Long> getBundleIdsByCharacteristicId(Long characteristicId) {
         return bundleRepository.findAllBundlesByCharacteristicId(characteristicId)
                 .stream()

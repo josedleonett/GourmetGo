@@ -147,3 +147,4 @@
 [2023-08-24 02:08:51] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
 [2023-08-24 02:10:25] [ ERROR] [GlobalHandlerException:18] Request method 'PATCH' is not supported
 [2023-08-24 02:11:58] [ ERROR] [GlobalHandlerException:18] Required URI template variable 'userId' for method parameter type Long is not present
+[2023-08-24 17:28:27] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.

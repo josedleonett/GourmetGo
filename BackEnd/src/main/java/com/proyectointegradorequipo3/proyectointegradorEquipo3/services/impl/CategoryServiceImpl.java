@@ -14,6 +14,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICategor
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +44,7 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Find===================//
 
     @Override
+    @Cacheable(value = "categories", unless = "#result == null")
     public List<CategoryDto> searchAllCategory() {
         return categoryRepository.findAll().stream()
                 .map(category -> {
@@ -62,6 +64,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
     @Override
+    @Cacheable(value = "categoryById", unless = "#result == null")
     public CategoryDto searchCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
@@ -79,6 +82,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
     @Override
+    @Cacheable(value = "categoryByName", unless = "#result == null")
     public CategoryDto searchCategoryByName(String name) {
         Category category = categoryRepository.findByName(name)
                 .orElseThrow(() -> new CategoryNotFoundException("Category with name '" + name + "' not found"));
@@ -154,6 +158,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
 
+    @Cacheable(value = "BundleByCategoryId", unless = "#result == null")
     public List<Long> getBundleIdsByCategoryId(Long categoryId) {
         return bundleRepository.findAllBundlesByCategoryId(categoryId)
                 .stream()
@@ -161,6 +166,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "BundleMapByCategoryId", unless = "#result == null")
     public Map<Long, String> getBundleMapByCategoryId(Long categoryId) {
         List<Bundle> bundles = bundleRepository.findAllBundlesByCategoryId(categoryId);
         Map<Long, String> bundleMap = new HashMap<>();

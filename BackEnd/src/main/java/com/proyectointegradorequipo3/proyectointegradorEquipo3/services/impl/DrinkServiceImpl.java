@@ -15,6 +15,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IDrinkSe
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +42,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Find===================//
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "drinks", unless = "#result == null")
     public List<DrinkDto> searchAllDrinks() {
         List<Drink> drinks = drinkRepository.findAll();
         return drinks.stream()
@@ -50,6 +52,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "drinkById", unless = "#result == null")
     public DrinkDto searchDrinkById(Long id) {
         Drink drink = drinkRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return mapper.map(drink, DrinkDto.class);
@@ -57,6 +60,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "drinkByName", unless = "#result == null")
     public DrinkDto searchDrinkByName(String name) {
         Optional<Drink> optionalDrink = drinkRepository.findByName(name);
         if (optionalDrink.isEmpty()) {
@@ -128,6 +132,7 @@ public class DrinkServiceImpl implements IDrinkService {
     private void existsName(String name) {
         if (drinkRepository.existsByName(name)) throw new ExistNameException(name);
     }
+
 
     public List<Drink> validateAndGetDrink(List<String> drinkNames) {
         List<Drink> drinks = new ArrayList<>();
