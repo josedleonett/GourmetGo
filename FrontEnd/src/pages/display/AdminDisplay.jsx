@@ -209,7 +209,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              <span>{renderedCellValue}</span>
+              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
@@ -327,7 +327,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              <span>{renderedCellValue}</span>
+              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
@@ -387,7 +387,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              <span>{renderedCellValue}</span>
+              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
@@ -463,7 +463,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
               {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-              <span>{renderedCellValue}</span>
+              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
@@ -500,8 +500,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
             multiple
             limitTags={5}
             value={renderedCellValue}
-            defaultValue={renderedCellValue}
-            options={fakeBundlesIds}
+            //defaultValue={renderedCellValue}
+            //options={fakeBundlesIds}
             filterSelectedOptions
             //autoComplete
             key={renderedCellValue.id}

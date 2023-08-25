@@ -102,7 +102,9 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     try {
       const response = await axios.get(API_BASE_URL);
 
-      if (filter !== undefined) {
+      console.log(response.data);
+
+      if (filter != undefined) {
         const dataFiltered = response.data.filter(
           (item) => item.hasOwnProperty("type") && item.type === filter
         );
@@ -265,6 +267,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
+          columnVisibility: { id: false, galleryImages: false },
         }}
         muiTableContainerProps={({ table }) => ({
           sx: {
@@ -352,7 +355,7 @@ export const CreateUpdateItemModal = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       setIsFormSending(true);
-      alert(JSON.stringify(values, null, 2));
+      //alert(JSON.stringify(values, null, 2));
 
       let responseCode = -1;
       if (isRowToUpdateEmpty) {
