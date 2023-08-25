@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, useMediaQuery } from "@mui/material";
 import Swal from "sweetalert2";
 
 const UserRegisterDisplay = () => {
@@ -234,21 +234,39 @@ const UserRegisterDisplay = () => {
     { name: "email", label: "Email", type: "email" },
   ];
 
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+
   return (
-    <Box sx={{ padding: "10vw" }}>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
-          textAlign: "center",
-          gap: "3vw",
-        }}
+    
+    <Box sx={{ padding: "10vw", textAlign: "center", 
+    }}>
+    <Typography variant="h4" 
+    sx={{  marginBottom: '3rem',
+    fontSize: isSmallScreen ? '1.5rem' : '2rem',
+    backgroundColor: "secondary.light",
+    display: "inline-block", // Ajusta el fondo al tamaño del texto
+    padding: "0.5rem",  }}>
+    Join the GourmetGo family!
+    </Typography>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+        gap: isSmallScreen ? "1.5rem" : "3vw",
+        marginTop: "2rem",
+        border: "2px solid #e0e0e0",
+        borderRadius: "8px",
+        padding: isSmallScreen ? "10px" : "20px",
+        maxWidth: isSmallScreen ? "300px" : "400px",
+        margin: "0 auto", // Centrar el formulario horizontalmente
+      }}
       >
         {inputFields.map((field) => (
           <Box key={field.name}>
