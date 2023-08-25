@@ -327,7 +327,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              <span>{renderedCellValue}</span>
+              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
