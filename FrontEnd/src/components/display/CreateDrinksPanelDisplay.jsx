@@ -31,7 +31,7 @@ const CreateDrinksPanelDisplay = () => {
         console.error('Failed to add drink');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.response);
     }
   };
 
