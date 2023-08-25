@@ -159,6 +159,8 @@ const UserLogInDisplay = () => {
               padding: "1vw",
               width: "20vw",
               color: "black",
+              "&:hover": { backgroundColor: "secondary.light" },
+              transition: "background-color 0.3s",
               "@media (max-width: 768px)": { width: "50%" },
             }}
           >

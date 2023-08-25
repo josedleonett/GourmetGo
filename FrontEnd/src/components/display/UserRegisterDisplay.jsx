@@ -295,6 +295,8 @@ const UserRegisterDisplay = () => {
             borderRadius: "0px",
             padding: "1vw",
             width: "20vw",
+            "&:hover": { backgroundColor: "secondary.light" },
+            transition: "background-color 0.3s",
             color: "black",
             "@media (max-width: 768px)": { width: "50%" },
           }}
