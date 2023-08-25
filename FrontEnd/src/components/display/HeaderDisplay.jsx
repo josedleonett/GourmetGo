@@ -196,7 +196,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                     HOME
                   </Button>
                   {localStorage.getItem("role") === "ADMIN" && (
-                  <Button component={Link} to="/administration-panel" variant="contained"
+                  <Button component={Link} to="/admin/bundles" variant="contained"
                   sx={{
                     "&:hover": { backgroundColor: "blue" },
                     transition: "background-color 0.3s",
