@@ -267,6 +267,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
+          columnVisibility: { id: false, galleryImages: false },
         }}
         muiTableContainerProps={({ table }) => ({
           sx: {
