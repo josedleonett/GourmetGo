@@ -1,20 +1,18 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Drink;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Plate;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.PlateNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IDrinkRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IDrinkService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +40,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Find===================//
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "drinks", unless = "#result == null")
+    @Cacheable(value = "searchAllDrinks", unless = "#result == null || #result.isEmpty()")
     public List<DrinkDto> searchAllDrinks() {
         List<Drink> drinks = drinkRepository.findAll();
         return drinks.stream()
@@ -52,7 +50,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "drinkById", unless = "#result == null")
+    @Cacheable(value = "searchDrinkById", unless = "#result == null")
     public DrinkDto searchDrinkById(Long id) {
         Drink drink = drinkRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return mapper.map(drink, DrinkDto.class);
@@ -60,7 +58,7 @@ public class DrinkServiceImpl implements IDrinkService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "drinkByName", unless = "#result == null")
+    @Cacheable(value = "searchDrinkByName", unless = "#result == null")
     public DrinkDto searchDrinkByName(String name) {
         Optional<Drink> optionalDrink = drinkRepository.findByName(name);
         if (optionalDrink.isEmpty()) {
@@ -72,6 +70,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Create===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
     public Long saveDrink(DrinkCreateRequest request) {
         existsName(request.getName());
         Drink newDrink = mapper.map(request, Drink.class);
@@ -89,6 +88,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Update===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
     public void modifyDrink(Long id, DrinkUpdateRequest request) throws Exception {
         try {
             DrinkDto drinkDto = searchDrinkById(id);
@@ -121,6 +121,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Delete===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
     public void deleteDrinkById(Long id) {
         DrinkDto drinkDto = searchDrinkById(id);
         Drink drink = mapper.map(drinkDto, Drink.class);

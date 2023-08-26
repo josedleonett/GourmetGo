@@ -12,6 +12,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBund
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICharacteristicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
 
     //===================Find===================//
     @Override
-    @Cacheable(value = "characteristics", unless = "#result == null")
+    @Cacheable(value = "searchAllCharacteristic", unless = "#result == null || #result.isEmpty()")
     public List<CharacteristicDto> searchAllCharacteristic() {
         return characteristicRepository.findAll().stream()
                 .map(characteristic -> mapper.map(characteristic, CharacteristicDto.class))
@@ -43,14 +44,14 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
     }
 
     @Override
-    @Cacheable(value = "characteristicById", unless = "#result == null")
+    @Cacheable(value = "searchCharacteristicById", unless = "#result == null")
     public CharacteristicDto searchCharacteristicById(Long id) {
         Characteristic characteristic = characteristicRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return characteristic != null ? mapper.map(characteristic, CharacteristicDto.class) : null;
     }
 
     @Override
-    @Cacheable(value = "characteristicByName", unless = "#result == null")
+    @Cacheable(value = "searchCharacteristicByName", unless = "#result == null")
     public CharacteristicDto searchCharacteristicByName(String name) {
         Optional<Characteristic> optionalCharacteristic = characteristicRepository.findByName(name);
         if (optionalCharacteristic.isPresent()) {
@@ -64,6 +65,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCharacteristic","searchCharacteristicById","searchCharacteristicByName"}, allEntries = true, beforeInvocation = false)
     public Long saveCharacteristic(CharacteristicCreateRequest request) {
         Characteristic characteristic = mapper.map(request, Characteristic.class);
         existsName(characteristic.getName());
@@ -75,6 +77,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCharacteristic","searchCharacteristicById","searchCharacteristicByName"}, allEntries = true, beforeInvocation = false)
     public void deleteCharacteristicById(Long id) {
         characteristicRepository.deleteById(id);
     }
@@ -83,6 +86,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCharacteristic","searchCharacteristicById","searchCharacteristicByName"}, allEntries = true, beforeInvocation = false)
     public void modifyCharacteristic(Long id, CharacteristicUpdateRequest request) {
         Optional<Characteristic> optionalCharacteristic = characteristicRepository.findById(id);
 
@@ -102,7 +106,7 @@ public class CharacteristicServiceImpl implements ICharacteristicService {
         if (characteristicRepository.existsByName(name)) throw new ExistNameException(name);
     }
 
-    @Cacheable(value = "bundleIdByCharacteristicId", unless = "#result == null")
+    @Cacheable(value = "getBundleIdsByCharacteristicId", unless = "#result == null || #result.isEmpty()")
     public List<Long> getBundleIdsByCharacteristicId(Long characteristicId) {
         return bundleRepository.findAllBundlesByCharacteristicId(characteristicId)
                 .stream()
