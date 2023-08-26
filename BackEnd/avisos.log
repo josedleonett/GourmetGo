@@ -95,39 +95,17 @@
 [2023-08-24 22:17:26] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: PWWY8WDGX8ZTTPQG; S3 Extended Request ID: uYAG8GhQ9DhTgLQ+6hucTIzI2tMGLOzWPIAXQ1riIMPejJB08qszzLYC3030qZlzmRUVrf7uMHg=; Proxy: null)
 [2023-08-24 22:18:11] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
 [2023-08-24 22:18:12] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 1FKK7KNX79HA2BS7; S3 Extended Request ID: 5ujVVwYKkXG3z/u7b2pdzq2RSQtBRj09zQgaNgtxKrrbXJfjbZS8ng/ualRFuFvQjHVlpbO8gWM=; Proxy: null)
-[2023-08-26 12:32:43] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:36:27] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:36:34] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:39:24] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:42:18] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:42:18] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:46:05] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 12:49:35] [ ERROR] [GlobalHandlerException:18] Expression [#result == null || #result.isEmpty()"] @36: EL1045E: Cannot find terminating " for string
-[2023-08-26 12:49:43] [ ERROR] [GlobalHandlerException:18] Expression [#result == null || #result.isEmpty()"] @36: EL1045E: Cannot find terminating " for string
-[2023-08-26 12:55:08] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto
-[2023-08-26 13:00:23] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
-[2023-08-26 13:01:12] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
-[2023-08-26 13:01:32] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
-[2023-08-26 13:05:10] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: 27
-[2023-08-26 13:06:40] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto
-[2023-08-26 13:08:37] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto
-[2023-08-26 13:08:53] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto
-[2023-08-26 13:10:48] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
-[2023-08-26 13:14:03] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto
-[2023-08-26 13:19:01] [ ERROR] [GlobalHandlerException:42] Drink with name 'fanta' not found
-[2023-08-26 13:20:16] [ ERROR] [GlobalHandlerException:42] Drink with name 'paso' not found
-[2023-08-26 13:20:29] [ ERROR] [GlobalHandlerException:60] Drink not found with id: 24
-[2023-08-26 13:21:18] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto
-[2023-08-26 13:22:03] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto
-[2023-08-26 13:28:13] [ ERROR] [GlobalHandlerException:60] Category not found with id: 43
-[2023-08-26 13:28:20] [ ERROR] [GlobalHandlerException:36] Category with name 'Pedazo de categoria' not found
-[2023-08-26 13:28:54] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CharacteristicDto
-[2023-08-26 13:29:39] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CharacteristicDto
-[2023-08-26 13:34:26] [ ERROR] [GlobalHandlerException:30] Characteristic with name 'asdfasdfasdf' not found
-[2023-08-26 13:34:59] [ ERROR] [GlobalHandlerException:30] Characteristic with name 'asdfasdfasdf' not found
-[2023-08-26 13:35:03] [ ERROR] [GlobalHandlerException:60] Characteristic not found with id: 2
-[2023-08-26 13:36:13] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.UserDto
-[2023-08-26 13:36:33] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.UserDto
-[2023-08-26 13:38:25] [ ERROR] [GlobalHandlerException:18] EL1004E: Method call: Method isEmpty() cannot be found on type com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.UserDto
-[2023-08-26 13:40:35] [ ERROR] [GlobalHandlerException:60] User not found with id: 66
-[2023-08-26 13:40:44] [ ERROR] [GlobalHandlerException:18] User with email 'pa@pa.com' not found
+[2023-08-24 23:31:46] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-24 23:31:46] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-24 23:31:47] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: GVDRDENAV879JDC2; S3 Extended Request ID: Wz/SO0sw+h/MbgnltcsXo4qkmvPoviBTLaXa4gDtU9qO0jm5AFw67r8snreKyzxBwKM1jl1zBxM=; Proxy: null)
+[2023-08-24 23:34:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:34:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:35:00] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: BV4NYWCGDR3C75TM; S3 Extended Request ID: /mrhDRhyVcI5mC0o8nfkuBVpYBKEnP/MFPkoBhV98GA/L1R06kvMvpy1pb5C7VrXuJRdHFsPD3w=; Proxy: null)
+[2023-08-24 23:35:15] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:35:15] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:35:16] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: E29MBDR18CGYZDBT; S3 Extended Request ID: zPui6ESWqh9gGDvMSZHCm+aTIpV08HXYwYarQGRhkkrTQPpkxi/K46G07Ea1lUeWwg35I+5Ib38=; Proxy: null)
+[2023-08-24 23:37:30] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:37:31] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: C0VNK3S3KNMNQX2F; S3 Extended Request ID: WBn3SoM2LTMf8D7xA4kYDSUU/K8GnNIjO2fBhKPa6K5noEoDROabkwM8o45EO+yo4FYAuc4pAko=; Proxy: null)
+[2023-08-24 23:38:32] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:38:32] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
+[2023-08-24 23:38:34] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: M07BY0887DR0YYN4; S3 Extended Request ID: CSQBMpWpyItmUP0hi3mGZNrXixKjhP3u3UzRN3SVrqL3KpmYdJFm9Zqe0nbkhNhZCl5WaSWqedk=; Proxy: null)
