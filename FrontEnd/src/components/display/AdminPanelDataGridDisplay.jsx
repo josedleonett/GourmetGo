@@ -512,7 +512,6 @@ export const CreateUpdateItemModal = ({
                 <>
                   {column.isFileType ? (
                     <>
-                      {console.log(column)};
                       <Typography>{column.accessorKey}</Typography>
                       <Input
                         id={column.accessorKey}
