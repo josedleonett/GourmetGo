@@ -12,6 +12,8 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUser
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RoleNotFoundException;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements IUserService {
 
     //===================Find===================//
     @Override
+    @Cacheable(value = "searchAllUser", unless = "#result == null || #result.isEmpty()")
     public List<UserDto> searchAllUser() {
         return userRepository.findAll().stream()
                 .map(user -> {
@@ -50,6 +53,7 @@ public class UserServiceImpl implements IUserService {
 
     //===================BY Id===================//
     @Override
+    @Cacheable(value = "searchUserById", unless = "#result == null")
     public UserDto searchUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         UserDto userDto = mapper.map(user, UserDto.class);
@@ -65,6 +69,7 @@ public class UserServiceImpl implements IUserService {
 
     //===================By Email===================//
     @Override
+    @Cacheable(value = "searchUserByEmail", unless = "#result == null")
     public UserDto searchUserByEmail(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
@@ -85,6 +90,7 @@ public class UserServiceImpl implements IUserService {
 
 
     //===================By Name or LastName===================//
+    @Cacheable(value = "searchUsersByNameOrLastName", unless = "#result == null || #result.isEmpty()")
     public List<UserDto> searchUsersByNameOrLastName(String name, String lastName) {
         List<UserEntity> users = userRepository.findByNameOrLastName(name, lastName);
 
@@ -117,12 +123,14 @@ public class UserServiceImpl implements IUserService {
 
     //===================Delete===================//
     @Override
+    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
     public void deleteUserById(Long id) throws Exception {
         userRepository.deleteById(id);
     }
 
     //===================Update===================//
     @Override
+    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
     public void modifyUser(Long userId, UserUpdateRequest updateRequest) throws RoleNotFoundException {
         Optional<UserEntity> optionalUser = userRepository.findById(userId);
 
@@ -139,12 +147,12 @@ public class UserServiceImpl implements IUserService {
                 user.setEmail(updateRequest.getEmail());
             }
             if (updateRequest.getRole() != null) {
-                ERole roleEnum = ERole.valueOf(updateRequest.getRole()); // Convertir cadena a valor de enumeración
+                ERole roleEnum = ERole.valueOf(updateRequest.getRole());
                 Optional<RoleEntity> optionalRole = roleRepository.findByName(roleEnum);
                 if (optionalRole.isPresent()) {
-                    RoleEntity role = optionalRole.get(); // Extraer el valor del Optional
-                    user.getRoles().clear(); // Eliminar los roles anteriores
-                    user.getRoles().add(role); // Agregar el nuevo rol
+                    RoleEntity role = optionalRole.get();
+                    user.getRoles().clear();
+                    user.getRoles().add(role);
                 } else {
                     throw new RoleNotFoundException("Role with name '" + updateRequest.getRole() + "' not found");
                 }
