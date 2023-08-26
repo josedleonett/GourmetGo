@@ -306,7 +306,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "image",
+        accessorKey: "image",
         id: "image",
         isFileType: true,
         type: "file",
@@ -366,7 +366,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "image",
+        accessorKey: "image",
         id: "image",
         isFileType: true,
         type: "file",
@@ -420,13 +420,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
     columns: [
       {
-        accessor: "image",
+        accessorKey: "image",
         id: "image",
         isFileType: true,
         type: "file",
         //imgPostDir: "image",
         header: "Image",
-        size: 30,
+        size: 5,
         Edit: ({ row }) => {
           return (
             <Input
@@ -468,14 +468,14 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
           </>
         ),
       },
-      {
-        accessorKey: "id",
-        header: "ID",
-        enableColumnOrdering: false,
-        enableEditing: false,
-        enableSorting: false,
-        size: 30,
-      },
+      // {
+      //   accessorKey: "id",
+      //   header: "ID",
+      //   enableColumnOrdering: false,
+      //   enableEditing: false,
+      //   enableSorting: false,
+      //   size: 30,
+      // },
       {
         accessorKey: "name",
         header: "Name",
@@ -487,40 +487,43 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      {
-        accessorKey: "bundles",
-        header: "Bundles",
-        //isMultiple: true,
-        //options: fakeBundlesIds,
-        enableEditing: false,
-        size: 140,
-        Cell: ({ renderedCellValue, row }) => (
-          <Autocomplete
-            disabled
-            multiple
-            limitTags={5}
-            value={renderedCellValue}
-            //defaultValue={renderedCellValue}
-            //options={fakeBundlesIds}
-            filterSelectedOptions
-            //autoComplete
-            key={renderedCellValue.id}
-            renderInput={(params) => (
-              <TextField {...params} key={renderedCellValue.toString()} />
-            )}
-            renderTags={(value, getTagProps) =>
-              renderedCellValue.map((option, index) => (
-                <Chip
-                  key={index.toString()}
-                  variant="filled"
-                  label={option}
-                  color="secondary"
-                />
-              ))
-            }
-          />
-        ),
-      },
+      // {
+      //   accessorKey: "bundles",
+      //   header: "Bundles",
+      //   isMultiple: true,
+      //   options: fakeBundlesIds,
+      //   enableEditing: false,
+      //   size: 140,
+      //   Cell: ({ renderedCellValue, row }) => (
+      //     <>
+      //       {console.log(row.original)}
+      //       <Autocomplete
+      //         disabled
+      //         multiple
+      //         limitTags={5}
+      //         value={row.original.bundles}
+      //         //defaultValue={row.original}
+      //         //options={fakeBundlesIds}
+      //         filterSelectedOptions
+      //         //autoComplete
+      //         key={row.original.id}
+      //         renderInput={(params) => (
+      //           <TextField {...params} key={row.original.bundles} />
+      //         )}
+      //         renderTags={(value, getTagProps) =>
+      //           row.original.bundles.map((option, index) => (
+      //             <Chip
+      //               key={index.toString()}
+      //               variant="filled"
+      //               label={option}
+      //               color="secondary"
+      //             />
+      //           ))
+      //         }
+      //       />
+      //     </>
+      //   ),
+      // },
     ],
   };
 
@@ -548,7 +551,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 props={plateDataGridProps}
                 filter={"starter"}
               />
+              
             }
+            
           />
           <Route
             path="plates/mainCourse"

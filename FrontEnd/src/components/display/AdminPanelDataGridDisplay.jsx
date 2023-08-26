@@ -87,7 +87,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
 
-  console.log(props);
 
   useEffect(() => {
     setIsLoading(true);
@@ -355,7 +354,7 @@ export const CreateUpdateItemModal = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       setIsFormSending(true);
-      //alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(values, null, 2));
 
       let responseCode = -1;
       if (isRowToUpdateEmpty) {
@@ -513,6 +512,7 @@ export const CreateUpdateItemModal = ({
                 <>
                   {column.isFileType ? (
                     <>
+                      {console.log(column)};
                       <Typography>{column.accessorKey}</Typography>
                       <Input
                         id={column.accessorKey}
