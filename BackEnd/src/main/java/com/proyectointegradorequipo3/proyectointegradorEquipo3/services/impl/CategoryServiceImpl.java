@@ -14,6 +14,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.ICategor
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Find===================//
 
     @Override
-    @Cacheable(value = "categories", unless = "#result == null")
+    @Cacheable(value = "searchAllCategory", unless = "#result == null || #result.isEmpty()")
     public List<CategoryDto> searchAllCategory() {
         return categoryRepository.findAll().stream()
                 .map(category -> {
@@ -64,7 +65,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
     @Override
-    @Cacheable(value = "categoryById", unless = "#result == null")
+    @Cacheable(value = "searchCategoryById", unless = "#result == null")
     public CategoryDto searchCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
@@ -82,7 +83,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
     @Override
-    @Cacheable(value = "categoryByName", unless = "#result == null")
+    @Cacheable(value = "searchCategoryByName", unless = "#result == null")
     public CategoryDto searchCategoryByName(String name) {
         Category category = categoryRepository.findByName(name)
                 .orElseThrow(() -> new CategoryNotFoundException("Category with name '" + name + "' not found"));
@@ -97,6 +98,7 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Create===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName"}, allEntries = true, beforeInvocation = false)
     public Long saveCategory(CategoryCreateRequest request) {
         String keyImage = s3Service.putObject(request.getImage());
         Category category = Category.builder()
@@ -118,6 +120,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName"}, allEntries = true, beforeInvocation = false)
     public void modifyCategory(Long id, CategoryUpdateRequest request) {
         CategoryDto categoryDto = searchCategoryById(id);
 
@@ -146,6 +149,7 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Delete===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName"}, allEntries = true, beforeInvocation = false)
     public void deleteCategoryById(Long id) {
         Category category = mapper.map(searchCategoryById(id), Category.class);
         categoryRepository.delete(category);
@@ -158,7 +162,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
 
-    @Cacheable(value = "BundleByCategoryId", unless = "#result == null")
+    @Cacheable(value = "getBundleIdsByCategoryId", unless = "#result == null")
     public List<Long> getBundleIdsByCategoryId(Long categoryId) {
         return bundleRepository.findAllBundlesByCategoryId(categoryId)
                 .stream()
@@ -166,7 +170,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = "BundleMapByCategoryId", unless = "#result == null")
+    @Cacheable(value = "getBundleMapByCategoryId", unless = "#result == null")
     public Map<Long, String> getBundleMapByCategoryId(Long categoryId) {
         List<Bundle> bundles = bundleRepository.findAllBundlesByCategoryId(categoryId);
         Map<Long, String> bundleMap = new HashMap<>();

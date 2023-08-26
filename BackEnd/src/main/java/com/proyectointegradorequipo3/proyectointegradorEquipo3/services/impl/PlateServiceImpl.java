@@ -13,6 +13,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Servic
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,14 +39,14 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "plates", unless = "#result == null")
+    @Cacheable(value = "searchAllPlate", unless = "#result == null || #result.isEmpty()")
     public List<PlateDto> searchAllPlate() {
         return mapper.map(plateRepository.findAll(), new TypeToken<List<PlateDto>>(){}.getType());
     }
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "plateById", unless = "#result == null")
+    @Cacheable(value = "searchPlateById", unless = "#result == null")
     public PlateDto searchPlateById(Long id) {
         Plate plate = plateRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
@@ -55,7 +56,7 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "plateByName", unless = "#result == null")
+    @Cacheable(value = "searchPlateByName", unless = "#result == null")
     public PlateDto searchPlateByName(String name) {
 
         Optional<Plate> optionalPlate = plateRepository.findByName(name);
@@ -68,6 +69,7 @@ public class PlateServiceImpl implements IPlateService {
     //===================Create===================//
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
     public Long savePlate(PlateCreateRequest request) {
         existsName(request.getName());
         Plate newPlate = mapper.map(request, Plate.class);
@@ -86,6 +88,7 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
     public void modifyPlate(Long id, PlateUpdateRequest request) throws Exception {
         try {
             PlateDto plateDto = searchPlateById(id);
@@ -122,6 +125,7 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
     public void deletePlateById(Long id) {
         PlateDto plateDto = searchPlateById(id);
         Plate plate = mapper.map(plateDto, Plate.class);
