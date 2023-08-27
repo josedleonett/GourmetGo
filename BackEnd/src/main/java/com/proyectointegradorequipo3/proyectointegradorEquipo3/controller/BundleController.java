@@ -6,6 +6,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CharacteristicServiceImpl;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.GetAllServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,8 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 public class BundleController {
 
     private final BundleServiceImpl bundleService;
+
+    private final GetAllServiceImpl servicioTest;
     private final CategoryServiceImpl categoryService;
 
     private final CharacteristicServiceImpl characteristicService;
@@ -49,7 +52,7 @@ public class BundleController {
 
     @GetMapping
     public ResponseEntity<List<BundleDto>> getAllBundles() {
-        List<BundleDto> bundleDtos = bundleService.searchAllBundles();
+        List<BundleDto> bundleDtos = servicioTest.searchAllBundles();
         return ResponseEntity.ok(bundleDtos);
     }
 

@@ -5,6 +5,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.NewBundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
@@ -16,11 +17,15 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,10 +59,12 @@ public class BundleServiceImpl implements IBundleService {
     @Autowired
     private BundleMapper bundleMapper;
 
-    @Cacheable(value = "searchAllBundles", unless = "#result == null || #result.isEmpty()")
+    @Autowired
+    private CacheManager cacheManager;
+
     public List<BundleDto> searchAllBundles() {
-        List<Bundle> bundles = bundleRepository.findAll();
-        return bundleMapper.toDtoList(bundles);
+        List<Long> ids = bundleRepository.findAllIds();
+        return ids.stream().map(this::searchBundleDtoById).collect(Collectors.toList());
     }
 
     @Override
@@ -105,7 +112,6 @@ public class BundleServiceImpl implements IBundleService {
     //===================Create===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
     public Long saveBundle(BundleCreateRequest request) {
         List<Plate> starter = plateService.validateAndGetPlates(request.getStarter(), "Starter");
         List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
@@ -151,7 +157,7 @@ public class BundleServiceImpl implements IBundleService {
     //===================Update===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchBundleDtoById", key = "#bundleId")
     public void modifyBundle(Long bundleId, BundleUpdateRequest request) {
         Optional<Bundle> bundleOptional = bundleRepository.findById(bundleId);
 
@@ -217,7 +223,7 @@ public class BundleServiceImpl implements IBundleService {
     //===================Delete===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchBundleDtoById", key = "#id")
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));

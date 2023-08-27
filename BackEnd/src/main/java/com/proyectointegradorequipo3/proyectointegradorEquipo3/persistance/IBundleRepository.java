@@ -25,4 +25,7 @@ public interface IBundleRepository extends JpaRepository<Bundle, Long> {
 
     @Query("SELECT new map(b.id as id, b.name as name) FROM Bundle b JOIN b.categories c WHERE c.id = :categoryId")
     List<Map<Long, String>> findBundleIdsAndNamesByCategoryId(@Param("categoryId") Long categoryId);
+
+    @Query("SELECT b.id FROM Bundle b")
+    List<Long> findAllIds();
 }
