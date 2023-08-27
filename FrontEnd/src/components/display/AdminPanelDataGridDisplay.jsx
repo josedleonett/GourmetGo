@@ -10,19 +10,12 @@ import {
   Button,
   Chip,
   CircularProgress,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   IconButton,
-  Input,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  MenuItem,
+  Skeleton,
   Snackbar,
   Stack,
   TextField,
@@ -36,14 +29,8 @@ import {
   Add,
   Save,
   Cancel,
-  Error,
-  Check,
-  Label,
+  AddAPhoto,
 } from "@mui/icons-material";
-import { BiDish } from "react-icons/bi";
-import { RiRestaurant2Line } from "react-icons/ri";
-import { GiPieSlice } from "react-icons/gi";
-import { MdLocalBar } from "react-icons/md";
 
 //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
 // export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
@@ -73,7 +60,6 @@ import { MdLocalBar } from "react-icons/md";
 //   return;
 // };
 
-
 const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
@@ -81,13 +67,15 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
 
   const [data, setData] = useState([]);
   const [rowToUpdate, setRowToUpdate] = useState({});
+  const [rowToDelete, setRowToDelete] = useState(-1);
   const [validationErrors, setValidationErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
-
-  console.log(props);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+  const [isFormDeleting, setIsFormDeleting] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -124,6 +112,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   };
 
   const postApiData = async (propertiesToCreate) => {
+    console.log(propertiesToCreate);
 
     try {
       const formData = new FormData();
@@ -141,18 +130,18 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       }
 
       //CHECK OUTPUT
+      console.log("POSTING");
       for (const [key, value] of formData.entries()) {
-        console.log("POSTING");
         console.log(key, value);
-        console.log("POSTING");
       }
+      console.log("POSTING");
       //CHECK OUTPUT
 
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
       return responseCode;
     } catch (error) {
-      const responseCode = error.response.status;
+      const responseCode = error.response;
       console.error("Error create data:", error.response);
       return responseCode;
     }
@@ -164,7 +153,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
 
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
-
           formData.append(key, propertiesToUpdate[key]);
         }
       }
@@ -184,7 +172,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       }
       return responseCode;
     } catch (error) {
-      const responseCode = error.response.status;
+      const responseCode = error.response;
       console.error("Error Update data:", error.response);
       return responseCode;
     }
@@ -220,17 +208,27 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   };
 
   const handleDeleteRow = useCallback(
-    async (row) => {
-      if (!confirm(`Are you sure you want to delete item?}`)) {
-        return;
-      }
+    (row) => {
+      setIsDeleteModalOpen(true);
+      setRowToDelete(row.original.id);
 
-      const responseCode = await deleteApiData(row.original.id);
+      // if (isDeleteConfirmed) {
+      //   const responseCode = deleteApiData(row.original.id);
+      //   console.log(responseCode);
 
-      if (responseCode === 204) {
-      }
-      data.splice(row.index, 1);
-      setData([...data]);
+      //   if (responseCode === 204) {
+      //     const updatedData = data.filter(
+      //       (item) => item.id !== row.original.id
+      //     );
+      //     setData(updatedData);
+
+      //     setIsDeleteModalOpen(false);
+      //     setIsDeleteConfirmed(false);
+      //     setIsFormDeleting(false);
+      //   }
+
+      //   setIsFormDeleting(false);
+      // }
     },
     [data]
   );
@@ -267,7 +265,7 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
-          columnVisibility: { id: false, galleryImages: false },
+          //columnVisibility: { id: false, galleryImages: false },
         }}
         muiTableContainerProps={({ table }) => ({
           sx: {
@@ -308,21 +306,34 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       />
       <CreateUpdateItemModal
         open={isModalOpen || isModalOpen}
-        rowToUpdate={rowToUpdate}
-        columns={columns}
         onClose={() => {
           setIsModalOpen(false);
           setRowToUpdate({});
         }}
+        rowToUpdate={rowToUpdate}
+        columns={columns}
         onSubmitCreateHandler={handleCreateNewRow}
         onSubmitUpdateHandler={updateApiData}
         isLoading={isLoading}
+        API_BASE_IMAGE_URL={API_BASE_IMAGE_URL}
+      />
+
+      <DeleteItemModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setRowToDelete(-1);
+        }}
+        rowToDelete={rowToDelete}
+        onSubmitDeleteHandler={deleteApiData}
+        data={data}
+        setData={setData}
       />
     </>
   );
 };
 
-//MODAL
+//MODAL CREATE OR UPDATE
 export const CreateUpdateItemModal = ({
   open,
   rowToUpdate,
@@ -331,9 +342,11 @@ export const CreateUpdateItemModal = ({
   onSubmitCreateHandler,
   onSubmitUpdateHandler,
   isLoading,
+  API_BASE_IMAGE_URL,
 }) => {
   const [isFormSending, setIsFormSending] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const isRowToUpdateEmpty = Object.keys(rowToUpdate).length === 0;
   const [responseStatus, setResponseStatus] = useState({
     status: null,
@@ -355,58 +368,71 @@ export const CreateUpdateItemModal = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       setIsFormSending(true);
-      //alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(values, null, 2));
 
       let responseCode = -1;
+      let responseStatusProps = { ...responseStatus };
+
       if (isRowToUpdateEmpty) {
         const convertedToArrayPlates = convertPropertiesToArray(values);
-        console.log(convertedToArrayPlates);
-        responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
+        if (convertedToArrayPlates !== null) {
+          responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
+          console.log(responseCode);
+        }
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
-        console.log(modifiedProperties);
-        const convertedToArrayPlates =
-          convertPropertiesToArray(modifiedProperties);
-        console.log(convertedToArrayPlates);
 
-        if (convertedToArrayPlates != null) {
-          responseCode = await onSubmitUpdateHandler(
-            values.id,
-            convertedToArrayPlates
-          );
+        if (modifiedProperties === null) {
+          responseStatusProps = {
+            ...responseStatusProps,
+            status: "info",
+            message: "Nothing was modified",
+            messageTitle: "Info",
+          };
         } else {
-          onCloseHandler();
+          const convertedToArrayPlates =
+            convertPropertiesToArray(modifiedProperties);
+          if (convertedToArrayPlates !== null) {
+            responseCode = await onSubmitUpdateHandler(
+              values.id,
+              convertedToArrayPlates
+            );
+          }
         }
       }
 
       setIsFormSubmitted(true);
-      console.log(responseCode);
 
       if (responseCode === -1) {
-        setResponseStatus({
+        responseStatusProps = {
+          ...responseStatusProps,
           status: "info",
-          message: "Anything was modified",
+          message: "Nothing was modified",
           messageTitle: "Info",
-        });
+        };
       } else if (responseCode === 201 || responseCode === 204) {
-        setResponseStatus({
-          ...responseStatus,
+        responseStatusProps = {
+          ...responseStatusProps,
           status: "success",
-          message: "Item added successfully!.",
+          message: "Item added successfully!",
           messageTitle: "Success",
-        });
+        };
+      } else {
+        responseStatusProps = {
+          ...responseStatusProps,
+          status: "error",
+          message: "Oops! An error occurred while processing the item.",
+          messageTitle: "Error",
+        };
+      }
+
+      if (responseCode === -1 || responseCode === 201 || responseCode === 204) {
         setTimeout(() => {
           onCloseHandler();
         }, 1500);
-      } else {
-        setResponseStatus({
-          ...responseStatus,
-          status: "error",
-          message: "Oops! An error occurred while procesing the item.",
-          messageTitle: "Error",
-        });
       }
 
+      setResponseStatus(responseStatusProps);
       setIsFormSending(false);
     },
   });
@@ -422,7 +448,7 @@ export const CreateUpdateItemModal = ({
       }
     }
 
-    if (Object.keys(modifiedProperties).length === 0) {
+    if (Object.keys(modifiedProperties).length == 0) {
       return null;
     }
 
@@ -436,44 +462,25 @@ export const CreateUpdateItemModal = ({
   function convertPropertiesToArray(inputObject) {
     const outputObject = { ...inputObject };
 
-    if (outputObject.starter && typeof outputObject.starter === "object") {
-      outputObject.starter = [outputObject.starter.name];
-    }
+    const propertiesToConvert = [
+      "starter",
+      "mainCourse",
+      "desserts",
+      "drinks",
+      "characteristics",
+      "categories",
+    ];
 
-    if (
-      outputObject.mainCourse &&
-      typeof outputObject.mainCourse === "object"
-    ) {
-      outputObject.mainCourse = [outputObject.mainCourse.name];
-    }
-
-    if (outputObject.desserts && typeof outputObject.desserts === "object") {
-      outputObject.desserts = [outputObject.desserts.name];
-    }
-
-    if (outputObject.drinks && typeof outputObject.drinks === "object") {
-      outputObject.drinks = [outputObject.drinks.name];
-    }
-
-    if (
-      outputObject.characteristics &&
-      typeof outputObject.drinks === "object"
-    ) {
-      outputObject.characteristics = [outputObject.characteristics.id];
-    }
-
-    if (
-      outputObject.categories &&
-      typeof outputObject.drinks === "object"
-    ) {
-      outputObject.categories = [outputObject.categories.id];
-    }
-
-    if (
-      outputObject.galleryImages &&
-      outputObject.galleryImages instanceof FileList
-    ) {
-      outputObject.galleryImages = Array.from(outputObject.galleryImages);
+    for (const propertyName in outputObject) {
+      if (outputObject[propertyName] instanceof FileList) {
+        outputObject[propertyName] = Array.from(outputObject[propertyName]);
+      } else if (
+        propertiesToConvert.includes(propertyName) &&
+        outputObject[propertyName] &&
+        typeof outputObject[propertyName] === "object"
+      ) {
+        outputObject[propertyName] = [outputObject[propertyName].name];
+      }
     }
 
     return outputObject;
@@ -482,16 +489,17 @@ export const CreateUpdateItemModal = ({
   const onCloseHandler = () => {
     formik.resetForm();
     onClose();
-    setIsFormSending(false);
     setTimeout(() => {
-      // setResponseStatus({
-      //   ...responseStatus,
-      //   status: null,
-      //   message: "",
-      //   messageTitle: "",
-      // });
       setIsFormSubmitted(false);
     }, 5000);
+  };
+
+  const getImageUrl = (value) => {
+    if (value instanceof File) {
+      return URL.createObjectURL(value);
+    } else {
+      return API_BASE_IMAGE_URL + value;
+    }
   };
 
   return (
@@ -514,27 +522,81 @@ export const CreateUpdateItemModal = ({
                   {column.isFileType ? (
                     <>
                       <Typography>{column.accessorKey}</Typography>
-                      <Input
-                        id={column.accessorKey}
-                        type="file"
-                        key={column.accessorKey}
-                        label={column.header}
-                        name={column.categoryImg || column.accessorKey}
-                        onChange={(e) =>
-                          formik.setFieldValue(
-                            column.accessorKey,
-                            column.isMultiple === true
-                              ? e.currentTarget.files
-                              : e.currentTarget.files[0]
-                          )
-                        }
-                        disabled={
-                          isFormSending && column.enableEditing === false
-                        }
-                        inputProps={{
-                          multiple: column.isMultiple,
-                        }}
-                      />
+                      <Button
+                        component="label"
+                        color="primary"
+                        variant="contained"
+                        startIcon={<AddAPhoto />}
+                      >
+                        Upload image
+                        <input
+                          hidden
+                          id={column.accessorKey}
+                          type="file"
+                          key={column.accessorKey}
+                          onChange={(e) =>
+                            formik.setFieldValue(
+                              column.accessorKey,
+                              column.isMultiple === true
+                                ? e.currentTarget.files
+                                : e.currentTarget.files[0]
+                            )
+                          }
+                          disabled={
+                            isFormSending && column.enableEditing === false
+                          }
+                          multiple={column.isMultiple}
+                        />
+                        {/* <Input
+                          id={column.accessorKey}
+                          type="file"
+                          key={column.accessorKey}
+                          label={column.header}
+                          name={column.categoryImg || column.accessorKey}
+                          onChange={(e) =>
+                            formik.setFieldValue(
+                              column.accessorKey,
+                              column.isMultiple === true
+                                ? e.currentTarget.files
+                                : e.currentTarget.files[0]
+                            )
+                          }
+                          disabled={
+                            isFormSending && column.enableEditing === false
+                          }
+                          inputProps={{
+                            multiple: column.isMultiple,
+                          }}
+                        /> */}
+                      </Button>
+                      {formik.values[column.accessorKey] && (
+                        <Box maxHeight={150} maxWidth={150}>
+                          {!isImageLoaded && (
+                            <Skeleton
+                              variant="rectangular"
+                              width="100%"
+                              height="100%"
+                            />
+                          )}
+                          <img
+                            src={getImageUrl(formik.values[column.accessorKey])}
+                            alt=""
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                            onLoad={() => {
+                              setIsImageLoaded(true);
+                              console.log("Image loaded!");
+                            }}
+                          />
+                        </Box>
+                      )}
+                      <Typography>
+                        {formik.values[column.accessorKey] &&
+                          formik.values[column.accessorKey].name}
+                      </Typography>
                     </>
                   ) : column.isMultiple ? (
                     <>
@@ -607,8 +669,8 @@ export const CreateUpdateItemModal = ({
           <Button
             type="submit"
             color="primary"
-            onClick={formik.handleSubmit}
             variant="contained"
+            onClick={formik.handleSubmit}
             startIcon={
               isFormSending ? (
                 <CircularProgress size={24} />
@@ -638,5 +700,94 @@ export const CreateUpdateItemModal = ({
     </>
   );
 };
+
+//MODAL DELETE
+const DeleteItemModal = ({
+  isOpen,
+  onClose,
+  rowToDelete,
+  onSubmitDeleteHandler,
+  data,
+  setData
+}) => {
+  const [isFormDeleting, setIsFormDeleting] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [responseStatus, setResponseStatus] = useState({
+    status: null,
+    message: "",
+    messageTitle: "",
+  });
+  const submitButtonLabel = isFormDeleting ? "DELETING..." : "DELETE";
+
+  const onConfirmHandler = async () => {
+    setIsFormDeleting(true);
+    const responseCode = await onSubmitDeleteHandler(rowToDelete);
+    console.log(responseCode);
+
+    if (responseCode === 204) {
+      const updatedData = data.filter((item) => item.id !== rowToDelete);
+      setData(updatedData);
+
+      setResponseStatus({
+        ...responseStatus,
+        status: "success",
+        message: "Item was deleted successfully",
+        messageTitle: "Delete",
+      });
+
+      setIsFormSubmitted(true);
+
+      onClose();
+
+      setTimeout(() => {
+        setIsFormSubmitted(false);
+      }, 3000);
+    }
+    setIsFormDeleting(false);
+  };
+
+  //minWidth: { xs: "300px", sm: "360px", md: "400px" },
+  return (
+    <>
+      <Dialog open={isOpen} onClose={onClose}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Alert severity="error">
+            <AlertTitle>This action cannot be undone</AlertTitle>
+            Are you sure you want to delete this item?
+          </Alert>
+        </DialogContent>
+        <DialogActions sx={{ p: "1.25rem" }}>
+          <Button onClick={onClose} disabled={isFormDeleting}>
+            Cancel
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={onConfirmHandler}
+            startIcon={
+              isFormDeleting ? <CircularProgress size={24} /> : <Delete />
+            }
+            disabled={isFormDeleting}
+          >
+            {submitButtonLabel}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar open={isFormSubmitted}>
+        <Alert
+          severity={responseStatus.status}
+          variant="filled"
+          sx={{ width: "100%" }}
+          onClose={() => setIsFormSubmitted(false)}
+        >
+          <AlertTitle>{responseStatus.messageTitle}</AlertTitle>
+          {responseStatus.message}
+        </Alert>
+      </Snackbar>
+    </>
+  );
+};
+
 
 export default AdminPanelDataGridDisplay;

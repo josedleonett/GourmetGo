@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
@@ -17,6 +17,8 @@ import AdminContainer from "./pages/container/AdminContainer";
 import UserRegisterContainer from "./components/container/UserRegisterContainer";
 import UserLoginContainer from "./components/container/UserLoginContainer"
 import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
+
+const accessToken = localStorage.getItem("accessToken");
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,7 +33,12 @@ const router = createBrowserRouter([
       { path: "/product/:id", element: <ProductDetailContainer /> },
       {
         path: "admin/*",
-        element: <AdminContainer />,
+        element:
+          accessToken !== null ? (
+            <AdminContainer />
+          ) : (
+            <Navigate to="/" replace />
+          ),
       },
       {
         path: "/administration-panel",
@@ -55,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/category/:id",
-        element: <CategoryFilterContainer/>,
+        element: <CategoryFilterContainer />,
       },
       {
         path: "*",

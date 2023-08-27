@@ -109,3 +109,501 @@
 [2023-08-24 23:38:32] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
 [2023-08-24 23:38:32] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.drinks: could not initialize proxy - no Session
 [2023-08-24 23:38:34] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: M07BY0887DR0YYN4; S3 Extended Request ID: CSQBMpWpyItmUP0hi3mGZNrXixKjhP3u3UzRN3SVrqL3KpmYdJFm9Zqe0nbkhNhZCl5WaSWqedk=; Proxy: null)
+[2023-08-26 10:27:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 10:35:29] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-26 10:35:29] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-26 10:35:31] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: E8J65X8KZV115AN1; S3 Extended Request ID: WhTjNux3BVhp/FpOSlZwsZ9Gdwf3pEx5sVtnMAagb3OSwrktmz8DGjCsDLg9KY4q/Q5D/K4KyMo=; Proxy: null)
+[2023-08-26 10:35:39] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:35:39] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:35:40] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: JKNWSWGNQN5PKMHN; S3 Extended Request ID: fO3W7WFZFpA3IzniHkjHGCwtpB+cM1OWj22B04wq0uabL1gd6uEv1e1u/NLKZJrWnCsiOvDzoIQ=; Proxy: null)
+[2023-08-26 10:35:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:35:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:01] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: E55Q5N1GAFM7JRSW; S3 Extended Request ID: 46ZNKszBc1HyrqbuBrUouFu2pVioJnzlAEkBSVljdDzmHyGwHMEuF2j3gfLY0mTyqyv800jEQD0=; Proxy: null)
+[2023-08-26 10:36:07] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:08] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 22JDMXT3M556KA7J; S3 Extended Request ID: m9/GI2RPcBoQnrTDPd5lsvyTtlHo3nX/NZhnHteNXOKK2DA05kIvC49yp2o8mMEdLoySllSXaS8=; Proxy: null)
+[2023-08-26 10:36:10] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:10] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:11] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: GHSY1J44A8N6T2YS; S3 Extended Request ID: V0CIn8p1zvcLmJMdH44DND8RkUBgDYZE9ef3T/cKrZ7iTLTIhsRyZ/eSLTbFbLeCgEQXDYCZ00s=; Proxy: null)
+[2023-08-26 10:36:12] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 10:36:27] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:27] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:29] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: X8PT5YQ7ASCV19ZA; S3 Extended Request ID: WpsXxFyPIlz0CjF1v4t1P817shW9sjnZdC0Uf63+HnSaHZXhfslCuWV4PYLmtcr/cbyccZrR1Ac=; Proxy: null)
+[2023-08-26 10:36:43] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:43] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:36:45] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 0PAS48G6BHRA69QR; S3 Extended Request ID: Yvv9t6sstX5onkmDH2y7PP6MPcQagb2T8hI7v2v5Ba1DkPbcxuiwjg/RMG8VRob1BkOvoSgfJ74=; Proxy: null)
+[2023-08-26 10:38:05] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-26 10:38:05] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Cannot invoke "org.hibernate.engine.spi.SharedSessionContractImplementor.getPersistenceContext()" because "this.session" is null
+[2023-08-26 10:38:07] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: VQTQMDCQEX60KFA1; S3 Extended Request ID: xa/zValBx36lNBLGnf0jYrOlVX9n1aZWLVQ1mR8i0r1rG0LWU6sInPH+w4qBrY0Gn0hXt7/3Km4=; Proxy: null)
+[2023-08-26 10:38:33] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:38:33] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:38:35] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: RXK4P0HQVWWNS4P1; S3 Extended Request ID: 79hEd9FRlHQSx+sOrOtBKT39MEamB1N05qAgGNriuQUu0nwXsqdS5DCJS80sgGJ9lockwqLtFJI=; Proxy: null)
+[2023-08-26 10:38:39] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:38:39] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:38:40] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: FHAD6Q05FKTAXHR4; S3 Extended Request ID: aAp438Eqmas+TmDVE6HTyQ0ZZVNgyB38MEgsgpeqwoH5HIBS2a0V2RRUB8EAIkhbtO2f5GmF8Qw=; Proxy: null)
+[2023-08-26 10:39:20] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:39:21] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: X9HDN28YMVM5ZWXX; S3 Extended Request ID: yLBtJP43LD5T7zjoZkhZZfF5wZ6FHjmeoAqr9JKUwqRHTo4TElhwL9f4pd7rcJfu8dRtJ+9hKUU=; Proxy: null)
+[2023-08-26 10:41:36] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:41:36] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: GF1GR8Z2HKDEGR53; S3 Extended Request ID: Ts+KRrnj9b6qsk+DDPTJQ29dZMZVFaIMmm7g7oEcsIuNnE3bA2LPHYfCV+hQGBRQHIJZQAs1cx4=; Proxy: null)
+[2023-08-26 10:42:20] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:42:21] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 461598B978KH0HRB; S3 Extended Request ID: ozs5GPzHnL3rMMjV2zVnKOC/THkEGVjpVcd5nYWEyXySh8s5HnVUFaunUzmqFTWxuWH7li0xNeg=; Proxy: null)
+[2023-08-26 10:42:30] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:42:30] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:42:32] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 5AE82AQMD5WGAKN5; S3 Extended Request ID: VPhW+vam5qSSamsChcED5n8ugFRx1bLjQS3uM1tg0gAnpyEPT4VMUJI9M6GpRIIRyI0d76nRO7k=; Proxy: null)
+[2023-08-26 10:42:35] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:42:35] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:42:36] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: XBK86T3YSKN98WE2; S3 Extended Request ID: Gb+GR3zoBWxIIGx7gmsgeDuqc91aQRgeqxwwD/HiLjYA/S86z2oOlVG+rKG51uegw5gkjrSzab8=; Proxy: null)
+[2023-08-26 10:48:11] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:48:11] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:48:13] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 6RFXAGEW58EFWMX7; S3 Extended Request ID: IQqSZPA1ta3gYg5+JK1WfvLxIAliqRC5efyCE8t+H+M2pvgQ9DSBd5bXZIScNfIgBso/MyxTtIs=; Proxy: null)
+[2023-08-26 10:49:50] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 10:49:52] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: RRM6KYY5HF5T3YQP; S3 Extended Request ID: UTZv5SyHBu3WlwMkER43zZRNwy7YeSHTsiGnhX/4pRqKIrB8m7G9wuVcWJd/S25V+AF0vDhX/jM=; Proxy: null)
+[2023-08-26 11:02:26] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:02:27] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: VNXJKXS509P6QJTG; S3 Extended Request ID: LNy1iKzhvfxOV5R3k/Dn2RDxeDYL2xXHwhwemlbHYM+3E6uQP8sd61hr/Kk2CPKqNdn/87Y9Qy4=; Proxy: null)
+[2023-08-26 11:03:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:03:28] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:03:28] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: R1JZ9TF5CGGXCRZQ; S3 Extended Request ID: VfIM4mhvdRjtKToDxyrWWqwR4vu8yEAybomSdILrErerB2FqZuA7gUkCKZxd2ZeZsgt81iaTNDU=; Proxy: null)
+[2023-08-26 11:03:42] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:03:42] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:03:43] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: GTTP1J8915BMQ1MC; S3 Extended Request ID: Mpqi5a2msNcz01G6tlpedsejDRo9GQd53UxaoFTQylUL0gsIN4tENnWR7LJXcUXEyhRo1iwP/GE=; Proxy: null)
+[2023-08-26 11:03:46] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:03:46] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:03:47] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CT58CVSRBV7RNPVP; S3 Extended Request ID: +8ZrcXn4Edtrpk9tu7pS8y4mRBqBWi/tD11UnHbdoRH2yN4oh9mVzUFuuY4GyFjG6Ebo/uVgDmo=; Proxy: null)
+[2023-08-26 11:13:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:13:09] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:13:10] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:13:11] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:13:20] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:13:56] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:13:56] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:13:57] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CP7V9W6JP8P6GS3B; S3 Extended Request ID: xXTzUrLQ1CHqyODTiuAvOj93N0Vyu+lQdYIuJhCE+VZdiB2/J8Poj+pLVq50qF0EGJ06B1Injn8=; Proxy: null)
+[2023-08-26 11:16:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:16:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:16:59] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: NEMWFKAZXFK80KTH; S3 Extended Request ID: Lch0eqbFshIp3YEIH5b/yd821qVx9nUdRz++RWgHvVREym9A3irjeGZ3Ln7ZqcsbTufJSi07JiE=; Proxy: null)
+[2023-08-26 11:17:03] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 11:27:51] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:27:51] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:27:51] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 8ZF9RSRXDSJV3M2K; S3 Extended Request ID: 2xBZO18DATD/dtQxrbZi+nsiYTFI+8nHcY04rkscOhTttrzekj2Be9JSm12TcM+1poIsv+oV5Vk=; Proxy: null)
+[2023-08-26 11:29:09] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:29:09] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 11:29:10] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: SBPR2QAV4KX07QAE; S3 Extended Request ID: wZSWAv/ogcRjuY1ayeSJjHkQs2PXSR4KjTp2O+0PBkvfPort3H+SSrku9di4l9jQqFPiqMfRQP0=; Proxy: null)
+[2023-08-26 11:32:00] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 11:32:21] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 11:33:37] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 11:35:40] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 11:36:40] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 11:37:52] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:05:30] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:05:33] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:06:35] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:06:40] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:17:14] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:17:25] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:17:36] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:17:40] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:17:44] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 12:18:12] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
+[2023-08-26 12:19:42] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
+[2023-08-26 12:41:05] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:41:06] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: AJYDZB98T0PC8XMB; S3 Extended Request ID: bXsnFvSFWCN4YwsVABEGbw2n20drQxpTTEo4C6A0WOYQnTBCkk4jq/Mb0IE1nyWtHnnunrq+dxs=; Proxy: null)
+[2023-08-26 12:42:13] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:42:13] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:42:15] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: DNM37T1EK9TZ4VAJ; S3 Extended Request ID: fNVA7UAjhRZ77VhS4em4DTt7agNXvGzIF3IiKfT1QKnLivezwLPIZo/91y18B0XUC5c6Uik/17Q=; Proxy: null)
+[2023-08-26 12:42:34] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:42:34] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:42:36] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: B13B0SQJZCPQ1VQ0; S3 Extended Request ID: uezKaR5oZ7V5KXdAZP8MFFFd6kJO9bSpeSybPa9h/EUnd3P/GtP7xhxoh9Ykk2EwwiuhQtSZn/Y=; Proxy: null)
+[2023-08-26 12:45:53] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:45:55] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 5A4V9SM1KFF04MS5; S3 Extended Request ID: 99Z815KYNchgZ4yvrmx1tBrhOlEnK13hRdFJRjhzjyjEMoFt6JBSy3oB1ydeTyOXdR0upIt7hmY=; Proxy: null)
+[2023-08-26 12:55:56] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:55:56] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:55:58] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: XSSFVXR13BPC3P2Y; S3 Extended Request ID: +1xmbj4M7VvhgLyubn66yDz3Bu3EEcQPDZ+uV9IGcaBzH1XAVvJVwObD0VkNoE/1zInoY9j1IkU=; Proxy: null)
+[2023-08-26 12:56:18] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:56:18] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:56:19] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: HGF0X91SGTZWA7V6; S3 Extended Request ID: gQcdNJBMPhXma72xHPlhuiIyUqNvkRHUaSomAdaWTwZL9e+d9/9Fx9n+hiQiY+lNw1HA6J7KAjg=; Proxy: null)
+[2023-08-26 12:56:35] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:56:35] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 12:56:37] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: FZ4NH4XJ2C2D6HPY; S3 Extended Request ID: KslY1eCusSXc+jnEsPkZRz3K8hC3bVdRp7ZOEVetZjKpC0eYq2cUEeS4zxCbWS+5dELvqK3QCsc=; Proxy: null)
+[2023-08-26 13:30:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:30:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:30:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:32:03] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 13:32:03] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 13:32:04] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CAB81XHJ0QG0S47G; S3 Extended Request ID: y2nEGl6yXMT9iAYUaAAwkZ2yd9zcgSE28Qquoq1CixKCfp9dNHG1ab2iY/P2TexR646YjA6k4r4=; Proxy: null)
+[2023-08-26 13:32:27] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 13:32:27] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.categories: could not initialize proxy - no Session
+[2023-08-26 13:32:29] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 7HAE02DMGDM2QE82; S3 Extended Request ID: 8IQLL6S3GXq1LQTJqyPx8GBTa0X+fmnn8NVmi1ZjvD5oJNm21H7X0h9c7CZMLioC0M29ZXKpPcQ=; Proxy: null)
+[2023-08-26 13:33:41] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:33:41] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:33:41] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:35:48] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 7NQ60Q3XRYG5XJ2B; S3 Extended Request ID: 3yDnyhtoEc6cd+85L0FiifrghVHWeLQ3glFsF87avEsVQjT6nOlQ9LoDJQKRaBGm8NjDYVrpkrI=; Proxy: null)
+[2023-08-26 13:35:52] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: QPDH73DK0D0X9S3Z; S3 Extended Request ID: qkIam4lTgCVexNizz3e7ClKp7469YguyzHMAGmYCfjaAh05Pswxq1bCHiqfzFLEFvD64D9tk3VE=; Proxy: null)
+[2023-08-26 13:35:53] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: PC0BA4A2AP1KFCCF; S3 Extended Request ID: MTiT5OFyuXScQZ1HiGjktAR+7vO2C1rlU3H/HCtb9GdJrz8KqQ20sstdCOHt58LHwSOgqyhJTgw=; Proxy: null)
+[2023-08-26 13:36:03] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: THMBSNQ4FB3E4FW6; S3 Extended Request ID: fVVLpSGmYCy11V3Dzm79N8r1pXAFVMPkgLYwPOZVjIb8TCDdyNzDMIUjULk3N9zAjmPf/CACPaM=; Proxy: null)
+[2023-08-26 13:36:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 13:36:06] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 24ZSKNA77XKNYYCD; S3 Extended Request ID: p6CFXUsvNZgK13g+JOaWBs1tFjbc7LYAeXLt6PVSARL4T0vDJ85TpUEL9KMcbVw8/Wo35bOmcXI=; Proxy: null)
+[2023-08-26 13:36:10] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 2X2RKJ0SWDFT1NXD; S3 Extended Request ID: zljF51/6JIfIcXFejWz+bAGHyeGG93S2h545frvd/X8j+P6wAgH+f+vujAYTCRdZDGI4vzhcfaU=; Proxy: null)
+[2023-08-26 13:41:15] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: null
+[2023-08-26 13:48:21] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: null
+[2023-08-26 14:31:00] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: K7QX2X5G0KW1K8M5; S3 Extended Request ID: 5bA1KfRYhykYIpWsb0XtqgoUBJEFHWmvdRxyOuLsMDEIYXYLi6ZlzJbHZSXaMaPI1trHfAMRq9U=; Proxy: null)
+[2023-08-26 14:31:53] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: NF2KQYDYX6Y5VVD3; S3 Extended Request ID: mjb/vd4xaYO3pCml6uj79VALqft0G4xYXMDVbUfrud+vNB6NEEQO9+jDJI+UkU63tZzsZCAvqeE=; Proxy: null)
+[2023-08-26 14:32:35] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: VFKEJVPGDG50W9SK; S3 Extended Request ID: u0oh7cT+0/5o7VzangqWgkDRCQyI1D+40EzXSByw6gqWfmisotcoUunz3xQ7MjI4xCQT663a7G8=; Proxy: null)
+[2023-08-26 14:38:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:24] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:25] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:25] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:25] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:32] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:36] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:36] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:36] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:36] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:37] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:39] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:41] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:51] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:52] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:52] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:52] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:38:57] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:39:00] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 14:40:45] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: APAHEHCPJ1DNJSDM; S3 Extended Request ID: QmxOnv87O4ceiucN9UtZf9f6K1TlhMy5SNrLhBmoT+tb/EWwPEeJL0AHfpP666pSHxfcmRBvSxk=; Proxy: null)
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:06:14] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:14:32] [ ERROR] [GlobalHandlerException:18] Required part 'galleryImages' is not present.
+[2023-08-26 16:23:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:23:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:23:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:23:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:23:19] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:23:20] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 16:28:08] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: FG6H96W152CXFQE0; S3 Extended Request ID: S03Phm9lvtZEpvh1EiLp8r0A1jGf+FUYrKfIFNPNbnRApxfZbXsKxwhqeerRFikuv5sio65Xujg=; Proxy: null)
+[2023-08-26 16:29:36] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 02MABT1B7AT3S0PB; S3 Extended Request ID: GjIgcG+NpvXnud/sZ3f9y/l84rJ7CHVD+/s03x/e8Y77N6d4/4G+J4dSrYD9S/VguvnOpQVGRlk=; Proxy: null)
+[2023-08-26 16:30:34] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: J0YMKED7N2NHTT38; S3 Extended Request ID: E5vLQZ+JkGCuSFTKbvDB4Jz69EHh8TdFjah4fUqW5shLExLzpkH248i80qlZ1EKwTpe9+gNf9J0=; Proxy: null)
+[2023-08-26 16:36:09] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 16:36:19] [ ERROR] [GlobalHandlerException:18] Required part 'galleryImages' is not present.
+[2023-08-26 16:56:08] [ ERROR] [GlobalHandlerException:18] Cannot invoke "java.util.List.iterator()" because "plateNames" is null
+[2023-08-26 16:59:04] [ ERROR] [GlobalHandlerException:18] Cannot invoke "java.util.List.iterator()" because "plateNames" is null
+[2023-08-26 16:59:30] [ ERROR] [GlobalHandlerException:54] Plate with name 'Caprese Salad' not found
+[2023-08-26 16:59:46] [ ERROR] [GlobalHandlerException:42] Drink with name 'Lemonade' not found
+[2023-08-26 17:02:52] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: ZK4K8994CCYN4GA1; S3 Extended Request ID: VxjCsJQbv5SpC7VisiH93/hB4q6jlvAVy1DorUdKMecMuE2sEotC9yx3SLL5CojDw7Um/RK5iww=; Proxy: null)
+[2023-08-26 17:05:06] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 31W20BR0QD5E2GQ5; S3 Extended Request ID: vSfZvMNCWCkQRWA955PU7cF0zDR4KO2qPTQ5fGnzXFbOORLs+4fV/9FtfY7IGYYKS7e3tPVdTIM=; Proxy: null)
+[2023-08-26 17:05:11] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 9TS1VQX1HY934PQ4; S3 Extended Request ID: a1EmAR9tKl52QQi8R3JiNfFCMTdW5KULbzqXFyrsSnuZ2Rmec0CJTxQeWVuO1JBkaRGh/6gCFP8=; Proxy: null)
+[2023-08-26 17:36:10] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:10] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:10] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:10] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:23] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:23] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:23] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:25] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:25] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-26 17:36:30] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:30] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:36:30] [ ERROR] [GlobalHandlerException:18] Unable to execute HTTP request: s3.amazonaws.com
+[2023-08-26 17:37:28] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-26 17:55:54] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 17:59:08] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-26 18:17:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 18:17:28] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 18:19:11] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 19:28:18] [ ERROR] [GlobalHandlerException:18] Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle#2]
+[2023-08-26 19:32:12] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: VF3M3ZM73Y64JB04; S3 Extended Request ID: SBGlO9ooZAEDR+U/tCz2Zmy5C0VEpjwyceoZ0YbyXzTa7EwHEbT6kiAXI4HX21jXPVDQfk0iJ+PZodfI8MiZiw==; Proxy: null)
+[2023-08-26 19:40:50] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: N5SQKBNNVDFF52RA; S3 Extended Request ID: Pl3CMAWiZgdtN7V0EQdWCzgI8jmKw7CuSH7ikQ0Bel/HeR/GQRgF/KpdI0lrYXRoAXdYyp0o3Uk=; Proxy: null)
+[2023-08-26 21:22:07] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:08] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:09] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:09] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:09] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:10] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:22:11] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:11] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:11] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:12] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:15] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:15] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:15] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:15] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:26] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot delete or update a parent row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`bundle_category`, CONSTRAINT `FKc2nnk3r9q13ech3pof5gfitk7` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`))] [delete from category where id=?]; SQL [delete from category where id=?]; constraint [null]
+[2023-08-26 21:22:27] [ ERROR] [GlobalHandlerException:18] could not execute statement [Cannot delete or update a parent row: a foreign key constraint fails (`0723TDPRON2C02LAED0222PT_GRUPO3`.`bundle_category`, CONSTRAINT `FKc2nnk3r9q13ech3pof5gfitk7` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`))] [delete from category where id=?]; SQL [delete from category where id=?]; constraint [null]
+[2023-08-26 21:22:28] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:28] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:58] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:58] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:59] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:22:59] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:23:04] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:23:04] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:23:04] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:23:04] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:23:12] [ ERROR] [GlobalHandlerException:18] Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category#47]
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:35] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:36] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:36] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:36] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: -1
+[2023-08-26 21:24:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 47
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:41] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:42] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:55] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:55] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:55] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:55] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:56] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:24:56] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:01] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:01] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:01] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:01] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:02] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:25:02] [ ERROR] [GlobalHandlerException:60] Category not found with id: -1
+[2023-08-26 21:27:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:27:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:27:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:27:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:27:54] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:27:55] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:28:30] [ ERROR] [GlobalHandlerException:18] Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category#48]
+[2023-08-26 21:28:30] [ ERROR] [GlobalHandlerException:18] Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category#48]
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:18] Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category#48]
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:31] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:32] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:33] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:34] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:35] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:36] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:37] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:38] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:39] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:40] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:41] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:42] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:43] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:44] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:45] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:46] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:47] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:47] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:52] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:53] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:53] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:57] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:57] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:57] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:57] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:58] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:28:58] [ ERROR] [GlobalHandlerException:60] Category not found with id: 48
+[2023-08-26 21:29:02] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:29:03] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:29:03] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:29:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:44:57] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:48:08] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"
+[2023-08-26 21:49:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:49:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:49:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 21:49:30] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 22:09:12] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 22:12:52] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 22:13:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-26 22:20:20] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: TBPG1V34KGFBDEEG; S3 Extended Request ID: yfcV8EYveISoYM6MiEVD1ajCYmMn6NJi7xSYuuUFpopFYMVLeImC4h1SEkAyLAWWCpHuLkxxuds=; Proxy: null)
+[2023-08-26 22:20:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CFVWNWSE86J1X2X9; S3 Extended Request ID: x77uHL9DDCitrtk2sXXtHOZ6EsgXIaFpRkL7gsBFULADM+strc/uw8b2etlIEpC49E2FBbstN/U=; Proxy: null)
