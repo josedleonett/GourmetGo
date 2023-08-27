@@ -1,22 +1,16 @@
 import {
-  Autocomplete,
   Box,
-  Chip,
   Container,
   Divider,
-  IconButton,
   Input,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
-import AdminPanelBundlesContainer from "../../components/container/AdminPanelBundlesContainer";
 import AdminPanelDataGridDisplay, {
   //AdminPanelDataGridLoader,
 } from "../../components/display/AdminPanelDataGridDisplay";
@@ -25,7 +19,6 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
-import { Delete, Edit } from "@mui/icons-material";
 
 export const fakeBundlesIds = [
   "1",
@@ -202,25 +195,15 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 gap: "1rem",
               }}
             >
-              {console.log(row)}
               <img
                 alt="cover"
                 width={"90%"}
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
-      },
-      {
-        accessorKey: "id",
-        header: "ID",
-        enableColumnOrdering: false,
-        enableEditing: false,
-        enableSorting: false,
-        size: 30,
       },
       {
         accessorKey: "name",
@@ -233,14 +216,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      // {
-      //   accessorKey: "starter[id]",
-      //   header: "Starter id",
-      //   isMultiple: true,
-      //   isMultiline: false,
-      //   options: [1,2,5,4],
-      //   size: 80,
-      // },
       {
         accessorKey: "starter[name]",
         header: "Starter",
@@ -327,18 +302,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
-      },
-      {
-        accessorKey: "id",
-        header: "ID",
-        enableColumnOrdering: false,
-        enableEditing: false,
-        enableSorting: false,
-        size: 30,
       },
       {
         accessorKey: "name",
@@ -387,18 +353,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
-      },
-      {
-        accessorKey: "id",
-        header: "ID",
-        enableColumnOrdering: false,
-        enableEditing: false,
-        enableSorting: false,
-        size: 30,
       },
       {
         accessorKey: "name",
@@ -463,19 +420,10 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
               {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-              {/* <span>{renderedCellValue}</span> */}
             </Box>
           </>
         ),
       },
-      // {
-      //   accessorKey: "id",
-      //   header: "ID",
-      //   enableColumnOrdering: false,
-      //   enableEditing: false,
-      //   enableSorting: false,
-      //   size: 30,
-      // },
       {
         accessorKey: "name",
         header: "Name",

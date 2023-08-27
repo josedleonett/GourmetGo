@@ -28,17 +28,17 @@ const AdminContainer = () => {
         {
           title: "Starter",
           url: "plates/starter",
-          icon: <BiDish size="30" />,
+          icon: <BiDish size="20" />,
         },
         {
           title: "Main course",
           url: "plates/mainCourse",
-          icon: <RiRestaurant2Line size="30" />,
+          icon: <RiRestaurant2Line size="20" />,
         },
         {
           title: "Dessert",
           url: "plates/dessert",
-          icon: <GiPieSlice size="30" />,
+          icon: <GiPieSlice size="20" />,
         },
       ],
     },
