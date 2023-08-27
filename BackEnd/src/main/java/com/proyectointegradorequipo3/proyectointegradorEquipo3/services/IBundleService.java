@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IBundleService {
-    List<BundleDto> searchAllBundles();
 
     BundleDto searchBundleDtoById(Long id);
 

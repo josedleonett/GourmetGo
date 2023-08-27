@@ -3,6 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.PlateUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.PlateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.GetAllServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.PlateServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class PlateController {
 
     private final PlateServiceImpl plateService;
 
+    private final GetAllServiceImpl getAllService;
+
     //====================Create====================//
 
     @PostMapping(path = "/create")
@@ -40,7 +43,7 @@ public class PlateController {
 
     @GetMapping
     public ResponseEntity<List<PlateDto>> getAllPlates() {
-        List<PlateDto> plateDtos = plateService.searchAllPlate();
+        List<PlateDto> plateDtos = getAllService.searchAllPlates();
         return ResponseEntity.ok(plateDtos);
     }
 
