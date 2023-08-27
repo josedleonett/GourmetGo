@@ -6,6 +6,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.respon
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.NewBundleDto;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface IBundleService {
     List<BundleDto> searchAllBundles();
@@ -16,6 +17,6 @@ public interface IBundleService {
 
     void deleteBundleById(Long id);
 
-    Long saveBundle(BundleCreateRequest request);
+    Long saveBundle(BundleCreateRequest request) throws InterruptedException, ExecutionException;
 
 }

@@ -5,7 +5,6 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.NewBundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
@@ -15,20 +14,19 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleS
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -112,21 +110,45 @@ public class BundleServiceImpl implements IBundleService {
     //===================Create===================//
     @Override
     @Transactional
-    public Long saveBundle(BundleCreateRequest request) {
-        List<Plate> starter = plateService.validateAndGetPlates(request.getStarter(), "Starter");
-        List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
-        List<Plate> dessert = plateService.validateAndGetPlates(request.getDesserts(), "Dessert");
+    public Long saveBundle(BundleCreateRequest request) throws ExecutionException, InterruptedException, java.util.concurrent.ExecutionException {
 
-        List<Drink> drinks = drinkService.validateAndGetDrink(request.getDrinks());
+        CompletableFuture<List<Plate>> starterFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getStarter(), "Starter"));
 
-        List<Characteristic> characteristics = characteristicRepository.findAllById(request.getCharacteristics());
+        CompletableFuture<List<Plate>> mainCourseFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getMainCourse(), "Main course"));
 
-        List<Category> categories = categoryRepository.findAllById(request.getCategories());
+        CompletableFuture<List<Plate>> dessertFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getDesserts(), "Dessert"));
 
-        String keyImage = s3Service.putObject(request.getImage());
-        List<String> keys = request.getGalleryImages().stream()
-                .map(s3Service::putObject)
-                .collect(Collectors.toList());
+        CompletableFuture<List<Drink>> drinksFuture = CompletableFuture.supplyAsync(() ->
+                drinkService.validateAndGetDrink(request.getDrinks()));
+
+        CompletableFuture<List<Characteristic>> characteristicsFuture = CompletableFuture.supplyAsync(() ->
+                characteristicRepository.findAllById(request.getCharacteristics()));
+
+        CompletableFuture<List<Category>> categoriesFuture = CompletableFuture.supplyAsync(() ->
+                categoryRepository.findAllById(request.getCategories()));
+
+        CompletableFuture<String> keyImageFuture = CompletableFuture.supplyAsync(() ->
+                s3Service.putObject(request.getImage()));
+
+        CompletableFuture<List<String>> keysFuture = CompletableFuture.supplyAsync(() ->
+                request.getGalleryImages().stream()
+                        .map(s3Service::putObject)
+                        .collect(Collectors.toList()));
+
+        CompletableFuture.allOf(starterFuture, mainCourseFuture, dessertFuture, drinksFuture,
+                characteristicsFuture, categoriesFuture, keyImageFuture, keysFuture).join();
+
+        List<Plate> starter = starterFuture.get();
+        List<Plate> mainCourse = mainCourseFuture.get();
+        List<Plate> dessert = dessertFuture.get();
+        List<Drink> drinks = drinksFuture.get();
+        List<Characteristic> characteristics = characteristicsFuture.get();
+        List<Category> categories = categoriesFuture.get();
+        String keyImage = keyImageFuture.get();
+        List<String> keys = keysFuture.get();
 
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
@@ -146,8 +168,6 @@ public class BundleServiceImpl implements IBundleService {
         save(newBundle);
         return newBundle.getId();
     }
-
-
 
     public void save(Bundle bundle) {
         bundleRepository.save(bundle);
@@ -227,12 +247,17 @@ public class BundleServiceImpl implements IBundleService {
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+
         s3Service.deleteObject(bundle.getImage());
-        for (String image : bundle.getGalleryImages()) {
-            s3Service.deleteObject(image);
-        }
-        bundleRepository.delete(bundle);
+
+        List<CompletableFuture<Void>> futures = bundle.getGalleryImages().stream()
+                .map(image -> CompletableFuture.runAsync(() -> s3Service.deleteObject(image)))
+                .collect(Collectors.toList());
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        bundleRepository.deleteById(id);
     }
+
 
     //===================Util===================//
     private void existsName(String name, Long excludeId) {

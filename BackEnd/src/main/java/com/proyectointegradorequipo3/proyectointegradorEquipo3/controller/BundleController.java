@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiConstants.BUNDLE_URI;
 
@@ -37,7 +38,7 @@ public class BundleController {
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
                                              @RequestPart MultipartFile image,
-                                             @RequestPart List<MultipartFile> galleryImages) {
+                                             @RequestPart List<MultipartFile> galleryImages) throws ExecutionException, InterruptedException {
         request.setImage(image);
         request.setGalleryImages(galleryImages);
 
