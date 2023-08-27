@@ -109,7 +109,9 @@ const UserLogInDisplay = () => {
           backgroundColor: "secondary.light",
           display: "inline-block",
           fontSize: isSmallScreen ? '1.5rem' : '2rem',
+          fontWeight: 500,
           padding: "0.5rem",
+          paddingTop: "1rem",
           marginBottom: "2rem"
         }}>
           Your dream starts here!

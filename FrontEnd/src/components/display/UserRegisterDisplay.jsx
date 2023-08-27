@@ -88,11 +88,8 @@ const UserRegisterDisplay = () => {
           title: "Email Resent",
           text: "A confirmation email has been resent to your email address.",
         });
-        
-
          if (attemptsCount < 2) {
            console.log(attemptsCount)
-          
            // Muestra el botón de reenvío y oculta el mensaje de reintentar
            setShowRetryMessage(false);
            setResendButtonVisible(true);
@@ -245,8 +242,11 @@ const UserRegisterDisplay = () => {
     sx={{  marginBottom: '3rem',
     fontSize: isSmallScreen ? '1.5rem' : '2rem',
     backgroundColor: "secondary.light",
-    display: "inline-block", // Ajusta el fondo al tamaño del texto
-    padding: "0.5rem",  }}>
+    display: "inline-block",
+    fontWeight: 500,
+     // Ajusta el fondo al tamaño del texto
+    padding: "0.5rem", 
+    paddingTop: "1rem", }}>
     Join the GourmetGo family!
     </Typography>
     <Box
