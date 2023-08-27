@@ -1,7 +1,4 @@
-import React from "react";
-import CardCategoryContainer from "./CardCategoryContainer";
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import CardProductContainer from "./CardProductContainer";
+import { useMediaQuery, useTheme } from "@mui/material";
 import CardProductGridDisplay from "../display/CardProductGridDisplay";
 
 const CardProductGridContainer = ({ list }) => {
