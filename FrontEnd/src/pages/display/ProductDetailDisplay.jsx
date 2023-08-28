@@ -23,6 +23,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+//import { Gallery } from "react-grid-gallery";
+import Lightbox from "react-lightbox-component";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 
 const images = [
@@ -52,17 +54,9 @@ const images = [
 ];
 
 const ProductDetailDisplay = ({productData}) => {
-  const [bundles, setBundles] = useState();
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch(`http://localhost:8080/v1/bundle/${id}`)
-      .then(response => response.json())
-      .then(data => setBundles(data))
-      .catch(error => console.error("Error fetching bundles:", error));
-  }, []);
 
   function findPackageById(array, idToFind) {
     for (let i = 0; i < array.length; i++) {
@@ -89,7 +83,7 @@ const ProductDetailDisplay = ({productData}) => {
       </IconButton>
 
       <CoverProductGalleryContainer
-        imgList={packageList[mainPackageId].galleryImages}
+        imgList={productData ? productData.galleryImages : []}
         galleryId={"productGallery"}
       />
 
@@ -97,10 +91,10 @@ const ProductDetailDisplay = ({productData}) => {
         <Grid container padding={2} lg={12}>
           <Box>
             <Typography variant="h4">
-              {packageList[mainPackageId].name}
+              {productData ? productData.name : ""}
             </Typography>
             <Typography variant="subtitle1" fontStyle="italic" fon>
-              {packageList[mainPackageId].description}
+              {productData ? productData.description : ""}
             </Typography>
           </Box>
           <Divider light />
@@ -114,21 +108,29 @@ const ProductDetailDisplay = ({productData}) => {
                       <BiDish size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Starter:"
-                      secondary={
-                        <>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {packageList[mainPackageId].starter.name}
-                          </Typography>
-                          {` — ${packageList[mainPackageId].starter.description}`}
-                        </>
-                      }
-                    />
+                        primary="Main course:"
+                        secondary={
+                          <>
+                            {productData ? (
+                              productData.starter.map((starterItem, index) => (
+                                <div key={index}>
+                                  <Typography
+                                    sx={{ display: "inline" }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {starterItem.name}
+                                  </Typography>
+                                  {` — ${starterItem.description}`}
+                                </div>
+                              ))
+                            ) : (
+                              ""
+                            )}
+                          </>
+                        }
+                      />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -138,21 +140,29 @@ const ProductDetailDisplay = ({productData}) => {
                       <RiRestaurant2Line size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Main Course:"
-                      secondary={
-                        <>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {packageList[mainPackageId].mainCourse.name}
-                          </Typography>
-                          {` — ${packageList[mainPackageId].mainCourse.description}`}
-                        </>
-                      }
-                    />
+                        primary="Main course:"
+                        secondary={
+                          <>
+                            {productData ? (
+                              productData.mainCourse.map((mainItem, index) => (
+                                <div key={index}>
+                                  <Typography
+                                    sx={{ display: "inline" }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {mainItem.name}
+                                  </Typography>
+                                  {` — ${mainItem.description}`}
+                                </div>
+                              ))
+                            ) : (
+                              ""
+                            )}
+                          </>
+                        }
+                      />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -162,21 +172,29 @@ const ProductDetailDisplay = ({productData}) => {
                       <GiPieSlice size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Dessert:"
-                      secondary={
-                        <>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {packageList[mainPackageId].dessert.name}
-                          </Typography>
-                          {` — ${packageList[mainPackageId].dessert.description}`}
-                        </>
-                      }
-                    />
+                        primary="Dessert:"
+                        secondary={
+                          <>
+                            {productData ? (
+                              productData.desserts.map((dessertsItem, index) => (
+                                <div key={index}>
+                                  <Typography
+                                    sx={{ display: "inline" }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {dessertsItem.name}
+                                  </Typography>
+                                  {` — ${dessertsItem.description}`}
+                                </div>
+                              ))
+                            ) : (
+                              ""
+                            )}
+                          </>
+                        }
+                      />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -186,22 +204,28 @@ const ProductDetailDisplay = ({productData}) => {
                       <MdLocalBar size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Drinks:"
-                      secondary={
-                        <>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {packageList[mainPackageId].drinks
-                              .map((drink) => drink.name)
-                              .join(", ")}
-                          </Typography>
-                        </>
-                      }
-                    />
+                        primary="Drinks:"
+                        secondary={
+                          <>
+                            {productData ? (
+                              productData.drinks.map((dessertsItem, index) => (
+                                <div key={index}>
+                                  <Typography
+                                    sx={{ display: "inline" }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {dessertsItem.name}
+                                  </Typography>
+                                </div>
+                              ))
+                            ) : (
+                              ""
+                            )}
+                          </>
+                        }
+                      />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />

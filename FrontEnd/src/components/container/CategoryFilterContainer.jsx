@@ -30,6 +30,8 @@ const CategoryFilterContainer = () => {
     }
   }, [categoryData]);
 
+  console.log(categoryData)
+
   return (
     <CategoryFilterDisplay categoryData={categoryData} bundlesData={bundlesData} />
   );
