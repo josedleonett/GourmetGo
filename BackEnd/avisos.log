@@ -634,3 +634,7 @@
 [2023-08-27 12:48:30] [ ERROR] [GlobalHandlerException:18] detached entity passed to persist: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category
 [2023-08-27 16:26:52] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: 53
 [2023-08-27 16:27:39] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: 52
+[2023-08-28 07:55:39] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
+[2023-08-28 08:10:52] [ ERROR] [GlobalHandlerException:42] Drink with name 'paso' not found
+[2023-08-28 08:11:55] [ ERROR] [GlobalHandlerException:18] Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public void com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.DrinkServiceImpl.modifyDrink(java.lang.Long,com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest) throws java.lang.Exception] caches=[searchDrinkById] | key='#bundleId' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='',false,false
+[2023-08-28 08:15:31] [ ERROR] [GlobalHandlerException:60] Drink not found with id: 26
