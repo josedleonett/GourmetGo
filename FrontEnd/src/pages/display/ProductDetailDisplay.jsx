@@ -238,12 +238,6 @@ const ProductDetailDisplay = ({productData}) => {
               <Container
                 sx={{ display: "flex", flexDirection: "column", gap: 1 }}
               >
-                <Rating
-                  name="valoration"
-                  value={packageList[mainPackageId].rating}
-                  readOnly
-                  precision={0.5}
-                />
 
                 <Stack
                   direction="row"
@@ -251,10 +245,6 @@ const ProductDetailDisplay = ({productData}) => {
                   alignItems="center"
                   color={"secondary.main"}
                 >
-                  <GroupsIcon fontSize="small" color="primary" />
-                  <Typography variant="caption" color="primary">
-                    {packageList[mainPackageId].numberDiners}
-                  </Typography>
                 </Stack>
                 <Button variant="contained" color="secondary">
                   RESERVE
