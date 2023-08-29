@@ -3,7 +3,6 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.respo
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,9 +20,5 @@ public class UserDto {
     private String role;
 
     private boolean isConfirmed;
-
-    private int emailResendAttempts = 0;
-
-    private LocalDateTime lastEmailResendDate;
 
 }
