@@ -372,6 +372,40 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     ],
   };
 
+  const usersDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "user/",
+    columns: [
+      {
+        accessorKey: "name",
+        header: "Name",
+        size: 140,
+      },
+      { 
+        accessorKey: "lastName",
+        header: "Last name",
+        size: 140,
+      },
+      { 
+        accessorKey: "email",
+        header: "Email",
+        size: 140,
+      },
+      { 
+        accessorKey: "role",
+        header: "Role",
+        size: 140,
+      },
+      { 
+        accessorKey: "confirmed",
+        header: "Confirmed",
+        size: 140,
+        Cell: ({ renderedCellValue, row }) => (
+          <span>{row.original.confirmed ? "Yes" : "No"}</span>
+        ),
+      },
+    ],
+  };
+
   const categoryDataGridProps = {
     API_BASE_URL: API_BASE_URL + "category/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
@@ -531,6 +565,12 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
             path="categories"
             element={
               <AdminPanelDataGridDisplay props={categoryDataGridProps} />
+            }
+          />
+          <Route
+            path="user"
+            element={
+              <AdminPanelDataGridDisplay props={usersDataGridProps} />
             }
           />
           <Route path="/*" element={<NotFoundContainer />} />
