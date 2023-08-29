@@ -120,7 +120,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName", "getBundleIdsByCategoryId", "getBundleMapByCategoryId"}, allEntries = true, beforeInvocation = false)
     public void modifyCategory(Long id, CategoryUpdateRequest request) {
         CategoryDto categoryDto = searchCategoryById(id);
 
@@ -149,7 +149,7 @@ public class CategoryServiceImpl implements ICategoryService {
     //===================Delete===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = {"searchAllCategory","searchCategoryById","searchCategoryByName", "getBundleIdsByCategoryId", "getBundleMapByCategoryId"}, allEntries = true, beforeInvocation = false)
     public void deleteCategoryById(Long id) {
         Category category = mapper.map(searchCategoryById(id), Category.class);
         categoryRepository.delete(category);
