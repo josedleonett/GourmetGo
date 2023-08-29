@@ -622,3 +622,12 @@
 [2023-08-27 22:33:56] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 814EXH3XHKA1MZ0Q; S3 Extended Request ID: wSSUuGyRsypQceGkGVzk5EMBybSbZNLIDqggzMa5+mifUNFmW6cR+cXMXqksXQiHfrLV3gJP8dk=; Proxy: null)
 [2023-08-27 22:34:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
 [2023-08-27 22:34:50] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 7BERPK3QPT95FK4A; S3 Extended Request ID: oRhvgJt3ojpZ+LZyStIE/KybVsLPR5Mi6xzUdXVnHUdTV0sBi2tkp29cek0/n5ofFUlix/k2P28=; Proxy: null)
+[2023-08-28 23:08:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:08:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Cannot invoke "org.hibernate.engine.spi.SharedSessionContractImplementor.getPersistenceContext()" because "this.session" is null
+[2023-08-28 23:20:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:20:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:21:38] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:24:34] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:25:28] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
