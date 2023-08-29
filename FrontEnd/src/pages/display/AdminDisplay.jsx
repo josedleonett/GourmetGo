@@ -50,6 +50,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
   const [platesOptions, setPlatesOptions] = useState([])
+  const [drinksOptions, setDrinksOptions] = useState([])
   
   const getOptions = async (API_BASE_URL, filter) => {
     try {
@@ -74,14 +75,18 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
 
   useEffect(() => {
     const fetchPlateOptions = async () => {
-      const options = await getOptions(API_BASE_URL + "plate/");
-      setPlatesOptions(options);
+      const platesOptionsResponse = await getOptions(API_BASE_URL + "plate/");
+      const drinksOptionsResponse = await getOptions(API_BASE_URL + "drink/");
+
+      setPlatesOptions(platesOptionsResponse);
+      setDrinksOptions(drinksOptionsResponse);
     };
   
     fetchPlateOptions();
   }, []);
 
   console.log(platesOptions);
+  console.log(drinksOptions);
   
 
 
@@ -267,21 +272,24 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         accessorKey: "mainCourse[name]",
         header: "Main Course",
         isMultiline: false,
-        options: ["Caprese Salad", 2, 5, 4],
+        isMultiple: true,
+        options: platesOptions,
         size: 80,
       },
       {
         accessorKey: "desserts[name]",
         header: "Desserts",
         isMultiline: false,
-        options: ["Caprese Salad", 2, 5, 4],
+        isMultiple: true,
+        options: platesOptions,
         size: 80,
       },
       {
         accessorKey: "drinks[name]",
         header: "Drinks",
         isMultiline: false,
-        options: ["Caprese Salad", 2, 5, 4],
+        isMultiple: true,
+        options: drinksOptions,
         size: 80,
       },
       {
