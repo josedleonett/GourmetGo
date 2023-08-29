@@ -607,3 +607,34 @@
 [2023-08-26 22:13:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
 [2023-08-26 22:20:20] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: TBPG1V34KGFBDEEG; S3 Extended Request ID: yfcV8EYveISoYM6MiEVD1ajCYmMn6NJi7xSYuuUFpopFYMVLeImC4h1SEkAyLAWWCpHuLkxxuds=; Proxy: null)
 [2023-08-26 22:20:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CFVWNWSE86J1X2X9; S3 Extended Request ID: x77uHL9DDCitrtk2sXXtHOZ6EsgXIaFpRkL7gsBFULADM+strc/uw8b2etlIEpC49E2FBbstN/U=; Proxy: null)
+[2023-08-27 09:50:13] [ ERROR] [GlobalHandlerException:18] Required part 'image' is not present.
+[2023-08-27 09:50:49] [ ERROR] [GlobalHandlerException:42] Drink with name 'Lemonades' not found
+[2023-08-27 09:51:57] [ ERROR] [GlobalHandlerException:18] Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public java.lang.Long com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl.saveBundle(com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest)] caches=[searchBundleDtoById] | key='#id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='',false,false
+[2023-08-27 09:56:36] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Test bundle
+[2023-08-27 09:56:52] [ ERROR] [GlobalHandlerException:18] EL1008E: Property or field 'id' cannot be found on object of type 'java.lang.Long' - maybe not public or not valid?
+[2023-08-27 10:43:34] [ ERROR] [GlobalHandlerException:18] ModelMapper mapping errors:
+
+1) Error mapping com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle to com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.NewBundleDto
+
+1 error
+[2023-08-27 11:34:01] [ ERROR] [GlobalHandlerException:18] ModelMapper mapping errors:
+
+1) Error mapping com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle to com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.NewBundleDto
+
+1 error
+[2023-08-27 11:48:38] [ ERROR] [GlobalHandlerException:18] EL1008E: Property or field 'id' cannot be found on object of type 'java.lang.Long' - maybe not public or not valid?
+[2023-08-27 11:53:20] [ ERROR] [GlobalHandlerException:48] There is a resource with the name: Test bundle 2
+[2023-08-27 11:55:16] [ ERROR] [GlobalHandlerException:18] class java.lang.Long cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto (java.lang.Long is in module java.base of loader 'bootstrap'; com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto is in unnamed module of loader 'app')
+[2023-08-27 11:56:30] [ ERROR] [GlobalHandlerException:18] class java.lang.Long cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto (java.lang.Long is in module java.base of loader 'bootstrap'; com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto is in unnamed module of loader 'app')
+[2023-08-27 11:58:22] [ ERROR] [GlobalHandlerException:18] class java.lang.Long cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto (java.lang.Long is in module java.base of loader 'bootstrap'; com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto is in unnamed module of loader 'app')
+[2023-08-27 12:03:58] [ ERROR] [GlobalHandlerException:18] class java.lang.Long cannot be cast to class com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto (java.lang.Long is in module java.base of loader 'bootstrap'; com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto is in unnamed module of loader 'app')
+[2023-08-27 12:13:35] [ ERROR] [GlobalHandlerException:18] Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public void com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl.modifyBundle(java.lang.Long,com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest)] caches=[searchBundleDtoById] | key='#id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='' | unless=''
+[2023-08-27 12:25:16] [ ERROR] [GlobalHandlerException:60] Drink not found with id: 24
+[2023-08-27 12:34:27] [ ERROR] [GlobalHandlerException:18] detached entity passed to persist: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category
+[2023-08-27 12:48:30] [ ERROR] [GlobalHandlerException:18] detached entity passed to persist: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Category
+[2023-08-27 16:26:52] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: 53
+[2023-08-27 16:27:39] [ ERROR] [GlobalHandlerException:60] Bundle not found with id: 52
+[2023-08-28 07:55:39] [ ERROR] [GlobalHandlerException:18] Cannot invoke "org.springframework.web.multipart.MultipartFile.getOriginalFilename()" because "multipartFile" is null
+[2023-08-28 08:10:52] [ ERROR] [GlobalHandlerException:42] Drink with name 'paso' not found
+[2023-08-28 08:11:55] [ ERROR] [GlobalHandlerException:18] Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public void com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.DrinkServiceImpl.modifyDrink(java.lang.Long,com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest) throws java.lang.Exception] caches=[searchDrinkById] | key='#bundleId' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='',false,false
+[2023-08-28 08:15:31] [ ERROR] [GlobalHandlerException:60] Drink not found with id: 26

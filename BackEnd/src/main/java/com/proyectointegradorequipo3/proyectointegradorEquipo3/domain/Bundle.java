@@ -68,7 +68,7 @@ public class Bundle {
     )
     private List<Characteristic> characteristics = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "bundle_category",
             joinColumns = @JoinColumn(name = "bundle_id"),
