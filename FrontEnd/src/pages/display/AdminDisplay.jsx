@@ -19,6 +19,8 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const fakeBundlesIds = [
   "1",
@@ -46,6 +48,43 @@ export const fakeBundlesIds = [
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
+
+  const [platesOptions, setPlatesOptions] = useState([])
+  
+  const getOptions = async (API_BASE_URL, filter) => {
+    try {
+      const response = await axios.get(API_BASE_URL);
+  
+      if (filter != undefined) {
+        const dataFiltered = response.data.filter(
+          (item) => item.hasOwnProperty("type") && item.type === filter
+        );
+  
+        const typeValues = dataFiltered.map(item => item.name);
+        return typeValues;
+      } else {
+  
+        const typeValues = response.data.map(item => item.name);
+        return typeValues;
+      }
+    } catch (error) {
+      console.error("Error get Options:", error);
+    }
+  }
+
+  useEffect(() => {
+    const fetchPlateOptions = async () => {
+      const options = await getOptions(API_BASE_URL + "plate/");
+      setPlatesOptions(options);
+    };
+  
+    fetchPlateOptions();
+  }, []);
+
+  console.log(platesOptions);
+  
+
+
 
   //RENDER DETAIL PANEL:
   const bundlesRenderDetailPanel = ({ row }) => (
@@ -221,7 +260,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Starter",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        isMultiple: true,
+        options: platesOptions,
         size: 80,
       },
       {
@@ -229,7 +269,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Main Course",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {
@@ -237,7 +277,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Desserts",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {
@@ -245,7 +285,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Drinks",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {
@@ -253,7 +293,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Characteristics",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {
@@ -261,7 +301,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Categories",
         //isMultiple: true,
         isMultiline: false,
-        options: ["Caprese Salad",2,5,4],
+        options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {
