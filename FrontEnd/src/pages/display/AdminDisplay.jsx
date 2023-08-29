@@ -101,7 +101,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 <>
                   {row.original.starter &&
                     row.original.starter.map((starterItem) => (
-                      <>
+                      <Box>
                         <Typography
                           key={`starterItemId_${starterItem.id}`}
                           sx={{ display: "inline" }}
@@ -112,7 +112,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           {starterItem.name}
                         </Typography>
                         {` — ${starterItem.description}`}
-                      </>
+                      </Box>
                     ))}
                 </>
               }
@@ -131,7 +131,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 <>
                   {row.original.mainCourse &&
                     row.original.mainCourse.map((mainCourseItem) => (
-                      <>
+                      <Box>
                         <Typography
                           key={`mainCourseItemId_${mainCourseItem.id}`}
                           sx={{ display: "inline" }}
@@ -142,7 +142,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           {mainCourseItem.name}
                         </Typography>
                         {` — ${mainCourseItem.description}`}
-                      </>
+                      </Box>
                     ))}
                 </>
               }
@@ -161,7 +161,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 <>
                   {row.original.desserts &&
                     row.original.desserts.map((dessertsItem) => (
-                      <>
+                      <Box>
                         <Typography
                           key={`dessertsItemId_${dessertsItem.id}`}
                           sx={{ display: "inline" }}
@@ -172,7 +172,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           {dessertsItem.name}
                         </Typography>
                         {` — ${dessertsItem.description}`}
-                      </>
+                      </Box>
                     ))}
                 </>
               }
@@ -191,7 +191,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 <>
                   {row.original.drinks &&
                     row.original.drinks.map((drinksItem) => (
-                      <>
+                      <Box>
                         <Typography
                           key={`drinksItemId_${drinksItem.id}`}
                           sx={{ display: "inline" }}
@@ -202,7 +202,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           {drinksItem.name}
                         </Typography>
                         {` — `}
-                      </>
+                      </Box>
                     ))}
                 </>
               }
@@ -258,7 +258,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "starter[name]",
         header: "Starter",
-        //isMultiple: true,
         isMultiline: false,
         isMultiple: true,
         options: platesOptions,
@@ -267,7 +266,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "mainCourse[name]",
         header: "Main Course",
-        //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
         size: 80,
@@ -275,7 +273,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "desserts[name]",
         header: "Desserts",
-        //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
         size: 80,
@@ -283,7 +280,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "drinks[name]",
         header: "Drinks",
-        //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
         size: 80,
@@ -291,7 +287,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "characteristics[id]",
         header: "Characteristics",
-        //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
         size: 80,
@@ -299,7 +294,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       {
         accessorKey: "categories[id]",
         header: "Categories",
-        //isMultiple: true,
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
         size: 80,
@@ -421,7 +415,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         id: "image",
         isFileType: true,
         type: "file",
-        //imgPostDir: "image",
         header: "Image",
         size: 5,
         Edit: ({ row }) => {
@@ -459,7 +452,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 loading="lazy"
                 src={API_BASE_IMAGE_URL + row.original.image}
               />
-              {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
             </Box>
           </>
         ),
@@ -475,43 +467,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: true,
         size: 140,
       },
-      // {
-      //   accessorKey: "bundles",
-      //   header: "Bundles",
-      //   isMultiple: true,
-      //   options: fakeBundlesIds,
-      //   enableEditing: false,
-      //   size: 140,
-      //   Cell: ({ renderedCellValue, row }) => (
-      //     <>
-      //       {console.log(row.original)}
-      //       <Autocomplete
-      //         disabled
-      //         multiple
-      //         limitTags={5}
-      //         value={row.original.bundles}
-      //         //defaultValue={row.original}
-      //         //options={fakeBundlesIds}
-      //         filterSelectedOptions
-      //         //autoComplete
-      //         key={row.original.id}
-      //         renderInput={(params) => (
-      //           <TextField {...params} key={row.original.bundles} />
-      //         )}
-      //         renderTags={(value, getTagProps) =>
-      //           row.original.bundles.map((option, index) => (
-      //             <Chip
-      //               key={index.toString()}
-      //               variant="filled"
-      //               label={option}
-      //               color="secondary"
-      //             />
-      //           ))
-      //         }
-      //       />
-      //     </>
-      //   ),
-      // },
     ],
   };
 
