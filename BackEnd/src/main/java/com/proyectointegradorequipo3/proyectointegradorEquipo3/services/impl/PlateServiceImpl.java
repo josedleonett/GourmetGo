@@ -33,16 +33,10 @@ public class PlateServiceImpl implements IPlateService {
     private final S3Service s3Service;
     private final ModelMapper mapper;
 
+
     Logger logger = Logger.getLogger(PlateServiceImpl.class.getName());
 
     //===================Find===================//
-
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value = "searchAllPlate", unless = "#result == null || #result.isEmpty()")
-    public List<PlateDto> searchAllPlate() {
-        return mapper.map(plateRepository.findAll(), new TypeToken<List<PlateDto>>(){}.getType());
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -56,7 +50,6 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "searchPlateByName", unless = "#result == null")
     public PlateDto searchPlateByName(String name) {
 
         Optional<Plate> optionalPlate = plateRepository.findByName(name);
@@ -69,7 +62,6 @@ public class PlateServiceImpl implements IPlateService {
     //===================Create===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
     public Long savePlate(PlateCreateRequest request) {
         existsName(request.getName());
         Plate newPlate = mapper.map(request, Plate.class);
@@ -88,7 +80,7 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchPlateById", key = "#id")
     public void modifyPlate(Long id, PlateUpdateRequest request) throws Exception {
         try {
             PlateDto plateDto = searchPlateById(id);
@@ -125,7 +117,7 @@ public class PlateServiceImpl implements IPlateService {
 
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllPlate","searchPlateById","searchPlateByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchPlateById", key = "#id")
     public void deletePlateById(Long id) {
         PlateDto plateDto = searchPlateById(id);
         Plate plate = mapper.map(plateDto, Plate.class);

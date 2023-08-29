@@ -38,15 +38,6 @@ public class DrinkServiceImpl implements IDrinkService {
 
 
     //===================Find===================//
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value = "searchAllDrinks", unless = "#result == null || #result.isEmpty()")
-    public List<DrinkDto> searchAllDrinks() {
-        List<Drink> drinks = drinkRepository.findAll();
-        return drinks.stream()
-                .map(drink -> mapper.map(drink, DrinkDto.class))
-                .toList();
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -58,7 +49,6 @@ public class DrinkServiceImpl implements IDrinkService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "searchDrinkByName", unless = "#result == null")
     public DrinkDto searchDrinkByName(String name) {
         Optional<Drink> optionalDrink = drinkRepository.findByName(name);
         if (optionalDrink.isEmpty()) {
@@ -70,7 +60,6 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Create===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
     public Long saveDrink(DrinkCreateRequest request) {
         existsName(request.getName());
         Drink newDrink = mapper.map(request, Drink.class);
@@ -88,7 +77,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Update===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchDrinkById", key = "#id")
     public void modifyDrink(Long id, DrinkUpdateRequest request) throws Exception {
         try {
             DrinkDto drinkDto = searchDrinkById(id);
@@ -121,7 +110,7 @@ public class DrinkServiceImpl implements IDrinkService {
     //===================Delete===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllDrinks","searchDrinkById","searchDrinkByName"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = "searchDrinkById", key = "#id")
     public void deleteDrinkById(Long id) {
         DrinkDto drinkDto = searchDrinkById(id);
         Drink drink = mapper.map(drinkDto, Drink.class);
