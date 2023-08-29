@@ -7,7 +7,6 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.respon
 import java.util.List;
 
 public interface IDrinkService {
-    List<DrinkDto> searchAllDrinks();
 
     DrinkDto searchDrinkById(Long id);
 

@@ -1,10 +1,10 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.Mapper.BundleMapper;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
@@ -14,6 +14,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleS
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -51,15 +53,6 @@ public class BundleServiceImpl implements IBundleService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private BundleMapper bundleMapper;
-
-    @Cacheable(value = "searchAllBundles", unless = "#result == null || #result.isEmpty()")
-    public List<BundleDto> searchAllBundles() {
-        List<Bundle> bundles = bundleRepository.findAll();
-        return bundleMapper.toDtoList(bundles);
-    }
-
     @Override
     @Cacheable(value = "searchBundleDtoById", unless = "#result == null")
     public BundleDto searchBundleDtoById(Long id) {
@@ -69,58 +62,55 @@ public class BundleServiceImpl implements IBundleService {
     }
 
     @Cacheable(value = "searchBundleDtoByIdForCards", unless = "#result == null")
-    public BundleDto searchBundleDtoByIdForCards(Long id) {
+    public BundleForCardDto searchBundleDtoByIdForCards(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        BundleDto bundleDto = new BundleDto();
-
-        bundleDto.setId(bundle.getId());
-        bundleDto.setName(bundle.getName());
-        bundleDto.setDescription(bundle.getDescription());
-        bundleDto.setImage(bundle.getImage());
-        bundleDto.setGalleryImages(bundle.getGalleryImages());
-        bundleDto.setRating(bundle.getRating());
-        return bundleDto;
-    }
-
-    @Cacheable(value = "searchAllBundlesForCards", unless = "#result == null || #result.isEmpty()")
-    public List<BundleDto> searchAllBundlesForCards() {
-        List<Bundle> bundles = bundleRepository.findAll();
-        return bundles.stream()
-                .map(bundle -> {
-                    BundleDto bundleDto = new BundleDto();
-
-                    bundleDto.setId(bundle.getId());
-                    bundleDto.setName(bundle.getName());
-                    bundleDto.setDescription(bundle.getDescription());
-                    bundleDto.setImage(bundle.getImage());
-                    bundleDto.setGalleryImages(bundle.getGalleryImages());
-                    bundleDto.setRating(bundle.getRating());
-                    return bundleDto;
-                })
-                .collect(Collectors.toList());
+        return mapper.map(bundle, BundleForCardDto.class);
     }
 
 
     //===================Create===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
-    public Long saveBundle(BundleCreateRequest request) {
-        List<Plate> starter = plateService.validateAndGetPlates(request.getStarter(), "Starter");
-        List<Plate> mainCourse = plateService.validateAndGetPlates(request.getMainCourse(), "Main course");
-        List<Plate> dessert = plateService.validateAndGetPlates(request.getDesserts(), "Dessert");
+    public Long saveBundle(BundleCreateRequest request) throws ExecutionException, InterruptedException, java.util.concurrent.ExecutionException {
 
-        List<Drink> drinks = drinkService.validateAndGetDrink(request.getDrinks());
+        CompletableFuture<List<Plate>> starterFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getStarter(), "Starter"));
 
-        List<Characteristic> characteristics = characteristicRepository.findAllById(request.getCharacteristics());
+        CompletableFuture<List<Plate>> mainCourseFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getMainCourse(), "Main course"));
 
-        List<Category> categories = categoryRepository.findAllById(request.getCategories());
+        CompletableFuture<List<Plate>> dessertFuture = CompletableFuture.supplyAsync(() ->
+                plateService.validateAndGetPlates(request.getDesserts(), "Dessert"));
 
-        String keyImage = s3Service.putObject(request.getImage());
-        List<String> keys = request.getGalleryImages().stream()
-                .map(s3Service::putObject)
-                .collect(Collectors.toList());
+        CompletableFuture<List<Drink>> drinksFuture = CompletableFuture.supplyAsync(() ->
+                drinkService.validateAndGetDrink(request.getDrinks()));
+
+        CompletableFuture<List<Characteristic>> characteristicsFuture = CompletableFuture.supplyAsync(() ->
+                characteristicRepository.findAllById(request.getCharacteristics()));
+
+        CompletableFuture<List<Category>> categoriesFuture = CompletableFuture.supplyAsync(() ->
+                categoryRepository.findAllById(request.getCategories()));
+
+        CompletableFuture<String> keyImageFuture = CompletableFuture.supplyAsync(() ->
+                s3Service.putObject(request.getImage()));
+
+        CompletableFuture<List<String>> keysFuture = CompletableFuture.supplyAsync(() ->
+                request.getGalleryImages().stream()
+                        .map(s3Service::putObject)
+                        .collect(Collectors.toList()));
+
+        CompletableFuture.allOf(starterFuture, mainCourseFuture, dessertFuture, drinksFuture,
+                characteristicsFuture, categoriesFuture, keyImageFuture, keysFuture).join();
+
+        List<Plate> starter = starterFuture.get();
+        List<Plate> mainCourse = mainCourseFuture.get();
+        List<Plate> dessert = dessertFuture.get();
+        List<Drink> drinks = drinksFuture.get();
+        List<Characteristic> characteristics = characteristicsFuture.get();
+        List<Category> categories = categoriesFuture.get();
+        String keyImage = keyImageFuture.get();
+        List<String> keys = keysFuture.get();
 
         Bundle newBundle = Bundle.builder()
                 .name(request.getName())
@@ -141,8 +131,6 @@ public class BundleServiceImpl implements IBundleService {
         return newBundle.getId();
     }
 
-
-
     public void save(Bundle bundle) {
         bundleRepository.save(bundle);
     }
@@ -151,7 +139,7 @@ public class BundleServiceImpl implements IBundleService {
     //===================Update===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = {"searchBundleDtoById", "searchBundleDtoByIdForCards"}, key = "#bundleId")
     public void modifyBundle(Long bundleId, BundleUpdateRequest request) {
         Optional<Bundle> bundleOptional = bundleRepository.findById(bundleId);
 
@@ -217,16 +205,21 @@ public class BundleServiceImpl implements IBundleService {
     //===================Delete===================//
     @Override
     @Transactional
-    @CacheEvict(value = {"searchAllBundles","searchBundleDtoById","searchBundleDtoByIdForCards","searchAllBundlesForCards"}, allEntries = true, beforeInvocation = false)
+    @CacheEvict(value = {"searchBundleDtoById", "searchBundleDtoByIdForCards"}, key = "#id")
     public void deleteBundleById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+
         s3Service.deleteObject(bundle.getImage());
-        for (String image : bundle.getGalleryImages()) {
-            s3Service.deleteObject(image);
-        }
-        bundleRepository.delete(bundle);
+
+        List<CompletableFuture<Void>> futures = bundle.getGalleryImages().stream()
+                .map(image -> CompletableFuture.runAsync(() -> s3Service.deleteObject(image)))
+                .collect(Collectors.toList());
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        bundleRepository.deleteById(id);
     }
+
 
     //===================Util===================//
     private void existsName(String name, Long excludeId) {

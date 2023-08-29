@@ -22,6 +22,7 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
+
     //====================Display all====================//
 
     @GetMapping

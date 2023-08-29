@@ -607,3 +607,27 @@
 [2023-08-26 22:13:46] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
 [2023-08-26 22:20:20] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: TBPG1V34KGFBDEEG; S3 Extended Request ID: yfcV8EYveISoYM6MiEVD1ajCYmMn6NJi7xSYuuUFpopFYMVLeImC4h1SEkAyLAWWCpHuLkxxuds=; Proxy: null)
 [2023-08-26 22:20:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: CFVWNWSE86J1X2X9; S3 Extended Request ID: x77uHL9DDCitrtk2sXXtHOZ6EsgXIaFpRkL7gsBFULADM+strc/uw8b2etlIEpC49E2FBbstN/U=; Proxy: null)
+[2023-08-27 22:05:32] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:05:34] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:21:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:21:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:21:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:21:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:21:04] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-27 22:22:24] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-27 22:22:25] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-27 22:22:25] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-27 22:22:28] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-27 22:22:29] [ ERROR] [GlobalHandlerException:18] Bad credentials
+[2023-08-27 22:33:56] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 814EXH3XHKA1MZ0Q; S3 Extended Request ID: wSSUuGyRsypQceGkGVzk5EMBybSbZNLIDqggzMa5+mifUNFmW6cR+cXMXqksXQiHfrLV3gJP8dk=; Proxy: null)
+[2023-08-27 22:34:37] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-27 22:34:50] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 7BERPK3QPT95FK4A; S3 Extended Request ID: oRhvgJt3ojpZ+LZyStIE/KybVsLPR5Mi6xzUdXVnHUdTV0sBi2tkp29cek0/n5ofFUlix/k2P28=; Proxy: null)
+[2023-08-28 23:08:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:08:58] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Cannot invoke "org.hibernate.engine.spi.SharedSessionContractImplementor.getPersistenceContext()" because "this.session" is null
+[2023-08-28 23:20:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:20:59] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:21:38] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:24:34] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:25:28] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
+[2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+[2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState

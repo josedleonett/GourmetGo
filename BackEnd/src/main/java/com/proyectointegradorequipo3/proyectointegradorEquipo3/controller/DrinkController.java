@@ -5,6 +5,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.DrinkUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.DrinkNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.DrinkServiceImpl;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.GetAllServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 public class DrinkController {
 
     private final DrinkServiceImpl drinkService;
+
+    private final GetAllServiceImpl getAllService;
     private final ModelMapper mapper;
 
     //====================Create====================//
@@ -42,7 +45,7 @@ public class DrinkController {
 
     @GetMapping
     public ResponseEntity<List<DrinkDto>> getAllDrinks() {
-        List<DrinkDto> drinks = drinkService.searchAllDrinks();
+        List<DrinkDto> drinks = getAllService.searchAllDrinks();
         return ResponseEntity.ok(drinks);
     }
 
