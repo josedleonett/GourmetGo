@@ -12,4 +12,5 @@ public class ProyectointegradorEquipo3Application {
 		SpringApplication.run(ProyectointegradorEquipo3Application.class, args);
 	}
 
+
 }

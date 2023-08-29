@@ -65,15 +65,7 @@ public class BundleServiceImpl implements IBundleService {
     public BundleForCardDto searchBundleDtoByIdForCards(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        BundleForCardDto bundleDto = new BundleForCardDto();
-
-        bundleDto.setId(bundle.getId());
-        bundleDto.setName(bundle.getName());
-        bundleDto.setDescription(bundle.getDescription());
-        bundleDto.setImage(bundle.getImage());
-        bundleDto.setGalleryImages(bundle.getGalleryImages());
-        bundleDto.setRating(bundle.getRating());
-        return bundleDto;
+        return mapper.map(bundle, BundleForCardDto.class);
     }
 
 
