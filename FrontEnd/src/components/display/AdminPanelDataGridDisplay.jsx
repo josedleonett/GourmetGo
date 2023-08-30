@@ -149,6 +149,9 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const updateApiData = async (targetIdToUpdate, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
+      console.log("ENTRA");
+      console.log(propertiesToUpdate);
+      console.log("SALE");
 
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
@@ -478,7 +481,22 @@ export const CreateUpdateItemModal = ({
         outputObject[propertyName] &&
         typeof outputObject[propertyName] === "object"
       ) {
-        outputObject[propertyName] = [outputObject[propertyName].name];
+        // outputObject[propertyName] =
+        //   [outputObject[propertyName].name] !== undefined
+        //     ? [outputObject[propertyName].name]
+        //     : [outputObject[propertyName].id];
+
+        console.log([outputObject[propertyName].name]);
+
+        if (outputObject[propertyName].name != undefined ) {
+          console.log("entra a name");
+          outputObject[propertyName] = [outputObject[propertyName].name];
+        } else {
+          console.log("entra a id");
+          outputObject[propertyName] = [outputObject[propertyName].id];
+        }
+
+        console.log(outputObject);
       }
     }
 
@@ -501,9 +519,9 @@ export const CreateUpdateItemModal = ({
     }
   };
 
-  console.log("VALORES INICIALES");
-  console.log(formik.initialValues);
-  console.log("VALORES INICIALES");
+  // console.log("VALORES INICIALES");
+  // console.log(formik.initialValues);
+  // console.log("VALORES INICIALES");
 
   return (
     <>
