@@ -100,7 +100,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       } else {
         setData(response.data);
       }
-      //console.log(response.data);
     } catch (error) {
       setIsError(true);
       console.error("Error fetching data:", error);
@@ -502,6 +501,10 @@ export const CreateUpdateItemModal = ({
     }
   };
 
+  console.log("VALORES INICIALES");
+  console.log(formik.initialValues);
+  console.log("VALORES INICIALES");
+
   return (
     <>
       <Dialog open={open}>
@@ -514,6 +517,7 @@ export const CreateUpdateItemModal = ({
               sx={{
                 width: "100%",
                 minWidth: { xs: "300px", sm: "360px", md: "400px" },
+                maxWidth: { xs: "300px", sm: "360px", md: "400px" },
                 gap: "1.5rem",
               }}
             >
@@ -600,30 +604,44 @@ export const CreateUpdateItemModal = ({
                     </>
                   ) : column.isMultiple ? (
                     <>
+                      {console.log(formik.initialValues)}
                       <Autocomplete
                         multiple
                         autoComplete
                         //id={column.accessorKey}
                         key={index}
-                        value={formik.values[column.accessorKey] || []}
+                        //value={formik.values[column.accessorKey] || []}
                         //defaultValue={formik.values[column.accessorKey] || []}
-                        defaultValue={[1, 2, 3, 4, 5, 6]}
+                        //defaultValue={[1, 2, 3, 4, 5, 6]}
+                        defaultValue={
+                          formik.values[column.accessorKey]
+                          &&
+                          formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
+                        }
                         filterSelectedOptions
                         options={column.options}
                         renderInput={(params) => (
                           <TextField
+                            {...params}
+                            value={
+                              formik.values[column.accessorKey]
+                              &&
+                              formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
+                              // &&
+                              // []
+                            }
                             key={`input-${index}`}
                             name={column.header}
                             label={column.header}
                             disabled={
                               isFormSending && column.enableEditing === false
                             }
-                            {...params}
                           />
                         )}
                         renderTags={(value, getTagProps) =>
                           value.map((option, index) => (
                             <Chip
+                            {...getTagProps({ index })}
                               key={`chip-${index}`}
                               variant="filled"
                               label={option}
@@ -746,7 +764,6 @@ const DeleteItemModal = ({
     setIsFormDeleting(false);
   };
 
-  //minWidth: { xs: "300px", sm: "360px", md: "400px" },
   return (
     <>
       <Dialog open={isOpen} onClose={onClose}>
