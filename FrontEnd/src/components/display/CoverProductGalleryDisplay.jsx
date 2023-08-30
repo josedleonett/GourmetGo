@@ -23,8 +23,8 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
     };
   }, []);
 
-  imgList.push(
-    "ed1464ba-e283-4202-8926-91695d22a0ff.jpg")
+  // imgList.push(
+  //   "ed1464ba-e283-4202-8926-91695d22a0ff.jpg")
     const maxImages = 4;
 
   return (
