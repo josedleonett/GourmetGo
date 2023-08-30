@@ -21,6 +21,7 @@ import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
 import { CheckBox } from "@mui/icons-material";
 import axios from "axios";
+import React, { useState, useEffect } from 'react';
 
 export const fakeBundlesIds = [
   "1",
@@ -85,8 +86,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     fetchPlateOptions();
   }, []);
 
-  console.log(platesOptions);
-  console.log(drinksOptions);
   
 
 
@@ -471,41 +470,63 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         size: 140,
       },
       {
-        accessorKey: "role",
-        header: "Role",
+        accessorKey: "admin",
+        header: "Is admin",
         size: 140,
-        Cell: ({ renderedCellValue, row }) => (
-          <Switch
-          checked={row.original.role === "ADMIN"}
-          onChange={async (event) => {
-            // const updatedData = {
-            //   role: event.target.checked ? "ADMIN" : "USER",
-            // };
+        Cell: ({ renderedCellValue, row }) => {
+          const [isChecked, setIsChecked] = useState(row.original.role === 'ADMIN');
 
+          const handleChange = async () => {
+            const newRole = isChecked ? 'USER' : 'ADMIN';
+            setIsChecked(!isChecked);
+  
             const formData = new FormData();
-            formData.append("role", event.target.checked ? "ADMIN" : "USER")
-            
+            formData.append('role', newRole);
+            formData.append('confirmed', row.original.confirmed)
+  
             try {
               const response = await axios.patch(
-                API_BASE_URL + "user/" + row.original.id,
-                //updatedData
+                usersDataGridProps.API_BASE_URL + row.original.id,
                 formData
               );
             } catch (error) {
-              console.error("Error updating user role:", error);
+              console.error('Error updating user role:', error);
             }
-          }}
-        />
-
-        ),
+          };
+  
+          return <Switch checked={isChecked} onChange={handleChange} />;
+        },
       },
       {
         accessorKey: "confirmed",
-        header: "Confirmed",
+        header: "Is confirmed",
         size: 140,
-        Cell: ({ renderedCellValue, row }) => (
-          <span>{row.original.confirmed ? "Yes" : "No"}</span>
-        ),
+        Cell: ({ renderedCellValue, row }) => {
+          const [isChecked, setIsChecked] = useState(row.original.confirmed);
+
+          const handleChange = async (e) => {
+            const newConfirmedValue = e.target.checked;
+            setIsChecked(newConfirmedValue);
+            
+            const formData = new FormData();
+            formData.append('confirmed', newConfirmedValue);
+        
+            try {
+              const response = await axios.patch(
+                usersDataGridProps.API_BASE_URL + row.original.id,
+                formData
+              );
+              console.log(response);
+              for (const pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+              }
+            } catch (error) {
+              console.error('Error updating user role:', error);
+            }
+          };
+        
+          return <Switch checked={isChecked} onChange={handleChange} />;
+        },
       },
     ],
   };

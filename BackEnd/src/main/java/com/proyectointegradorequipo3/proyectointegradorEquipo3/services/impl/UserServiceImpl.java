@@ -34,7 +34,6 @@ public class UserServiceImpl implements IUserService {
 
     //===================Find===================//
     @Override
-    @Cacheable(value = "searchAllUser", unless = "#result == null || #result.isEmpty()")
     public List<UserDto> searchAllUser() {
         return userRepository.findAll().stream()
                 .map(user -> {
@@ -53,7 +52,6 @@ public class UserServiceImpl implements IUserService {
 
     //===================BY Id===================//
     @Override
-    @Cacheable(value = "searchUserById", unless = "#result == null")
     public UserDto searchUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         UserDto userDto = mapper.map(user, UserDto.class);
@@ -69,7 +67,6 @@ public class UserServiceImpl implements IUserService {
 
     //===================By Email===================//
     @Override
-    @Cacheable(value = "searchUserByEmail", unless = "#result == null")
     public UserDto searchUserByEmail(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
@@ -123,14 +120,12 @@ public class UserServiceImpl implements IUserService {
 
     //===================Delete===================//
     @Override
-    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
-    public void deleteUserById(Long id) throws Exception {
+     public void deleteUserById(Long id) throws Exception {
         userRepository.deleteById(id);
     }
 
     //===================Update===================//
     @Override
-    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
     public void modifyUser(Long userId, UserUpdateRequest updateRequest) throws RoleNotFoundException {
         Optional<UserEntity> optionalUser = userRepository.findById(userId);
 
