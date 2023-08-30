@@ -65,8 +65,8 @@ const AdminContainer = () => {
       icon: <FaUserFriends size="30" />,
     },
     {
-      title: "Characteristics",
-      url: "characteristics",
+      title: "Characteristic",
+      url: "characteristic",
       icon: <AiOutlineCheckCircle size="30" />,
     },
   ];

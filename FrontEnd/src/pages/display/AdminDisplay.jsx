@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography,
+  Typography, Switch,
 } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
@@ -19,8 +19,8 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
+import { CheckBox } from "@mui/icons-material";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
 export const fakeBundlesIds = [
   "1",
@@ -414,6 +414,44 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     ],
   };
 
+  const characteristicsDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "characteristic/",
+    API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    columns: [
+      {
+        accessorKey: "image",
+        id: "image",
+        isFileType: true,
+        type: "file",
+        header: "Icon",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
+              <img
+                alt="cover"
+                width={"90%"}
+                loading="lazy"
+                src={API_BASE_IMAGE_URL + row.original.image}
+              />
+            </Box>
+          </>
+        ),
+      },
+      {
+        accessorKey: "name",
+        header: "Name",
+        size: 140,
+      },
+    ],
+  };
+
   const usersDataGridProps = {
     API_BASE_URL: API_BASE_URL + "user/",
     columns: [
@@ -422,22 +460,46 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Name",
         size: 140,
       },
-      { 
+      {
         accessorKey: "lastName",
         header: "Last name",
         size: 140,
       },
-      { 
+      {
         accessorKey: "email",
         header: "Email",
         size: 140,
       },
-      { 
+      {
         accessorKey: "role",
         header: "Role",
         size: 140,
+        Cell: ({ renderedCellValue, row }) => (
+          <Switch
+          checked={row.original.role === "ADMIN"}
+          onChange={async (event) => {
+            // const updatedData = {
+            //   role: event.target.checked ? "ADMIN" : "USER",
+            // };
+
+            const formData = new FormData();
+            formData.append("role", event.target.checked ? "ADMIN" : "USER")
+            
+            try {
+              const response = await axios.patch(
+                API_BASE_URL + "user/" + row.original.id,
+                //updatedData
+                formData
+              );
+            } catch (error) {
+              console.error("Error updating user role:", error);
+            }
+          }}
+        />
+
+        ),
       },
-      { 
+      {
         accessorKey: "confirmed",
         header: "Confirmed",
         size: 140,
@@ -447,6 +509,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
     ],
   };
+  
 
   const categoryDataGridProps = {
     API_BASE_URL: API_BASE_URL + "category/",
@@ -574,6 +637,12 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
             path="user"
             element={
               <AdminPanelDataGridDisplay props={usersDataGridProps} />
+            }
+          />
+          <Route
+            path="characteristic"
+            element={
+              <AdminPanelDataGridDisplay props={characteristicsDataGridProps} />
             }
           />
           <Route path="/*" element={<NotFoundContainer />} />
