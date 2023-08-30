@@ -499,7 +499,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "confirmed",
-        header: "Is confirmed",
+        header: "Is active",
         size: 140,
         Cell: ({ renderedCellValue, row }) => {
           const [isChecked, setIsChecked] = useState(row.original.confirmed);
