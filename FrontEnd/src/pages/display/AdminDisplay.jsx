@@ -23,29 +23,6 @@ import { CheckBox } from "@mui/icons-material";
 import axios from "axios";
 import React, { useState, useEffect } from 'react';
 
-export const fakeBundlesIds = [
-  "1",
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-];
-
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";

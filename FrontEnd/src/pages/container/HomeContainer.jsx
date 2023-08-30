@@ -17,8 +17,6 @@ const HomeContainer = () => {
       .catch(error => console.error("Error fetching bundles:", error));
   }, []);
 
-  console.log(bundles)
-
   const memoizedCategories = useMemo(() => categories, [categories]);
   const memoizedBundles = useMemo(() => bundles, [bundles]);
 

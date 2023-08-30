@@ -41,7 +41,7 @@ const UserLogInDisplay = () => {
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
-        
+        console.log(data);
         // Guarda el token en el local storage
         localStorage.setItem("tokenType", data.tokenType);
         localStorage.setItem("accessToken", data.accessToken);

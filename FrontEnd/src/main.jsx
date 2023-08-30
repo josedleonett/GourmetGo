@@ -19,6 +19,7 @@ import UserLoginContainer from "./components/container/UserLoginContainer"
 import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
 
 const accessToken = localStorage.getItem("accessToken");
+const role = localStorage.getItem("role");
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       {
         path: "admin/*",
         element:
-          accessToken !== null ? (
+          accessToken !== null && role === "ADMIN" ? (
             <AdminContainer />
           ) : (
             <Navigate to="/" replace />
