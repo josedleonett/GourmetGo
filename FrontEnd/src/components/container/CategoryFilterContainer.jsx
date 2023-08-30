@@ -8,15 +8,15 @@ const CategoryFilterContainer = () => {
   const [bundlesData, setBundlesData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/v1/category/${id}`)
+    fetch(`http://localhost:8080/v1/bundle/byCategory/${id}`)
       .then(response => response.json())
       .then(data => setCategoryData(data))
       .catch(error => console.error("Error fetching category:", error));
   }, [id]);
 
   useEffect(() => {
-    if (categoryData && categoryData.bundles) {
-      const bundleId = Object.keys(categoryData.bundles); // Move this line inside the if statement
+    if (categoryData) {
+      const bundleId = categoryData; // Move this line inside the if statement
       const fetchBundles = async () => {
         const bundlePromises = bundleId.map(bundleNum =>
           fetch(`http://localhost:8080/v1/bundle/getByIdForCard/${bundleNum}`)
