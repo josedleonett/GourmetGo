@@ -2,6 +2,12 @@ import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import {
   Box,
   Container,
@@ -11,11 +17,12 @@ import {
   ListItem,
   ListItemText,
   Paper,
-  Rating,
-  Stack,
   Typography,
   Button,
   IconButton,
+  Dialog,
+  DialogTitle,
+  Stack
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { cateringPackages } from "../../test/dataApiSample";
@@ -27,27 +34,45 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Lightbox from "react-lightbox-component";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 
-const ProductDetailDisplay = ({productData}) => {
+const ProductDetailDisplay = ({productData, dates}) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
 
-  function findPackageById(array, idToFind) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id == idToFind) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const openReserveDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const closeReserveDialog = () => {
+    setOpenDialog(false);
+  };
+
+  console.log(dates)
+
 
   const goBackOnClick = () => {
     navigate("/");
   };
 
-  const mainPackageId = findPackageById(packageList, id);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const [currentImageIndex, setCurrentIndex] = useState(0);
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleSendDate = () => {
+    if (selectedDate) {
+      console.log('Selected Date:', selectedDate.toISOString());
+    }
+  };
+
+  const handleDateAccept = (date) => {
+    const formattedDate = date.format('YYYY-MM-DD');
+    console.log(formattedDate);
+  };
+
 
   return (
     <Box sx={{ padding: 2 }}>      
@@ -210,7 +235,7 @@ const ProductDetailDisplay = ({productData}) => {
           <Grid item lg={4} md={5} xs={12}>
             <Paper elevation={6} sx={{ py: 4, px: 1 }}>
               <Container
-                sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                sx={{ display: "flex", flexDirection: "column", gap: 1}}
               >
 
                 <Stack
@@ -220,9 +245,40 @@ const ProductDetailDisplay = ({productData}) => {
                   color={"secondary.main"}
                 >
                 </Stack>
-                <Button variant="contained" color="secondary">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                  components={[
+                    'MobileDatePicker',
+                  ]}
+                  >
+                    <DemoItem label="Select reserve date">
+                      <MobileDatePicker 
+                        defaultValue={dayjs()}
+                        onAccept={handleDateAccept}
+                        renderInput={(props) => <input {...props} readOnly />}                         
+                      />
+                    </DemoItem>  
+                  </DemoContainer>
+                </LocalizationProvider>
+                <Button variant="contained" color="secondary" onClick={openReserveDialog}>
                   RESERVE
                 </Button>
+                
+
+                <Dialog onClose={closeReserveDialog} open={openDialog}>
+                  <DialogTitle sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    Select your reserve date
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                     <DateCalendar
+                        onChange={handleDateChange}
+                       renderInput={(props) => <input {...props} readOnly />}
+                      />
+                    </LocalizationProvider>
+                    <Button onClick={handleSendDate} variant="contained" color="primary">
+                      Send Selected Date
+                    </Button>
+                  </DialogTitle>
+                </Dialog>
               </Container>
             </Paper>
           </Grid>
