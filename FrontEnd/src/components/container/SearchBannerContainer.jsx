@@ -1,8 +1,8 @@
 import SearchBannerDisplay from '../display/SearchBannerDisplay'
 
-const SearchBannerContainer = ({filterList}) => {
+const SearchBannerContainer = ({filterList, filterBundle}) => {
   return (
-    <SearchBannerDisplay filterList={filterList}/>
+    <SearchBannerDisplay filterList={filterList} filterBundle={filterBundle}/>
   )
 }
 

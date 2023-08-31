@@ -1,20 +1,18 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, Grid, useTheme, useMediaQuery } from "@mui/material";
+import { Container, useTheme, useMediaQuery } from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
 
-const HomeDisplay = ({ categories, bundles }) => {
+const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
-
+  
   return (
     <>
-      <SearchBannerContainer filterList={categories} />
-
+      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList}/>
+      
       <Box component="section">
         <Typography
           variant="h4"

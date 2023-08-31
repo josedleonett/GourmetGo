@@ -279,7 +279,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         accessorKey: "categories[id]",
         header: "Categories",
         isMultiline: false,
-        //options: ["Caprese Salad", 2, 5, 4],
         size: 80,
       },
       {

@@ -1,21 +1,16 @@
-import {
-  Box,
-  Container,
-  FormControl,
-  Input,
-  InputAdornment,
-  InputLabel,
-  Select,
-  TextField,
-} from "@mui/material";
-import React from "react";
+import { Box, FormControl, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import Autocomplete from "@mui/lab/Autocomplete";
+import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 
 const SearchBannerDisplay = ({
   searchInputValue,
   searchInputOnChange,
   filterList,
   searchSelectOnChange,
+  selectedFilter,
+  filterBundle,
+  selectedBundle,
 }) => {
   return (
     <Box
@@ -39,25 +34,32 @@ const SearchBannerDisplay = ({
         }}
       >
         <SearchIcon sx={{ padding: "8px", minWidth: "3%" }} />
-        <TextField
+        <Autocomplete
           id="searchInput"
-          placeholder="Search bundles"
-          value={searchInputValue}
-          onChange={searchInputOnChange}
-          size="small"
-          fullWidth
-          sx={{
-            "& fieldset": { border: "none" },
+          options={filterBundle}
+          value={selectedBundle}
+          onChange={(event, newValue) => {
+            searchInputOnChange(newValue);
           }}
-        />
-        <Select
-          id="searchSelect"
-          autoWidth
-          value={filterList}
-          onChange={searchSelectOnChange}
           size="small"
-          sx={{ padding: "8px", minWidth: "20%" }}
+          filterOptions={(options, state) => {
+            return options.filter((option) =>
+              option.toLowerCase().includes(state.inputValue.toLowerCase())
+            );
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search bundles"
+              fullWidth
+              sx={{
+                "& fieldset": { border: "none" },
+              }}
+            />
+          )}
         />
+        <PlaceholderSearchBannerDisplay filterList={filterList}/>
       </FormControl>
     </Box>
   );

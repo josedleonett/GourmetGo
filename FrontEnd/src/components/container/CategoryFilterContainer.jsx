@@ -16,7 +16,7 @@ const CategoryFilterContainer = () => {
 
   useEffect(() => {
     if (categoryData) {
-      const bundleId = categoryData; // Move this line inside the if statement
+      const bundleId = categoryData;
       const fetchBundles = async () => {
         const bundlePromises = bundleId.map(bundleNum =>
           fetch(`http://localhost:8080/v1/bundle/getByIdForCard/${bundleNum}`)
@@ -29,8 +29,6 @@ const CategoryFilterContainer = () => {
       fetchBundles();
     }
   }, [categoryData]);
-
-  console.log(categoryData)
 
   return (
     <CategoryFilterDisplay categoryData={categoryData} bundlesData={bundlesData} />
