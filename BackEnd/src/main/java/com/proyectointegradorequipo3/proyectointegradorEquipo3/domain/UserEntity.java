@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,9 @@ public class UserEntity implements UserDetails {
     private boolean isConfirmed;
     private int emailResendAttempts = 0;
     private LocalDateTime lastEmailResendDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
