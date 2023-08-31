@@ -8,7 +8,10 @@ const  CardProductContainer = ({
   description,
   categoryList,
   rating,
+  favorite
 }) => {
+
+  console.log(favorite)
 
   return (
     <CardProductDisplay
@@ -19,6 +22,7 @@ const  CardProductContainer = ({
       description={description}
       categoryList={categoryList}
       rating={rating}
+      favorite={favorite}
     />
   );
 };

@@ -24,14 +24,44 @@ const CardProductDisplay = ({
   categoryList,
   rating,
   numberDiners,
+  favorite
 }) => {
 
 
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(favorite);
 
   const handleIconClick = () => {
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
+    const userId = localStorage.getItem("id");
+    const bundleId = id;
+
+    if (isFavorite) {
+      // Enviar petición para eliminar de favoritos
+      fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
+        method: "DELETE",
+      })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.error(error)
+      });
+    } else {
+      // Enviar petición para agregar a favoritos
+      fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
+        method: "POST",
+      })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.error(error)
+      });
+    }
+
+    console.log()
   };
 
   return (
