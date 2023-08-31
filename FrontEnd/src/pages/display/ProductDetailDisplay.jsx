@@ -30,7 +30,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-//import { Gallery } from "react-grid-gallery";
+import { red } from '@mui/material/colors';
 import Lightbox from "react-lightbox-component";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 
@@ -71,6 +71,56 @@ const ProductDetailDisplay = ({productData, dates}) => {
   const handleDateAccept = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');
     console.log(formattedDate);
+  };
+
+  const isDateUnavailable = (date) => {
+    if (!dates) {
+      return false; // No hay datos de fechas, no se deshabilita ninguna
+    }
+
+    const formattedDate = date.format("YYYY-MM-DD");
+    const unavailableDates = dates.map((item) => item.date);
+
+    return unavailableDates.includes(formattedDate);
+  };
+
+  const renderCustomDay = (day, selectedDate, isInCurrentMonth, dayComponent) => {
+    const isUnavailable = isDateUnavailable(day);
+    
+    return (
+      <div style={{ position: 'relative' }}>
+        {dayComponent}
+        {isUnavailable && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: '50%',
+                backgroundColor: red[500],
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              •
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
 
@@ -255,6 +305,8 @@ const ProductDetailDisplay = ({productData, dates}) => {
                       <MobileDatePicker 
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
+                        shouldDisableDate={isDateUnavailable}
+                        renderDay={renderCustomDay}
                         renderInput={(props) => <input {...props} readOnly />}                         
                       />
                     </DemoItem>  

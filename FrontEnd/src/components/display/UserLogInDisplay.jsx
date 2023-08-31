@@ -54,6 +54,7 @@ const UserLogInDisplay = () => {
         localStorage.setItem("lastName", decodedToken.lastName);
         localStorage.setItem("email", decodedToken.email);
         localStorage.setItem("role", decodedToken.role);
+        localStorage.setItem("id", decodedToken.id);
       
         window.location.href = "/";
       } else {

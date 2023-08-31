@@ -2,15 +2,19 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from '@mui/icons-material/Star';
 import {
   CardActionArea,
   Rating,
   Stack,
   Tooltip,
+  Box
 } from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
+import { useState } from "react"
 
 const CardProductDisplay = ({
   id,
@@ -22,8 +26,39 @@ const CardProductDisplay = ({
   numberDiners,
 }) => {
 
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleIconClick = () => {
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+  };
+
   return (
-    <Card raised>
+    <Card raised onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}>
+      {isHovered && (
+        <Tooltip  title={isFavorite ? "Delete from favoritos" : "Add to favorites"} placement="top">
+          {isFavorite ? (
+          <StarIcon
+          onClick={handleIconClick}
+            sx={{
+              position: "absolute",
+              zIndex: 2,
+              cursor: "pointer",
+            }}
+          /> ) : (
+            <StarBorderIcon
+            onClick={handleIconClick}
+              sx={{
+                position: "absolute",
+                zIndex: 2,
+                cursor: 'pointer',
+              }}
+            />
+          )}
+        </Tooltip>
+         )}
             {Array.isArray(img) && img.length > 0 ? (
         <Carousel
           autoPlay={false}

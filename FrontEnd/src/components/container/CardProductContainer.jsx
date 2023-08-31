@@ -9,6 +9,7 @@ const  CardProductContainer = ({
   categoryList,
   rating,
 }) => {
+
   return (
     <CardProductDisplay
       key={id}

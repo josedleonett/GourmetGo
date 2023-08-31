@@ -16,8 +16,10 @@ const HomeContainer = () => {
       setCategorieList(categoryNames);
     })
     .catch(error => console.error("Error fetching categories:", error));
+
+    const userId = localStorage.getItem("id")
       
-    fetch("http://localhost:8080/v1/bundle/getAllForCard")
+    fetch(`http://localhost:8080/v1/bundle/byUser/${userId}`)
     .then(response => response.json())
     .then(data => {
       setBundles(data);
