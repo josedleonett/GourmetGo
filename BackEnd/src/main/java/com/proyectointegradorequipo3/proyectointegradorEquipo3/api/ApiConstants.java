@@ -10,5 +10,7 @@ public interface ApiConstants {
 
     String USER_URI = "/v1/user/";
 
+    String BOOKING_URI = "/v1/booking/";
+
     String ASSET_URI = "/v1/asset/";
 }
