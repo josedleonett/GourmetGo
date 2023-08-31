@@ -4,6 +4,9 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.CategoryNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CharacteristicServiceImpl;
@@ -98,6 +101,17 @@ public class BundleController {
     public ResponseEntity<BundleForCardDto> getBundleByIdForCards(@PathVariable Long id) {
         BundleForCardDto bundleDto = bundleService.searchBundleDtoByIdForCards(id);
         return ResponseEntity.ok(bundleDto);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<BundleDto> searchBundleByName(@RequestParam String name) {
+        BundleDto bundleDto = bundleService.searchBundleByName(name);
+
+        if (bundleDto != null) {
+            return ResponseEntity.ok(bundleDto);
+        }
+
+        throw new ResourceNotFoundException(name);
     }
 
     //====================Update====================//
