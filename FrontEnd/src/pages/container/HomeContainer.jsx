@@ -23,6 +23,7 @@ const HomeContainer = () => {
     .then(response => response.json())
     .then(data => {
       setBundles(data);
+      console.log(data);
       const bundleNames = data.map(bundle => bundle.name);
       setBundleList(bundleNames);
     })

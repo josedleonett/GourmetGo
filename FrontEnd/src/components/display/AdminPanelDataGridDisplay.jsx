@@ -64,8 +64,10 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
+  //const initialState = props.initialState;
 
   const [data, setData] = useState([]);
+  const [initialState, setInitialState] = useState(props.initialState)
   const [rowToUpdate, setRowToUpdate] = useState({});
   const [rowToDelete, setRowToDelete] = useState(-1);
   const [validationErrors, setValidationErrors] = useState({});
@@ -80,6 +82,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
+    setData([]);
+    setInitialState({})
 
     getApiData();
   }, [props]);
@@ -213,24 +217,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     (row) => {
       setIsDeleteModalOpen(true);
       setRowToDelete(row.original.id);
-
-      // if (isDeleteConfirmed) {
-      //   const responseCode = deleteApiData(row.original.id);
-      //   console.log(responseCode);
-
-      //   if (responseCode === 204) {
-      //     const updatedData = data.filter(
-      //       (item) => item.id !== row.original.id
-      //     );
-      //     setData(updatedData);
-
-      //     setIsDeleteModalOpen(false);
-      //     setIsDeleteConfirmed(false);
-      //     setIsFormDeleting(false);
-      //   }
-
-      //   setIsFormDeleting(false);
-      // }
     },
     [data]
   );
@@ -267,8 +253,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
-          //columnVisibility: { id: false, galleryImages: false },
         }}
+        initialState={initialState}
         muiTableContainerProps={({ table }) => ({
           sx: {
             height: `calc(100% - ${table.refs.topToolbarRef.current?.offsetHeight}px - ${table.refs.bottomToolbarRef.current?.offsetHeight}px)`,
