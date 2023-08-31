@@ -58,6 +58,13 @@ public class BundleController {
         return ResponseEntity.ok(bundleDtos);
     }
 
+
+    @GetMapping("/byUser/{userId}")
+    public ResponseEntity<List<BundleForCardDto>> getFavoriteBundlesForCards(@PathVariable Long userId) {
+        List<BundleForCardDto> bundles = bundleService.searchBundlesForCards(userId);
+        return ResponseEntity.ok(bundles);
+    }
+
     //====================Display all for card====================//
 
     @GetMapping("/getAllForCard")
