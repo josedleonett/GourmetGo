@@ -5,6 +5,8 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.CategoryNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
@@ -66,6 +68,12 @@ public class BundleServiceImpl implements IBundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return mapper.map(bundle, BundleForCardDto.class);
+    }
+
+    @Cacheable(value = "searchBundleByName", unless = "#result == null")
+    public BundleDto searchBundleByName(String name) {
+        Bundle bundle = bundleRepository.findByName(name);
+        return mapper.map(bundle, BundleDto.class);
     }
 
 
