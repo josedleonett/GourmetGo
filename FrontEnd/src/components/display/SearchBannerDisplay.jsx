@@ -1,7 +1,5 @@
-import React from "react";
-import { Box, FormControl, TextField } from "@mui/material";
+import { Autocomplete, Box, FormControl, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Autocomplete from "@mui/lab/Autocomplete";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 
 const SearchBannerDisplay = ({
