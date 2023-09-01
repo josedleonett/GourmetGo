@@ -1,6 +1,5 @@
 import { Autocomplete, Box, FormControl, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 
 const SearchBannerDisplay = ({
