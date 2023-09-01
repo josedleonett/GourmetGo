@@ -42,11 +42,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
   const headerHeight = 500;
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("name");
-    localStorage.removeItem("lastName");
-    localStorage.removeItem("email");
-    localStorage.removeItem("tokenType");
+    localStorage.clear()
     window.location.reload();
   };
 

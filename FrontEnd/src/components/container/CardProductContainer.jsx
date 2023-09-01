@@ -11,8 +11,6 @@ const  CardProductContainer = ({
   favorite
 }) => {
 
-  console.log(favorite)
-
   return (
     <CardProductDisplay
       key={id}

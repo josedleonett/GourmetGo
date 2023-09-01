@@ -636,3 +636,12 @@
 1) Error mapping com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking to com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto
 
 1 error
+[2023-08-31 15:31:35] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: YCVWEB05TMCQWJ13; S3 Extended Request ID: dtqTX4rtRxuPmdgaHZAoE6Vj/VjPzBFOVN2y1JIGhi+ddd2zVwEfnd+y3OWzBnpTqB0epeB0T58=; Proxy: null)
+[2023-08-31 21:19:42] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: ANDZS3T924GXZ9MJ; S3 Extended Request ID: YK3pPHxg/9JQnYhWdLV+eL+s6NUS8jkniCdB1LuvjZrTmN4FWoo1zv5/go2GkpJsyTrncIEnvLo=; Proxy: null)
+[2023-08-31 21:41:19] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-31 21:41:27] [ ERROR] [GlobalHandlerException:18] java.io.IOException: Se ha anulado una conexión establecida por el software en su equipo host.
+[2023-08-31 21:44:31] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 8NANCJEGMQQKG0X1; S3 Extended Request ID: O5p61hjRW1yuuuyhAZYxeJ5XBaAl07rvADml6pQPR8lLpk2cD2VQcAzglTHZkzgkK6SBnanpqOE=; Proxy: null)
+[2023-08-31 21:55:34] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-31 22:04:02] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"
+[2023-08-31 22:04:02] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"
+[2023-08-31 22:05:00] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30048ms.] [n/a]

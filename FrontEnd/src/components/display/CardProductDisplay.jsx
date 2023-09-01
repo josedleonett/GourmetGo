@@ -42,26 +42,12 @@ const CardProductDisplay = ({
       fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
         method: "DELETE",
       })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.error(error)
-      });
     } else {
       // Enviar petición para agregar a favoritos
       fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
         method: "POST",
       })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.error(error)
-      });
     }
-
-    console.log()
   };
 
   return (

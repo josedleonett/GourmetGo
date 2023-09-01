@@ -9,25 +9,39 @@ const HomeContainer = () => {
   
   useEffect(() => {
     fetch("http://localhost:8080/v1/category/")
-    .then(response => response.json())
-    .then(data => {
-      setCategories(data);
-      const categoryNames = data.map(category => category.name);
-      setCategorieList(categoryNames);
-    })
-    .catch(error => console.error("Error fetching categories:", error));
+      .then(response => response.json())
+      .then(data => {
+        setCategories(data);
+        const categoryNames = data.map(category => category.name);
+        setCategorieList(categoryNames);
+      })
+      .catch(error => console.error("Error fetching categories:", error));
 
-    const userId = localStorage.getItem("id")
-      
-    fetch(`http://localhost:8080/v1/bundle/byUser/${userId}`)
-    .then(response => response.json())
-    .then(data => {
-      setBundles(data);
-      const bundleNames = data.map(bundle => bundle.name);
-      setBundleList(bundleNames);
-    })
-    .catch(error => console.error("Error fetching bundles:", error));
+    const userId = localStorage.getItem("id");
+
+    if (userId) {
+      fetch(`http://localhost:8080/v1/bundle/byUser/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          setBundles(data);
+          const bundleNames = data.map(bundle => bundle.name);
+          setBundleList(bundleNames);
+        })
+        .catch(error => console.error("Error fetching user bundles:", error));
+    } else {
+      fetch("http://localhost:8080/v1/bundle/")
+        .then(response => response.json())
+        .then(data => {
+          setBundles(data);
+          const bundleNames = data.map(bundle => bundle.name);
+          setBundleList(bundleNames);
+        })
+        .catch(error => console.error("Error fetching bundles:", error));
+    }
   }, []);
+
+
+  console.log(bundles)
 
   const memoizedCategories = useMemo(() => categories, [categories]);
   const memoizedBundles = useMemo(() => bundles, [bundles]);
