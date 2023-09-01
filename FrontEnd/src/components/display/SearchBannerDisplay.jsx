@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, FormControl, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from "@mui/lab/Autocomplete";
@@ -12,6 +13,14 @@ const SearchBannerDisplay = ({
   filterBundle,
   selectedBundle,
 }) => {
+  const handleSearchSelect = (newValue) => {
+    if (newValue) {
+      const bundleName = newValue.toLowerCase();
+      const url = `http://localhost:8080/v1/bundle/search?name=${encodeURIComponent(bundleName)}`;
+      window.location.href = url; // Redirigir al URL
+    }
+  };
+
   return (
     <Box
       component="section"
@@ -40,6 +49,11 @@ const SearchBannerDisplay = ({
           value={selectedBundle}
           onChange={(event, newValue) => {
             searchInputOnChange(newValue);
+          }}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSearchSelect(event.target.value);
+            }
           }}
           size="small"
           filterOptions={(options, state) => {

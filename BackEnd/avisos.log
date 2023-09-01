@@ -631,8 +631,23 @@
 [2023-08-28 23:25:28] [ ERROR] [GlobalHandlerException:18] Could not write JSON: failed to lazily initialize a collection of role: com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle.galleryImages: could not initialize proxy - no Session
 [2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
 [2023-08-28 23:35:40] [ ERROR] [GlobalHandlerException:18] Could not write JSON: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+<<<<<<< Updated upstream
 [2023-08-30 23:37:24] [ ERROR] [GlobalHandlerException:18] ModelMapper mapping errors:
 
 1) Error mapping com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking to com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto
 
 1 error
+=======
+[2023-08-31 00:15:59] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: F3QP80NTWHZQZSF5; S3 Extended Request ID: RZYq4IqNCOLv/GLldjRmIMwnpk39/snCIlnBpXTkJdQfa/O2VVf0NbEpSW2zlHCppBwq+PrUB7E=; Proxy: null)
+[2023-08-31 00:16:28] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
+[2023-08-31 00:16:56] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: Z26Q79SRVZ8WHGW8; S3 Extended Request ID: bj0tAWZ80d9QBRYGCK8hqPGGFes5cDioQ4IEgr1gVUwqAEZBnWIYfWzJRGKJNo36H5WzaIl5eH0=; Proxy: null)
+[2023-08-31 18:16:26] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30435ms.] [n/a]
+[2023-08-31 18:16:36] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:19:20] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:19:38] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:20:19] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:20:57] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:21:12] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+[2023-08-31 18:23:18] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 81Y1AAWFP8TPAQWA; S3 Extended Request ID: /lDU9uPlPj8mnMQ8EXLoSYvgSlK6F7w/IKrGVMTlHF0xcRNfkU0RmjZ8aGyVUdzCmuZHN4KaFFM=; Proxy: null)
+[2023-08-31 18:23:38] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
+>>>>>>> Stashed changes
