@@ -15,6 +15,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { useState } from "react"
+import { useCookies } from 'react-cookie';
+import jwtDecode from 'jwt-decode';
 
 const CardProductDisplay = ({
   id,
@@ -30,21 +32,27 @@ const CardProductDisplay = ({
 
   const [isHovered, setIsHovered] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favorite);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
+    
+    let decodedToken = null;
+
+    if ((cookies !== undefined) && cookies.token) {
+      decodedToken = jwtDecode(cookies.token);
+    }
 
   const handleIconClick = () => {
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 
-    const userId = localStorage.getItem("id");
     const bundleId = id;
 
     if (isFavorite) {
       // Enviar petición para eliminar de favoritos
-      fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
+      fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
         method: "DELETE",
       })
     } else {
-      // Enviar petición para agregar a favoritos
-      fetch(`http://localhost:8080/v1/user/${userId}/favorites/${bundleId}`, {
+      fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
         method: "POST",
       })
     }
@@ -53,28 +61,35 @@ const CardProductDisplay = ({
   return (
     <Card raised onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}>
-      {isHovered && (
-        <Tooltip  title={isFavorite ? "Delete from favoritos" : "Add to favorites"} placement="top">
-          {isFavorite ? (
-          <StarIcon
-          onClick={handleIconClick}
-            sx={{
-              position: "absolute",
-              zIndex: 2,
-              cursor: "pointer",
-            }}
-          /> ) : (
-            <StarBorderIcon
-            onClick={handleIconClick}
-              sx={{
-                position: "absolute",
-                zIndex: 2,
-                cursor: 'pointer',
-              }}
-            />
-          )}
-        </Tooltip>
-         )}
+        {decodedToken ? (
+          <span>
+            {isHovered && (
+              <Tooltip title={isFavorite ? "Delete from favoritos" : "Add to favorites"} placement="top">
+                {isFavorite ? (
+                  <StarIcon
+                    onClick={handleIconClick}
+                    sx={{
+                      position: "absolute",
+                      zIndex: 2,
+                      cursor: "pointer",
+                    }}
+                  />
+                ) : (
+                  <StarBorderIcon
+                    onClick={handleIconClick}
+                    sx={{
+                      position: "absolute",
+                      zIndex: 2,
+                      cursor: 'pointer',
+                    }}
+                  />
+                )}
+              </Tooltip>
+            )}
+          </span>
+        ) : (
+          ""
+        )}
             {Array.isArray(img) && img.length > 0 ? (
         <Carousel
           autoPlay={false}
