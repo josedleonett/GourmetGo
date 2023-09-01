@@ -20,19 +20,18 @@ const HomeContainer = () => {
       })
       .catch(error => console.error("Error fetching categories:", error));
 
-      let decodedToken = null;
+    let decodedToken = null;
 
-      if ((cookies !== undefined) && cookies.token) {
-        decodedToken = jwtDecode(cookies.token);
-      }
+    if ((cookies !== undefined) && cookies.token) {
+      decodedToken = jwtDecode(cookies.token);
+    }
 
     if (decodedToken !== undefined && decodedToken !== null) {
       fetch(`http://localhost:8080/v1/bundle/byUser/${decodedToken.id}`)
         .then(response => response.json())
         .then(data => {
           setBundles(data);
-          const bundleNames = data.map(bundle => bundle.name);
-          setBundleList(bundleNames);
+          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name }))); // Incluye el ID
         })
         .catch(error => console.error("Error fetching user bundles:", error));
     } else {
@@ -40,15 +39,14 @@ const HomeContainer = () => {
         .then(response => response.json())
         .then(data => {
           setBundles(data);
-          const bundleNames = data.map(bundle => bundle.name);
-          setBundleList(bundleNames);
+          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name }))); // Incluye el ID
         })
         .catch(error => console.error("Error fetching bundles:", error));
     }
   }, []);
 
-
-  console.log(bundles)
+  console.log(bundleList);
+  console.log(bundles);
 
   const memoizedCategories = useMemo(() => categories, [categories]);
   const memoizedBundles = useMemo(() => bundles, [bundles]);
