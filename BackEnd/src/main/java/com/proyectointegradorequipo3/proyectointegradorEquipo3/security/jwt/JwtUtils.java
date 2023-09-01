@@ -35,8 +35,6 @@ public class JwtUtils {
         claims.put("name", userEntity.getName());
         claims.put("lastName", userEntity.getLastName());
         claims.put("role", userEntity.getAuthorities().iterator().next().getAuthority());
-        claims.put("id", userEntity.getId());
-
 
         return Jwts.builder()
                 .setClaims(claims)

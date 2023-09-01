@@ -19,4 +19,5 @@ public class BundleForCardDto implements Serializable {
     private String image;
     private List<String> galleryImages;
     private Double rating;
+    private boolean favorite;
 }
