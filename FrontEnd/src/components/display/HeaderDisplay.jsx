@@ -17,14 +17,17 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { companyLogo } from "../../utils/theme";
+import { useCookies } from 'react-cookie';
+import jwtDecode from 'jwt-decode';
 
-const HeaderDisplay = ({ hasAccessToken }) => {
+const HeaderDisplay = ({ accessToken }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [randomBackgroundColor, setRandomBackgroundColor] = useState(
     getRandomColor()
   );
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const handleMobileMenuOpen = () => {
     setMobileMenuOpen(true);
@@ -42,21 +45,26 @@ const HeaderDisplay = ({ hasAccessToken }) => {
   const headerHeight = 500;
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("name");
-    localStorage.removeItem("lastName");
-    localStorage.removeItem("email");
-    localStorage.removeItem("tokenType");
+    removeCookie("token", {path: "/"})
     window.location.reload();
   };
+  
+  let decodedToken = null;
+
+  if ((accessToken !== undefined) && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
 
   const initials =
-    localStorage.getItem("name")?.charAt(0) +
-    localStorage.getItem("lastName")?.charAt(0);
-  const userFullName = `${localStorage.getItem("name")} ${localStorage.getItem(
-    "lastName"
-  )}`;
-  const userEmail = localStorage.getItem("email");
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? decodedToken.name.charAt(0) + decodedToken.lastName.charAt(0)
+      : "";
+  const userFullName =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? `${decodedToken.name} ${decodedToken.lastName}`
+      : "";
+      const userEmail =
+      decodedToken && decodedToken.email ? decodedToken.email : "";
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -93,7 +101,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
               onClose={handleMobileMenuClose}
             >
               <List>
-                {hasAccessToken ? (
+                {(accessToken !== undefined) ? (
                   <>
                     <ListItem button onClick={handleMobileMenuClose}>
                       <ListItemText primary="LOG OUT" onClick={handleLogout} />
@@ -187,7 +195,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                 marginLeft: "auto",
               }}
             >
-              {hasAccessToken ? (
+              {(accessToken !== undefined) ? (
                 <>
                   <Button
                     component={Link}
@@ -195,7 +203,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                   >
                     HOME
                   </Button>
-                  {localStorage.getItem("role") === "ADMIN" && (
+                  {(decodedToken && (decodedToken.role === "ADMIN")) && (
                   <Button component={Link} to="/admin/bundles" variant="contained"
                   sx={{
                     "&:hover": { backgroundColor: "blue" },
@@ -300,7 +308,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           >
             Log out
           </Typography>
-          {!hasAccessToken && (
+          {(accessToken === null || accessToken === undefined)  && (
             <>
               <Typography
                 component={Link}

@@ -1,11 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import HomeDisplay from "../display/HomeDisplay";
+import { useCookies } from "react-cookie";
+import jwtDecode from 'jwt-decode';
 
 const HomeContainer = () => {
   const [categories, setCategories] = useState([]);
   const [bundles, setBundles] = useState([]);
   const [categorieList, setCategorieList] = useState([]);
   const [bundleList, setBundleList] = useState([]);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   
   useEffect(() => {
     fetch("http://localhost:8080/v1/category/")
@@ -17,10 +20,14 @@ const HomeContainer = () => {
       })
       .catch(error => console.error("Error fetching categories:", error));
 
-    const userId = localStorage.getItem("id");
+      let decodedToken = null;
 
-    if (userId) {
-      fetch(`http://localhost:8080/v1/bundle/byUser/${userId}`)
+      if ((cookies !== undefined) && cookies.token) {
+        decodedToken = jwtDecode(cookies.token);
+      }
+
+    if (decodedToken !== undefined && decodedToken !== null) {
+      fetch(`http://localhost:8080/v1/bundle/byUser/${decodedToken.id}`)
         .then(response => response.json())
         .then(data => {
           setBundles(data);
@@ -39,6 +46,9 @@ const HomeContainer = () => {
         .catch(error => console.error("Error fetching bundles:", error));
     }
   }, []);
+
+
+  console.log(bundles)
 
   const memoizedCategories = useMemo(() => categories, [categories]);
   const memoizedBundles = useMemo(() => bundles, [bundles]);

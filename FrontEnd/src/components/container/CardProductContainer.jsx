@@ -10,6 +10,7 @@ const  CardProductContainer = ({
   rating,
   favorite
 }) => {
+
   return (
     <CardProductDisplay
       key={id}

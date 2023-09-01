@@ -40,6 +40,11 @@ const AdminPanelDrawerDisplay = ({sidebarMenuList}) => {
               }}
               component="nav"
               aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  ADMIN PANEL
+                </ListSubheader>
+              }
             >
               {sidebarMenuList.map((menuItem, index) => (
                 <Stack key={index}>

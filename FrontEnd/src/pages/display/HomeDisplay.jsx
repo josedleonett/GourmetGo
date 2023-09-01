@@ -9,7 +9,6 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
   
-  console.log(bundles)
 
   return (
     <>

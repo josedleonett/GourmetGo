@@ -198,19 +198,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const bundlesDataGridProps = {
     API_BASE_URL: API_BASE_URL + "bundle/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
-    initialState: {
-      columnVisibility: {
-        image: false,
-        starter: false,
-        mainCourse: false,
-        desserts: false,
-        drinks: false,
-        desserts: false,
-        characteristics: false,
-        categories: false,
-        galleryImages: false,
-      },
-    },
     columns: [
       {
         accessorKey: "image",
@@ -240,20 +227,17 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
-        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "description",
-        id: "description",
         header: "Description",
         isMultiline: true,
         size: 140,
       },
       {
         accessorKey: "starter[name]",
-        id: "starter",
         header: "Starter",
         isMultiline: false,
         isMultiple: true,
@@ -262,7 +246,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "mainCourse[name]",
-        id: "mainCourse",
         header: "Main Course",
         isMultiline: false,
         isMultiple: true,
@@ -271,7 +254,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "desserts[name]",
-        id: "desserts",
         header: "Desserts",
         isMultiline: false,
         isMultiple: true,
@@ -280,7 +262,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "drinks[name]",
-        id: "drinks",
         header: "Drinks",
         isMultiline: false,
         isMultiple: true,
@@ -289,7 +270,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "characteristics[id]",
-        id: "characteristics",
         header: "Characteristics",
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
@@ -297,14 +277,12 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "categories[id]",
-        id: "categories",
         header: "Categories",
         isMultiline: false,
         size: 80,
       },
       {
         accessorKey: "galleryImages",
-        id: "galleryImages",
         header: "Gallery",
         isMultiline: false,
         type: "file",
@@ -318,11 +296,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const plateDataGridProps = {
     API_BASE_URL: API_BASE_URL + "plate/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
-    initialState: {
-      columnVisibility: {
-        image: false,
-      },
-    },
     columns: [
       {
         accessorKey: "image",
@@ -374,11 +347,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const drinkDataGridProps = {
     API_BASE_URL: API_BASE_URL + "drink/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
-    initialState: {
-      columnVisibility: {
-        image: false,
-      },
-    },
     columns: [
       {
         accessorKey: "image",
@@ -424,11 +392,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const characteristicsDataGridProps = {
     API_BASE_URL: API_BASE_URL + "characteristic/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
-    initialState: {
-      columnVisibility: {
-        image: false,
-      },
-    },
     columns: [
       {
         accessorKey: "image",
@@ -466,11 +429,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
 
   const usersDataGridProps = {
     API_BASE_URL: API_BASE_URL + "user/",
-    initialState: {
-      columnVisibility: {
-        image: false,
-      },
-    },
     columns: [
       {
         accessorKey: "name",
@@ -553,11 +511,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const categoryDataGridProps = {
     API_BASE_URL: API_BASE_URL + "category/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
-    initialState: {
-      columnVisibility: {
-        image: false,
-      },
-    },
     columns: [
       {
         accessorKey: "image",

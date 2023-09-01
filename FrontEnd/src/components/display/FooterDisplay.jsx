@@ -17,19 +17,17 @@ const FooterDisplay = () => {
 
   return (
     <>
-      <Box
+      <Container
         component="section"
-        maxWidth="100%"
-        minHeight="100%"
-        bgcolor="primary.light"
-        padding={1}
+        maxWidth="100vw"
+        sx={{ backgroundColor: "#AFC2C9", minHeight: "149px" }}
       >
         <Grid
           container
           justifyContent="space-between"
           alignItems="center"
           sx={{ height: "100%" }}
-          //spacing={2}
+          spacing={2}
         >
           <Grid item xs={12} sm={6} md={4} textAlign="center">
             <Box
@@ -109,7 +107,7 @@ const FooterDisplay = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Container>
     </>
   );
 };

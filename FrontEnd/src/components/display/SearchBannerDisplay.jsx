@@ -1,5 +1,9 @@
-import { Autocomplete, Box, FormControl, TextField } from "@mui/material";
+import { Box, FormControl, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+<<<<<<< HEAD
+=======
+import Autocomplete from "@mui/lab/Autocomplete";
+>>>>>>> 314dcaf0575dbfc16b5525016eb67a7e3545682b
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 
 const SearchBannerDisplay = ({
