@@ -462,27 +462,19 @@ export const CreateUpdateItemModal = ({
     for (const propertyName in outputObject) {
       if (outputObject[propertyName] instanceof FileList) {
         outputObject[propertyName] = Array.from(outputObject[propertyName]);
+
       } else if (
         propertiesToConvert.includes(propertyName) &&
         outputObject[propertyName] &&
         typeof outputObject[propertyName] === "object"
+
       ) {
-        // outputObject[propertyName] =
-        //   [outputObject[propertyName].name] !== undefined
-        //     ? [outputObject[propertyName].name]
-        //     : [outputObject[propertyName].id];
-
-        console.log([outputObject[propertyName].name]);
-
-        if (outputObject[propertyName].name != undefined ) {
-          console.log("entra a name");
+        if (outputObject[propertyName].name != undefined) {
           outputObject[propertyName] = [outputObject[propertyName].name];
+
         } else {
-          console.log("entra a id");
           outputObject[propertyName] = [outputObject[propertyName].id];
         }
-
-        console.log(outputObject);
       }
     }
 
@@ -505,10 +497,6 @@ export const CreateUpdateItemModal = ({
     }
   };
 
-  // console.log("VALORES INICIALES");
-  // console.log(formik.initialValues);
-  // console.log("VALORES INICIALES");
-
   return (
     <>
       <Dialog open={open}>
@@ -526,15 +514,16 @@ export const CreateUpdateItemModal = ({
               }}
             >
               {columns.map((column, index) => (
-                <>
+                <Box id={index} width="100%">
                   {column.isFileType ? (
-                    <>
+                    <Box id={index} width="100%">
                       <Typography>{column.accessorKey}</Typography>
                       <Button
                         component="label"
                         color="primary"
                         variant="contained"
                         startIcon={<AddAPhoto />}
+                        fullWidth
                       >
                         Upload image
                         <input
@@ -555,27 +544,6 @@ export const CreateUpdateItemModal = ({
                           }
                           multiple={column.isMultiple}
                         />
-                        {/* <Input
-                          id={column.accessorKey}
-                          type="file"
-                          key={column.accessorKey}
-                          label={column.header}
-                          name={column.categoryImg || column.accessorKey}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              column.accessorKey,
-                              column.isMultiple === true
-                                ? e.currentTarget.files
-                                : e.currentTarget.files[0]
-                            )
-                          }
-                          disabled={
-                            isFormSending && column.enableEditing === false
-                          }
-                          inputProps={{
-                            multiple: column.isMultiple,
-                          }}
-                        /> */}
                       </Button>
                       {formik.values[column.accessorKey] && (
                         <Box maxHeight={150} maxWidth={150}>
@@ -605,18 +573,14 @@ export const CreateUpdateItemModal = ({
                         {formik.values[column.accessorKey] &&
                           formik.values[column.accessorKey].name}
                       </Typography>
-                    </>
+                    </Box>
                   ) : column.isMultiple ? (
-                    <>
+                    <Box id={index}>
                       {console.log(formik.initialValues)}
                       <Autocomplete
                         multiple
                         autoComplete
-                        //id={column.accessorKey}
                         key={index}
-                        //value={formik.values[column.accessorKey] || []}
-                        //defaultValue={formik.values[column.accessorKey] || []}
-                        //defaultValue={[1, 2, 3, 4, 5, 6]}
                         defaultValue={
                           formik.values[column.accessorKey]
                           &&
@@ -631,8 +595,6 @@ export const CreateUpdateItemModal = ({
                               formik.values[column.accessorKey]
                               &&
                               formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
-                              // &&
-                              // []
                             }
                             key={`input-${index}`}
                             name={column.header}
@@ -660,7 +622,7 @@ export const CreateUpdateItemModal = ({
                           isFormSending || column.enableEditing === false
                         }
                       />
-                    </>
+                    </Box>
                   ) : (
                     <TextField
                       key={index}
@@ -669,6 +631,7 @@ export const CreateUpdateItemModal = ({
                       value={formik.values[column.accessorKey]}
                       onChange={formik.handleChange}
                       multiline={column.isMultiline}
+                      fullWidth
                       inputProps={{
                         disabled:
                           isFormSending ||
@@ -677,7 +640,7 @@ export const CreateUpdateItemModal = ({
                       }}
                     />
                   )}
-                </>
+                </Box>
               ))}
             </Stack>
           </form>
