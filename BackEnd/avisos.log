@@ -637,6 +637,7 @@
 1) Error mapping com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking to com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto
 
 1 error
+<<<<<<< HEAD
 =======
 [2023-08-31 00:15:59] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: F3QP80NTWHZQZSF5; S3 Extended Request ID: RZYq4IqNCOLv/GLldjRmIMwnpk39/snCIlnBpXTkJdQfa/O2VVf0NbEpSW2zlHCppBwq+PrUB7E=; Proxy: null)
 [2023-08-31 00:16:28] [ ERROR] [GlobalHandlerException:18] Could not open JPA EntityManager for transaction
@@ -651,3 +652,6 @@
 [2023-08-31 18:23:18] [ ERROR] [GlobalHandlerException:18] The specified key does not exist. (Service: Amazon S3; Status Code: 404; Error Code: NoSuchKey; Request ID: 81Y1AAWFP8TPAQWA; S3 Extended Request ID: /lDU9uPlPj8mnMQ8EXLoSYvgSlK6F7w/IKrGVMTlHF0xcRNfkU0RmjZ8aGyVUdzCmuZHN4KaFFM=; Proxy: null)
 [2023-08-31 18:23:38] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "search"
 >>>>>>> Stashed changes
+=======
+[2023-09-01 01:07:21] [ ERROR] [GlobalHandlerException:24] The provided credentials are incorrect. Please check and try again.
+>>>>>>> 71b81b4feaa77155ef3e698610ddbb2ff641812f

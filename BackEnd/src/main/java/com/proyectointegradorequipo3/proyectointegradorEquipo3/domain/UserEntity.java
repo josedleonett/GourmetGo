@@ -52,6 +52,14 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Booking> bookings;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_bundles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bundle_id")
+    )
+    private List<Bundle> favoriteBundles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roles == null) {

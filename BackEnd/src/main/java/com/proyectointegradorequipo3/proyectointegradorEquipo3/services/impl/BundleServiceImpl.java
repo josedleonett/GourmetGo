@@ -5,13 +5,12 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.CategoryDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.CategoryNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -46,6 +46,8 @@ public class BundleServiceImpl implements IBundleService {
 
     private final ICategoryRepository categoryRepository;
 
+    private final IUserRepository userRepository;
+
     private final ModelMapper mapper;
 
     private final S3Service s3Service;
@@ -63,17 +65,34 @@ public class BundleServiceImpl implements IBundleService {
         return modelMapper.map(bundle, BundleDto.class);
     }
 
+    public List<BundleForCardDto> searchBundlesForCards(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        Set<Long> favoriteBundleIds = user.getFavoriteBundles().stream()
+                .map(Bundle::getId)
+                .collect(Collectors.toSet());
+
+        List<Bundle> allBundles = bundleRepository.findAll();
+
+        List<BundleForCardDto> result = allBundles.stream()
+                .map(bundle -> {
+                    BundleForCardDto dto = mapper.map(bundle, BundleForCardDto.class);
+                    dto.setFavorite(favoriteBundleIds.contains(bundle.getId()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+
+
     @Cacheable(value = "searchBundleDtoByIdForCards", unless = "#result == null")
     public BundleForCardDto searchBundleDtoByIdForCards(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return mapper.map(bundle, BundleForCardDto.class);
-    }
-
-    @Cacheable(value = "searchBundleByName", unless = "#result == null")
-    public BundleDto searchBundleByName(String name) {
-        Bundle bundle = bundleRepository.findByName(name);
-        return mapper.map(bundle, BundleDto.class);
     }
 
 
