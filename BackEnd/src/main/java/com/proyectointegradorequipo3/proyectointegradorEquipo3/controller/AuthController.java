@@ -5,12 +5,13 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.RoleEntity
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.LoginRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.UserCreateRequest;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.AuthResponse;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.InvalidCredentialsException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IRoleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.security.jwt.JwtUtils;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.EmailService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,7 +154,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
         Optional<UserEntity> optionalUser = userRepository.findByEmailAndIsConfirmedTrue(loginRequest.getUsername());
         if (!optionalUser.isPresent()) {
@@ -164,9 +165,15 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserEntity userEntity = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        String token = jwtUtils.generateAccesToken(userEntity);
+        String jwt = jwtUtils.generateAccesToken(userEntity);
 
-        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+        Cookie cookie = new Cookie("token", jwt);
+
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(jwt);
     }
 
     @DeleteMapping("/deleteUser")
