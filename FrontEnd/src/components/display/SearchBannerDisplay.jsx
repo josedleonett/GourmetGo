@@ -153,7 +153,8 @@ const SearchBannerDisplay = ({
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              inputRef={searchInputRef} 
+              inputRef={searchInputRef}
+              
             />
           )}
           onInputChange={(_, newInputValue) => {
