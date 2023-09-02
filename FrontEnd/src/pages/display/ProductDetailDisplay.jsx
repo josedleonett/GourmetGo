@@ -49,9 +49,6 @@ const ProductDetailDisplay = ({productData, dates}) => {
     setOpenDialog(false);
   };
 
-  console.log(dates)
-
-
   const goBackOnClick = () => {
     navigate("/");
   };
@@ -75,7 +72,7 @@ const ProductDetailDisplay = ({productData, dates}) => {
 
   const isDateUnavailable = (date) => {
     if (!dates) {
-      return false; // No hay datos de fechas, no se deshabilita ninguna
+      return false;
     }
 
     const formattedDate = date.format("YYYY-MM-DD");
@@ -83,46 +80,6 @@ const ProductDetailDisplay = ({productData, dates}) => {
 
     return unavailableDates.includes(formattedDate);
   };
-
-  const renderCustomDay = (day, selectedDate, isInCurrentMonth, dayComponent) => {
-    const isUnavailable = isDateUnavailable(day);
-    
-    return (
-      <div style={{ position: 'relative' }}>
-        {dayComponent}
-        {isUnavailable && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                backgroundColor: red[500],
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              •
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
 
   return (
     <Box sx={{ padding: 2 }}>      
@@ -306,7 +263,6 @@ const ProductDetailDisplay = ({productData, dates}) => {
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
-                        renderDay={renderCustomDay}
                         renderInput={(props) => <input {...props} readOnly />}                         
                       />
                     </DemoItem>  
@@ -315,22 +271,6 @@ const ProductDetailDisplay = ({productData, dates}) => {
                 <Button variant="contained" color="secondary" onClick={openReserveDialog}>
                   RESERVE
                 </Button>
-                
-
-                <Dialog onClose={closeReserveDialog} open={openDialog}>
-                  <DialogTitle sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    Select your reserve date
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                     <DateCalendar
-                        onChange={handleDateChange}
-                       renderInput={(props) => <input {...props} readOnly />}
-                      />
-                    </LocalizationProvider>
-                    <Button onClick={handleSendDate} variant="contained" color="primary">
-                      Send Selected Date
-                    </Button>
-                  </DialogTitle>
-                </Dialog>
               </Container>
             </Paper>
           </Grid>
