@@ -42,3 +42,4 @@ const SearchBannerContainer = ({ filterList, filterBundle }) => {
 };
 
 export default SearchBannerContainer;
+

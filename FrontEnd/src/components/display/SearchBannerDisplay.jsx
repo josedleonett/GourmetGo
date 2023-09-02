@@ -136,8 +136,8 @@ const SearchBannerDisplay = ({
           id="searchInput"
           options={filterBundle}
           value={selectedBundle}
+          onKeyPress={handleInputKeyPress}
           size="small"
-          onChange={(e, newValue) => onCategorySelect(newValue)}
           filterOptions={(options, state) => {
             return options.filter((option) =>
               option.name.toLowerCase().includes(state.inputValue.toLowerCase())
