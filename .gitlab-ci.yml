@@ -24,6 +24,10 @@ deploy_backend:
     changes:
       - backend/**/*
   script:
+    - pwd
+    - ls -l
+    - cd backend
+    - ...
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     - pip install awscli
