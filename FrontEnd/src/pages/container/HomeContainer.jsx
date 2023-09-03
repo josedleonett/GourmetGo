@@ -15,7 +15,7 @@ const HomeContainer = () => {
       .then(response => response.json())
       .then(data => {
         setCategories(data);
-        const categoryNames = data.map(category => category.name);
+        const categoryNames = data.map(category => ({ id: category.id, name: category.name }));
         setCategorieList(categoryNames);
       })
       .catch(error => console.error("Error fetching categories:", error));
