@@ -1,15 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 
-const PlaceholderSerchBannerDisplay = ({ filterList }) => {
+const PlaceholderSerchBannerDisplay = ({ filterList, handleCategorySelect }) => {
   const [selectedFilter, setSelectedFilter] = useState("");
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
 
   const searchSelectOnChange = (event) => {
-    setSelectedFilter(event.target.value);
+    const selectedCategoryId = event.target.value;
+    setSelectedFilter(selectedCategoryId);
+    setIsCategorySelected(true);
   };
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter" && isCategorySelected) {
+        // Realizar la redirección cuando se presione "Enter"
+        window.location.href = `http://127.0.0.1:5173/category/${encodeURIComponent(selectedFilter)}`;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isCategorySelected, selectedFilter]);
 
   const labelStyle = {
     position: "absolute",
@@ -44,9 +62,9 @@ const PlaceholderSerchBannerDisplay = ({ filterList }) => {
           getContentAnchorEl: null,
         }}
       >
-        {filterList.map((filterItem, index) => (
-          <MenuItem key={index} value={filterItem}>
-            {filterItem}
+        {filterList.map((filterItem) => (
+          <MenuItem key={filterItem.id} value={filterItem.id}>
+            {filterItem.name}
           </MenuItem>
         ))}
       </Select>
@@ -55,3 +73,4 @@ const PlaceholderSerchBannerDisplay = ({ filterList }) => {
 };
 
 export default PlaceholderSerchBannerDisplay;
+
