@@ -11,7 +11,7 @@ build_backend:
     changes:
       - backend/**/*
   script:
-    - cd backend
+    - cd BackEnd
     - docker build -t $IMAGE_NAME .
     - docker save $IMAGE_NAME | gzip > $IMAGE_NAME.tar.gz
   artifacts:
@@ -22,12 +22,8 @@ deploy_backend:
   stage: deploy
   only:
     changes:
-      - backend/**/*
+      - BackEnd/**/*
   script:
-    - pwd
-    - ls -l
-    - cd backend
-    - ...
     - apt-get update -qy
     - apt-get install -y python-dev python-pip
     - pip install awscli
