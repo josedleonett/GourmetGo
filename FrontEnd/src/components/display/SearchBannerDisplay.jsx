@@ -117,6 +117,7 @@ const SearchBannerDisplay = ({
         />
         {isCalendarVisible && (
           <Dialog open={isCalendarVisible} onClose={handleCloseCalendar}>
+            {/* Asegúrate de envolver StaticDatePicker con LocalizationProvider */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StaticDatePicker onAccept={handleDateAccept} 
                                 onClose={handleCloseCalendar}
