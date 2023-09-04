@@ -9,23 +9,26 @@ import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import dayjs from 'dayjs';
+import { useMediaQuery } from "@mui/material";
 
 const SearchBannerDisplay = ({
-  searchInputValue,
-  searchInputOnChange,
   filterList,
-  searchSelectOnChange,
-  selectedFilter,
   filterBundle,
   selectedBundle,
   onBundleSelected, 
   onSearchIconClick, 
-  onCategorySelect
 }) => {
   const searchInputRef = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [dates, setDates] = useState(null);
+  const [searchBundle, setSearchBundle] = useState([]);
+  const [categoryId, setCategoryId] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+
+  const clearSearchInput = () => {
+    setSearchInput("");
+  };
 
   const handleSearchSelect = (newValue) => {
     if (newValue) {
@@ -33,11 +36,16 @@ const SearchBannerDisplay = ({
     }
   };
 
-  const handleSearchIconClick = useCallback(() => {
+  const handleSearchIconClick = () => {
     const newValue = searchInputRef.current.value;
-    onSearchIconClick(newValue);
-    console.log(newValue);
-  }, [onSearchIconClick]);
+    if (newValue) {
+      onSearchIconClick(newValue);
+    } else if (categoryId.length !== 0) {
+        window.location.href = `http://127.0.0.1:5173/category/${encodeURIComponent(categoryId)}`;
+    }
+  };
+
+  const bundleNames = filterBundle.map((bundle) => bundle.name);
 
   const handleOptionSelect = (_, option) => {
     if (option) {
@@ -52,6 +60,14 @@ const SearchBannerDisplay = ({
       const newValue = searchInputRef.current.value;
       handleSearchSelect(newValue);
     }
+  };
+
+  const handleCategorySelect = (selectedBundles) => {
+    setSearchBundle(selectedBundles);
+  };
+
+  const handleCategoryIdSelect = (categoryId) => {
+    setCategoryId(categoryId);
   };
 
   const toggleCalendarVisibility = () => {
@@ -71,23 +87,14 @@ const SearchBannerDisplay = ({
     handleCloseCalendar();
   };
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/v1/booking/dates`)
-      .then(response => response.json())
-      .then(data => setDates(data))
-      .catch(error => console.error('Error fetching product data:', error));
-  });
-
   const isDateUnavailable = (date) => {
     if (!dates) {
       return false;
     }
+  }
 
-    const formattedDate = date.format("YYYY-MM-DD");
-    const unavailableDates = dates.map((item) => item.date);
-
-    return unavailableDates.includes(formattedDate);
-  };
+  // Verificar si el ancho de la pantalla es menor que un cierto valor (por ejemplo, 600px)
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   return (
     <Box
@@ -117,7 +124,6 @@ const SearchBannerDisplay = ({
         />
         {isCalendarVisible && (
           <Dialog open={isCalendarVisible} onClose={handleCloseCalendar}>
-            {/* Asegúrate de envolver StaticDatePicker con LocalizationProvider */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StaticDatePicker onAccept={handleDateAccept} 
                                 onClose={handleCloseCalendar}
@@ -126,25 +132,32 @@ const SearchBannerDisplay = ({
             </LocalizationProvider>
           </Dialog>
         )}
-        <Divider orientation="vertical" flexItem/>
-        <PlaceholderSearchBannerDisplay filterList={filterList}/>
         <Divider orientation="vertical" flexItem />
+        {!isSmallScreen && ( // Renderiza PlaceholderSearchBannerDisplay solo si no es un dispositivo pequeño
+          <PlaceholderSearchBannerDisplay
+            filterList={filterList}
+            handleCategorySelect={handleCategorySelect}
+            handleCategoryId={handleCategoryIdSelect}
+          />
+        )}
+        {!isSmallScreen && (<Divider orientation="vertical" flexItem />)}
         <SearchIcon
           sx={{ padding: "8px", minWidth: "3%", cursor: "pointer" }}
           onClick={handleSearchIconClick}
         />
         <Autocomplete
           id="searchInput"
-          options={filterBundle}
+          options={searchBundle.length === 0 ? bundleNames : searchBundle} // Usa la lista de bundles filtrados
           value={selectedBundle}
           onKeyPress={handleInputKeyPress}
           size="small"
           filterOptions={(options, state) => {
             return options.filter((option) =>
-              option.name.toLowerCase().includes(state.inputValue.toLowerCase())
+            
+              option.toLowerCase().includes(state.inputValue.toLowerCase())
             );
           }}
-          getOptionLabel={(option) => option.name} 
+          getOptionLabel={(option) => option} 
           sx={{ width: "100%" }}
           renderInput={(params) => (
             <TextField
@@ -154,13 +167,9 @@ const SearchBannerDisplay = ({
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              inputRef={searchInputRef}
-              
+              inputRef={searchInputRef} 
             />
           )}
-          onInputChange={(_, newInputValue) => {
-            searchInputOnChange(newInputValue);
-          }}
         />
       </FormControl>
     </Box>

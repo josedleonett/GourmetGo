@@ -17,68 +17,83 @@ import AdminContainer from "./pages/container/AdminContainer";
 import UserRegisterContainer from "./components/container/UserRegisterContainer";
 import UserLoginContainer from "./components/container/UserLoginContainer"
 import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
+import { useCookies } from 'react-cookie';
+import jwtDecode from 'jwt-decode';
 
-const accessToken = localStorage.getItem("accessToken");
-const role = localStorage.getItem("role");
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <NotFoundContainer />,
-    children: [
-      {
-        index: true,
-        path: "",
-        element: <HomeContainer />,
-      },
-      { path: "/product/:id", element: <ProductDetailContainer /> },
-      {
-        path: "admin/*",
-        element:
-          accessToken !== null && role === "ADMIN" ? (
-            <AdminContainer />
-          ) : (
-            <Navigate to="/" replace />
-          ),
-      },
-      {
-        path: "/administration-panel",
-        element: <AdministratorPanelContainer />,
-      },
-      {
-        path: "/administration-panel/:category",
-        element: <ElementAdministratorPanelContainer />,
-      },
-      {
-        path: "/administration-panel/:category/edit",
-        element: <CreateElementPanelContainer />,
-      },
-      {
-        path: "/user-register",
-        element: <UserRegisterContainer />,
-      },
-      {
-        path: "/user-login",
-        element: <UserLoginContainer />,
-      },
-      {
-        path: "/category/:id",
-        element: <CategoryFilterContainer />,
-      },
-      {
-        path: "*",
-        element: <NotFoundContainer />,
-      },
-    ],
-  },
-]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ContextProvider>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </ContextProvider>
-  </React.StrictMode>
-);
+  
+
+function Main() {
+  const [cookies] = useCookies(['token']);
+  
+  let decodedToken;
+
+  if ((cookies !== undefined) && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <App />,
+      errorElement: <NotFoundContainer />,
+      children: [
+        {
+          index: true,
+          path: "",
+          element: <HomeContainer />,
+        },
+        { path: "/product/:id", element: <ProductDetailContainer /> },
+        {
+          path: "admin/*",
+          element:
+          decodedToken && decodedToken.role === "ADMIN" ? (
+              <AdminContainer />
+            ) : (
+              <Navigate to="/" replace />
+            ),
+        },
+        {
+          path: "/administration-panel",
+          element: <AdministratorPanelContainer />,
+        },
+        {
+          path: "/administration-panel/:category",
+          element: <ElementAdministratorPanelContainer />,
+        },
+        {
+          path: "/administration-panel/:category/edit",
+          element: <CreateElementPanelContainer />,
+        },
+        {
+          path: "/user-register",
+          element: <UserRegisterContainer />,
+        },
+        {
+          path: "/user-login",
+          element: <UserLoginContainer />,
+        },
+        {
+          path: "/category/:id",
+          element: <CategoryFilterContainer />,
+        },
+        {
+          path: "*",
+          element: <NotFoundContainer />,
+        },
+      ],
+    },
+  ]);
+
+  return (
+    <React.StrictMode>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </ContextProvider>
+    </React.StrictMode>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
