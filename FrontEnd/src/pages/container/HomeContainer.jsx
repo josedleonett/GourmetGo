@@ -15,7 +15,7 @@ const HomeContainer = () => {
       .then(response => response.json())
       .then(data => {
         setCategories(data);
-        const categoryNames = data.map(category => ({ id: category.id, name: category.name }));
+        const categoryNames = data.map(category => ({ id: category.id, name: category.name, bundles: category.bundles }));
         setCategorieList(categoryNames);
       })
       .catch(error => console.error("Error fetching categories:", error));
@@ -39,14 +39,11 @@ const HomeContainer = () => {
         .then(response => response.json())
         .then(data => {
           setBundles(data);
-          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name }))); // Incluye el ID
+          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name, categories: bundle.categories }))); // Incluye el ID
         })
         .catch(error => console.error("Error fetching bundles:", error));
     }
   }, []);
-
-  console.log(bundleList);
-  console.log(bundles);
 
   const memoizedCategories = useMemo(() => categories, [categories]);
   const memoizedBundles = useMemo(() => bundles, [bundles]);
@@ -58,3 +55,4 @@ const HomeContainer = () => {
 };
 
 export default HomeContainer;
+
