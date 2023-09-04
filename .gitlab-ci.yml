@@ -32,5 +32,6 @@ deploy_backend:
     - aws ec2 start-instances --instance-ids $EC2_INSTANCE_ID
     - aws ec2 wait instance-running --instance-ids $EC2_INSTANCE_ID
     - export EC2_PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-    - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "docker load < $(aws s3 cp s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz -)"
+    - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "aws s3 cp s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz - | gunzip | docker load"
     - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "docker-compose up -d"
+
