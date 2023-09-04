@@ -1,0 +1,37 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_NAME: backend-docker-image
+
+build_backend:
+  stage: build
+  only:
+    changes:
+      - BackEnd/**/*
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - cd BackEnd
+    - docker build -t $IMAGE_NAME .
+    - docker save $IMAGE_NAME | gzip > $IMAGE_NAME.tar.gz
+  artifacts:
+    paths:
+      - $IMAGE_NAME.tar.gz
+
+deploy_backend:
+  stage: deploy
+  only:
+    changes:
+      - BackEnd/**/*
+  script:
+    - yum install -y aws-cli
+    - aws s3 cp $IMAGE_NAME.tar.gz s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz
+    - aws ec2 start-instances --instance-ids $EC2_INSTANCE_ID
+    - aws ec2 wait instance-running --instance-ids $EC2_INSTANCE_ID
+    - export EC2_PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+    - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "aws s3 cp s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz - | gunzip | docker load"
+    - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "docker-compose up -d"
+
