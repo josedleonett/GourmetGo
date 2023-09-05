@@ -4,6 +4,7 @@ stages:
 
 variables:
   IMAGE_NAME: backend-docker-image
+  DOCKER_HOST: tcp://docker:2375/  # Configurar DOCKER_HOST
 
 build_backend:
   stage: build
@@ -12,7 +13,9 @@ build_backend:
       - BackEnd/**/*
   image: docker:stable
   services:
-    - docker:dind
+    - name: docker:dind  # Especificar versión
+      alias: docker
+      command: ["--privileged"]  # Iniciar con privilegios
   script:
     - cd BackEnd
     - docker build -t $IMAGE_NAME .
@@ -26,19 +29,13 @@ deploy_backend:
   only:
     changes:
       - BackEnd/**/*
-  image: amazonlinux:2
-  before_script:
-    - yum install -y openssh-clients
   script:
+    - yum install -y aws-cli
     - aws s3 cp $IMAGE_NAME.tar.gz s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz
     - aws ec2 start-instances --instance-ids $EC2_INSTANCE_ID
     - aws ec2 wait instance-running --instance-ids $EC2_INSTANCE_ID
     - export EC2_PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-    - echo $EC2_PUBLIC_IP > ec2_public_ip.txt
     - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "aws s3 cp s3://$AWS_BUCKET/$IMAGE_NAME.tar.gz - | gunzip | docker load"
     - ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP "docker-compose up -d"
-  artifacts:
-    paths:
-      - ec2_public_ip.txt
 
 
