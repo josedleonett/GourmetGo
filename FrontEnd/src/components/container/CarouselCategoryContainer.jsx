@@ -1,4 +1,3 @@
-import React from "react";
 import CarouselCategoryDisplay from "../display/CarouselCategoryDisplay";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";

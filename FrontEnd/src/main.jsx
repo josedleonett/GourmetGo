@@ -5,7 +5,6 @@ import "./index.css";
 import { ContextProvider } from "./context/Global.context.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utils/theme.jsx";
-
 import App from "./App.jsx";
 import NotFoundContainer from "./pages/container/NotFoundContainer.jsx";
 import HomeContainer from "./pages/container/HomeContainer.jsx";
@@ -19,9 +18,6 @@ import UserLoginContainer from "./components/container/UserLoginContainer"
 import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-
-
-  
 
 function Main() {
   const [cookies] = useCookies(['token']);

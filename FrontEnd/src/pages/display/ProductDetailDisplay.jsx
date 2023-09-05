@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -5,7 +6,6 @@ import { BiDish } from "react-icons/bi";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import {
@@ -24,14 +24,11 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
-import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { red } from "@mui/material/colors";
-import Lightbox from "react-lightbox-component";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -51,7 +48,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(productData);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -166,7 +162,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                     <TwitterIcon size={32} round />
                   </TwitterShareButton>
                   <div style={{ margin: 12 }}></div>{" "}
-                  {/* Espacio entre botones */}
                   <EmailShareButton
                     url={shareUrl}
                     subject="Check this food caterer"
