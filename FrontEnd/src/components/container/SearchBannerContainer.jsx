@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import SearchBannerDisplay from '../display/SearchBannerDisplay';
-import React, { useEffect } from 'react';
+
 
 const SearchBannerContainer = ({ filterList, filterBundle }) => {
 

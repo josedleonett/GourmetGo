@@ -7,11 +7,8 @@ import StarIcon from '@mui/icons-material/Star';
 import {
   CardActionArea,
   Rating,
-  Stack,
   Tooltip,
-  Box
 } from "@mui/material";
-import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { useState } from "react"

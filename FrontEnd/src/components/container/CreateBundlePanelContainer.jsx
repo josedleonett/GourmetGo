@@ -1,4 +1,3 @@
-import React from 'react'
 import CreateBundlePanelDisplay from '../display/CreateBundlePanelDisplay'
 
 const CreateBundlePanelContainer = () => {

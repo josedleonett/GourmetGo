@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { Box, FormControl, TextField, Autocomplete } from "@mui/material";
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -6,7 +7,6 @@ import Divider from '@mui/material/Divider';
 import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
-import React, { useCallback, useRef, useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import dayjs from 'dayjs';
 import { useMediaQuery } from "@mui/material";

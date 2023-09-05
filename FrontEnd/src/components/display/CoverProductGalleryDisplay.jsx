@@ -2,8 +2,7 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import { useEffect } from "react";
 import "photoswipe/style.css";
 import { Box } from "@mui/system";
-import { Container, Divider, Grid } from "@mui/material";
-import { cateringPackages } from "../../test/dataApiSample";
+import { Container, Grid } from "@mui/material";
 import { useParams } from "react-router";
 
 const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
