@@ -64,7 +64,7 @@ const CardProductDisplay = ({
         {decodedToken ? (
           <span>
             {isHovered && (
-              <Tooltip title={isFavorite ? "Delete from favoritos" : "Add to favorites"} placement="top">
+              <Tooltip title={isFavorite ? "Delete from favorites" : "Add to favorites"} placement="top">
                 {isFavorite ? (
                   <StarIcon
                     onClick={handleIconClick}
