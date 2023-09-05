@@ -1,3 +1,5 @@
+image: maven:3.6-jdk-11
+
 stages:
   - build
   - deploy
@@ -19,7 +21,6 @@ build_backend:
     paths:
       - $JAR_FILE
 
-# Deploy Stage
 deploy_backend:
   stage: deploy
   only:
