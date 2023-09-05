@@ -2,12 +2,12 @@ import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import {
   Box,
   Container,
@@ -22,7 +22,7 @@ import {
   IconButton,
   Dialog,
   DialogTitle,
-  Stack
+  Stack,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { cateringPackages } from "../../test/dataApiSample";
@@ -30,14 +30,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { red } from '@mui/material/colors';
+import { red } from "@mui/material/colors";
 import Lightbox from "react-lightbox-component";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import {
+  EmailIcon,
+  FacebookIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
+import ShareIcon from "@mui/icons-material/Share";
 
-const ProductDetailDisplay = ({productData, dates}) => {
+const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
+  console.log(productData);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -61,12 +75,12 @@ const ProductDetailDisplay = ({productData, dates}) => {
 
   const handleSendDate = () => {
     if (selectedDate) {
-      console.log('Selected Date:', selectedDate.toISOString());
+      console.log("Selected Date:", selectedDate.toISOString());
     }
   };
 
   const handleDateAccept = (date) => {
-    const formattedDate = date.format('YYYY-MM-DD');
+    const formattedDate = date.format("YYYY-MM-DD");
     console.log(formattedDate);
   };
 
@@ -80,13 +94,29 @@ const ProductDetailDisplay = ({productData, dates}) => {
 
     return unavailableDates.includes(formattedDate);
   };
+  const shareUrl = `http://127.0.0.1:5173/product/${id}`;
+
+  const [openSocialModal, setOpenSocialModal] = useState(false);
+
+  const openSocialModalOnClick = () => {
+    setOpenSocialModal(true);
+  };
+
+  const closeSocialModal = () => {
+    setOpenSocialModal(false);
+  };
 
   return (
-    <Box sx={{ padding: 2 }}>      
-
-      <IconButton aria-label="Back" onClick={goBackOnClick}>
-        <ArrowBackIcon />
-      </IconButton>
+    <Box sx={{ padding: 2 }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <IconButton
+          aria-label="Back"
+          onClick={goBackOnClick}
+          style={{ marginRight: "10px" }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </div>
 
       <CoverProductGalleryContainer
         imgList={productData ? productData.galleryImages : []}
@@ -96,9 +126,65 @@ const ProductDetailDisplay = ({productData, dates}) => {
       <Container>
         <Grid container padding={2} lg={12}>
           <Box>
-            <Typography variant="h4">
-              {productData ? productData.name : ""}
-            </Typography>
+            <div style={{ display: "flex" }}>
+              <Typography variant="h4">
+                {productData ? productData.name : ""}
+              </Typography>
+              <IconButton
+                aria-label="Compartir"
+                onClick={openSocialModalOnClick}
+                style={{
+                  marginLeft: 18,
+                  paddingLeft: 2,
+                  transition: "background-color 0.2s ease",
+                }}
+              >
+                <ShareIcon />
+              </IconButton>
+              <Dialog open={openSocialModal} onClose={closeSocialModal}>
+                <DialogTitle>Share on social media!</DialogTitle>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingLeft: "25px",
+                    paddingBottom: "5px",
+                  }}
+                >
+                  <FacebookShareButton
+                    url={shareUrl}
+                    quote="Take a look at this catering!"
+                  >
+                    <FacebookIcon size={32} round />
+                  </FacebookShareButton>
+                  <div style={{ margin: 12 }}></div>{" "}
+                  <TwitterShareButton
+                    url={shareUrl}
+                    title="Take a look at this catering!"
+                  >
+                    <TwitterIcon size={32} round />
+                  </TwitterShareButton>
+                  <div style={{ margin: 12 }}></div>{" "}
+                  {/* Espacio entre botones */}
+                  <EmailShareButton
+                    url={shareUrl}
+                    subject="Check this food caterer"
+                    body="Hello! I invite you to take a look at this catering. You can find more details in the following link: "
+                  >
+                    <EmailIcon size={32} round />
+                  </EmailShareButton>
+                  <div style={{ margin: 12 }}></div>{" "}
+                  <WhatsappShareButton
+                    url={shareUrl}
+                    title="Take a look at this catering!"
+                  >
+                    <WhatsappIcon size={32} round />
+                  </WhatsappShareButton>
+                  <div style={{ margin: 12 }}></div>{" "}
+                </div>
+              </Dialog>
+            </div>
             <Typography variant="subtitle1" fontStyle="italic" fon>
               {productData ? productData.description : ""}
             </Typography>
@@ -114,11 +200,11 @@ const ProductDetailDisplay = ({productData, dates}) => {
                       <BiDish size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                        primary="Main course:"
-                        secondary={
-                          <>
-                            {productData ? (
-                              productData.starter.map((starterItem, index) => (
+                      primary="Main course:"
+                      secondary={
+                        <>
+                          {productData
+                            ? productData.starter.map((starterItem, index) => (
                                 <div key={index}>
                                   <Typography
                                     sx={{ display: "inline" }}
@@ -131,12 +217,10 @@ const ProductDetailDisplay = ({productData, dates}) => {
                                   {` — ${starterItem.description}`}
                                 </div>
                               ))
-                            ) : (
-                              ""
-                            )}
-                          </>
-                        }
-                      />
+                            : ""}
+                        </>
+                      }
+                    />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -146,11 +230,11 @@ const ProductDetailDisplay = ({productData, dates}) => {
                       <RiRestaurant2Line size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                        primary="Main course:"
-                        secondary={
-                          <>
-                            {productData ? (
-                              productData.mainCourse.map((mainItem, index) => (
+                      primary="Main course:"
+                      secondary={
+                        <>
+                          {productData
+                            ? productData.mainCourse.map((mainItem, index) => (
                                 <div key={index}>
                                   <Typography
                                     sx={{ display: "inline" }}
@@ -163,12 +247,10 @@ const ProductDetailDisplay = ({productData, dates}) => {
                                   {` — ${mainItem.description}`}
                                 </div>
                               ))
-                            ) : (
-                              ""
-                            )}
-                          </>
-                        }
-                      />
+                            : ""}
+                        </>
+                      }
+                    />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -178,29 +260,29 @@ const ProductDetailDisplay = ({productData, dates}) => {
                       <GiPieSlice size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                        primary="Dessert:"
-                        secondary={
-                          <>
-                            {productData ? (
-                              productData.desserts.map((dessertsItem, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {dessertsItem.name}
-                                  </Typography>
-                                  {` — ${dessertsItem.description}`}
-                                </div>
-                              ))
-                            ) : (
-                              ""
-                            )}
-                          </>
-                        }
-                      />
+                      primary="Dessert:"
+                      secondary={
+                        <>
+                          {productData
+                            ? productData.desserts.map(
+                                (dessertsItem, index) => (
+                                  <div key={index}>
+                                    <Typography
+                                      sx={{ display: "inline" }}
+                                      component="span"
+                                      variant="body2"
+                                      color="text.primary"
+                                    >
+                                      {dessertsItem.name}
+                                    </Typography>
+                                    {` — ${dessertsItem.description}`}
+                                  </div>
+                                )
+                              )
+                            : ""}
+                        </>
+                      }
+                    />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -210,11 +292,11 @@ const ProductDetailDisplay = ({productData, dates}) => {
                       <MdLocalBar size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                        primary="Drinks:"
-                        secondary={
-                          <>
-                            {productData ? (
-                              productData.drinks.map((dessertsItem, index) => (
+                      primary="Drinks:"
+                      secondary={
+                        <>
+                          {productData
+                            ? productData.drinks.map((dessertsItem, index) => (
                                 <div key={index}>
                                   <Typography
                                     sx={{ display: "inline" }}
@@ -226,12 +308,10 @@ const ProductDetailDisplay = ({productData, dates}) => {
                                   </Typography>
                                 </div>
                               ))
-                            ) : (
-                              ""
-                            )}
-                          </>
-                        }
-                      />
+                            : ""}
+                        </>
+                      }
+                    />
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
@@ -242,40 +322,38 @@ const ProductDetailDisplay = ({productData, dates}) => {
           <Grid item lg={4} md={5} xs={12}>
             <Paper elevation={6} sx={{ py: 4, px: 1 }}>
               <Container
-                sx={{ display: "flex", flexDirection: "column", gap: 1}}
+                sx={{ display: "flex", flexDirection: "column", gap: 1 }}
               >
-
                 <Stack
                   direction="row"
                   spacing={1}
                   alignItems="center"
                   color={"secondary.main"}
-                >
-                </Stack>
+                ></Stack>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer
-                  components={[
-                    'MobileDatePicker',
-                  ]}
-                  >
+                  <DemoContainer components={["MobileDatePicker"]}>
                     <DemoItem label="Select reserve date">
-                      <MobileDatePicker 
+                      <MobileDatePicker
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
-                        renderInput={(props) => <input {...props} readOnly />}                         
+                        renderInput={(props) => <input {...props} readOnly />}
                       />
-                    </DemoItem>  
+                    </DemoItem>
                   </DemoContainer>
                 </LocalizationProvider>
-                <Button variant="contained" color="secondary" onClick={openReserveDialog}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={openReserveDialog}
+                >
                   RESERVE
                 </Button>
               </Container>
             </Paper>
           </Grid>
         </Grid>
-        <Box height={50}/>
+        <Box height={50} />
       </Container>
     </Box>
   );
