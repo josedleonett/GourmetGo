@@ -90,8 +90,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     try {
       const response = await axios.get(API_BASE_URL);
 
-      console.log(response.data);
-
       if (filter != undefined) {
         const dataFiltered = response.data.filter(
           (item) => item.hasOwnProperty("type") && item.type === filter
@@ -111,8 +109,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   };
 
   const postApiData = async (propertiesToCreate) => {
-    console.log(propertiesToCreate);
-
     try {
       const formData = new FormData();
 
@@ -127,14 +123,9 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           formData.append(key, propertiesToCreate[key]);
         }
       }
-
-      //CHECK OUTPUT
-      console.log("POSTING");
       for (const [key, value] of formData.entries()) {
         console.log(key, value);
       }
-      console.log("POSTING");
-      //CHECK OUTPUT
 
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
@@ -149,9 +140,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const updateApiData = async (targetIdToUpdate, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
-      console.log("ENTRA");
-      console.log(propertiesToUpdate);
-      console.log("SALE");
 
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
@@ -213,24 +201,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     (row) => {
       setIsDeleteModalOpen(true);
       setRowToDelete(row.original.id);
-
-      // if (isDeleteConfirmed) {
-      //   const responseCode = deleteApiData(row.original.id);
-      //   console.log(responseCode);
-
-      //   if (responseCode === 204) {
-      //     const updatedData = data.filter(
-      //       (item) => item.id !== row.original.id
-      //     );
-      //     setData(updatedData);
-
-      //     setIsDeleteModalOpen(false);
-      //     setIsDeleteConfirmed(false);
-      //     setIsFormDeleting(false);
-      //   }
-
-      //   setIsFormDeleting(false);
-      // }
     },
     [data]
   );
@@ -363,8 +333,6 @@ export const CreateUpdateItemModal = ({
     ? "SAVE"
     : "UPDATE";
 
-  console.log(rowToUpdate);
-
   const formik = useFormik({
     initialValues: rowToUpdate,
     enableReinitialize: true,
@@ -379,7 +347,6 @@ export const CreateUpdateItemModal = ({
         const convertedToArrayPlates = convertPropertiesToArray(values);
         if (convertedToArrayPlates !== null) {
           responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
-          console.log(responseCode);
         }
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
@@ -481,22 +448,11 @@ export const CreateUpdateItemModal = ({
         outputObject[propertyName] &&
         typeof outputObject[propertyName] === "object"
       ) {
-        // outputObject[propertyName] =
-        //   [outputObject[propertyName].name] !== undefined
-        //     ? [outputObject[propertyName].name]
-        //     : [outputObject[propertyName].id];
-
-        console.log([outputObject[propertyName].name]);
-
         if (outputObject[propertyName].name != undefined ) {
-          console.log("entra a name");
           outputObject[propertyName] = [outputObject[propertyName].name];
         } else {
-          console.log("entra a id");
           outputObject[propertyName] = [outputObject[propertyName].id];
         }
-
-        console.log(outputObject);
       }
     }
 
@@ -518,10 +474,6 @@ export const CreateUpdateItemModal = ({
       return API_BASE_IMAGE_URL + value;
     }
   };
-
-  // console.log("VALORES INICIALES");
-  // console.log(formik.initialValues);
-  // console.log("VALORES INICIALES");
 
   return (
     <>
@@ -589,7 +541,6 @@ export const CreateUpdateItemModal = ({
                             }}
                             onLoad={() => {
                               setIsImageLoaded(true);
-                              console.log("Image loaded!");
                             }}
                           />
                         </Box>
@@ -601,15 +552,10 @@ export const CreateUpdateItemModal = ({
                     </>
                   ) : column.isMultiple ? (
                     <>
-                      {console.log(formik.initialValues)}
                       <Autocomplete
                         multiple
                         autoComplete
-                        //id={column.accessorKey}
                         key={index}
-                        //value={formik.values[column.accessorKey] || []}
-                        //defaultValue={formik.values[column.accessorKey] || []}
-                        //defaultValue={[1, 2, 3, 4, 5, 6]}
                         defaultValue={
                           formik.values[column.accessorKey]
                           &&
@@ -737,7 +683,6 @@ const DeleteItemModal = ({
   const onConfirmHandler = async () => {
     setIsFormDeleting(true);
     const responseCode = await onSubmitDeleteHandler(rowToDelete);
-    console.log(responseCode);
 
     if (responseCode === 204) {
       const updatedData = data.filter((item) => item.id !== rowToDelete);

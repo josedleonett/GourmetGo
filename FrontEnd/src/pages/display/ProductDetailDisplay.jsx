@@ -48,7 +48,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(productData);
 
   const [openDialog, setOpenDialog] = useState(false);
 

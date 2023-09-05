@@ -41,8 +41,6 @@ const UserLogInDisplay = () => {
         body: JSON.stringify(inputs),
       });
 
-      console.log(response)
-
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
@@ -58,7 +56,6 @@ const UserLogInDisplay = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-    console.log(cookies)
   };
 
   const inputFields = [

@@ -89,11 +89,8 @@ const UserRegisterDisplay = () => {
           text: "A confirmation email has been resent to your email address.",
         });
          if (attemptsCount < 2) {
-           console.log(attemptsCount)
            setShowRetryMessage(false);
            setResendButtonVisible(true);
-           console.log(resendButtonVisible)
-            console.log(showRetryMessage)
            setAttemptsCount(attemptsCount + 1);
         } else if (attemptsCount === 2) {
           setResendButtonVisible(false);

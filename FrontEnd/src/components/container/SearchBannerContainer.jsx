@@ -17,7 +17,6 @@ const SearchBannerContainer = ({ filterList, filterBundle }) => {
   }, []);
 
   const handleSearchSelect = (searchValue) => {
-    console.log('handleSearchSelect:', searchValue);
     const selectedBundle = filterBundle.find((bundle) => bundle.name === searchValue);
     if (selectedBundle) {
       window.location.href = `http://127.0.0.1:5173/product/${encodeURIComponent(selectedBundle.id)}`;

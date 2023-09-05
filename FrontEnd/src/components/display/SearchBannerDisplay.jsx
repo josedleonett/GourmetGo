@@ -80,7 +80,6 @@ const SearchBannerDisplay = ({
   const handleDateAccept = (date) => {
     setSelectedDate(date);
     setCalendarVisible(false);
-    console.log(dayjs(date.$d).format('YYYY-MM-DD'));
   };
 
   const handleDateCancel = () => {
