@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
+  AppBar,
+  Toolbar,
+  Button,
+  Container,
   Box,
   Tabs,
   IconButton,
@@ -16,9 +16,10 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 import { companyLogo } from "../../utils/theme";
-import { useCookies } from 'react-cookie';
-import jwtDecode from 'jwt-decode';
+import UserFavoriteContainer from "../../pages/container/UserFavoriteContainer"
 
 const HeaderDisplay = ({ accessToken }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,7 +28,22 @@ const HeaderDisplay = ({ accessToken }) => {
   const [randomBackgroundColor, setRandomBackgroundColor] = useState(
     getRandomColor()
   );
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [isFavoritesOpen, setFavoritesOpen] = useState(false); 
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    setIsSticky(scrollY >= headerHeight);
+  };
+
+  const headerHeight = 500;
 
   const handleMobileMenuOpen = () => {
     setMobileMenuOpen(true);
@@ -37,21 +53,14 @@ const HeaderDisplay = ({ accessToken }) => {
     setMobileMenuOpen(false);
   };
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
-    setIsSticky(scrollY >= headerHeight);
-  };
-
-  const headerHeight = 500;
-
   const handleLogout = () => {
-    removeCookie("token", {path: "/"})
+    removeCookie("token", { path: "/" });
     window.location.reload();
   };
-  
+
   let decodedToken = null;
 
-  if ((accessToken !== undefined) && cookies.token) {
+  if (accessToken !== undefined && cookies.token) {
     decodedToken = jwtDecode(cookies.token);
   }
 
@@ -63,15 +72,15 @@ const HeaderDisplay = ({ accessToken }) => {
     decodedToken && decodedToken.name && decodedToken.lastName
       ? `${decodedToken.name} ${decodedToken.lastName}`
       : "";
-      const userEmail =
-      decodedToken && decodedToken.email ? decodedToken.email : "";
+  const userEmail = decodedToken && decodedToken.email ? decodedToken.email : "";
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const handleFavoritesClick = () => {
+    if (isFavoritesOpen) {
+      window.location.href = "/";
+    } else {
+      setFavoritesOpen(true);
+    }
+  };  
 
   function getRandomColor() {
     const letters = "0123456789ABCDEF";
@@ -101,7 +110,7 @@ const HeaderDisplay = ({ accessToken }) => {
               onClose={handleMobileMenuClose}
             >
               <List>
-                {(accessToken !== undefined) ? (
+                {accessToken !== undefined ? (
                   <>
                     <ListItem button onClick={handleMobileMenuClose}>
                       <ListItemText primary="LOG OUT" onClick={handleLogout} />
@@ -195,22 +204,23 @@ const HeaderDisplay = ({ accessToken }) => {
                 marginLeft: "auto",
               }}
             >
-              {(accessToken !== undefined) ? (
+              {accessToken !== undefined ? (
                 <>
-                  <Button
-                    component={Link}
-                    to="/"
-                  >
+                  <Button component={Link} to="/">
                     HOME
                   </Button>
-                  {(decodedToken && (decodedToken.role === "ADMIN")) && (
-                  <Button component={Link} to="/admin/bundles" variant="contained"
-                  sx={{
-                    "&:hover": { backgroundColor: "blue" },
-                    transition: "background-color 0.3s",
-                  }}>
-                    Administration Panel
-                  </Button>
+                  {decodedToken && decodedToken.role === "ADMIN" && (
+                    <Button
+                      component={Link}
+                      to="/admin/bundles"
+                      variant="contained"
+                      sx={{
+                        "&:hover": { backgroundColor: "blue" },
+                        transition: "background-color 0.3s",
+                      }}
+                    >
+                      Administration Panel
+                    </Button>
                   )}
                   <Button
                     variant="contained"
@@ -220,10 +230,9 @@ const HeaderDisplay = ({ accessToken }) => {
                       transition: "background-color 0.3s",
                     }}
                   >
-                    
                     LOG OUT
                   </Button>
-                  
+
                   <Avatar
                     onClick={() => setUserDrawerOpen(true)}
                     sx={{
@@ -240,10 +249,7 @@ const HeaderDisplay = ({ accessToken }) => {
                 </>
               ) : (
                 <>
-                  <Button
-                    component={Link}
-                    to="/"
-                  >
+                  <Button component={Link} to="/">
                     HOME
                   </Button>
                   <Button component={Link} to="/user-login" variant="contained">
@@ -269,7 +275,6 @@ const HeaderDisplay = ({ accessToken }) => {
           </Toolbar>
         </Container>
       </AppBar>
-
       <Drawer
         anchor="right"
         open={isUserDrawerOpen}
@@ -296,8 +301,17 @@ const HeaderDisplay = ({ accessToken }) => {
           <Typography>
             <h4>{userEmail}</h4>
           </Typography>
-          <Typography>
-            <p>Favourites</p>
+          <Typography
+            component={Link} 
+            to="/favorites"
+            sx={{
+              color: "black",
+              cursor: "pointer",
+              textDecoration: "none"
+            }}
+            onClick={handleFavoritesClick}
+          >
+            Favorites
           </Typography>
           <Typography>
             <p>Reservations</p>
@@ -339,6 +353,9 @@ const HeaderDisplay = ({ accessToken }) => {
           )}
         </Box>
       </Drawer>
+
+      {/* Renderiza UserFavoriteContainer si isFavoritesOpen es verdadero */}
+      {isFavoritesOpen && <UserFavoriteContainer />}
     </>
   );
 };

@@ -34,7 +34,6 @@ const CardProductDisplay = ({
   const [isFavorite, setIsFavorite] = useState(favorite);
     const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
-    
     let decodedToken = null;
 
     if ((cookies !== undefined) && cookies.token) {
