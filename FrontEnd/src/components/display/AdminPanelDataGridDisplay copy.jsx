@@ -362,7 +362,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
           <GridActionsCellItem
             icon={<CameraAlt />}
             label="Delete"
-            //onClick={console.log("change image form")}
             color="inherit"
           />,
         ];
@@ -424,7 +423,6 @@ export function multiSelectColumn(params) {
       defaultValue={params.value}
       options={params.value}
       renderInput={(params) => <TextField {...params} variant="standard" />}
-      //onChange={(e, nv) => console.log("New", nv)}
       onChange={(e, nv) => console.log("New", nv)}
     />
   );

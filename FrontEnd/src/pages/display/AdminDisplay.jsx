@@ -61,10 +61,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     fetchPlateOptions();
   }, []);
 
-  
-
-
-
   //RENDER DETAIL PANEL:
   const bundlesRenderDetailPanel = ({ row }) => (
     <Container>

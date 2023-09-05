@@ -163,7 +163,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                     <TwitterIcon size={32} round />
                   </TwitterShareButton>
                   <div style={{ margin: 12 }}></div>{" "}
-                  {/* Espacio entre botones */}
                   <EmailShareButton
                     url={shareUrl}
                     subject="Check this food caterer"

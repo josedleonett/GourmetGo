@@ -569,27 +569,6 @@ export const CreateUpdateItemModal = ({
                           }
                           multiple={column.isMultiple}
                         />
-                        {/* <Input
-                          id={column.accessorKey}
-                          type="file"
-                          key={column.accessorKey}
-                          label={column.header}
-                          name={column.categoryImg || column.accessorKey}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              column.accessorKey,
-                              column.isMultiple === true
-                                ? e.currentTarget.files
-                                : e.currentTarget.files[0]
-                            )
-                          }
-                          disabled={
-                            isFormSending && column.enableEditing === false
-                          }
-                          inputProps={{
-                            multiple: column.isMultiple,
-                          }}
-                        /> */}
                       </Button>
                       {formik.values[column.accessorKey] && (
                         <Box maxHeight={150} maxWidth={150}>

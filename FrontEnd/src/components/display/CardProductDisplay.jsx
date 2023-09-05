@@ -44,7 +44,6 @@ const CardProductDisplay = ({
     const bundleId = id;
 
     if (isFavorite) {
-      // Enviar petición para eliminar de favoritos
       fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
         method: "DELETE",
       })

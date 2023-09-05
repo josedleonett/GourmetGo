@@ -90,14 +90,12 @@ const UserRegisterDisplay = () => {
         });
          if (attemptsCount < 2) {
            console.log(attemptsCount)
-           // Muestra el botón de reenvío y oculta el mensaje de reintentar
            setShowRetryMessage(false);
            setResendButtonVisible(true);
            console.log(resendButtonVisible)
             console.log(showRetryMessage)
            setAttemptsCount(attemptsCount + 1);
         } else if (attemptsCount === 2) {
-          // Oculta el botón de reenvío y muestra el mensaje de reintentar
           setResendButtonVisible(false);
           setShowRetryMessage(true);
          }
@@ -202,7 +200,6 @@ const UserRegisterDisplay = () => {
         });
 
         if (response.ok) {
-          // Mostrar un modal de éxito usando SweetAlert2
           Swal.fire({
             icon: "success",
             title: "Successful registration",
@@ -244,7 +241,6 @@ const UserRegisterDisplay = () => {
     backgroundColor: "secondary.light",
     display: "inline-block",
     fontWeight: 500,
-     // Ajusta el fondo al tamaño del texto
     padding: "0.5rem", 
     paddingTop: "1rem", }}>
     Join the GourmetGo family!
@@ -265,7 +261,7 @@ const UserRegisterDisplay = () => {
         borderRadius: "8px",
         padding: isSmallScreen ? "10px" : "20px",
         maxWidth: isSmallScreen ? "300px" : "400px",
-        margin: "0 auto", // Centrar el formulario horizontalmente
+        margin: "0 auto",
       }}
       >
         {inputFields.map((field) => (
@@ -308,7 +304,6 @@ const UserRegisterDisplay = () => {
             variant="text"
             type="button"
             onClick={handleResendConfirmationEmail}
-            // ... (button styling)
           >
             Resend email
           </Button>
