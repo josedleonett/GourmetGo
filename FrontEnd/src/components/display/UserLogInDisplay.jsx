@@ -41,10 +41,6 @@ const UserLogInDisplay = () => {
         body: JSON.stringify(inputs),
       });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 210940881bcc7cdbf6c867f0468f685d56e0262f
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");

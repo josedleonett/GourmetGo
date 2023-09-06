@@ -9,22 +9,22 @@ const ProductSearchedContainer = () => {
     const searchParams = new URLSearchParams(location.search);
     const filteredOptions = searchParams.get("filteredOptions");
 
+    console.log(filteredOptions)
+
     useEffect(() => {
       fetch(`http://localhost:8080/v1/bundle/`)
         .then((response) => response.json())
         .then((data) => {
-          const bundleNames = data.map((bundle) => bundle.name);
-          const filteredBundleNames = bundleNames.filter((name) =>
-            name.toLowerCase().includes(filteredOptions.toLowerCase())
+          // Filtrar los datos según los términos de búsqueda
+          const filteredData = data.filter((bundle) =>
+            bundle.name.toLowerCase().includes(filteredOptions.toLowerCase())
           );
-  
-          setProductData(filteredBundleNames);
-        })
+          setProductData(filteredData);
+        })  
         .catch((error) => console.error("Error fetching product data:", error));
     }, [filteredOptions]); // Agregar filteredOptions como dependencia
-
-    console.log(productData)    
-  return <ProductSearchedDisplay filteredOptions={filteredOptions}/>;
+     
+  return <ProductSearchedDisplay listFiltered={productData}/>;
 };
 
 export default ProductSearchedContainer;

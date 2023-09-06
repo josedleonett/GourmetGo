@@ -17,7 +17,8 @@ const SearchBannerDisplay = ({
   filterBundle,
   selectedBundle,
   onBundleSelected, 
-  onSearchIconClick, 
+  onSearchIconClick,
+  keyPressNavigate
 }) => {
   const searchInputRef = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
@@ -27,6 +28,7 @@ const SearchBannerDisplay = ({
   const [searchInput, setSearchInput] = useState("");
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredOptionsState, setFilteredOptionsState] = useState([]);
+  const navigate = useNavigate();
 
   const clearSearchInput = () => {
     setSearchInput("");
@@ -47,17 +49,20 @@ const SearchBannerDisplay = ({
     }
   };
 
-  const bundleNames = filterBundle.map((bundle) => bundle.name);
-
-  const handleInputKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); 
-      const newValue = searchInputRef.current.value;
-      handleSearchSelect(newValue);
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchValue = searchInputRef.current.value;
+      if (searchValue.trim() !== "") {
+        if (searchValue.lenght < 1) {
+          navigate(`/search?filteredOptions=${filteredOptionsState}`);
+        } else {
+          navigate(`/search?filteredOptions=${searchValue}`);
+        }
+      }
     }
   };
 
-  
+  const bundleNames = filterBundle.map((bundle) => bundle.name);
 
   const selectedFiltersArray = selectedFilters
   .map((item) => Object.values(item.bundles))
@@ -144,7 +149,7 @@ const SearchBannerDisplay = ({
           id="searchInput"
           options={selectedFiltersArray.length === 0 ? bundleNames : selectedFiltersArray}
           value={selectedBundle}
-          onKeyPress={handleInputKeyPress}
+          onKeyPress={handleKeyPress}
           freeSolo
           size="small"
           filterOptions={(options, state) => {
