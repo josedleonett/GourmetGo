@@ -24,4 +24,5 @@ public class BundleDto {
     private List<CharacteristicDto> characteristics;
     private List<Category> categories;
     private Double rating;
+    private String terms;
 }

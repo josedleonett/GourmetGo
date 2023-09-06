@@ -81,4 +81,6 @@ public class Bundle {
 
     private Double rating;
 
+    private String terms;
+
 }
