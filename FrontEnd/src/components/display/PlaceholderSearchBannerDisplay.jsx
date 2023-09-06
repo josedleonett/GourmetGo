@@ -10,7 +10,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 const PlaceholderSearchBannerDisplay = ({
   filterList,
   handleCategorySelect,
-  handleCategoryId
+  handleCategoryId,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [isCategorySelected, setIsCategorySelected] = useState(false);
@@ -19,16 +19,20 @@ const PlaceholderSearchBannerDisplay = ({
     const selectedCategoryId = event.target.value;
     setSelectedFilter(selectedCategoryId);
     setIsCategorySelected(true);
-    const selectedCategory = filterList.find((item) => item.id === selectedCategoryId);
-    const bundlesArray = selectedCategory ? Object.values(selectedCategory.bundles) : [];
-    handleCategoryId(selectedCategoryId)
+    const selectedCategory = filterList.find(
+      (item) => item.id === selectedCategoryId
+    );
+    const bundlesArray = selectedCategory
+      ? Object.values(selectedCategory.bundles)
+      : [];
+    handleCategoryId(selectedCategoryId);
     handleCategorySelect(bundlesArray);
   };
 
   const handleClearSearchInput = () => {
-    handleCategorySelect([])
-    handleCategoryId([])
-    setSelectedFilter("")
+    handleCategorySelect([]);
+    handleCategoryId([]);
+    setSelectedFilter("");
   };
 
   useEffect(() => {
@@ -62,39 +66,39 @@ const PlaceholderSearchBannerDisplay = ({
 
   return (
     <>
-    <FormControl size="small" sx={{ padding: "8px", minWidth: "20%" }}>
-      <InputLabel style={labelStyle}>Categories</InputLabel>
-      <Select
-        id="searchSelect"
-        autoWidth
-        value={selectedFilter}
-        onChange={searchSelectOnChange}
-        MenuProps={{
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left",
-          },
-          transformOrigin: {
-            vertical: "top",
-            horizontal: "left",
-          },
-          getContentAnchorEl: null,
-        }}
+      <FormControl size="small" sx={{ padding: "8px", minWidth: "20%" }}>
+        <InputLabel style={labelStyle}>Categories</InputLabel>
+        <Select
+          id="searchSelect"
+          autoWidth
+          value={selectedFilter}
+          onChange={searchSelectOnChange}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            getContentAnchorEl: null,
+          }}
+        >
+          {filterList.map((filterItem) => (
+            <MenuItem key={filterItem.id} value={filterItem.id}>
+              {filterItem.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <IconButton
+        aria-label="Clear search input"
+        onClick={handleClearSearchInput}
+        edge="end"
       >
-        {filterList.map((filterItem) => (
-          <MenuItem key={filterItem.id} value={filterItem.id}>
-            {filterItem.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-    <IconButton
-                aria-label="Clear search input"
-                onClick={handleClearSearchInput}
-                edge="end"
-              >
-                <ClearIcon />
-              </IconButton>
+        <ClearIcon />
+      </IconButton>
     </>
   );
 };
