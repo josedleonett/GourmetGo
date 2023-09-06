@@ -268,7 +268,9 @@ const AdminPanelDataGridDisplay = ({
         renderDetailPanel={renderDetailPanel}
         renderTopToolbarCustomActions={() => (
           <>
-            {isAllowCreateModal ? (
+            {isAllowCreateModal === false ? (
+              <span />
+            ) : (
               <Button
                 color="primary"
                 onClick={() => setIsModalOpen(true)}
@@ -277,21 +279,19 @@ const AdminPanelDataGridDisplay = ({
               >
                 Create new item
               </Button>
-            ) : (
-              <span />
             )}
           </>
         )}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            {isAllowEditModal ? (
+            {isAllowEditModal === false ? (
+              <span />
+            ) : (
               <Tooltip arrow placement="left" title="Edit">
                 <IconButton onClick={() => handleUpdateRow(row.original)}>
                   <Edit />
                 </IconButton>
               </Tooltip>
-            ) : (
-              <span />
             )}
 
             <Tooltip arrow placement="right" title="Delete">
