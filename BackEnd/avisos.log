@@ -666,4 +666,3 @@
 [2023-08-31 22:04:02] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"
 [2023-08-31 22:04:02] [ ERROR] [GlobalHandlerException:18] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"
 [2023-08-31 22:05:00] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30048ms.] [n/a]
->>>>>>> 314dcaf0575dbfc16b5525016eb67a7e3545682b

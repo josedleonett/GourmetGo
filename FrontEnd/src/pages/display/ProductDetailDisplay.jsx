@@ -46,6 +46,8 @@ import {
 } from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 import ShareIcon from "@mui/icons-material/Share";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
@@ -106,6 +108,8 @@ const ProductDetailDisplay = ({ productData, dates }) => {
     setOpenSocialModal(false);
   };
 
+  console.log(productData)
+
   return (
     <Box sx={{ padding: 2 }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -130,8 +134,38 @@ const ProductDetailDisplay = ({ productData, dates }) => {
               <Typography variant="h4">
                 {productData ? productData.name : ""}
               </Typography>
+              {/* <IconButton
+                aria-label="Share"
+                onClick={openSocialModalOnClick}
+                style={{
+                  marginLeft: 18,
+                  paddingLeft: 2,
+                  transition: "background-color 0.2s ease",
+                }}
+              > {productData.favorite ? (
+                <FavoriteIcon
+                  onClick={handleIconClick}
+                  sx={{
+                    position: "absolute",
+                    zIndex: 5,
+                    cursor: "pointer",
+                    color: "error.main",
+                  }}
+                />
+              ) : (
+                <FavoriteBorderIcon
+                  onClick={handleIconClick}
+                  sx={{
+                    position: "absolute",
+                    zIndex: 5,
+                    cursor: "pointer",
+                    color: "error.main",
+                  }}
+                />
+              )}
+              </IconButton> */}
               <IconButton
-                aria-label="Compartir"
+                aria-label="Share"
                 onClick={openSocialModalOnClick}
                 style={{
                   marginLeft: 18,

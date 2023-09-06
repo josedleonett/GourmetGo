@@ -1,28 +1,49 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import CardProductDisplay from "../../components/display/CardProductDisplay";
+import { Box, Typography, useMediaQuery, Icon } from "@mui/material";
+import CardProductGridContainer from "../../components/container/CardProductGridContainer";
+import jwtDecode from "jwt-decode";
+import { useCookies } from "react-cookie";
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const UserFavoriteContainer = ({ decodedToken, bundleId }) => {
+const UserFavoriteContainer = ({ accessToken }) => {
   const [favorites, setFavorites] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [decodedToken, setDecodedToken] = useState(null);
+  const [error, setError] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   useEffect(() => {
+    if (cookies.token) {
+      const decoded = jwtDecode(cookies.token);
+      setDecodedToken(decoded);
+    }
+  }, [cookies.token]);
+
+  useEffect(() => {
     if (decodedToken) {
-      const url = `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`;
-      fetch(url)
-        .then((response) => response.json())
+      fetch(`http://localhost:8080/v1/bundle/byUser/${decodedToken.id}`)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Respuesta del servidor no exitosa");
+          }
+        })
         .then((data) => {
-          setFavorites(data);
+          const isFavoriteData = data.filter(
+            (bundle) => bundle.favorite === true
+          );
+          setFavorites(isFavoriteData);
+          setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error al obtener los favoritos:", error);
+          setError(error);
+          setIsLoading(false);
         });
     }
-  }, [decodedToken, bundleId]);
-
-  console.log("Favorites:", favorites);
+  }, [decodedToken]);
 
   return (
     <Box>
@@ -42,32 +63,30 @@ const UserFavoriteContainer = ({ decodedToken, bundleId }) => {
           My favorites
         </Typography>
       </Box>
-      <ul>
-        {favorites.map((favorite) => {
-          console.log("Favorite data:", favorite);
-          return (
-            <li key={favorite.id}>
-              <CardProductDisplay
-                id={favorite.id}
-                img={favorite.img}
-                title={favorite.title}
-                description={favorite.description}
-                categoryList={favorite.categoryList}
-                rating={favorite.rating}
-                numberDiners={favorite.numberDiners}
-                favorite={favorite.favorite}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      {favorites.length >= 1 ? (
+        <CardProductGridContainer list={favorites} />
+      ) : isLoading ? (
+        <Box
+          display="flex"
+          alignContent="center"
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box sx={{ textAlign: "center" }}>
+          <Icon
+            component={HeartBrokenIcon}
+            color="primary"
+            sx={{ fontSize: "4rem" }}
+          />
+          <Typography variant="body1">
+            You don't have any favorites yet.
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
-};
-
-UserFavoriteContainer.propTypes = {
-  decodedToken: PropTypes.object.isRequired,
-  bundleId: PropTypes.string.isRequired,
 };
 
 export default UserFavoriteContainer;

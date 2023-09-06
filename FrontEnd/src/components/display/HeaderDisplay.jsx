@@ -309,7 +309,6 @@ const HeaderDisplay = ({ accessToken }) => {
               cursor: "pointer",
               textDecoration: "none"
             }}
-            onClick={handleFavoritesClick}
           >
             Favorites
           </Typography>
@@ -354,8 +353,7 @@ const HeaderDisplay = ({ accessToken }) => {
         </Box>
       </Drawer>
 
-      {/* Renderiza UserFavoriteContainer si isFavoritesOpen es verdadero */}
-      {isFavoritesOpen && <UserFavoriteContainer />}
+      {isFavoritesOpen && <UserFavoriteContainer accessToken={accessToken} />}
     </>
   );
 };

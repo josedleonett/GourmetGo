@@ -19,9 +19,7 @@ import UserLoginContainer from "./components/container/UserLoginContainer"
 import CategoryFilterContainer from "./components/container/CategoryFilterContainer";
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-
-
-  
+import UserFavoriteContainer from "./pages/container/UserFavoriteContainer";
 
 function Main() {
   const [cookies] = useCookies(['token']);
@@ -80,6 +78,10 @@ function Main() {
         {
           path: "*",
           element: <NotFoundContainer />,
+        },
+        {
+          path: "/favorites",
+          element: <UserFavoriteContainer />,
         },
       ],
     },
