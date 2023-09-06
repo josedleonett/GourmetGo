@@ -1,34 +1,46 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import ClearIcon from "@mui/icons-material/Clear";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { Chip } from "@mui/material";
 
 const PlaceholderSearchBannerDisplay = ({
   filterList,
   handleCategorySelect,
-  handleCategoryId
+  handleCategoryId,
 }) => {
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState([]);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
 
-  const searchSelectOnChange = (event) => {
-    const selectedCategoryId = event.target.value;
-    setSelectedFilter(selectedCategoryId);
-    setIsCategorySelected(true);
-    const selectedCategory = filterList.find((item) => item.id === selectedCategoryId);
-    const bundlesArray = selectedCategory ? Object.values(selectedCategory.bundles) : [];
-    handleCategoryId(selectedCategoryId)
-    handleCategorySelect(bundlesArray);
+
+  const searchSelectOnChange = (event, newValue) => {
+    // if (newValue) {
+    //   const selectedCategoryId = newValue.id;
+    //   setSelectedFilter(newValue.name);
+    //   setIsCategorySelected(true);
+    //   const selectedCategory = filterList.find(
+    //     (item) => item.id === selectedCategoryId
+    //   );
+    //   const bundlesArray = selectedCategory
+    //     ? Object.values(selectedCategory.bundles)
+    //     : [];
+    //   handleCategoryId(selectedCategoryId);
+    //   handleCategorySelect(bundlesArray);
+    // } else {
+    //   setSelectedFilter("");
+    //   setIsCategorySelected(false);
+    //   handleCategoryId([]);
+    //   handleCategorySelect([]);
+    // }
+    setSelectedFilters(newValue);
+
   };
 
   const handleClearSearchInput = () => {
-    handleCategorySelect([])
-    handleCategoryId([])
-    setSelectedFilter("")
+    searchSelectOnChange(null, null);
   };
 
   useEffect(() => {
@@ -47,54 +59,39 @@ const PlaceholderSearchBannerDisplay = ({
     };
   }, [isCategorySelected, selectedFilter]);
 
-  const labelStyle = {
-    position: "absolute",
-    top: selectedFilter === "" ? "50%" : "8px",
-    transform: "translateY(-50%)",
-    pointerEvents: "none",
-    fontSize: selectedFilter === "" ? "16px" : "inherit",
-    color: selectedFilter === "" ? "gray" : "inherit",
-    transition: "top 0.2s, font-size 0.2s, color 0.2s",
-    background: "white",
-    paddingLeft: "4px",
-    paddingRight: "4px",
-  };
-
   return (
     <>
-    <FormControl size="small" sx={{ padding: "8px", minWidth: "20%" }}>
-      <InputLabel style={labelStyle}>Categories</InputLabel>
-      <Select
+      <FormControl size="small" sx={{ padding: '8px', minWidth: '20%' }}>
+      <Autocomplete
+        multiple
         id="searchSelect"
-        autoWidth
         value={selectedFilter}
         onChange={searchSelectOnChange}
-        MenuProps={{
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left",
-          },
-          transformOrigin: {
-            vertical: "top",
-            horizontal: "left",
-          },
-          getContentAnchorEl: null,
-        }}
-      >
-        {filterList.map((filterItem) => (
-          <MenuItem key={filterItem.id} value={filterItem.id}>
-            {filterItem.name}
-          </MenuItem>
-        ))}
-      </Select>
+        options={filterList}
+        getOptionLabel={(option) => option.name}
+        renderInput={(params) => (
+          <TextField {...params} label="Categories" variant="standard" />
+        )}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip
+              {...getTagProps({ index })}
+              key={`chip-${index}`}
+              variant="filled"
+              label={option.name}
+              color="secondary"
+            />
+          ))
+        }
+      />
     </FormControl>
-    <IconButton
-                aria-label="Clear search input"
-                onClick={handleClearSearchInput}
-                edge="end"
-              >
-                <ClearIcon />
-              </IconButton>
+      <IconButton
+        aria-label="Clear search input"
+        onClick={handleClearSearchInput}
+        edge="end"
+      >
+        <ClearIcon />
+      </IconButton>
     </>
   );
 };

@@ -31,6 +31,7 @@ import {
   Cancel,
   AddAPhoto,
 } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
 // export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
@@ -60,12 +61,21 @@ import {
 //   return;
 // };
 
-const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
+const AdminPanelDataGridDisplay = ({
+  props,
+  filter,
+  renderDetailPanel,
+  allowEditModal,
+  allowCreateModal,
+}) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
-
+  const [initialState, setInitialState] = useState(props.initialState);
   const [data, setData] = useState([]);
+
+  const [isAllowEditModal, setIsAllowEditModal] = useState(true)
+  const [isAllowCreateModal, setIsAllowCreateModal] = useState(true)
   const [rowToUpdate, setRowToUpdate] = useState({});
   const [rowToDelete, setRowToDelete] = useState(-1);
   const [validationErrors, setValidationErrors] = useState({});
@@ -77,12 +87,17 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isFormDeleting, setIsFormDeleting] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
+    setIsAllowCreateModal(props.allowCreateModal);
+    console.log(isAllowCreateModal);
+    setIsAllowEditModal(props.allowEditModal);
 
     getApiData();
-  }, [props]);
+  }, [location.pathname, props]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
@@ -213,24 +228,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     (row) => {
       setIsDeleteModalOpen(true);
       setRowToDelete(row.original.id);
-
-      // if (isDeleteConfirmed) {
-      //   const responseCode = deleteApiData(row.original.id);
-      //   console.log(responseCode);
-
-      //   if (responseCode === 204) {
-      //     const updatedData = data.filter(
-      //       (item) => item.id !== row.original.id
-      //     );
-      //     setData(updatedData);
-
-      //     setIsDeleteModalOpen(false);
-      //     setIsDeleteConfirmed(false);
-      //     setIsFormDeleting(false);
-      //   }
-
-      //   setIsFormDeleting(false);
-      // }
     },
     [data]
   );
@@ -267,8 +264,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
-          //columnVisibility: { id: false, galleryImages: false },
         }}
+        initialState={initialState}
         muiTableContainerProps={({ table }) => ({
           sx: {
             height: `calc(100% - ${table.refs.topToolbarRef.current?.offsetHeight}px - ${table.refs.bottomToolbarRef.current?.offsetHeight}px)`,
@@ -282,22 +279,33 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
         }}
         renderDetailPanel={renderDetailPanel}
         renderTopToolbarCustomActions={() => (
-          <Button
-            color="primary"
-            onClick={() => setIsModalOpen(true)}
-            variant="contained"
-            startIcon={<Add />}
-          >
-            Create new item
-          </Button>
+          <>
+            {isAllowCreateModal ? (
+              <Button
+                color="primary"
+                onClick={() => setIsModalOpen(true)}
+                variant="contained"
+                startIcon={<Add />}
+              >
+                Create new item
+              </Button>
+            ) : (
+              <span />
+            )}
+          </>
         )}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => handleUpdateRow(row.original)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
+            {isAllowEditModal ? (
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => handleUpdateRow(row.original)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <span />
+            )}
+
             <Tooltip arrow placement="right" title="Delete">
               <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                 <Delete />
@@ -481,22 +489,11 @@ export const CreateUpdateItemModal = ({
         outputObject[propertyName] &&
         typeof outputObject[propertyName] === "object"
       ) {
-        // outputObject[propertyName] =
-        //   [outputObject[propertyName].name] !== undefined
-        //     ? [outputObject[propertyName].name]
-        //     : [outputObject[propertyName].id];
-
-        console.log([outputObject[propertyName].name]);
-
         if (outputObject[propertyName].name != undefined ) {
-          console.log("entra a name");
           outputObject[propertyName] = [outputObject[propertyName].name];
         } else {
-          console.log("entra a id");
           outputObject[propertyName] = [outputObject[propertyName].id];
         }
-
-        console.log(outputObject);
       }
     }
 
@@ -518,10 +515,6 @@ export const CreateUpdateItemModal = ({
       return API_BASE_IMAGE_URL + value;
     }
   };
-
-  // console.log("VALORES INICIALES");
-  // console.log(formik.initialValues);
-  // console.log("VALORES INICIALES");
 
   return (
     <>
@@ -569,27 +562,6 @@ export const CreateUpdateItemModal = ({
                           }
                           multiple={column.isMultiple}
                         />
-                        {/* <Input
-                          id={column.accessorKey}
-                          type="file"
-                          key={column.accessorKey}
-                          label={column.header}
-                          name={column.categoryImg || column.accessorKey}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              column.accessorKey,
-                              column.isMultiple === true
-                                ? e.currentTarget.files
-                                : e.currentTarget.files[0]
-                            )
-                          }
-                          disabled={
-                            isFormSending && column.enableEditing === false
-                          }
-                          inputProps={{
-                            multiple: column.isMultiple,
-                          }}
-                        /> */}
                       </Button>
                       {formik.values[column.accessorKey] && (
                         <Box maxHeight={150} maxWidth={150}>
@@ -626,11 +598,7 @@ export const CreateUpdateItemModal = ({
                       <Autocomplete
                         multiple
                         autoComplete
-                        //id={column.accessorKey}
                         key={index}
-                        //value={formik.values[column.accessorKey] || []}
-                        //defaultValue={formik.values[column.accessorKey] || []}
-                        //defaultValue={[1, 2, 3, 4, 5, 6]}
                         defaultValue={
                           formik.values[column.accessorKey]
                           &&

@@ -9,7 +9,7 @@ import {
   ListItemText,
   Typography, Switch,
 } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
 import AdminPanelDataGridDisplay, {
   //AdminPanelDataGridLoader,
@@ -26,6 +26,7 @@ import React, { useState, useEffect } from 'react';
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
+  const location = useLocation();
 
   const [platesOptions, setPlatesOptions] = useState([])
   const [drinksOptions, setDrinksOptions] = useState([])
@@ -63,7 +64,18 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     fetchPlateOptions();
   }, []);
 
-  
+  const initialState = {
+    columnVisibility: {
+      image: false,
+      starter: false,
+      mainCourse: false,
+      desserts: false,
+      drinks: false,
+      characteristics: false,
+      galleryImages: false,
+      categories: false,
+    },
+  };
 
 
 
@@ -198,6 +210,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const bundlesDataGridProps = {
     API_BASE_URL: API_BASE_URL + "bundle/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
     columns: [
       {
         accessorKey: "image",
@@ -227,17 +240,20 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "description",
+        id: "description",
         header: "Description",
         isMultiline: true,
         size: 140,
       },
       {
         accessorKey: "starter[name]",
+        id: "starter",
         header: "Starter",
         isMultiline: false,
         isMultiple: true,
@@ -246,6 +262,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "mainCourse[name]",
+        id: "mainCourse",
         header: "Main Course",
         isMultiline: false,
         isMultiple: true,
@@ -254,6 +271,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "desserts[name]",
+        id: "desserts",
         header: "Desserts",
         isMultiline: false,
         isMultiple: true,
@@ -262,6 +280,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "drinks[name]",
+        id: "drinks",
         header: "Drinks",
         isMultiline: false,
         isMultiple: true,
@@ -270,6 +289,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "characteristics[id]",
+        id: "characteristics",
         header: "Characteristics",
         isMultiline: false,
         options: ["Caprese Salad", 2, 5, 4],
@@ -277,12 +297,14 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "categories[id]",
+        id: "categories",
         header: "Categories",
         isMultiline: false,
         size: 80,
       },
       {
         accessorKey: "galleryImages",
+        id: "galleryImages",
         header: "Gallery",
         isMultiline: false,
         type: "file",
@@ -296,6 +318,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const plateDataGridProps = {
     API_BASE_URL: API_BASE_URL + "plate/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
     columns: [
       {
         accessorKey: "image",
@@ -325,17 +348,20 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "description",
+        id: "description",
         header: "Description",
         isMultiline: true,
         size: 140,
       },
       {
         accessorKey: "type",
+        id: "type",
         header: "Plate type",
         isMultiline: false,
         size: 80,
@@ -347,6 +373,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const drinkDataGridProps = {
     API_BASE_URL: API_BASE_URL + "drink/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
     columns: [
       {
         accessorKey: "image",
@@ -376,11 +403,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "price",
+        id: "price",
         header: "Price",
         isMultiline: false,
         size: 80,
@@ -392,6 +421,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const characteristicsDataGridProps = {
     API_BASE_URL: API_BASE_URL + "characteristic/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
     columns: [
       {
         accessorKey: "image",
@@ -421,6 +451,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
@@ -429,24 +460,31 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
 
   const usersDataGridProps = {
     API_BASE_URL: API_BASE_URL + "user/",
+    initialState: initialState,
+    allowCreateModal: false,
+    allowEditModal: false,
     columns: [
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "lastName",
+        id: "lastName",
         header: "Last name",
         size: 140,
       },
       {
         accessorKey: "email",
+        id: "email",
         header: "Email",
         size: 140,
       },
       {
         accessorKey: "admin",
+        id: "admin",
         header: "Is admin",
         size: 140,
         Cell: ({ renderedCellValue, row }) => {
@@ -475,6 +513,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "confirmed",
+        id: "confirmed",
         header: "Is active",
         size: 140,
         Cell: ({ renderedCellValue, row }) => {
@@ -511,6 +550,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const categoryDataGridProps = {
     API_BASE_URL: API_BASE_URL + "category/",
     API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
     columns: [
       {
         accessorKey: "image",
@@ -560,11 +600,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       },
       {
         accessorKey: "name",
+        id: "name",
         header: "Name",
         size: 140,
       },
       {
         accessorKey: "description",
+        id: "description",
         header: "Description",
         isMultiline: true,
         size: 140,
@@ -596,9 +638,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 props={plateDataGridProps}
                 filter={"starter"}
               />
-              
             }
-            
           />
           <Route
             path="plates/mainCourse"
@@ -633,7 +673,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
           <Route
             path="user"
             element={
-              <AdminPanelDataGridDisplay props={usersDataGridProps} />
+              <AdminPanelDataGridDisplay
+                props={usersDataGridProps}
+              />
             }
           />
           <Route
