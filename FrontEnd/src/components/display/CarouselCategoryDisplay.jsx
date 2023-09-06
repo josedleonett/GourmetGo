@@ -1,5 +1,4 @@
 import { Box, Grid } from "@mui/material";
-import React from "react";
 import Carousel from "react-material-ui-carousel";
 import CardCategoryContainer from "../container/CardCategoryContainer";
 

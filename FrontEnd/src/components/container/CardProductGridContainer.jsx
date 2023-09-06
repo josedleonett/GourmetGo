@@ -2,6 +2,11 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import CardProductGridDisplay from "../display/CardProductGridDisplay";
 
 const CardProductGridContainer = ({ list }) => {
+  // Verificar si list es null o undefined y manejarlo adecuadamente
+  if (list === null || list === undefined) {
+    return null; // O muestra un mensaje de carga, o simplemente no muestra nada
+  }
+
   const chunk = (arr, size) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
       arr.slice(i * size, i * size + size)
@@ -22,7 +27,7 @@ const CardProductGridContainer = ({ list }) => {
 
   const chunkedProductList = chunk(shuffledListProduct, screenIsUpLg ? 10 : 9);
 
-  return <CardProductGridDisplay list={chunkedProductList}/>;
+  return <CardProductGridDisplay list={chunkedProductList} />;
 };
 
 export default CardProductGridContainer;

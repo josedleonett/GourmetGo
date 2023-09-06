@@ -51,10 +51,7 @@ export default function AdminPanelDataGridDisplay({ props }) {
       onSubmit: async (values) => {
         setIsLoading(true);
         alert(JSON.stringify(values, null, 2));
-        console.log(values);
         const responseCode = await apiDataCreate(values);
-
-        console.log(responseCode + " codigo respuesta");
         setIsFormSubmitted(true);
 
         if (responseCode === 201) {
@@ -62,7 +59,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
         } else {
           setIsResponseSuccess(false);
         }
-
         setIsLoading(false);
       },
     });
@@ -232,7 +228,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
       await axios.patch(API_BASE_URL + targetToUpdateId, formData);
       apiDataGet();
 
-      console.log(formData);
     } catch (error) {
       console.error("Error update data:", error);
     }
@@ -301,7 +296,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
 
     const oldRow = rows.find((row) => row.id === newRow.id);
     const modifiedProperties = getModifiedProperties(newRow, oldRow);
-    console.log(modifiedProperties);
 
     if (modifiedProperties) {
       apiDataUpdate(newRow.id, modifiedProperties);
@@ -362,17 +356,12 @@ export default function AdminPanelDataGridDisplay({ props }) {
           <GridActionsCellItem
             icon={<CameraAlt />}
             label="Delete"
-            //onClick={console.log("change image form")}
             color="inherit"
           />,
         ];
       },
     },
   ];
-
-
-
-  console.log(rows);
 
   return (
     <Box
@@ -412,7 +401,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
 export function multiSelectColumn(params) {
   const apiRef = useGridApiContext();
 
-  console.log(params);
   apiRef.current.getCellValue
 
   return (
@@ -424,7 +412,6 @@ export function multiSelectColumn(params) {
       defaultValue={params.value}
       options={params.value}
       renderInput={(params) => <TextField {...params} variant="standard" />}
-      //onChange={(e, nv) => console.log("New", nv)}
       onChange={(e, nv) => console.log("New", nv)}
     />
   );

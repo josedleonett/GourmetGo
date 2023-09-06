@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MaterialReactTable } from "material-react-table";
 import axios from "axios";
 import { useFormik } from "formik";
@@ -105,8 +105,6 @@ const AdminPanelDataGridDisplay = ({
     try {
       const response = await axios.get(API_BASE_URL);
 
-      console.log(response.data);
-
       if (filter != undefined) {
         const dataFiltered = response.data.filter(
           (item) => item.hasOwnProperty("type") && item.type === filter
@@ -126,8 +124,6 @@ const AdminPanelDataGridDisplay = ({
   };
 
   const postApiData = async (propertiesToCreate) => {
-    console.log(propertiesToCreate);
-
     try {
       const formData = new FormData();
 
@@ -142,14 +138,9 @@ const AdminPanelDataGridDisplay = ({
           formData.append(key, propertiesToCreate[key]);
         }
       }
-
-      //CHECK OUTPUT
-      console.log("POSTING");
       for (const [key, value] of formData.entries()) {
         console.log(key, value);
       }
-      console.log("POSTING");
-      //CHECK OUTPUT
 
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
@@ -164,9 +155,6 @@ const AdminPanelDataGridDisplay = ({
   const updateApiData = async (targetIdToUpdate, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
-      console.log("ENTRA");
-      console.log(propertiesToUpdate);
-      console.log("SALE");
 
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
@@ -371,8 +359,6 @@ export const CreateUpdateItemModal = ({
     ? "SAVE"
     : "UPDATE";
 
-  console.log(rowToUpdate);
-
   const formik = useFormik({
     initialValues: rowToUpdate,
     enableReinitialize: true,
@@ -387,7 +373,6 @@ export const CreateUpdateItemModal = ({
         const convertedToArrayPlates = convertPropertiesToArray(values);
         if (convertedToArrayPlates !== null) {
           responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
-          console.log(responseCode);
         }
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
@@ -582,7 +567,6 @@ export const CreateUpdateItemModal = ({
                             }}
                             onLoad={() => {
                               setIsImageLoaded(true);
-                              console.log("Image loaded!");
                             }}
                           />
                         </Box>
@@ -594,7 +578,6 @@ export const CreateUpdateItemModal = ({
                     </>
                   ) : column.isMultiple ? (
                     <>
-                      {console.log(formik.initialValues)}
                       <Autocomplete
                         multiple
                         autoComplete
@@ -726,7 +709,6 @@ const DeleteItemModal = ({
   const onConfirmHandler = async () => {
     setIsFormDeleting(true);
     const responseCode = await onSubmitDeleteHandler(rowToDelete);
-    console.log(responseCode);
 
     if (responseCode === 204) {
       const updatedData = data.filter((item) => item.id !== rowToDelete);

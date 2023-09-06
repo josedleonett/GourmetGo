@@ -4,15 +4,22 @@ import { Container, useTheme, useMediaQuery } from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
+import { useState } from "react";
 
 const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
-  
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
+  console.log(filteredOptions)
+
+  const updateFilteredOptions = (options) => {
+    setFilteredOptions(options);
+  };
 
   return (
     <>
-      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList}/>
+      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList} onUpdateFilteredOptions={updateFilteredOptions}/>
       
       <Box component="section">
         <Typography

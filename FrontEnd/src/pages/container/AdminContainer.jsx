@@ -1,5 +1,4 @@
 import { FaUserFriends } from "react-icons/fa"; 
-import { HiOutlineUsers } from "react-icons/hi"; 
 import { CgList } from "react-icons/cg"; 
 import { MdLocalBar, MdMenuBook } from "react-icons/md"; 
 import { useState } from "react";
@@ -8,7 +7,6 @@ import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
 import { GiPieSlice } from "react-icons/gi";
 import { useLocation } from "react-router-dom";
-import { IoPersonCircle } from 'react-icons/io5';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 
 const AdminContainer = () => {

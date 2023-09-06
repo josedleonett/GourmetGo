@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -12,24 +13,23 @@ import {
 import { Route, Routes, useLocation } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
 import AdminPanelDataGridDisplay, {
-  //AdminPanelDataGridLoader,
 } from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
 import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
-import { CheckBox } from "@mui/icons-material";
 import axios from "axios";
-import React, { useState, useEffect } from 'react';
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
   const location = useLocation();
 
-  const [platesOptions, setPlatesOptions] = useState([])
-  const [drinksOptions, setDrinksOptions] = useState([])
+  const [platesOptions, setPlatesOptions] = useState([]);
+  const [drinksOptions, setDrinksOptions] = useState([]);
+  const [characteristicsOptions, setCharacteristicsOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
   
   const getOptions = async (API_BASE_URL, filter) => {
     try {
@@ -56,9 +56,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     const fetchPlateOptions = async () => {
       const platesOptionsResponse = await getOptions(API_BASE_URL + "plate/");
       const drinksOptionsResponse = await getOptions(API_BASE_URL + "drink/");
+      const categoryOptionsResponse = await getOptions(API_BASE_URL + "category/");
+      const characteristicOptionsResponse = await getOptions(API_BASE_URL + "characteristic/");
 
       setPlatesOptions(platesOptionsResponse);
       setDrinksOptions(drinksOptionsResponse);
+      setCategoryOptions(categoryOptionsResponse);
+      setCharacteristicsOptions(characteristicOptionsResponse);
     };
   
     fetchPlateOptions();
@@ -292,7 +296,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         id: "characteristics",
         header: "Characteristics",
         isMultiline: false,
-        options: ["Caprese Salad", 2, 5, 4],
+        isMultiple: true,
+        options: characteristicsOptions,
         size: 80,
       },
       {
@@ -300,6 +305,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         id: "categories",
         header: "Categories",
         isMultiline: false,
+        isMultiple: true,
+        options: categoryOptions,
         size: 80,
       },
       {
@@ -531,7 +538,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 usersDataGridProps.API_BASE_URL + row.original.id,
                 formData
               );
-              console.log(response);
               for (const pair of formData.entries()) {
                 console.log(pair[0], pair[1]);
               }

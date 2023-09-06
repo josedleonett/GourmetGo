@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { Box, FormControl, TextField, Autocomplete } from "@mui/material";
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -6,25 +7,28 @@ import Divider from '@mui/material/Divider';
 import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
-import React, { useCallback, useRef, useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import dayjs from 'dayjs';
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SearchBannerDisplay = ({
   filterList,
   filterBundle,
   selectedBundle,
   onBundleSelected, 
-  onSearchIconClick, 
+  onSearchIconClick,
+  keyPressNavigate
 }) => {
   const searchInputRef = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [dates, setDates] = useState(null);
-  const [searchBundle, setSearchBundle] = useState([]);
   const [categoryId, setCategoryId] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filteredOptionsState, setFilteredOptionsState] = useState([]);
+  const navigate = useNavigate();
 
   const clearSearchInput = () => {
     setSearchInput("");
@@ -45,29 +49,27 @@ const SearchBannerDisplay = ({
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchValue = searchInputRef.current.value;
+      if (searchValue.trim() !== "") {
+        if (searchValue.lenght < 1) {
+          navigate(`/search?filteredOptions=${filteredOptionsState}`);
+        } else {
+          navigate(`/search?filteredOptions=${searchValue}`);
+        }
+      }
+    }
+  };
+
   const bundleNames = filterBundle.map((bundle) => bundle.name);
 
-  const handleOptionSelect = (_, option) => {
-    if (option) {
-      searchInputRef.current.value = option.name;
-      onBundleSelected(option.name);
-    }
-  };
+  const selectedFiltersArray = selectedFilters
+  .map((item) => Object.values(item.bundles))
+  .flat();
 
-  const handleInputKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); 
-      const newValue = searchInputRef.current.value;
-      handleSearchSelect(newValue);
-    }
-  };
-
-  const handleCategorySelect = (selectedBundles) => {
-    setSearchBundle(selectedBundles);
-  };
-
-  const handleCategoryIdSelect = (categoryId) => {
-    setCategoryId(categoryId);
+  const handleSelectedFiltersChange = (newSelectedFilters) => {
+    setSelectedFilters(newSelectedFilters);
   };
 
   const toggleCalendarVisibility = () => {
@@ -80,7 +82,6 @@ const SearchBannerDisplay = ({
   const handleDateAccept = (date) => {
     setSelectedDate(date);
     setCalendarVisible(false);
-    console.log(dayjs(date.$d).format('YYYY-MM-DD'));
   };
 
   const handleDateCancel = () => {
@@ -136,8 +137,7 @@ const SearchBannerDisplay = ({
         {!isSmallScreen && ( // Renderiza PlaceholderSearchBannerDisplay solo si no es un dispositivo pequeño
           <PlaceholderSearchBannerDisplay
             filterList={filterList}
-            handleCategorySelect={handleCategorySelect}
-            handleCategoryId={handleCategoryIdSelect}
+            onSelectedFiltersChange={handleSelectedFiltersChange}
           />
         )}
         {!isSmallScreen && (<Divider orientation="vertical" flexItem />)}
@@ -147,15 +147,17 @@ const SearchBannerDisplay = ({
         />
         <Autocomplete
           id="searchInput"
-          options={searchBundle.length === 0 ? bundleNames : searchBundle} // Usa la lista de bundles filtrados
+          options={selectedFiltersArray.length === 0 ? bundleNames : selectedFiltersArray}
           value={selectedBundle}
-          onKeyPress={handleInputKeyPress}
+          onKeyPress={handleKeyPress}
+          freeSolo
           size="small"
           filterOptions={(options, state) => {
-            return options.filter((option) =>
-            
+            const filteredOptions = options.filter((option) =>
               option.toLowerCase().includes(state.inputValue.toLowerCase())
             );
+            setFilteredOptionsState(state.inputValue.toLowerCase());
+            return filteredOptions;
           }}
           getOptionLabel={(option) => option} 
           sx={{ width: "100%" }}

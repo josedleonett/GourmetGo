@@ -1,8 +1,10 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BundleServiceImpl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.CategoryServiceImpl;
@@ -65,6 +67,12 @@ public class BundleController {
         return ResponseEntity.ok(bundles);
     }
 
+    @GetMapping("{userId}/bundleDetail/{bundleId}")
+    public ResponseEntity<BundleDtoDetailUser> getFavoriteBundleById(@PathVariable Long userId, @PathVariable Long bundleId) {
+        BundleDtoDetailUser bundle = bundleService.searchBundleByIdAndUser(userId, bundleId);
+        return ResponseEntity.ok(bundle);
+    }
+
     //====================Display all for card====================//
 
     @GetMapping("/getAllForCard")
@@ -115,6 +123,12 @@ public class BundleController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/rating/{id}")
+    public ResponseEntity<Void> updateRating(@PathVariable Long id, RatingUpdateRequest request) {
+        bundleService.ratingModify(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //====================Deletes====================//
 
@@ -123,6 +137,8 @@ public class BundleController {
         bundleService.deleteBundleById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 
 }
