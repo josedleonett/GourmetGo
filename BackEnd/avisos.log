@@ -811,3 +811,4 @@
 [2023-09-06 02:58:27] [ ERROR] [GlobalHandlerException:18] Unable to acquire JDBC Connection [HikariPool-1 - Connection is not available, request timed out after 30895ms.] [n/a]
 =======
 >>>>>>> 26442f1fd282273f26b56877fc00e081bca3147f
+[2023-09-06 11:44:47] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
