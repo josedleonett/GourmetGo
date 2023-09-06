@@ -70,7 +70,7 @@ export const ElementAdministratorPanelDisplay = () => {
   }, [apiURLMemoized]);
 
   const handleAddClick = () => {
-    navigateTo(`/administration-panel/${category}/edit`); // Navigate to the appropriate route
+    navigateTo(`/administration-panel/${category}/edit`);
   };
 
   function DataRow() {

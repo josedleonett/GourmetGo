@@ -2,8 +2,7 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import { useEffect } from "react";
 import "photoswipe/style.css";
 import { Box } from "@mui/system";
-import { Container, Divider, Grid } from "@mui/material";
-import { cateringPackages } from "../../test/dataApiSample";
+import { Container, Grid } from "@mui/material";
 import { useParams } from "react-router";
 
 const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
@@ -23,8 +22,6 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId }) => {
     };
   }, []);
 
-  // imgList.push(
-  //   "ed1464ba-e283-4202-8926-91695d22a0ff.jpg")
     const maxImages = 4;
 
   return (

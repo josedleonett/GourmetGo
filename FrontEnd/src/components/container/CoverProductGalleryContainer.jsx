@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import CoverProductGalleryDisplay from "../display/CoverProductGalleryDisplay";
 
 const CoverProductGalleryContainer = ({ imgList, galleryId }) => {

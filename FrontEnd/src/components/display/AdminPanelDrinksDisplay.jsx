@@ -64,8 +64,6 @@ function EditToolbar(props) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(event);
-    console.log(createApiData(payload));
   };
 
 
@@ -197,8 +195,6 @@ export default function AdminPanelDrinksDisplay() {
       }
       await axios.patch(API_BASE_URL + targetToUpdateId, formData);
       apiDataGet();
-
-      console.log(formData);
     } catch (error) {
       console.error("Error update data:", error);
     }
@@ -267,7 +263,6 @@ export default function AdminPanelDrinksDisplay() {
 
     const oldRow = rows.find((row) => row.id === newRow.id);
     const modifiedProperties = getModifiedProperties(newRow, oldRow);
-    console.log(modifiedProperties);
 
     if (modifiedProperties) {
       apiDataUpdate(newRow.id, modifiedProperties);
@@ -356,7 +351,6 @@ export default function AdminPanelDrinksDisplay() {
           <GridActionsCellItem
             icon={<CameraAlt />}
             label="Delete"
-            onClick={console.log("change image form")}
             color="inherit"
           />,
         ];

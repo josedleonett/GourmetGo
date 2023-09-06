@@ -1,4 +1,3 @@
-import React from 'react'
 import AdminPanelDrinksDisplay from '../display/AdminPanelDrinksDisplay'
 
 const AdminPanelDrinksContainer = () => {

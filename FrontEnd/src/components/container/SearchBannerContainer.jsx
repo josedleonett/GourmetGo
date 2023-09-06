@@ -1,7 +1,10 @@
 import SearchBannerDisplay from '../display/SearchBannerDisplay';
-import React, { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 
-const SearchBannerContainer = ({ filterList, filterBundle }) => {
+const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptions }) => {
+  const [selectedBundle, setSelectedBundle] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleBundleSelected = (event) => {
@@ -16,15 +19,10 @@ const SearchBannerContainer = ({ filterList, filterBundle }) => {
   }, []);
 
   const handleSearchSelect = (searchValue) => {
-    console.log('handleSearchSelect:', searchValue);
-    const selectedBundle = filterBundle.find((bundle) => bundle.name === searchValue);
-    if (selectedBundle) {
-      window.location.href = `http://127.0.0.1:5173/product/${encodeURIComponent(selectedBundle.id)}`;
-    } else {
-      // Si no se ha seleccionado un bundle, redirige a la categoría
-      window.location.href = `http://127.0.0.1:5173/category/${encodeURIComponent(selectedFilter)}`;
+    if (searchValue !== "" || searchValue !== null) {
+      navigate(`/search?filteredOptions=${searchValue}`);
     }
-  };
+  }
 
   return (
     <SearchBannerDisplay
@@ -37,7 +35,7 @@ const SearchBannerContainer = ({ filterList, filterBundle }) => {
           window.dispatchEvent(selectedEvent);
         }
       }}
-      onSearchIconClick={handleSearchSelect} 
+      onSearchIconClick={handleSearchSelect}
     />
   );
 };

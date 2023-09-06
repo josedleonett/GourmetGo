@@ -34,4 +34,6 @@ public class BundleCreateRequest {
     private List<Long> characteristics;
     @NotNull
     private List<Long> categories;
+
+    private String terms;
 }

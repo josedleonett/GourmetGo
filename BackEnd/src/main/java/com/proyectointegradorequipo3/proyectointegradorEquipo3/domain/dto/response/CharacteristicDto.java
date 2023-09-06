@@ -15,4 +15,6 @@ public class CharacteristicDto {
     private Long id;
     @NotBlank
     private String name;
+    @NotBlank
+    private String image;
 }
