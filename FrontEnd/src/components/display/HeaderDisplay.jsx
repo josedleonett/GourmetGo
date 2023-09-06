@@ -49,7 +49,7 @@ const HeaderDisplay = ({ accessToken }) => {
     window.location.reload();
   };
   
-  let decodedToken = null;
+  let decodedToken = undefined;
 
   if ((accessToken !== undefined) && cookies.token) {
     decodedToken = jwtDecode(cookies.token);

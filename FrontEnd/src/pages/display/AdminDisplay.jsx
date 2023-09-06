@@ -27,8 +27,10 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
   const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
-  const [platesOptions, setPlatesOptions] = useState([])
-  const [drinksOptions, setDrinksOptions] = useState([])
+  const [platesOptions, setPlatesOptions] = useState([]);
+  const [drinksOptions, setDrinksOptions] = useState([]);
+  const [characteristicsOptions, setCharacteristicsOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
   
   const getOptions = async (API_BASE_URL, filter) => {
     try {
@@ -55,9 +57,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     const fetchPlateOptions = async () => {
       const platesOptionsResponse = await getOptions(API_BASE_URL + "plate/");
       const drinksOptionsResponse = await getOptions(API_BASE_URL + "drink/");
+      const categoryOptionsResponse = await getOptions(API_BASE_URL + "category/");
+      const characteristicOptionsResponse = await getOptions(API_BASE_URL + "characteristic/");
 
       setPlatesOptions(platesOptionsResponse);
       setDrinksOptions(drinksOptionsResponse);
+      setCategoryOptions(categoryOptionsResponse);
+      setCharacteristicsOptions(characteristicOptionsResponse);
     };
   
     fetchPlateOptions();
@@ -272,13 +278,16 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         accessorKey: "characteristics[id]",
         header: "Characteristics",
         isMultiline: false,
-        options: ["Caprese Salad", 2, 5, 4],
+        isMultiple: true,
+        options: characteristicsOptions,
         size: 80,
       },
       {
         accessorKey: "categories[id]",
         header: "Categories",
         isMultiline: false,
+        isMultiple: true,
+        options: categoryOptions,
         size: 80,
       },
       {
