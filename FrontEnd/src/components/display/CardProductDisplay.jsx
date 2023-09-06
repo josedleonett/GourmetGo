@@ -1,19 +1,15 @@
+import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from '@mui/icons-material/Star';
-import {
-  CardActionArea,
-  Rating,
-  Tooltip,
-} from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { CardActionArea, Rating, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
-import { useState } from "react"
-import { useCookies } from 'react-cookie';
-import jwtDecode from 'jwt-decode';
+import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 
 const CardProductDisplay = ({
   id,
@@ -23,20 +19,16 @@ const CardProductDisplay = ({
   categoryList,
   rating,
   numberDiners,
-  favorite
+  favorite,
 }) => {
-
-
-  const [isHovered, setIsHovered] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favorite);
-    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-    
-    let decodedToken = null;
+  let decodedToken = null;
 
-    if ((cookies !== undefined) && cookies.token) {
-      decodedToken = jwtDecode(cookies.token);
-    }
+  if (cookies !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
 
   const handleIconClick = () => {
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
@@ -44,49 +36,59 @@ const CardProductDisplay = ({
     const bundleId = id;
 
     if (isFavorite) {
-      fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "DELETE",
+        }
+      );
     } else {
-      fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
-        method: "POST",
-      })
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "POST",
+        }
+      );
     }
   };
 
   return (
-    <Card raised onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}>
-        {decodedToken ? (
-          <span>
-            {isHovered && (
-              <Tooltip title={isFavorite ? "Delete from favorites" : "Add to favorites"} placement="top">
-                {isFavorite ? (
-                  <StarIcon
-                    onClick={handleIconClick}
-                    sx={{
-                      position: "absolute",
-                      zIndex: 2,
-                      cursor: "pointer",
-                    }}
-                  />
-                ) : (
-                  <StarBorderIcon
-                    onClick={handleIconClick}
-                    sx={{
-                      position: "absolute",
-                      zIndex: 2,
-                      cursor: 'pointer',
-                    }}
-                  />
-                )}
-              </Tooltip>
+    <Card
+      raised
+    >
+      {decodedToken ? (
+        <span>
+          <Tooltip
+            title={isFavorite ? "Delete from favorites" : "Add to favorites"}
+            placement="top"
+          >
+            {isFavorite ? (
+              <FavoriteIcon
+                onClick={handleIconClick}
+                sx={{
+                  position: "absolute",
+                  zIndex: 5,
+                  cursor: "pointer",
+                  color: "error.main",
+                }}
+              />
+            ) : (
+              <FavoriteBorderIcon
+                onClick={handleIconClick}
+                sx={{
+                  position: "absolute",
+                  zIndex: 5,
+                  cursor: "pointer",
+                  color: "error.main",
+                }}
+              />
             )}
-          </span>
-        ) : (
-          ""
-        )}
-            {Array.isArray(img) && img.length > 0 ? (
+          </Tooltip>
+        </span>
+      ) : (
+        <span></span>
+      )}
+      {Array.isArray(img) && img.length > 0 ? (
         <Carousel
           autoPlay={false}
           animation="slide"
