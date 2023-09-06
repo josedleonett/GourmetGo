@@ -1,6 +1,7 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
@@ -122,6 +123,12 @@ public class BundleController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/rating/{id}")
+    public ResponseEntity<Void> updateRating(@PathVariable Long id, RatingUpdateRequest request) {
+        bundleService.ratingModify(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //====================Deletes====================//
 
@@ -130,6 +137,8 @@ public class BundleController {
         bundleService.deleteBundleById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 
 }

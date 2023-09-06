@@ -812,3 +812,5 @@
 =======
 >>>>>>> 26442f1fd282273f26b56877fc00e081bca3147f
 [2023-09-06 11:44:47] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-09-06 19:25:36] [ ERROR] [GlobalHandlerException:18] Request method 'GET' is not supported
+[2023-09-06 19:25:50] [ ERROR] [GlobalHandlerException:18] Request method 'POST' is not supported
