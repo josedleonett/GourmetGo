@@ -1,0 +1,32 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  APP_NAME: my-spring-boot-app
+  JAR_FILE: target/my-spring-boot-app.jar
+
+# Build Stage
+build_backend:
+  stage: build
+  only:
+    changes:
+      - BackEnd/**/*
+  script:
+    - cd BackEnd
+    - mvn clean package
+  artifacts:
+    paths:
+      - $JAR_FILE
+
+deploy_backend:
+  stage: deploy
+  only:
+    changes:
+      - BackEnd/**/*
+  script:
+    - scp $JAR_FILE ec2-user@$EC2_PUBLIC_IP:~/
+    - ssh ec2-user@$EC2_PUBLIC_IP "pkill -f $APP_NAME && nohup java -jar $JAR_FILE > /dev/null 2>&1 &"
+
+
+

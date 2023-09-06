@@ -102,30 +102,62 @@ public class BundleServiceImpl implements IBundleService {
     public Long saveBundle(BundleCreateRequest request) throws ExecutionException, InterruptedException, java.util.concurrent.ExecutionException {
 
         CompletableFuture<List<Plate>> starterFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getStarter(), "Starter"));
+                plateService.validateAndGetPlates(request.getStarter(), "Starter"))
+                .exceptionally(ex -> {
+                    logger.info("Error getting starter plates: ");
+                    return null;
+                });
 
         CompletableFuture<List<Plate>> mainCourseFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getMainCourse(), "Main course"));
+                plateService.validateAndGetPlates(request.getMainCourse(), "Main course"))
+                .exceptionally(ex -> {
+                    logger.info("Error getting mainCourse plates: ");
+                    return null;
+                });
 
         CompletableFuture<List<Plate>> dessertFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getDesserts(), "Dessert"));
+                plateService.validateAndGetPlates(request.getDesserts(), "Dessert"))
+                .exceptionally(ex -> {
+                    logger.info("Error getting dessert plates: ");
+                    return null;
+                });
 
         CompletableFuture<List<Drink>> drinksFuture = CompletableFuture.supplyAsync(() ->
-                drinkService.validateAndGetDrink(request.getDrinks()));
+                drinkService.validateAndGetDrink(request.getDrinks()))
+                .exceptionally(ex -> {
+                    logger.info("Error getting drinks ");
+                    return null;
+                });
 
         CompletableFuture<List<Characteristic>> characteristicsFuture = CompletableFuture.supplyAsync(() ->
-                characteristicRepository.findAllById(request.getCharacteristics()));
+                characteristicRepository.findAllById(request.getCharacteristics()))
+                .exceptionally(ex -> {
+                    logger.info("Error getting characteristics ");
+                    return null;
+                });
 
         CompletableFuture<List<Category>> categoriesFuture = CompletableFuture.supplyAsync(() ->
-                categoryRepository.findAllById(request.getCategories()));
+                categoryRepository.findAllById(request.getCategories()))
+                .exceptionally(ex -> {
+                    logger.info("Error getting categories ");
+                    return null;
+                });
 
         CompletableFuture<String> keyImageFuture = CompletableFuture.supplyAsync(() ->
-                s3Service.putObject(request.getImage()));
+                s3Service.putObject(request.getImage()))
+                .exceptionally(ex -> {
+                    logger.info("Error getting image");
+                    return null;
+                });
 
         CompletableFuture<List<String>> keysFuture = CompletableFuture.supplyAsync(() ->
                 request.getGalleryImages().stream()
                         .map(s3Service::putObject)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()))
+                .exceptionally(ex -> {
+                    logger.info("Error getting galleryImages " + ex.getMessage());
+                    return null;
+                });
 
         CompletableFuture.allOf(starterFuture, mainCourseFuture, dessertFuture, drinksFuture,
                 characteristicsFuture, categoriesFuture, keyImageFuture, keysFuture).join();
@@ -151,6 +183,7 @@ public class BundleServiceImpl implements IBundleService {
                 .characteristics(characteristics)
                 .categories(categories)
                 .rating(0.0)
+                .terms(request.getTerms())
                 .build();
 
         existsName(newBundle.getName(), newBundle.getId());
@@ -225,6 +258,10 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setDescription(request.getDescription());
         }
 
+        if (request.getTerms() != null) {
+            existingBundle.setTerms(request.getTerms());
+        }
+
         bundleRepository.save(existingBundle);
     }
 
@@ -244,6 +281,7 @@ public class BundleServiceImpl implements IBundleService {
                 .collect(Collectors.toList());
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
+        bundleRepository.deleteUserFavoriteBundlesByBundleId(id);
         bundleRepository.deleteById(id);
     }
 

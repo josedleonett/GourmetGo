@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -12,16 +13,13 @@ import {
 import { Route, Routes } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
 import AdminPanelDataGridDisplay, {
-  //AdminPanelDataGridLoader,
 } from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
 import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
-import { CheckBox } from "@mui/icons-material";
 import axios from "axios";
-import React, { useState, useEffect } from 'react';
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const API_BASE_URL = "http://localhost:8080/v1/";
@@ -68,10 +66,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   
     fetchPlateOptions();
   }, []);
-
-  
-
-
 
   //RENDER DETAIL PANEL:
   const bundlesRenderDetailPanel = ({ row }) => (
@@ -501,7 +495,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 usersDataGridProps.API_BASE_URL + row.original.id,
                 formData
               );
-              console.log(response);
               for (const pair of formData.entries()) {
                 console.log(pair[0], pair[1]);
               }

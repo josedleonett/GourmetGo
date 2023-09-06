@@ -20,9 +20,6 @@ import ProductSearchedContainer from "./components/container/ProductSearchedCont
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 
-
-  
-
 function Main() {
   const [cookies] = useCookies(['token']);
   

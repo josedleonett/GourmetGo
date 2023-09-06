@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";

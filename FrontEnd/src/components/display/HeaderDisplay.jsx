@@ -183,7 +183,6 @@ const HeaderDisplay = ({ accessToken }) => {
                 justifyContent: "space-evenly",
               }}
             >
-              {/* ... Código de las Tabs ... */}
             </Tabs>
 
             <Box

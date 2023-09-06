@@ -7,11 +7,8 @@ import StarIcon from '@mui/icons-material/Star';
 import {
   CardActionArea,
   Rating,
-  Stack,
   Tooltip,
-  Box
 } from "@mui/material";
-import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { useState } from "react"
@@ -47,7 +44,6 @@ const CardProductDisplay = ({
     const bundleId = id;
 
     if (isFavorite) {
-      // Enviar petición para eliminar de favoritos
       fetch(`http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`, {
         method: "DELETE",
       })
@@ -64,7 +60,7 @@ const CardProductDisplay = ({
         {decodedToken ? (
           <span>
             {isHovered && (
-              <Tooltip title={isFavorite ? "Delete from favoritos" : "Add to favorites"} placement="top">
+              <Tooltip title={isFavorite ? "Delete from favorites" : "Add to favorites"} placement="top">
                 {isFavorite ? (
                   <StarIcon
                     onClick={handleIconClick}

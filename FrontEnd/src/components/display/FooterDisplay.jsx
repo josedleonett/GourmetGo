@@ -1,6 +1,5 @@
 import Container from "@mui/material/Container";
-import { Typography, IconButton, Box } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Typography, IconButton, Box, Grid } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
