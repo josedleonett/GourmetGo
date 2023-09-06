@@ -3,6 +3,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
@@ -280,6 +281,23 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setTerms(request.getTerms());
         }
 
+        bundleRepository.save(existingBundle);
+    }
+
+    @Transactional
+    @CacheEvict(value = {"searchBundleDtoById", "searchBundleDtoByIdForCards"}, key = "#bundleId")
+    public void ratingModify(Long bundleId, RatingUpdateRequest request) {
+        Optional<Bundle> bundleOptional = bundleRepository.findById(bundleId);
+
+        if (!bundleOptional.isPresent()) {
+            throw new EntityNotFoundException("Bundle not found with id: " + bundleId);
+        }
+
+        Bundle existingBundle = bundleOptional.get();
+
+        if (request.getRating() != null) {
+            existingBundle.setRating(request.getRating());
+        }
         bundleRepository.save(existingBundle);
     }
 

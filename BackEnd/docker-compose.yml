@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  mi-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: leonardobarrera/gourmetgo-backend:latest
+    environment:
+      DB_URL: jdbc:mysql://db.ctd.academy:3306/0723TDPRON2C02LAED0222PT_GRUPO3?useSSL=false
+      DB_USERNAME: 0723TDPRON2C02LAED0222PT_GRUPO3
+      DB_PASSWORD: vooGu3qu
+      S3_ACCESS_KEY: AKIAY3PLHSUJIHZD7YVM
+      S3_SECRET_KEY: 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
+      JWT_SECRET_KEY: 76397924423F4528482B4D6251655468576D5A7134743777217A25432A46294A
+      SENDGRID_API_KEY: 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
+    ports:
+      - "8080:8080"
+
