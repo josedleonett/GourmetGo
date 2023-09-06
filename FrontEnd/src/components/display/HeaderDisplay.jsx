@@ -57,13 +57,8 @@ const HeaderDisplay = ({ accessToken }) => {
     removeCookie("token", { path: "/" });
     window.location.reload();
   };
-<<<<<<< HEAD
-  
-  let decodedToken = undefined;
-=======
 
   let decodedToken = null;
->>>>>>> 26442f1fd282273f26b56877fc00e081bca3147f
 
   if (accessToken !== undefined && cookies.token) {
     decodedToken = jwtDecode(cookies.token);

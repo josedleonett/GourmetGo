@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, useTheme, useMediaQuery } from "@mui/material";
+import { Container, useTheme, useMediaQuery, Stack, Skeleton } from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
@@ -11,7 +11,16 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
   const [filteredOptions, setFilteredOptions] = useState([]);
 
-  console.log(filteredOptions)
+  const CardSkeleton = () => {
+    return(
+      <Stack spacing={1}>
+      <Skeleton variant="rectangular" width={210} height={40} />
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" width={210} height={60} />
+      <Skeleton variant="rounded" width={210} height={60} />
+    </Stack>
+    )
+  }
 
   const updateFilteredOptions = (options) => {
     setFilteredOptions(options);
@@ -35,8 +44,16 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
           Categories
         </Typography>
         <Container maxWidth="100vw">
-          <CarouselCategoryContainer elementsList={categories} />
-        </Container>
+        {categories && categories.length > 0 ? (
+            <CarouselCategoryContainer elementsList={categories} />
+          ) : (
+            <Box sx={{display: "flex", justifyContent: "space-evenly"}}>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </Box>
+          )}
+          </Container>
       </Box>
 
       <Box component="section">
