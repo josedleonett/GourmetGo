@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -25,7 +24,6 @@ import {
   DialogTitle,
   Stack,
   Tooltip,
-  Hidden,
   DialogContent,
   DialogContentText,
   DialogActions,  
@@ -33,11 +31,8 @@ import {
   AlertTitle,
   Snackbar,
 } from "@mui/material";
-
-import {Link as LinkMUI} from "@mui/material";
-
 import { cateringPackages } from "../../test/dataApiSample";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -59,8 +54,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from '@mui/material/Rating';
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import jwtDecode from "jwt-decode";
-import { useCookies } from "react-cookie";
 
 const ProductDetailDisplay = ({
   productData,
@@ -71,42 +64,7 @@ const ProductDetailDisplay = ({
   const { id } = useParams();
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [decodedToken, setDecodedToken] = useState(null);
   const [isFavorite, setIsFavorite] = useState(null)
-
-    useEffect(() => {
-      if (productData && typeof productData.favorite === 'boolean') {
-        setIsFavorite(productData.favorite);
-      }
-    }, [productData]);
-
-  const handleFavoriteClick = () => {
-      setIsFavorite((prevIsFavorite) => !prevIsFavorite);
-      const bundleId = id;
-      if (isFavorite !== null && isFavorite ) {
-        fetch(
-          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
-          {
-            method: "DELETE",
-          }
-        );
-      } else {
-        fetch(
-          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
-          {
-            method: "POST",
-          }
-        );
-    }
-  };
-
-  useEffect(() => {
-    if (cookies.token) {
-      const decoded = jwtDecode(cookies.token);
-      setDecodedToken(decoded);
-    }
-  }, [cookies.token]);
-
   const [openDialog, setOpenDialog] = useState(false);
   const [openTermsDialog, setOpenTermsDialog] = useState(false);
   const [averageRating, setAverageRating] = useState(null);
@@ -115,8 +73,38 @@ const ProductDetailDisplay = ({
   const [totalRatings, setTotalRatings] = useState(null);
   const [hover, setHover] = useState(-1);
   const [showWarning, setShowWarning] = useState(false);
-  const [cookies] = useCookies(["token"]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  let decodedToken;
+  if(cookies.token !== undefined) {
+    decodedToken = jwtDecode(cookies.token)
+  }
+
+  useEffect(() => {
+    if (productData && typeof productData.favorite === 'boolean') {
+      setIsFavorite(productData.favorite);
+    }
+  }, [productData]);
+
+const handleFavoriteClick = () => {
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+    const bundleId = id;
+    if (isFavorite !== null && isFavorite ) {
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "DELETE",
+        }
+      );
+    } else {
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "POST",
+        }
+      );
+  }
+};
 
   useEffect(() => {
     if (productData) {
@@ -128,12 +116,6 @@ const ProductDetailDisplay = ({
       }
     }
   }, [productData]);
-
-  let decodedToken = null;
-
-  if (cookies !== undefined && cookies.token) {
-    decodedToken = jwtDecode(cookies.token);
-  }
 
   useEffect(() => {
     if (cookies.token && cookies.token !== "") {
@@ -165,8 +147,6 @@ const ProductDetailDisplay = ({
     }
   }, [productData]);
 
-  
-
   const handleRatingChange = (newValue) => {
   setUserRating(newValue);
   setUserHasRating(true);
@@ -177,9 +157,6 @@ const ProductDetailDisplay = ({
   
     setTotalRatings(newTotalRatings);
     setAverageRating(newAverageRating);
-
-    console.log(newAverageRating)
-
     fetch(`http://localhost:8080/v1/bundle/rating/${productData.id}?rating=${newAverageRating}&totalRates=${newTotalRatings}`, {
     method: 'PATCH',
     headers: {

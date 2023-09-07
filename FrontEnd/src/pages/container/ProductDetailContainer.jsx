@@ -21,7 +21,6 @@ const ProductDetailContainer = ({ accessToken }) => {
     let decodedToken
     if (cookies.token !== undefined ) {
       decodedToken = jwtDecode(cookies.token);
-      console.log(decodedToken)
         fetch(
           `http://localhost:8080/v1/bundle/${decodedToken.id}/bundleDetail/${id}`
         )
@@ -46,9 +45,7 @@ const ProductDetailContainer = ({ accessToken }) => {
 
   return (
     <ProductDetailDisplay
-     
       productData={productData}
-     
       dates={dates}
       accessToken={accessToken}
     />
