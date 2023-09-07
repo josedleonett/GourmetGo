@@ -50,6 +50,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from '@mui/material/Rating';
 import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 
 const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
@@ -68,7 +69,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
 
   let decodedToken = null;
 
-  if (accessToken !== undefined && cookies.token) {
+  if (cookies !== undefined && cookies.token) {
     decodedToken = jwtDecode(cookies.token);
   }
 
