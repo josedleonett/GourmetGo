@@ -77,7 +77,7 @@ public class UserController {
 
     //====================Add favorite====================//
     @PostMapping("/{userId}/favorites/{bundleId}")
-    public ResponseEntity<Void> addBundleToFavorites(
+    public synchronized ResponseEntity<Void> addBundleToFavorites(
             @PathVariable Long userId,
             @PathVariable Long bundleId) {
         userService.addBundleToFavorites(userId, bundleId);
@@ -87,7 +87,7 @@ public class UserController {
 
     //====================Del favorite====================//
     @DeleteMapping("/{userId}/favorites/{bundleId}")
-    public ResponseEntity<Void> removeBundleFromFavorites(
+    public synchronized  ResponseEntity<Void> removeBundleFromFavorites(
             @PathVariable Long userId,
             @PathVariable Long bundleId) {
         userService.removeBundleFromFavorites(userId, bundleId);

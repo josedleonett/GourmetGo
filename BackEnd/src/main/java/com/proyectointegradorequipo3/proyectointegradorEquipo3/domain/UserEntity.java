@@ -15,10 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -58,9 +55,10 @@ public class UserEntity implements UserDetails {
     @JoinTable(
             name = "user_favorite_bundles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "bundle_id")
+            inverseJoinColumns = @JoinColumn(name = "bundle_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "bundle_id"})
     )
-    private List<Bundle> favoriteBundles;
+    private Set<Bundle> favoriteBundles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

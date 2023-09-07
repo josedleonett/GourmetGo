@@ -3,7 +3,9 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
@@ -63,6 +65,23 @@ public class BundleServiceImpl implements IBundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         return modelMapper.map(bundle, BundleDto.class);
+    }
+
+    public BundleDtoDetailUser searchBundleByIdAndUser(Long userId, Long bundleId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        Set<Long> favoriteBundleIds = user.getFavoriteBundles().stream()
+                .map(Bundle::getId)
+                .collect(Collectors.toSet());
+
+        Bundle bundle = bundleRepository.findById(bundleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bundle", bundleId));
+
+        BundleDtoDetailUser dto = mapper.map(bundle, BundleDtoDetailUser.class);
+        dto.setFavorite(favoriteBundleIds.contains(bundle.getId()));
+
+        return dto;
     }
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
@@ -262,6 +281,23 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setTerms(request.getTerms());
         }
 
+        bundleRepository.save(existingBundle);
+    }
+
+    @Transactional
+    @CacheEvict(value = {"searchBundleDtoById", "searchBundleDtoByIdForCards"}, key = "#bundleId")
+    public void ratingModify(Long bundleId, RatingUpdateRequest request) {
+        Optional<Bundle> bundleOptional = bundleRepository.findById(bundleId);
+
+        if (!bundleOptional.isPresent()) {
+            throw new EntityNotFoundException("Bundle not found with id: " + bundleId);
+        }
+
+        Bundle existingBundle = bundleOptional.get();
+
+        if (request.getRating() != null) {
+            existingBundle.setRating(request.getRating());
+        }
         bundleRepository.save(existingBundle);
     }
 

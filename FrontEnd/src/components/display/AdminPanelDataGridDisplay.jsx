@@ -31,6 +31,7 @@ import {
   Cancel,
   AddAPhoto,
 } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
 // export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
@@ -60,12 +61,21 @@ import {
 //   return;
 // };
 
-const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
+const AdminPanelDataGridDisplay = ({
+  props,
+  filter,
+  renderDetailPanel,
+  allowEditModal,
+  allowCreateModal,
+}) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
-
+  const [initialState, setInitialState] = useState(props.initialState);
   const [data, setData] = useState([]);
+
+  const [isAllowEditModal, setIsAllowEditModal] = useState(true)
+  const [isAllowCreateModal, setIsAllowCreateModal] = useState(true)
   const [rowToUpdate, setRowToUpdate] = useState({});
   const [rowToDelete, setRowToDelete] = useState(-1);
   const [validationErrors, setValidationErrors] = useState({});
@@ -77,12 +87,17 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isFormDeleting, setIsFormDeleting] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
+    setIsAllowCreateModal(props.allowCreateModal);
+    console.log(isAllowCreateModal);
+    setIsAllowEditModal(props.allowEditModal);
 
     getApiData();
-  }, [props]);
+  }, [location.pathname, props]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
@@ -237,8 +252,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
-          //columnVisibility: { id: false, galleryImages: false },
         }}
+        initialState={initialState}
         muiTableContainerProps={({ table }) => ({
           sx: {
             height: `calc(100% - ${table.refs.topToolbarRef.current?.offsetHeight}px - ${table.refs.bottomToolbarRef.current?.offsetHeight}px)`,
@@ -252,22 +267,33 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
         }}
         renderDetailPanel={renderDetailPanel}
         renderTopToolbarCustomActions={() => (
-          <Button
-            color="primary"
-            onClick={() => setIsModalOpen(true)}
-            variant="contained"
-            startIcon={<Add />}
-          >
-            Create new item
-          </Button>
+          <>
+            {isAllowCreateModal === false ? (
+              <span />
+            ) : (
+              <Button
+                color="primary"
+                onClick={() => setIsModalOpen(true)}
+                variant="contained"
+                startIcon={<Add />}
+              >
+                Create new item
+              </Button>
+            )}
+          </>
         )}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => handleUpdateRow(row.original)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
+            {isAllowEditModal === false ? (
+              <span />
+            ) : (
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => handleUpdateRow(row.original)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+
             <Tooltip arrow placement="right" title="Delete">
               <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                 <Delete />
