@@ -23,10 +23,16 @@ import {
   Dialog,
   DialogTitle,
   Stack,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  
 } from "@mui/material";
 
+import {Link as LinkMUI} from "@mui/material";
+
 import { cateringPackages } from "../../test/dataApiSample";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -52,6 +58,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openTermsDialog, setOpenTermsDialog] = useState(false);
 
   const openReserveDialog = () => {
     setOpenDialog(true);
@@ -344,6 +351,57 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                   </ListItem>
 
                   <Divider variant="inset" component="li" />
+
+                  <ListItem alignItems="flex-start" sx={{ pt: 3 }}>
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        setOpenTermsDialog(true);
+                      }}
+                    >
+                      See terms and conditions
+                    </Button>
+                    <Dialog
+                      open={openTermsDialog}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">
+                        {`Terms and conditions for ${
+                          productData ? productData.name : ""
+                        } bundle`}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText
+                          id="alert-dialog-description"
+                          variant="caption"
+                          sx={{
+                            wordBreak: "break-word",
+                            whiteSpace: "pre-line",
+                          }}
+                          align="justify"
+                        >
+                          {
+                            productData
+                              ? productData.terms !== null && productData.terms !== ""
+                                ? productData.terms
+                                : "Contact us to know our terms and conditions for this bundle"
+                              : "Error loading terms and conditions.."
+                          }
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          onClick={() => {
+                            setOpenTermsDialog(false);
+                          }}
+                          autoFocus
+                        >
+                          Close
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </ListItem>
                 </List>
               </Container>
             </Container>
