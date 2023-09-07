@@ -78,6 +78,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       characteristics: false,
       galleryImages: false,
       categories: false,
+      terms: false,
     },
   };
 
@@ -318,6 +319,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isFileType: true,
         isMultiple: true,
         size: 80,
+      },
+      {
+        accessorKey: "terms",
+        id: "terms",
+        header: "Terms and conditions",
+        isMultiline: true,
+        size: 140,
       },
     ],
   };

@@ -503,7 +503,7 @@ export const CreateUpdateItemModal = ({
 
   return (
     <>
-      <Dialog open={open}>
+      <Dialog open={open} maxWidth="xl">
         <DialogTitle textAlign="center">
           {isRowToUpdateEmpty ? "Create" : "Update"} New Item
         </DialogTitle>
@@ -512,8 +512,8 @@ export const CreateUpdateItemModal = ({
             <Stack
               sx={{
                 width: "100%",
-                minWidth: { xs: "300px", sm: "360px", md: "400px" },
-                maxWidth: { xs: "300px", sm: "360px", md: "400px" },
+                minWidth: { xs: "700px", sm: "700px", md: "700px" },
+                maxWidth: { xs: "700px", sm: "700px", md: "700px" },
                 gap: "1.5rem",
               }}
             >
