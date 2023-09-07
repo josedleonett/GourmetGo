@@ -252,8 +252,12 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setDrinks(drinks);
         }
 
-        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findAllById(request.getCategories());
+        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
             existingBundle.setCategories(categories);
+        }
+
+        if (request.getCharacteristics() != null) {List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
+            existingBundle.setCharacteristics(characteristics);
         }
 
         if (request.getImage() != null) {
