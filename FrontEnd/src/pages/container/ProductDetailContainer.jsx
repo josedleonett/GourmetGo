@@ -22,7 +22,9 @@ const ProductDetailContainer = () => {
   }, [id]);
 
   return (
-    <ProductDetailDisplay productData={productData} dates={dates}/>
+    <ProductDetailDisplay
+      productData={productData}
+      dates={dates}/>
   );
 }
 

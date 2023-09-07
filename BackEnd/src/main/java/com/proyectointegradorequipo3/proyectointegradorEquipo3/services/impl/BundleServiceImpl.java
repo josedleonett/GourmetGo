@@ -149,14 +149,14 @@ public class BundleServiceImpl implements IBundleService {
                 });
 
         CompletableFuture<List<Characteristic>> characteristicsFuture = CompletableFuture.supplyAsync(() ->
-                characteristicRepository.findAllById(request.getCharacteristics()))
+                characteristicRepository.findByNameIn(request.getCharacteristics()))
                 .exceptionally(ex -> {
                     logger.info("Error getting characteristics ");
                     return null;
                 });
 
         CompletableFuture<List<Category>> categoriesFuture = CompletableFuture.supplyAsync(() ->
-                categoryRepository.findAllById(request.getCategories()))
+                categoryRepository.findByNameIn(request.getCategories()))
                 .exceptionally(ex -> {
                     logger.info("Error getting categories ");
                     return null;
@@ -252,8 +252,12 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setDrinks(drinks);
         }
 
-        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findAllById(request.getCategories());
+        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
             existingBundle.setCategories(categories);
+        }
+
+        if (request.getCharacteristics() != null) {List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
+            existingBundle.setCharacteristics(characteristics);
         }
 
         if (request.getImage() != null) {

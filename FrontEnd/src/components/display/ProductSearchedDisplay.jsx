@@ -24,28 +24,24 @@ const ProductSearchDisplay = (filteredOptions) => {
           padding: "1vw",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "center",
         }}
       >
-        <Hidden mdDown>
-        <Box
-      ></Box>
-        </Hidden>
         <Box
           sx={{
             padding: 1,
+            position: "absolute",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            marginLeft: { xs: 14, sm: 40, md: 60 }, // Controla el margen izquierdo de manera responsive
           }}
         >
           <Typography variant="h6">Bundles not found</Typography>
           <Button onClick={() => navigate("/")}>Go home</Button>
         </Box>
         <Hidden mdDown>
-        <Box
+        <Box sx={{position: "absolute", right: "-5vw", height: "60%"}}
           component="img"
           alt="The house from the offer."
           src="images/confusing-chef.png"

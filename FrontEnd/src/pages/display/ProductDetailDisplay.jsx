@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -23,6 +23,9 @@ import {
   Dialog,
   DialogTitle,
   Stack,
+  Alert,
+  AlertTitle,
+  Snackbar,
 } from "@mui/material";
 
 import { cateringPackages } from "../../test/dataApiSample";
@@ -45,6 +48,8 @@ import CoverProductGalleryContainer from "../../components/container/CoverProduc
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Rating from '@mui/material/Rating';
+import { useCookies } from "react-cookie";
 
 const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
@@ -52,6 +57,53 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [averageRating, setAverageRating] = useState(0);
+  const [userRating, setUserRating] = useState(null);
+  const [userHasRating, setUserHasRating] = useState(false);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [hover, setHover] = useState(-1);
+  const [showWarning, setShowWarning] = useState(false);
+  const [cookies] = useCookies(["token"]);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  let decodedToken = null;
+
+  if (accessToken !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+
+  console.log(userRating)
+  console.log(averageRating)
+
+  const handleNotLoggedClick = () => {
+    if (cookies.token && cookies.token !== "") {
+      if (decodedToken) {
+        setIsUserLoggedIn(true);
+      } else {
+        setShowWarning(true);
+      }
+    } else {
+      setShowWarning(true);
+    }
+  };
+
+  useEffect(() => {
+    if (productData && typeof productData.ratings === 'number') {
+      const initialAverageRating = productData.ratings || 0;
+      setAverageRating(initialAverageRating);
+    }
+  }, [productData]);
+
+  const handleRatingChange = (newValue) => {
+    setUserRating(newValue);
+    setUserHasRating(true);
+  
+    const newTotalRatings = userRating !== null ? totalRatings : totalRatings + 1;
+    const newAverageRating = (averageRating * totalRatings + newValue) / newTotalRatings;
+  
+    setTotalRatings(newTotalRatings);
+    setAverageRating(newAverageRating);
+  };
 
   const openReserveDialog = () => {
     setOpenDialog(true);
@@ -104,8 +156,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
     setOpenSocialModal(false);
   };
 
-  console.log(productData)
-
   return (
     <Box sx={{ padding: 2 }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -130,36 +180,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
               <Typography variant="h4">
                 {productData ? productData.name : ""}
               </Typography>
-              {/* <IconButton
-                aria-label="Share"
-                onClick={openSocialModalOnClick}
-                style={{
-                  marginLeft: 18,
-                  paddingLeft: 2,
-                  transition: "background-color 0.2s ease",
-                }}
-              > {productData.favorite ? (
-                <FavoriteIcon
-                  onClick={handleIconClick}
-                  sx={{
-                    position: "absolute",
-                    zIndex: 5,
-                    cursor: "pointer",
-                    color: "error.main",
-                  }}
-                />
-              ) : (
-                <FavoriteBorderIcon
-                  onClick={handleIconClick}
-                  sx={{
-                    position: "absolute",
-                    zIndex: 5,
-                    cursor: "pointer",
-                    color: "error.main",
-                  }}
-                />
-              )}
-              </IconButton> */}
               <IconButton
                 aria-label="Share"
                 onClick={openSocialModalOnClick}
@@ -366,7 +386,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
-                        renderInput={(props) => <input {...props} readOnly />}
+                        renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
                       />
                     </DemoItem>
                   </DemoContainer>
@@ -375,15 +395,41 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                   variant="contained"
                   color="secondary"
                   onClick={openReserveDialog}
+                  disabled={!isUserLoggedIn} 
                 >
                   RESERVE
                 </Button>
+                <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", gap: "2vw"}}>
+                  <Rating
+                    name="combined-rating"
+                    value={userRating !== null ? userRating : averageRating}
+                    precision={0.1}
+                    readOnly={userRating !== null || !isUserLoggedIn}
+                    onChange={(event, newValue) => handleRatingChange(newValue)}
+                    onChangeActive={(event, newHover) => {
+                      setHover(newHover);
+                    }}
+                  />
+                  <Typography>{userRating !== null ? userRating : averageRating}</Typography>
+                </Box>
               </Container>
             </Paper>
           </Grid>
         </Grid>
         <Box height={50} />
       </Container>
+      {showWarning && (
+        <Snackbar
+          open={handleNotLoggedClick}
+          autoHideDuration={3000} // Controla la duración del Snackbar
+          onClose={() => setShowWarning(false)}
+        >
+           <Alert severity="warning">
+            <AlertTitle>Error</AlertTitle>
+            You need to be logged in to perform this action.
+          </Alert>
+        </Snackbar>
+      )}
     </Box>
   );
 };
