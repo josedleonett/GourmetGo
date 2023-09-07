@@ -3,8 +3,8 @@ import { Box, Typography, useMediaQuery, Icon } from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import jwtDecode from "jwt-decode";
 import { useCookies } from "react-cookie";
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
-import CircularProgress from '@mui/material/CircularProgress';
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const UserFavoriteContainer = ({ accessToken }) => {
   const [favorites, setFavorites] = useState([]);
@@ -66,11 +66,7 @@ const UserFavoriteContainer = ({ accessToken }) => {
       {favorites.length >= 1 ? (
         <CardProductGridContainer list={favorites} />
       ) : isLoading ? (
-        <Box
-          display="flex"
-          alignContent="center"
-          justifyContent="center"
-        >
+        <Box display="flex" alignContent="center" justifyContent="center">
           <CircularProgress />
         </Box>
       ) : (

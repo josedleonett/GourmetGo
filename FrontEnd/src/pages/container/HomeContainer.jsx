@@ -31,7 +31,7 @@ const HomeContainer = () => {
         .then(response => response.json())
         .then(data => {
           setBundles(data);
-          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name }))); // Incluye el ID
+          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name })));
         })
         .catch(error => console.error("Error fetching user bundles:", error));
     } else {
@@ -39,7 +39,7 @@ const HomeContainer = () => {
         .then(response => response.json())
         .then(data => {
           setBundles(data);
-          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name, categories: bundle.categories }))); // Incluye el ID
+          setBundleList(data.map(bundle => ({ id: bundle.id, name: bundle.name, categories: bundle.categories })));
         })
         .catch(error => console.error("Error fetching bundles:", error));
     }

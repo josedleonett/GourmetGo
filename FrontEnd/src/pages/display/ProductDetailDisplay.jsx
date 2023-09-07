@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -23,6 +24,8 @@ import {
   Dialog,
   DialogTitle,
   Stack,
+  Tooltip,
+  Hidden,
   DialogContent,
   DialogContentText,
   DialogActions,  
@@ -56,11 +59,53 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from '@mui/material/Rating';
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
+import { useCookies } from "react-cookie";
 
-const ProductDetailDisplay = ({ productData, dates }) => {
+const ProductDetailDisplay = ({
+  productData,
+  dates,
+  accessToken,
+}) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [decodedToken, setDecodedToken] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(null)
+
+    useEffect(() => {
+      if (productData && typeof productData.favorite === 'boolean') {
+        setIsFavorite(productData.favorite);
+      }
+    }, [productData]);
+
+  const handleFavoriteClick = () => {
+      setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+      const bundleId = id;
+      if (isFavorite !== null && isFavorite ) {
+        fetch(
+          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+          {
+            method: "DELETE",
+          }
+        );
+      } else {
+        fetch(
+          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+          {
+            method: "POST",
+          }
+        );
+    }
+  };
+
+  useEffect(() => {
+    if (cookies.token) {
+      const decoded = jwtDecode(cookies.token);
+      setDecodedToken(decoded);
+    }
+  }, [cookies.token]);
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openTermsDialog, setOpenTermsDialog] = useState(false);
@@ -184,7 +229,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
     if (!dates) {
       return false;
     }
-
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
 
@@ -226,6 +270,51 @@ const ProductDetailDisplay = ({ productData, dates }) => {
               <Typography variant="h4">
                 {productData ? productData.name : ""}
               </Typography>
+              <IconButton
+                disabled={!decodedToken}
+                aria-label="Favorite"
+                style={{
+                  marginLeft: 18,
+                  paddingLeft: 2,
+                  transition: "background-color 0.2s ease",
+                }}
+              >
+                {" "}
+                {decodedToken ? (
+                  <span>
+                    <Tooltip
+                      title={
+                        isFavorite
+                          ? "Delete from favorites"
+                          : "Add to favorites"
+                      }
+                      placement="top"
+                    >
+                      {isFavorite ? (
+                        <FavoriteIcon
+                          onClick={handleFavoriteClick}
+                          sx={{
+                            zIndex: 5,
+                            cursor: "pointer",
+                            color: "error.main",
+                          }}
+                        />
+                      ) : (
+                        <FavoriteBorderIcon 
+                          onClick={handleFavoriteClick}
+                          sx={{
+                            zIndex: 5,
+                            cursor: "pointer",
+                            color: "error.main",
+                          }}
+                        />
+                      )}
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span></span> 
+                )}
+              </IconButton>
               <IconButton
                 aria-label="Share"
                 onClick={openSocialModalOnClick}
