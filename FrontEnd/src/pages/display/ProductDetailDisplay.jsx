@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -5,7 +6,6 @@ import { BiDish } from "react-icons/bi";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import {
@@ -23,8 +23,10 @@ import {
   Dialog,
   DialogTitle,
   Stack,
+  Tooltip,
+  Hidden,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -48,12 +50,53 @@ import CoverProductGalleryContainer from "../../components/container/CoverProduc
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import jwtDecode from "jwt-decode";
+import { useCookies } from "react-cookie";
 
-const ProductDetailDisplay = ({ productData, dates }) => {
+const ProductDetailDisplay = ({
+  productData,
+  dates,
+  accessToken,
+}) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(productData);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [decodedToken, setDecodedToken] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(null)
+
+    useEffect(() => {
+      if (productData && typeof productData.favorite === 'boolean') {
+        setIsFavorite(productData.favorite);
+      }
+    }, [productData]);
+
+  const handleFavoriteClick = () => {
+      setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+      const bundleId = id;
+      if (isFavorite !== null && isFavorite ) {
+        fetch(
+          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+          {
+            method: "DELETE",
+          }
+        );
+      } else {
+        fetch(
+          `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+          {
+            method: "POST",
+          }
+        );
+    }
+  };
+
+  useEffect(() => {
+    if (cookies.token) {
+      const decoded = jwtDecode(cookies.token);
+      setDecodedToken(decoded);
+    }
+  }, [cookies.token]);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -90,7 +133,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
     if (!dates) {
       return false;
     }
-
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
 
@@ -107,8 +149,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const closeSocialModal = () => {
     setOpenSocialModal(false);
   };
-
-  console.log(productData)
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -134,36 +174,51 @@ const ProductDetailDisplay = ({ productData, dates }) => {
               <Typography variant="h4">
                 {productData ? productData.name : ""}
               </Typography>
-              {/* <IconButton
-                aria-label="Share"
-                onClick={openSocialModalOnClick}
+              <IconButton
+                disabled={!decodedToken}
+                aria-label="Favorite"
                 style={{
                   marginLeft: 18,
                   paddingLeft: 2,
                   transition: "background-color 0.2s ease",
                 }}
-              > {productData.favorite ? (
-                <FavoriteIcon
-                  onClick={handleIconClick}
-                  sx={{
-                    position: "absolute",
-                    zIndex: 5,
-                    cursor: "pointer",
-                    color: "error.main",
-                  }}
-                />
-              ) : (
-                <FavoriteBorderIcon
-                  onClick={handleIconClick}
-                  sx={{
-                    position: "absolute",
-                    zIndex: 5,
-                    cursor: "pointer",
-                    color: "error.main",
-                  }}
-                />
-              )}
-              </IconButton> */}
+              >
+                {" "}
+                {decodedToken ? (
+                  <span>
+                    <Tooltip
+                      title={
+                        isFavorite
+                          ? "Delete from favorites"
+                          : "Add to favorites"
+                      }
+                      placement="top"
+                    >
+                      {isFavorite ? (
+                        <FavoriteIcon
+                          onClick={handleFavoriteClick}
+                          sx={{
+                            zIndex: 5,
+                            cursor: "pointer",
+                            color: "error.main",
+                          }}
+                        />
+                      ) : (
+                        <FavoriteBorderIcon 
+                          onClick={handleFavoriteClick}
+                          sx={{
+                            zIndex: 5,
+                            cursor: "pointer",
+                            color: "error.main",
+                          }}
+                        />
+                      )}
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span></span> 
+                )}
+              </IconButton>
               <IconButton
                 aria-label="Share"
                 onClick={openSocialModalOnClick}
@@ -200,7 +255,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                     <TwitterIcon size={32} round />
                   </TwitterShareButton>
                   <div style={{ margin: 12 }}></div>{" "}
-                  {/* Espacio entre botones */}
                   <EmailShareButton
                     url={shareUrl}
                     subject="Check this food caterer"
