@@ -64,12 +64,27 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const [hover, setHover] = useState(-1);
   const [showWarning, setShowWarning] = useState(false);
   const [cookies] = useCookies(["token"]);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  let decodedToken = null;
+
+  if (accessToken !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
 
   console.log(userRating)
   console.log(averageRating)
 
   const handleNotLoggedClick = () => {
+    if (cookies.token && cookies.token !== "") {
+      if (decodedToken) {
+        setIsUserLoggedIn(true);
+      } else {
+        setShowWarning(true);
+      }
+    } else {
       setShowWarning(true);
+    }
   };
 
   useEffect(() => {
@@ -355,7 +370,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
           </Grid>
           <Grid item lg={4} md={5} xs={12}>
             <Paper elevation={6} sx={{ py: 4, px: 1 }}>
-              <Container onClick={handleNotLoggedClick}
+              <Container
                 sx={{ display: "flex", flexDirection: "column", gap: 1 }}
               >
                 <Stack
@@ -371,7 +386,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
-                        renderInput={(props) => <input {...props} readOnly />}
+                        renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
                       />
                     </DemoItem>
                   </DemoContainer>
@@ -380,6 +395,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                   variant="contained"
                   color="secondary"
                   onClick={openReserveDialog}
+                  disabled={!isUserLoggedIn} 
                 >
                   RESERVE
                 </Button>
@@ -388,7 +404,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                     name="combined-rating"
                     value={userRating !== null ? userRating : averageRating}
                     precision={0.1}
-                    readOnly={userRating !== null}
+                    readOnly={userRating !== null || !isUserLoggedIn}
                     onChange={(event, newValue) => handleRatingChange(newValue)}
                     onChangeActive={(event, newHover) => {
                       setHover(newHover);
@@ -408,7 +424,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
           autoHideDuration={3000} // Controla la duración del Snackbar
           onClose={() => setShowWarning(false)}
         >
-          <Alert severity="warning">
+           <Alert severity="warning">
             <AlertTitle>Error</AlertTitle>
             You need to be logged in to perform this action.
           </Alert>
