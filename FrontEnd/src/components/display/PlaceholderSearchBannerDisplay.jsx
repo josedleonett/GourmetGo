@@ -9,9 +9,7 @@ import Chip from "@mui/material/Chip";
 const PlaceholderSearchBannerDisplay = ({
   filterList,
   handleCategorySelect,
-  handleCategoryId,
-  onSelectedFiltersChange
-  
+  handleCategoryId
 }) => {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
