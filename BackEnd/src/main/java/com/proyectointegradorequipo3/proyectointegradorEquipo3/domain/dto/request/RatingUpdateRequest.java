@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RatingUpdateRequest {
     private Double rating;
+    private Integer totalRates;
 }

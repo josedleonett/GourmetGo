@@ -297,6 +297,7 @@ public class BundleServiceImpl implements IBundleService {
 
         if (request.getRating() != null) {
             existingBundle.setRating(request.getRating());
+            existingBundle.setTotalRates(request.getTotalRates());
         }
         bundleRepository.save(existingBundle);
     }

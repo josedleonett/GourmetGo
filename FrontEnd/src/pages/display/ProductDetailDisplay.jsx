@@ -50,6 +50,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from '@mui/material/Rating';
 import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 
 const ProductDetailDisplay = ({ productData, dates }) => {
   const packageList = cateringPackages;
@@ -57,23 +58,42 @@ const ProductDetailDisplay = ({ productData, dates }) => {
   const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [averageRating, setAverageRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(null);
   const [userRating, setUserRating] = useState(null);
   const [userHasRating, setUserHasRating] = useState(false);
-  const [totalRatings, setTotalRatings] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(null);
   const [hover, setHover] = useState(-1);
   const [showWarning, setShowWarning] = useState(false);
   const [cookies] = useCookies(["token"]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
+  useEffect(() => {
+    if (productData) {
+      if (typeof productData.rating === 'number') {
+        setAverageRating(productData.rating);
+      }
+      if (typeof productData.totalRates === 'number') {
+        setTotalRatings(productData.totalRates);
+      }
+    }
+  }, [productData]);
+
   let decodedToken = null;
 
-  if (accessToken !== undefined && cookies.token) {
+  if (cookies !== undefined && cookies.token) {
     decodedToken = jwtDecode(cookies.token);
   }
 
-  console.log(userRating)
-  console.log(averageRating)
+  useEffect(() => {
+    if (cookies.token && cookies.token !== "") {
+      if (decodedToken) {
+        setIsUserLoggedIn(true);
+      } else {
+        setShowWarning(true);
+      }
+    }
+  }, []);
+
 
   const handleNotLoggedClick = () => {
     if (cookies.token && cookies.token !== "") {
@@ -94,15 +114,36 @@ const ProductDetailDisplay = ({ productData, dates }) => {
     }
   }, [productData]);
 
-  const handleRatingChange = (newValue) => {
-    setUserRating(newValue);
-    setUserHasRating(true);
   
-    const newTotalRatings = userRating !== null ? totalRatings : totalRatings + 1;
-    const newAverageRating = (averageRating * totalRatings + newValue) / newTotalRatings;
+
+  const handleRatingChange = (newValue) => {
+  setUserRating(newValue);
+  setUserHasRating(true);
+
+  const newTotalRatings = totalRatings + 1;
+  const newAverageRating =
+  (averageRating * (totalRatings) + newValue) / newTotalRatings;
   
     setTotalRatings(newTotalRatings);
     setAverageRating(newAverageRating);
+
+    console.log(newAverageRating)
+
+    fetch(`http://localhost:8080/v1/bundle/rating/${productData.id}?rating=${newAverageRating}&totalRates=${newTotalRatings}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => {
+    console.log(response)
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+  })
+  .catch((error) => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
   };
 
   const openReserveDialog = () => {
@@ -131,7 +172,6 @@ const ProductDetailDisplay = ({ productData, dates }) => {
 
   const handleDateAccept = (date) => {
     const formattedDate = date.format("YYYY-MM-DD");
-    console.log(formattedDate);
   };
 
   const isDateUnavailable = (date) => {
@@ -386,6 +426,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                         defaultValue={dayjs()}
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
+                        readOnly={!isUserLoggedIn}
                         renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
                       />
                     </DemoItem>
@@ -410,7 +451,9 @@ const ProductDetailDisplay = ({ productData, dates }) => {
                       setHover(newHover);
                     }}
                   />
-                  <Typography>{userRating !== null ? userRating : averageRating}</Typography>
+                  <Typography>
+                    {userRating !== null ? userRating.toFixed(1) : (averageRating !== null ? averageRating.toFixed(1) : '')}
+                  </Typography>
                 </Box>
               </Container>
             </Paper>
@@ -420,7 +463,7 @@ const ProductDetailDisplay = ({ productData, dates }) => {
       </Container>
       {showWarning && (
         <Snackbar
-          open={handleNotLoggedClick}
+          open={showWarning}
           autoHideDuration={3000} // Controla la duración del Snackbar
           onClose={() => setShowWarning(false)}
         >
