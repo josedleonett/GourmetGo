@@ -41,6 +41,7 @@ const CardProductGridDisplay = ({ list }) => {
                   categoryList={item.categoryList}
                   rating={item.rating}
                   numberDiners={item.numberDiners}
+                  favorite={item.favorite}
                 />
               </Grid>
             ))

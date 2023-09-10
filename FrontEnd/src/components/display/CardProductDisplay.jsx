@@ -1,16 +1,15 @@
+import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import {
-  CardActionArea,
-  Rating,
-  Stack,
-  Tooltip,
-} from "@mui/material";
-import GroupsIcon from "@mui/icons-material/Groups";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { CardActionArea, Rating, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
+import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 
 const CardProductDisplay = ({
   id,
@@ -20,11 +19,76 @@ const CardProductDisplay = ({
   categoryList,
   rating,
   numberDiners,
+  favorite,
 }) => {
+  const [isFavorite, setIsFavorite] = useState(favorite);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
+  let decodedToken = null;
+
+  if (cookies !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+
+  const handleIconClick = () => {
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
+    const bundleId = id;
+
+    if (isFavorite) {
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "DELETE",
+        }
+      );
+    } else {
+      fetch(
+        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        {
+          method: "POST",
+        }
+      );
+    }
+  };
 
   return (
-    <Card raised>
-            {Array.isArray(img) && img.length > 0 ? (
+    <Card
+      raised
+    >
+      {decodedToken ? (
+        <span>
+          <Tooltip
+            title={isFavorite ? "Delete from favorites" : "Add to favorites"}
+            placement="top"
+          >
+            {isFavorite ? (
+              <FavoriteIcon
+                onClick={handleIconClick}
+                sx={{
+                  position: "absolute",
+                  zIndex: 5,
+                  cursor: "pointer",
+                  color: "error.main",
+                }}
+              />
+            ) : (
+              <FavoriteBorderIcon
+                onClick={handleIconClick}
+                sx={{
+                  position: "absolute",
+                  zIndex: 5,
+                  cursor: "pointer",
+                  color: "error.main",
+                }}
+              />
+            )}
+          </Tooltip>
+        </span>
+      ) : (
+        <span></span>
+      )}
+      {Array.isArray(img) && img.length > 0 ? (
         <Carousel
           autoPlay={false}
           animation="slide"

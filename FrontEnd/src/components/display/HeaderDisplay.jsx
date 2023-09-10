@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
+  AppBar,
+  Toolbar,
+  Button,
+  Container,
   Box,
   Tabs,
   IconButton,
@@ -16,15 +16,34 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
 import { companyLogo } from "../../utils/theme";
+import UserFavoriteContainer from "../../pages/container/UserFavoriteContainer"
 
-const HeaderDisplay = ({ hasAccessToken }) => {
+const HeaderDisplay = ({ accessToken }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [randomBackgroundColor, setRandomBackgroundColor] = useState(
     getRandomColor()
   );
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [isFavoritesOpen, setFavoritesOpen] = useState(false); 
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    setIsSticky(scrollY >= headerHeight);
+  };
+
+  const headerHeight = 500;
 
   const handleMobileMenuOpen = () => {
     setMobileMenuOpen(true);
@@ -34,36 +53,34 @@ const HeaderDisplay = ({ hasAccessToken }) => {
     setMobileMenuOpen(false);
   };
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
-    setIsSticky(scrollY >= headerHeight);
-  };
-
-  const headerHeight = 500;
-
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("name");
-    localStorage.removeItem("lastName");
-    localStorage.removeItem("email");
-    localStorage.removeItem("tokenType");
+    removeCookie("token", { path: "/" });
     window.location.reload();
   };
 
-  const initials =
-    localStorage.getItem("name")?.charAt(0) +
-    localStorage.getItem("lastName")?.charAt(0);
-  const userFullName = `${localStorage.getItem("name")} ${localStorage.getItem(
-    "lastName"
-  )}`;
-  const userEmail = localStorage.getItem("email");
+  let decodedToken = null;
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  if (accessToken !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+
+  const initials =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? decodedToken.name.charAt(0) + decodedToken.lastName.charAt(0)
+      : "";
+  const userFullName =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? `${decodedToken.name} ${decodedToken.lastName}`
+      : "";
+  const userEmail = decodedToken && decodedToken.email ? decodedToken.email : "";
+
+  const handleFavoritesClick = () => {
+    if (isFavoritesOpen) {
+      window.location.href = "/";
+    } else {
+      setFavoritesOpen(true);
+    }
+  };  
 
   function getRandomColor() {
     const letters = "0123456789ABCDEF";
@@ -93,7 +110,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
               onClose={handleMobileMenuClose}
             >
               <List>
-                {hasAccessToken ? (
+                {accessToken !== undefined ? (
                   <>
                     <ListItem button onClick={handleMobileMenuClose}>
                       <ListItemText primary="LOG OUT" onClick={handleLogout} />
@@ -175,7 +192,6 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                 justifyContent: "space-evenly",
               }}
             >
-              {/* ... Código de las Tabs ... */}
             </Tabs>
 
             <Box
@@ -187,22 +203,23 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                 marginLeft: "auto",
               }}
             >
-              {hasAccessToken ? (
+              {accessToken !== undefined ? (
                 <>
-                  <Button
-                    component={Link}
-                    to="/"
-                  >
+                  <Button component={Link} to="/">
                     HOME
                   </Button>
-                  {localStorage.getItem("role") === "ADMIN" && (
-                  <Button component={Link} to="/admin/bundles" variant="contained"
-                  sx={{
-                    "&:hover": { backgroundColor: "blue" },
-                    transition: "background-color 0.3s",
-                  }}>
-                    Administration Panel
-                  </Button>
+                  {decodedToken && decodedToken.role === "ADMIN" && (
+                    <Button
+                      component={Link}
+                      to="/admin/bundles"
+                      variant="contained"
+                      sx={{
+                        "&:hover": { backgroundColor: "blue" },
+                        transition: "background-color 0.3s",
+                      }}
+                    >
+                      Administration Panel
+                    </Button>
                   )}
                   <Button
                     variant="contained"
@@ -212,10 +229,9 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                       transition: "background-color 0.3s",
                     }}
                   >
-                    
                     LOG OUT
                   </Button>
-                  
+
                   <Avatar
                     onClick={() => setUserDrawerOpen(true)}
                     sx={{
@@ -232,10 +248,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
                 </>
               ) : (
                 <>
-                  <Button
-                    component={Link}
-                    to="/"
-                  >
+                  <Button component={Link} to="/">
                     HOME
                   </Button>
                   <Button component={Link} to="/user-login" variant="contained">
@@ -261,7 +274,6 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           </Toolbar>
         </Container>
       </AppBar>
-
       <Drawer
         anchor="right"
         open={isUserDrawerOpen}
@@ -288,8 +300,16 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           <Typography>
             <h4>{userEmail}</h4>
           </Typography>
-          <Typography>
-            <p>Favourites</p>
+          <Typography
+            component={Link} 
+            to="/favorites"
+            sx={{
+              color: "black",
+              cursor: "pointer",
+              textDecoration: "none"
+            }}
+          >
+            Favorites
           </Typography>
           <Typography>
             <p>Reservations</p>
@@ -300,7 +320,7 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           >
             Log out
           </Typography>
-          {!hasAccessToken && (
+          {(accessToken === null || accessToken === undefined)  && (
             <>
               <Typography
                 component={Link}
@@ -331,6 +351,8 @@ const HeaderDisplay = ({ hasAccessToken }) => {
           )}
         </Box>
       </Drawer>
+
+      {isFavoritesOpen && <UserFavoriteContainer accessToken={accessToken} />}
     </>
   );
 };

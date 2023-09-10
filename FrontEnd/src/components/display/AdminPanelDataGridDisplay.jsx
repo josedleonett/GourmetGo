@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MaterialReactTable } from "material-react-table";
 import axios from "axios";
 import { useFormik } from "formik";
@@ -31,6 +31,7 @@ import {
   Cancel,
   AddAPhoto,
 } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
 // export const AdminPanelDataGridLoader = async (API_BASE_URL, filter) => {
@@ -60,12 +61,21 @@ import {
 //   return;
 // };
 
-const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
+const AdminPanelDataGridDisplay = ({
+  props,
+  filter,
+  renderDetailPanel,
+  allowEditModal,
+  allowCreateModal,
+}) => {
   const API_BASE_URL = props.API_BASE_URL;
   const API_BASE_IMAGE_URL = props.API_BASE_IMAGE_URL;
   const columns = useMemo(() => props.columns);
-
+  const [initialState, setInitialState] = useState(props.initialState);
   const [data, setData] = useState([]);
+
+  const [isAllowEditModal, setIsAllowEditModal] = useState(true)
+  const [isAllowCreateModal, setIsAllowCreateModal] = useState(true)
   const [rowToUpdate, setRowToUpdate] = useState({});
   const [rowToDelete, setRowToDelete] = useState(-1);
   const [validationErrors, setValidationErrors] = useState({});
@@ -77,20 +87,23 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isFormDeleting, setIsFormDeleting] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     setIsLoading(true);
     setIsRefetching(true);
+    setIsAllowCreateModal(props.allowCreateModal);
+    console.log(isAllowCreateModal);
+    setIsAllowEditModal(props.allowEditModal);
 
     getApiData();
-  }, [props]);
+  }, [location.pathname, props]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
 
     try {
       const response = await axios.get(API_BASE_URL);
-
-      console.log(response.data);
 
       if (filter != undefined) {
         const dataFiltered = response.data.filter(
@@ -100,7 +113,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
       } else {
         setData(response.data);
       }
-      //console.log(response.data);
     } catch (error) {
       setIsError(true);
       console.error("Error fetching data:", error);
@@ -112,8 +124,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
   };
 
   const postApiData = async (propertiesToCreate) => {
-    console.log(propertiesToCreate);
-
     try {
       const formData = new FormData();
 
@@ -128,14 +138,9 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           formData.append(key, propertiesToCreate[key]);
         }
       }
-
-      //CHECK OUTPUT
-      console.log("POSTING");
       for (const [key, value] of formData.entries()) {
         console.log(key, value);
       }
-      console.log("POSTING");
-      //CHECK OUTPUT
 
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
@@ -211,24 +216,6 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
     (row) => {
       setIsDeleteModalOpen(true);
       setRowToDelete(row.original.id);
-
-      // if (isDeleteConfirmed) {
-      //   const responseCode = deleteApiData(row.original.id);
-      //   console.log(responseCode);
-
-      //   if (responseCode === 204) {
-      //     const updatedData = data.filter(
-      //       (item) => item.id !== row.original.id
-      //     );
-      //     setData(updatedData);
-
-      //     setIsDeleteModalOpen(false);
-      //     setIsDeleteConfirmed(false);
-      //     setIsFormDeleting(false);
-      //   }
-
-      //   setIsFormDeleting(false);
-      // }
     },
     [data]
   );
@@ -265,8 +252,8 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
           isLoading,
           showProgressBars: isRefetching,
           showAlertBanner: isError,
-          //columnVisibility: { id: false, galleryImages: false },
         }}
+        initialState={initialState}
         muiTableContainerProps={({ table }) => ({
           sx: {
             height: `calc(100% - ${table.refs.topToolbarRef.current?.offsetHeight}px - ${table.refs.bottomToolbarRef.current?.offsetHeight}px)`,
@@ -280,22 +267,33 @@ const AdminPanelDataGridDisplay = ({ props, filter, renderDetailPanel }) => {
         }}
         renderDetailPanel={renderDetailPanel}
         renderTopToolbarCustomActions={() => (
-          <Button
-            color="primary"
-            onClick={() => setIsModalOpen(true)}
-            variant="contained"
-            startIcon={<Add />}
-          >
-            Create new item
-          </Button>
+          <>
+            {isAllowCreateModal === false ? (
+              <span />
+            ) : (
+              <Button
+                color="primary"
+                onClick={() => setIsModalOpen(true)}
+                variant="contained"
+                startIcon={<Add />}
+              >
+                Create new item
+              </Button>
+            )}
+          </>
         )}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => handleUpdateRow(row.original)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
+            {isAllowEditModal === false ? (
+              <span />
+            ) : (
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => handleUpdateRow(row.original)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+
             <Tooltip arrow placement="right" title="Delete">
               <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                 <Delete />
@@ -361,8 +359,6 @@ export const CreateUpdateItemModal = ({
     ? "SAVE"
     : "UPDATE";
 
-  console.log(rowToUpdate);
-
   const formik = useFormik({
     initialValues: rowToUpdate,
     enableReinitialize: true,
@@ -377,7 +373,6 @@ export const CreateUpdateItemModal = ({
         const convertedToArrayPlates = convertPropertiesToArray(values);
         if (convertedToArrayPlates !== null) {
           responseCode = await onSubmitCreateHandler(convertedToArrayPlates);
-          console.log(responseCode);
         }
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
@@ -479,7 +474,11 @@ export const CreateUpdateItemModal = ({
         outputObject[propertyName] &&
         typeof outputObject[propertyName] === "object"
       ) {
-        outputObject[propertyName] = [outputObject[propertyName].name];
+        if (outputObject[propertyName].name != undefined ) {
+          outputObject[propertyName] = [outputObject[propertyName].name];
+        } else {
+          outputObject[propertyName] = [outputObject[propertyName].id];
+        }
       }
     }
 
@@ -504,7 +503,7 @@ export const CreateUpdateItemModal = ({
 
   return (
     <>
-      <Dialog open={open}>
+      <Dialog open={open} maxWidth="xl">
         <DialogTitle textAlign="center">
           {isRowToUpdateEmpty ? "Create" : "Update"} New Item
         </DialogTitle>
@@ -513,7 +512,8 @@ export const CreateUpdateItemModal = ({
             <Stack
               sx={{
                 width: "100%",
-                minWidth: { xs: "300px", sm: "360px", md: "400px" },
+                minWidth: { xs: "700px", sm: "700px", md: "700px" },
+                maxWidth: { xs: "700px", sm: "700px", md: "700px" },
                 gap: "1.5rem",
               }}
             >
@@ -547,27 +547,6 @@ export const CreateUpdateItemModal = ({
                           }
                           multiple={column.isMultiple}
                         />
-                        {/* <Input
-                          id={column.accessorKey}
-                          type="file"
-                          key={column.accessorKey}
-                          label={column.header}
-                          name={column.categoryImg || column.accessorKey}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              column.accessorKey,
-                              column.isMultiple === true
-                                ? e.currentTarget.files
-                                : e.currentTarget.files[0]
-                            )
-                          }
-                          disabled={
-                            isFormSending && column.enableEditing === false
-                          }
-                          inputProps={{
-                            multiple: column.isMultiple,
-                          }}
-                        /> */}
                       </Button>
                       {formik.values[column.accessorKey] && (
                         <Box maxHeight={150} maxWidth={150}>
@@ -588,7 +567,6 @@ export const CreateUpdateItemModal = ({
                             }}
                             onLoad={() => {
                               setIsImageLoaded(true);
-                              console.log("Image loaded!");
                             }}
                           />
                         </Box>
@@ -603,27 +581,36 @@ export const CreateUpdateItemModal = ({
                       <Autocomplete
                         multiple
                         autoComplete
-                        //id={column.accessorKey}
                         key={index}
-                        value={formik.values[column.accessorKey] || []}
-                        //defaultValue={formik.values[column.accessorKey] || []}
-                        defaultValue={[1, 2, 3, 4, 5, 6]}
+                        defaultValue={
+                          formik.values[column.accessorKey]
+                          &&
+                          formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
+                        }
                         filterSelectedOptions
                         options={column.options}
                         renderInput={(params) => (
                           <TextField
+                            {...params}
+                            value={
+                              formik.values[column.accessorKey]
+                              &&
+                              formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
+                              // &&
+                              // []
+                            }
                             key={`input-${index}`}
                             name={column.header}
                             label={column.header}
                             disabled={
                               isFormSending && column.enableEditing === false
                             }
-                            {...params}
                           />
                         )}
                         renderTags={(value, getTagProps) =>
                           value.map((option, index) => (
                             <Chip
+                            {...getTagProps({ index })}
                               key={`chip-${index}`}
                               variant="filled"
                               label={option}
@@ -722,7 +709,6 @@ const DeleteItemModal = ({
   const onConfirmHandler = async () => {
     setIsFormDeleting(true);
     const responseCode = await onSubmitDeleteHandler(rowToDelete);
-    console.log(responseCode);
 
     if (responseCode === 204) {
       const updatedData = data.filter((item) => item.id !== rowToDelete);
@@ -746,7 +732,6 @@ const DeleteItemModal = ({
     setIsFormDeleting(false);
   };
 
-  //minWidth: { xs: "300px", sm: "360px", md: "400px" },
   return (
     <>
       <Dialog open={isOpen} onClose={onClose}>

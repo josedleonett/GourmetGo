@@ -1,9 +1,12 @@
 import HeaderDisplay from "../display/HeaderDisplay";
+import { useCookies } from 'react-cookie';
 
 const HeaderContainer = () => {
-  const accessToken = localStorage.getItem("accessToken");
+  
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const accessToken = cookies.token
 
-  return <HeaderDisplay hasAccessToken={accessToken !== null} />;
+  return <HeaderDisplay accessToken={accessToken} />;
 };
 
 export default HeaderContainer;

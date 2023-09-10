@@ -31,7 +31,9 @@ public class BundleCreateRequest {
     @NotNull
     private List<String> drinks;
     @NotNull
-    private List<Long> characteristics;
+    private List<String> characteristics;
     @NotNull
-    private List<Long> categories;
+    private List<String> categories;
+
+    private String terms;
 }

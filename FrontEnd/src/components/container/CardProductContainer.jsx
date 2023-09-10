@@ -1,4 +1,3 @@
-import React from "react";
 import CardProductDisplay from "../display/CardProductDisplay";
 
 const  CardProductContainer = ({
@@ -8,7 +7,9 @@ const  CardProductContainer = ({
   description,
   categoryList,
   rating,
+  favorite
 }) => {
+
   return (
     <CardProductDisplay
       key={id}
@@ -18,6 +19,7 @@ const  CardProductContainer = ({
       description={description}
       categoryList={categoryList}
       rating={rating}
+      favorite={favorite}
     />
   );
 };

@@ -1,20 +1,35 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, Grid, useTheme, useMediaQuery } from "@mui/material";
+import { Container, useTheme, useMediaQuery, Stack, Skeleton } from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
+import { useState } from "react";
 
-const HomeDisplay = ({ categories, bundles }) => {
+const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
+  const CardSkeleton = () => {
+    return(
+      <Stack spacing={1}>
+      <Skeleton variant="rectangular" width={210} height={40} />
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" width={210} height={60} />
+      <Skeleton variant="rounded" width={210} height={60} />
+    </Stack>
+    )
+  }
+
+  const updateFilteredOptions = (options) => {
+    setFilteredOptions(options);
+  };
 
   return (
     <>
-      <SearchBannerContainer filterList={categories} />
-
+      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList} onUpdateFilteredOptions={updateFilteredOptions}/>
+      
       <Box component="section">
         <Typography
           variant="h4"
@@ -29,8 +44,16 @@ const HomeDisplay = ({ categories, bundles }) => {
           Categories
         </Typography>
         <Container maxWidth="100vw">
-          <CarouselCategoryContainer elementsList={categories} />
-        </Container>
+        {categories && categories.length > 0 ? (
+            <CarouselCategoryContainer elementsList={categories} />
+          ) : (
+            <Box sx={{display: "flex", justifyContent: "space-evenly"}}>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </Box>
+          )}
+          </Container>
       </Box>
 
       <Box component="section">

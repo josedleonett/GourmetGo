@@ -2,6 +2,7 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -28,4 +29,8 @@ public interface IBundleRepository extends JpaRepository<Bundle, Long> {
 
     @Query("SELECT b.id FROM Bundle b")
     List<Long> findAllIds();
+
+    @Modifying
+    @Query(value = "DELETE FROM user_favorite_bundles WHERE bundle_id = ?1", nativeQuery = true)
+    void deleteUserFavoriteBundlesByBundleId(Long bundleId);
 }

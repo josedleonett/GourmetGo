@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -47,6 +47,18 @@ public class UserEntity implements UserDetails {
     private boolean isConfirmed;
     private int emailResendAttempts = 0;
     private LocalDateTime lastEmailResendDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_bundles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bundle_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "bundle_id"})
+    )
+    private Set<Bundle> favoriteBundles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

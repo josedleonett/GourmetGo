@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { Box, TextField, Button, Typography, useMediaQuery  } from "@mui/material";
 import Swal from 'sweetalert2';
-import jwtDecode from 'jwt-decode';
 
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -26,11 +26,14 @@ const UserLogInDisplay = () => {
     username: "",
   });
 
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://localhost:8080/auth/login", {  
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,20 +44,7 @@ const UserLogInDisplay = () => {
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
-        
-        // Guarda el token en el local storage
-        localStorage.setItem("tokenType", data.tokenType);
-        localStorage.setItem("accessToken", data.accessToken);
-      
-        // Decodifica el token para obtener los datos
-        const decodedToken = jwtDecode(data.accessToken);
-      
-        // Guarda los datos en el local storage
-        localStorage.setItem("name", decodedToken.name);
-        localStorage.setItem("lastName", decodedToken.lastName);
-        localStorage.setItem("email", decodedToken.email);
-        localStorage.setItem("role", decodedToken.role);
-      
+        setCookie("token", data.accessToken, { path: '/' })
         window.location.href = "/";
       } else {
         Swal.fire({

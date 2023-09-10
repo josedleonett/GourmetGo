@@ -1,4 +1,3 @@
-import React from 'react'
 import FooterDisplay from '../display/FooterDisplay'
 
 const FooterContainer = () => {

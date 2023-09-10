@@ -76,6 +76,12 @@ public class Bundle {
     )
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "bundle")
+    private List<Booking> bookings;
+
     private Double rating;
+    private Integer totalRates;
+
+    private String terms;
 
 }

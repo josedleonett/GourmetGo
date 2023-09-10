@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.ERole;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.RoleEntity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
@@ -7,12 +8,12 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.UserDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.UserNotFoundException;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IRoleRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +28,14 @@ public class UserServiceImpl implements IUserService {
 
     private static final String NAME = "User";
     private final IUserRepository userRepository;
-
     private final IRoleRepository roleRepository;
+
+    private final IBundleRepository bundleRepository;
     private final ModelMapper mapper;
 
 
     //===================Find===================//
     @Override
-    @Cacheable(value = "searchAllUser", unless = "#result == null || #result.isEmpty()")
     public List<UserDto> searchAllUser() {
         return userRepository.findAll().stream()
                 .map(user -> {
@@ -53,7 +54,6 @@ public class UserServiceImpl implements IUserService {
 
     //===================BY Id===================//
     @Override
-    @Cacheable(value = "searchUserById", unless = "#result == null")
     public UserDto searchUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         UserDto userDto = mapper.map(user, UserDto.class);
@@ -69,7 +69,6 @@ public class UserServiceImpl implements IUserService {
 
     //===================By Email===================//
     @Override
-    @Cacheable(value = "searchUserByEmail", unless = "#result == null")
     public UserDto searchUserByEmail(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
@@ -123,14 +122,12 @@ public class UserServiceImpl implements IUserService {
 
     //===================Delete===================//
     @Override
-    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
-    public void deleteUserById(Long id) throws Exception {
+     public void deleteUserById(Long id) throws Exception {
         userRepository.deleteById(id);
     }
 
     //===================Update===================//
     @Override
-    @CacheEvict(value = {"searchAllUser","searchUserById","searchUserByEmail", "searchUsersByNameOrLastName"}, allEntries = true, beforeInvocation = false)
     public void modifyUser(Long userId, UserUpdateRequest updateRequest) throws RoleNotFoundException {
         Optional<UserEntity> optionalUser = userRepository.findById(userId);
 
@@ -165,5 +162,27 @@ public class UserServiceImpl implements IUserService {
         } else {
             throw new UserNotFoundException("User with id '" + userId + "' not found");
         }
+    }
+
+    //===================Add Favorite===================//
+    public void addBundleToFavorites(Long userId, Long bundleId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        Bundle bundle = bundleRepository.findById(bundleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bundle", bundleId));
+
+        user.getFavoriteBundles().add(bundle);
+        userRepository.save(user);
+    }
+
+    //===================Del Favorite===================//
+    public void removeBundleFromFavorites(Long userId, Long bundleId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        Bundle bundle = bundleRepository.findById(bundleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bundle", bundleId));
+
+        user.getFavoriteBundles().remove(bundle);
+        userRepository.save(user);
     }
 }

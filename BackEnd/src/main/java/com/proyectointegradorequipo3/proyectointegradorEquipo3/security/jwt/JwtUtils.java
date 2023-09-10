@@ -34,6 +34,7 @@ public class JwtUtils {
         claims.put("email", userEntity.getEmail());
         claims.put("name", userEntity.getName());
         claims.put("lastName", userEntity.getLastName());
+        claims.put("id", userEntity.getId());
         claims.put("role", userEntity.getAuthorities().iterator().next().getAuthority());
 
         return Jwts.builder()
