@@ -26,12 +26,15 @@ import {
   Tooltip,
   DialogContent,
   DialogContentText,
-  DialogActions,  
+  DialogActions,
   Alert,
   AlertTitle,
   Snackbar,
+  Avatar,
+  Toolbar,
+  LinearProgress,
 } from "@mui/material";
-import { cateringPackages } from "../../test/dataApiSample";
+import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -154,7 +157,7 @@ const handleFavoriteClick = () => {
   const newTotalRatings = totalRatings + 1;
   const newAverageRating =
   (averageRating * (totalRatings) + newValue) / newTotalRatings;
-  
+
     setTotalRatings(newTotalRatings);
     setAverageRating(newAverageRating);
     fetch(`http://localhost:8080/v1/bundle/rating/${productData.id}?rating=${newAverageRating}&totalRates=${newTotalRatings}`, {
@@ -211,7 +214,7 @@ const handleFavoriteClick = () => {
 
     return unavailableDates.includes(formattedDate);
   };
-  const shareUrl = `http://127.0.0.1:5173/product/${id}`;
+  const shareUrl = window.location.href;
 
   const [openSocialModal, setOpenSocialModal] = useState(false);
 
@@ -223,8 +226,14 @@ const handleFavoriteClick = () => {
     setOpenSocialModal(false);
   };
 
+  function getFullnameInitials(fullname) {
+    const words = fullname.split(' ');
+    const fullnameInitials = words.slice(0, 2).map(word => word[0].toUpperCase()).join('');
+    return fullnameInitials;
+  }
+
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box padding={2}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <IconButton
           aria-label="Back"
@@ -243,7 +252,7 @@ const handleFavoriteClick = () => {
       <Container>
         <Grid container padding={2} lg={12}>
           <Box>
-            <div style={{ display: "flex" }}>
+            <Box display="flex" minWidth="30vw">
               <Typography variant="h4">
                 {productData ? productData.name : ""}
               </Typography>
@@ -277,7 +286,7 @@ const handleFavoriteClick = () => {
                           }}
                         />
                       ) : (
-                        <FavoriteBorderIcon 
+                        <FavoriteBorderIcon
                           onClick={handleFavoriteClick}
                           sx={{
                             zIndex: 5,
@@ -289,7 +298,7 @@ const handleFavoriteClick = () => {
                     </Tooltip>
                   </span>
                 ) : (
-                  <span></span> 
+                  <span></span>
                 )}
               </IconButton>
               <IconButton
@@ -345,7 +354,7 @@ const handleFavoriteClick = () => {
                   <div style={{ margin: 12 }}></div>{" "}
                 </div>
               </Dialog>
-            </div>
+            </Box>
             <Typography variant="subtitle1" fontStyle="italic" fon>
               {productData ? productData.description : ""}
             </Typography>
@@ -361,7 +370,7 @@ const handleFavoriteClick = () => {
                       <BiDish size="30" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Main course:"
+                      primary="Starter:"
                       secondary={
                         <>
                           {productData
@@ -506,13 +515,12 @@ const handleFavoriteClick = () => {
                           }}
                           align="justify"
                         >
-                          {
-                            productData
-                              ? productData.terms !== null && productData.terms !== ""
-                                ? productData.terms
-                                : "Contact us to know our terms and conditions for this bundle"
-                              : "Error loading terms and conditions.."
-                          }
+                          {productData
+                            ? productData.terms !== null &&
+                              productData.terms !== ""
+                              ? productData.terms
+                              : "Contact us to know our terms and conditions for this bundle"
+                            : "Error loading terms and conditions.."}
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
@@ -550,7 +558,9 @@ const handleFavoriteClick = () => {
                         onAccept={handleDateAccept}
                         shouldDisableDate={isDateUnavailable}
                         readOnly={!isUserLoggedIn}
-                        renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
+                        renderInput={(props) => (
+                          <input {...props} readOnly={!isUserLoggedIn} />
+                        )}
                       />
                     </DemoItem>
                   </DemoContainer>
@@ -559,11 +569,18 @@ const handleFavoriteClick = () => {
                   variant="contained"
                   color="secondary"
                   onClick={openReserveDialog}
-                  disabled={!isUserLoggedIn} 
+                  disabled={!isUserLoggedIn}
                 >
                   RESERVE
                 </Button>
-                <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", gap: "2vw"}}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "2vw",
+                  }}
+                >
                   <Rating
                     name="combined-rating"
                     value={userRating !== null ? userRating : averageRating}
@@ -575,7 +592,11 @@ const handleFavoriteClick = () => {
                     }}
                   />
                   <Typography>
-                    {userRating !== null ? userRating.toFixed(1) : (averageRating !== null ? averageRating.toFixed(1) : '')}
+                    {userRating !== null
+                      ? userRating.toFixed(1)
+                      : averageRating !== null
+                      ? averageRating.toFixed(1)
+                      : ""}
                   </Typography>
                 </Box>
               </Container>
@@ -583,6 +604,132 @@ const handleFavoriteClick = () => {
           </Grid>
         </Grid>
         <Box height={50} />
+
+        <Box width="lg">
+          <Typography variant="h6">Reviews:</Typography>
+
+          <Box>
+            <Stack>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
+                <Typography>5</Typography>
+                <LinearProgress
+                  value={50}
+                  variant="determinate"
+                  color="warning"
+                  sx={{
+                    width: "100%",
+                    height: 10,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.grey[200],
+                  }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
+                <Typography>4</Typography>
+                <LinearProgress
+                  value={20}
+                  variant="determinate"
+                  color="warning"
+                  sx={{
+                    width: "100%",
+                    height: 10,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.grey[200],
+                  }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
+                <Typography>3</Typography>
+                <LinearProgress
+                  value={30}
+                  variant="determinate"
+                  color="warning"
+                  sx={{
+                    width: "100%",
+                    height: 10,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.grey[200],
+                  }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
+                <Typography>2</Typography>
+                <LinearProgress
+                  value={70}
+                  variant="determinate"
+                  color="warning"
+                  sx={{
+                    width: "100%",
+                    height: 10,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.grey[200],
+                  }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
+                <Typography>1</Typography>
+                <LinearProgress
+                  value={60}
+                  variant="determinate"
+                  color="warning"
+                  sx={{
+                    width: "100%",
+                    height: 10,
+                    borderRadius: 5,
+                    background: (theme) => theme.palette.grey[200],
+                  }}
+                />
+              </Box>
+            </Stack>
+          </Box>
+
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            {bundleComments.map((comment, index) => (
+              <Box key={index} pt={1} pb={1}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{getFullnameInitials(comment.name)}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={comment.name}
+                    secondary={comment.date}
+                  />
+                  <Rating readOnly value={comment.rating} />
+                </ListItem>
+                <ListItemText
+                  primary={comment.title}
+                  secondary={comment.body}
+                />
+                <Divider sx={{ paddingTop: 3 }} />
+              </Box>
+            ))}
+          </List>
+        </Box>
       </Container>
       {showWarning && (
         <Snackbar
@@ -590,7 +737,7 @@ const handleFavoriteClick = () => {
           autoHideDuration={3000} // Controla la duración del Snackbar
           onClose={() => setShowWarning(false)}
         >
-           <Alert severity="warning">
+          <Alert severity="warning">
             <AlertTitle>Error</AlertTitle>
             You need to be logged in to perform this action.
           </Alert>

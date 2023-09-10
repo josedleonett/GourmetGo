@@ -1,5 +1,113 @@
 //IN THIS FILE WE CAN PUT THE API DATA RESPONSE SAMPLES-
 
+export const bundleComments = [
+  {
+    name: "John Smith",
+    date: "2023-09-09",
+    rating: 4.5,
+    title: "Excellent service",
+    body: "The catering service was truly amazing. The food was delicious, and the staff was very attentive. I definitely recommend it. The variety of dishes they offered left everyone at the event satisfied. The presentation was top-notch, and the overall experience exceeded my expectations.",
+  },
+  {
+    name: "Jane Doe",
+    date: "2023-09-08",
+    rating: 3.0,
+    title: "Good but expensive",
+    body: "The catering was good overall, but it seemed a bit expensive for what I got. The food was fine, but I expected more for the price. However, their professionalism and punctuality were commendable. I would consider them again for special occasions.",
+  },
+  {
+    name: "Michael Johnson",
+    date: "2023-09-07",
+    rating: 5.0,
+    title: "Incredible experience!",
+    body: "I can't say enough about this catering service. From the presentation of the food to the taste, everything was perfect. I will definitely hire them again. The attention to detail and the care they put into every dish were truly impressive. It was a culinary delight.",
+  },
+  {
+    name: "Susan Williams",
+    date: "2023-09-06",
+    rating: 4.0,
+    title: "Very tasty",
+    body: "The catering offered a variety of delicious options. I especially loved the dessert. The only downside was that they arrived a bit late. Nevertheless, the quality of the food made up for the delay. It was a gastronomic journey.",
+  },
+  {
+    name: "David Brown",
+    date: "2023-09-05",
+    rating: 2.5,
+    title: "Average",
+    body: "I expected more from this catering service. The food was okay, but it was nothing extraordinary. I'm not sure if I would hire them again. The service was decent, but it lacked that wow factor.",
+  },
+  {
+    name: "Sarah Taylor",
+    date: "2023-09-04",
+    rating: 4.0,
+    title: "Great customer service",
+    body: "The catering team was very professional and attentive to our needs. The food was delicious, and the presentation was elegant. They went the extra mile to make our event special.",
+  },
+  {
+    name: "William Anderson",
+    date: "2023-09-03",
+    rating: 3.5,
+    title: "Reasonable price",
+    body: "The catering offered good value for money. It wasn't expensive, and the food was well-prepared. It was a solid choice for our event. The guests appreciated the diverse menu.",
+  },
+  {
+    name: "Emily Jackson",
+    date: "2023-09-02",
+    rating: 5.0,
+    title: "Highly recommended!",
+    body: "I have nothing but praise for this catering service. The food, the presentation, and the customer service were exceptional. I will definitely hire them again. They made our celebration unforgettable.",
+  },
+  {
+    name: "Robert Martin",
+    date: "2023-09-01",
+    rating: 2.0,
+    title: "Disappointing",
+    body: "Unfortunately, the catering service didn't meet our expectations. The food was cold, and the presentation was sloppy. I wouldn't recommend it. Our experience left a lot to be desired.",
+  },
+  {
+    name: "Elizabeth Turner",
+    date: "2023-08-31",
+    rating: 4.5,
+    title: "Great variety of options",
+    body: "This catering service offered a wide selection of dishes that pleased all the guests. The quality of the food was excellent. The diverse menu choices were a hit, and everyone found something they enjoyed.",
+  },
+  {
+    name: "Daniel White",
+    date: "2023-08-30",
+    rating: 3.0,
+    title: "Satisfactory but not surprising",
+    body: "The catering service met our needs, but it didn't stand out in any way. The food was decent, but not memorable. It was a satisfactory experience, but nothing exceptional.",
+  },
+  {
+    name: "Karen Clark",
+    date: "2023-08-29",
+    rating: 4.0,
+    title: "Good choice for events",
+    body: "This catering service turned out to be a smart choice for our event. The food was tasty, and the logistics were well-coordinated. Our guests were impressed with the quality of the service.",
+  },
+  {
+    name: "Richard Garcia",
+    date: "2023-08-28",
+    rating: 4.0,
+    title: "Exceptional service",
+    body: "The staff of this catering service was exceptionally friendly and helpful. They made our event even more special. The attention they paid to every detail was truly exceptional.",
+  },
+  {
+    name: "Jennifer Martinez",
+    date: "2023-08-27",
+    rating: 3.5,
+    title: "Acceptable",
+    body: "The catering service was acceptable in terms of food and service, but it didn't excel in any particular way. Nothing bad to say, but nothing extraordinary either. It was a decent experience overall.",
+  },
+  {
+    name: "Thomas Davis",
+    date: "2023-08-26",
+    rating: 4.5,
+    title: "Very satisfied",
+    body: "I was very satisfied with the catering service. The food was delicious, and the customer service was excellent. I will definitely hire them again. They made our celebration memorable.",
+  },
+];
+
 export const categories = [
   {
     id: 1,
