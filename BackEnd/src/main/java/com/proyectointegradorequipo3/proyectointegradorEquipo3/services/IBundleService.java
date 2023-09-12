@@ -16,6 +16,6 @@ public interface IBundleService {
 
     void deleteBundleById(Long id);
 
-    Long saveBundle(BundleCreateRequest request) throws InterruptedException, ExecutionException;
+    Long saveBundle(BundleCreateRequest request) throws Exception;
 
 }
