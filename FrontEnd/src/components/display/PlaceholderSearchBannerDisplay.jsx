@@ -18,10 +18,8 @@ const PlaceholderSearchBannerDisplay = ({
   const searchSelectOnChange = (event, newValue) => {
     setSelectedFilters(newValue);
     setIsCategorySelected(newValue.length > 0);
-    onSelectedFiltersChange(newValue);
+    handleCategorySelect(newValue);
   };
-  
-
 
   return (
     <>

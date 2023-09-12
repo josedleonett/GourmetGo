@@ -315,7 +315,7 @@ public class BundleServiceImpl implements IBundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
 
-        s3Service.deleteObject(bundle.getImage());
+        s3Service.  deleteObject(bundle.getImage());
 
         List<CompletableFuture<Void>> futures = bundle.getGalleryImages().stream()
                 .map(image -> CompletableFuture.runAsync(() -> s3Service.deleteObject(image)))
