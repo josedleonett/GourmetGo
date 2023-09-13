@@ -2,6 +2,7 @@
 
 export const bundleComments = [
   {
+    userId: 125,
     name: "John Smith",
     date: "2023-09-09",
     rating: 4.5,
