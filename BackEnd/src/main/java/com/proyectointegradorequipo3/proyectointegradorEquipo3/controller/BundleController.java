@@ -40,10 +40,17 @@ public class BundleController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
-                                             @RequestPart MultipartFile image,
-                                             @RequestPart List<MultipartFile> galleryImages) throws ExecutionException, InterruptedException {
-        request.setImage(image);
-        request.setGalleryImages(galleryImages);
+                                             @RequestPart(required = false) MultipartFile image,
+                                             @RequestPart(required = false) List<MultipartFile> galleryImages)
+            throws Exception {
+
+        if (image != null) {
+            request.setImage(image);
+        }
+
+        if (galleryImages != null && !galleryImages.isEmpty()) {
+            request.setGalleryImages(galleryImages);
+        }
 
         Long bundleId = bundleService.saveBundle(request);
 
@@ -51,6 +58,7 @@ public class BundleController {
                 .path("/{id}").buildAndExpand(bundleId).toUri();
         return ResponseEntity.created(location).build();
     }
+
 
     //====================Display all====================//
 

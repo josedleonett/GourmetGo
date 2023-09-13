@@ -16,24 +16,14 @@ public class BundleCreateRequest {
 
     @NotBlank
     private String name;
-    @NotBlank
     private String description;
-    @NotBlank
     private MultipartFile image;
-    @NotNull
     private List<MultipartFile> galleryImages;
-    @NotNull
     private List<String> starter;
-    @NotNull
     private List<String> mainCourse;
-    @NotNull
     private List<String> desserts;
-    @NotNull
     private List<String> drinks;
-    @NotNull
     private List<String> characteristics;
-    @NotNull
     private List<String> categories;
-
     private String terms;
 }

@@ -18,17 +18,24 @@ const SearchBannerDisplay = ({
   selectedBundle,
   onBundleSelected, 
   onSearchIconClick,
-  keyPressNavigate
+  keyPressNavigate,
+  dates
 }) => {
   const searchInputRef = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [dates, setDates] = useState(null);
   const [categoryId, setCategoryId] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredOptionsState, setFilteredOptionsState] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState([]);
   const navigate = useNavigate();
+
+  const handleSelectedFiltersChange = (newSelectedFilters) => {
+    setSelectedFilter(newSelectedFilters);
+  };
+
+  console.log(dates)
 
   const clearSearchInput = () => {
     setSearchInput("");
@@ -64,13 +71,12 @@ const SearchBannerDisplay = ({
 
   const bundleNames = filterBundle.map((bundle) => bundle.name);
 
-  const selectedFiltersArray = selectedFilters
+  const selectedFiltersArray = selectedFilter
   .map((item) => Object.values(item.bundles))
   .flat();
 
-  const handleSelectedFiltersChange = (newSelectedFilters) => {
-    setSelectedFilters(newSelectedFilters);
-  };
+  console.log(selectedFiltersArray)
+
 
   const toggleCalendarVisibility = () => {
     setCalendarVisible(!isCalendarVisible);
@@ -79,20 +85,34 @@ const SearchBannerDisplay = ({
   const handleCloseCalendar = () => {
     setCalendarVisible(false);
   };
-  const handleDateAccept = (date) => {
-    setSelectedDate(date);
-    setCalendarVisible(false);
-  };
 
   const handleDateCancel = () => {
     handleCloseCalendar();
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleSendDate = () => {
+    if (selectedDate) {
+      console.log("Selected Date:", selectedDate.toISOString());
+    }
+  };
+
+  const handleDateAccept = (date) => {
+    const formattedDate = date.format("YYYY-MM-DD");
   };
 
   const isDateUnavailable = (date) => {
     if (!dates) {
       return false;
     }
-  }
+    const formattedDate = date.format("YYYY-MM-DD");
+    const unavailableDates = dates.map((item) => item.date);
+
+    return unavailableDates.includes(formattedDate);
+  };
 
   // Verificar si el ancho de la pantalla es menor que un cierto valor (por ejemplo, 600px)
   const isSmallScreen = useMediaQuery("(max-width:600px)");
@@ -137,14 +157,10 @@ const SearchBannerDisplay = ({
         {!isSmallScreen && ( // Renderiza PlaceholderSearchBannerDisplay solo si no es un dispositivo pequeño
           <PlaceholderSearchBannerDisplay
             filterList={filterList}
-            onSelectedFiltersChange={handleSelectedFiltersChange}
+            handleCategorySelect={handleSelectedFiltersChange}
           />
         )}
         {!isSmallScreen && (<Divider orientation="vertical" flexItem />)}
-        <SearchIcon
-          sx={{ padding: "8px", minWidth: "3%", cursor: "pointer" }}
-          onClick={handleSearchIconClick}
-        />
         <Autocomplete
           id="searchInput"
           options={selectedFiltersArray.length === 0 ? bundleNames : selectedFiltersArray}
@@ -172,6 +188,10 @@ const SearchBannerDisplay = ({
               inputRef={searchInputRef} 
             />
           )}
+        />
+        <SearchIcon
+          sx={{ padding: "8px", minWidth: "3%", cursor: "pointer" }}
+          onClick={handleSearchIconClick}
         />
       </FormControl>
     </Box>
