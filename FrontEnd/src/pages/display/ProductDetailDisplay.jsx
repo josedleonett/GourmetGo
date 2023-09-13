@@ -54,6 +54,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from '@mui/material/Rating';
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
+import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import * as Yup from "yup";
 
 const ProductDetailDisplay = ({
   productData,
@@ -127,19 +129,6 @@ const handleFavoriteClick = () => {
     }
   }, []);
 
-
-  const handleNotLoggedClick = () => {
-    if (cookies.token && cookies.token !== "") {
-      if (decodedToken) {
-        setIsUserLoggedIn(true);
-      } else {
-        setShowWarning(true);
-      }
-    } else {
-      setShowWarning(true);
-    }
-  };
-
   useEffect(() => {
     if (productData && typeof productData.ratings === 'number') {
       const initialAverageRating = productData.ratings || 0;
@@ -175,8 +164,13 @@ const handleFavoriteClick = () => {
   };
 
   const openReserveDialog = () => {
-    setOpenDialog(true);
+    const unavailableDates = dates.map((item) => item.date);
+    if (unavailableDates !== false) {
+      setOpenDialog(true);
+    }
   };
+
+  console.log(openDialog)
 
   const closeReserveDialog = () => {
     setOpenDialog(false);
@@ -203,6 +197,7 @@ const handleFavoriteClick = () => {
   };
 
   const isDateUnavailable = (date) => {
+    console.log(dates)
     if (!dates) {
       return false;
     }
@@ -222,6 +217,26 @@ const handleFavoriteClick = () => {
   const closeSocialModal = () => {
     setOpenSocialModal(false);
   };
+
+  const validationSchema = Yup.object().shape({
+    NumberDinners: Yup.number()
+      .required("Obligatory")
+      .positive("You need to enter a positive number")
+      .integer("Invalid number"),
+    drinks: Yup.array().of(Yup.number().integer("Debes ingresar un número entero")),
+  });
+
+  const initialValues = {
+    NumberDinners: "",
+    drinks: [],
+  };git
+  
+  const MyForm = () => {
+    const handleSubmit = (values) => {
+      // Aquí puedes realizar alguna acción con los valores del formulario
+      console.log("Valores del formulario:", values);
+    };
+  
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -457,7 +472,7 @@ const handleFavoriteClick = () => {
                       secondary={
                         <>
                           {productData
-                            ? productData.drinks.map((dessertsItem, index) => (
+                            ? productData.drinks.map((drinks, index) => (
                                 <div key={index}>
                                   <Typography
                                     sx={{ display: "inline" }}
@@ -465,7 +480,7 @@ const handleFavoriteClick = () => {
                                     variant="body2"
                                     color="text.primary"
                                   >
-                                    {dessertsItem.name}
+                                    {drinks.name}
                                   </Typography>
                                 </div>
                               ))
@@ -536,48 +551,117 @@ const handleFavoriteClick = () => {
               <Container
                 sx={{ display: "flex", flexDirection: "column", gap: 1 }}
               >
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  color={"secondary.main"}
-                ></Stack>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["MobileDatePicker"]}>
-                    <DemoItem label="Select reserve date">
-                      <MobileDatePicker
-                        defaultValue={dayjs()}
-                        onAccept={handleDateAccept}
-                        shouldDisableDate={isDateUnavailable}
-                        readOnly={!isUserLoggedIn}
-                        renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
+                {!openDialog ? (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["MobileDatePicker"]}>
+                      <DemoItem label="Select reserve date">
+                        <MobileDatePicker
+                          defaultValue={dayjs()}
+                          onAccept={handleDateAccept}
+                          shouldDisableDate={isDateUnavailable}
+                          readOnly={!isUserLoggedIn}
+                          renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
+                        />
+                      </DemoItem>
+                    </DemoContainer>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={openReserveDialog}
+                      disabled={!isUserLoggedIn} 
+                    >
+                      RESERVE
+                    </Button>
+                    <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", gap: "2vw"}}>
+                      <Rating
+                        name="combined-rating"
+                        value={userRating !== null ? userRating : averageRating}
+                        precision={0.1}
+                        readOnly={userRating !== null || !isUserLoggedIn}
+                        onChange={(event, newValue) => handleRatingChange(newValue)}
+                        onChangeActive={(event, newHover) => {
+                          setHover(newHover);
+                        }}
                       />
-                    </DemoItem>
-                  </DemoContainer>
-                </LocalizationProvider>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={openReserveDialog}
-                  disabled={!isUserLoggedIn} 
-                >
-                  RESERVE
-                </Button>
-                <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", gap: "2vw"}}>
-                  <Rating
-                    name="combined-rating"
-                    value={userRating !== null ? userRating : averageRating}
-                    precision={0.1}
-                    readOnly={userRating !== null || !isUserLoggedIn}
-                    onChange={(event, newValue) => handleRatingChange(newValue)}
-                    onChangeActive={(event, newHover) => {
-                      setHover(newHover);
-                    }}
-                  />
-                  <Typography>
-                    {userRating !== null ? userRating.toFixed(1) : (averageRating !== null ? averageRating.toFixed(1) : '')}
-                  </Typography>
-                </Box>
+                      <Typography>
+                        {userRating !== null ? userRating.toFixed(1) : (averageRating !== null ? averageRating.toFixed(1) : '')}
+                      </Typography>
+                    </Box>
+                  </LocalizationProvider>
+                ) : (
+                      <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSubmit}
+                      >
+                        {({ isSubmitting }) => (
+                          <Form>
+                            <Box p={2}>
+                              <Typography variant="h6">Número de cenas:</Typography>
+                              <Field
+                                type="number"
+                                name="NumberDinners"
+                                as={TextField}
+                                fullWidth
+                                variant="outlined"
+                                label="Número de cenas"
+                                helperText={<ErrorMessage name="NumberDinners" />}
+                              />
+                            </Box>
+                            <Box p={2}>
+                              <Typography variant="h6">Cantidad de bebidas:</Typography>
+                              <FieldArray name="drinks">
+                                {({ push, remove }) => (
+                                  <Grid container spacing={2}>
+                                    {Array.isArray(initialValues.drinks) &&
+                                      initialValues.drinks.map((_, index) => (
+                                        <Grid item xs={4} key={index}>
+                                          <Field
+                                            type="number"
+                                            name={`drinks[${index}]`}
+                                            as={TextField}
+                                            fullWidth
+                                            variant="outlined"
+                                            label={`Bebida ${index + 1}`}
+                                            helperText={<ErrorMessage name={`drinks[${index}]`} />}
+                                          />
+                                          <Button
+                                            variant="outlined"
+                                            color="error"
+                                            onClick={() => remove(index)}
+                                            disabled={isSubmitting}
+                                          >
+                                            Eliminar
+                                          </Button>
+                                        </Grid>
+                                      ))}
+                                    <Grid item xs={4}>
+                                      <Button
+                                        variant="contained"
+                                        onClick={() => push(0)}
+                                        disabled={isSubmitting}
+                                      >
+                                        Agregar Bebida
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                )}
+                              </FieldArray>
+                            </Box>
+                            <Box p={2}>
+                              <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isSubmitting}
+                              >
+                                Enviar
+                              </Button>
+                            </Box>
+                          </Form>
+                        )}
+                      </Formik>
+                )}
               </Container>
             </Paper>
           </Grid>

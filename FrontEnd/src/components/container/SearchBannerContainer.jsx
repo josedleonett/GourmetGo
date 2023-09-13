@@ -2,9 +2,8 @@ import SearchBannerDisplay from '../display/SearchBannerDisplay';
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 
-const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptions }) => {
-  const [selectedBundle, setSelectedBundle] = useState("");
-  const navigate = useNavigate();
+const SearchBannerContainer = ({ filterList, filterBundle }) => {
+
 
   useEffect(() => {
     const handleBundleSelected = (event) => {
@@ -18,12 +17,6 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
     };
   }, []);
 
-  const handleSearchSelect = (searchValue) => {
-    if (searchValue !== "" || searchValue !== null) {
-      navigate(`/search?filteredOptions=${searchValue}`);
-    }
-  }
-
   return (
     <SearchBannerDisplay
       filterList={filterList}
@@ -35,7 +28,6 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
           window.dispatchEvent(selectedEvent);
         }
       }}
-      onSearchIconClick={handleSearchSelect}
     />
   );
 };

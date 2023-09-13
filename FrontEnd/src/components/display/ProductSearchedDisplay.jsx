@@ -1,22 +1,23 @@
-import ProductSearchedDisplay from "../display/ProductSearchedDisplay";
 import CardProductGridContainer from "../container/CardProductGridContainer";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { Hidden } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import SearchBannerContainer from "../container/SearchBannerContainer";
 
 
 
-const ProductSearchDisplay = (filteredOptions) => {
-  const navigate = useNavigate(); // Obtiene la función navigate
+const ProductSearchDisplay = (listFiltered) => {
+  const navigate = useNavigate();
+  console.log(listFiltered)
 
   return (
     <>
-      {filteredOptions.listFiltered && filteredOptions.listFiltered.length > 0 ? (
+    <SearchBannerContainer filterList={listFiltered.categorieList} filterBundle={listFiltered.bundleList}/>
+      {listFiltered.listFiltered && listFiltered.listFiltered.length > 0 ? (
         <Box sx={{ padding: "1vw" }}>
-          <CardProductGridContainer list={filteredOptions.listFiltered} />
+          <CardProductGridContainer list={listFiltered.listFiltered} />
         </Box>
       ) : (
         <Box

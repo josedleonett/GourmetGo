@@ -16,9 +16,7 @@ const SearchBannerDisplay = ({
   filterList,
   filterBundle,
   selectedBundle,
-  onBundleSelected, 
-  onSearchIconClick,
-  keyPressNavigate
+  onBundleSelected,
 }) => {
   const searchInputRef = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
@@ -26,16 +24,14 @@ const SearchBannerDisplay = ({
   const [dates, setDates] = useState(null);
   const [categoryId, setCategoryId] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredOptionsState, setFilteredOptionsState] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState([]);
   const navigate = useNavigate();
 
   const handleSelectedFiltersChange = (newSelectedFilters) => {
     setSelectedFilter(newSelectedFilters);
   };
-
-  console.log(selectedFilter)
 
   const clearSearchInput = () => {
     setSearchInput("");
@@ -47,35 +43,39 @@ const SearchBannerDisplay = ({
     }
   };
 
+
+  
+  const selectedFiltersArray = selectedFilter
+  .map((item) => Object.values(item.bundles))
+  .flat();
+
+  const selectedFiltersId = selectedFilter
+  .map((item) => item.id)
+  .join(";");
+
   const handleSearchIconClick = () => {
-    const newValue = searchInputRef.current.value;
-    if (newValue) {
-      onSearchIconClick(newValue);
-    } else if (categoryId.length !== 0) {
-        window.location.href = `http://127.0.0.1:5173/category/${encodeURIComponent(categoryId)}`;
-    }
+    const searchValue = searchInputRef.current.value;
+      if ((filteredOptionsState !== "" && filteredOptionsState !== null) || (selectedFiltersId !== null && selectedFiltersId !== "")) {
+        navigate(`/search?filteredOptions=${filteredOptionsState}&selectedFiltersId=${selectedFiltersId}`);
+      } else if ((searchValue !== "" && searchValue !== null)  || (selectedFiltersId !== null && selectedFiltersId !== "")) {
+        navigate(`/search?filteredOptions=${searchValue}&selectedFiltersId=${selectedFiltersId}`);
+      }
   };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const searchValue = searchInputRef.current.value;
       if (searchValue.trim() !== "") {
-        if (searchValue.lenght < 1) {
-          navigate(`/search?filteredOptions=${filteredOptionsState}`);
-        } else {
-          navigate(`/search?filteredOptions=${searchValue}`);
+        if ((filteredOptionsState !== "" && filteredOptionsState !== null) || (selectedFiltersId !== null && selectedFiltersId !== "")) {
+          navigate(`/search?filteredOptions=${filteredOptionsState}&selectedFiltersId=${selectedFiltersId}`);
+        } else if ((searchValue !== "" && searchValue !== null)  || (selectedFiltersId !== null && selectedFiltersId !== "")) {
+          navigate(`/search?filteredOptions=${searchValue}&selectedFiltersId=${selectedFiltersId}`);
         }
       }
     }
   };
 
   const bundleNames = filterBundle.map((bundle) => bundle.name);
-
-  const selectedFiltersArray = selectedFilter
-  .map((item) => Object.values(item.bundles))
-  .flat();
-
-  console.log(selectedFiltersArray)
 
   const toggleCalendarVisibility = () => {
     setCalendarVisible(!isCalendarVisible);
