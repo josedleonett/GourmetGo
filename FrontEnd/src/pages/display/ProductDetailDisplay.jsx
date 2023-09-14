@@ -739,7 +739,7 @@ const handleFavoriteClick = () => {
             </Stack>
           </Box>
           <Box
-            display={isCommentFormOpen ? "none" : "flex"}
+            display={cookies.token == undefined || isCommentFormOpen ? "none" : "flex"}
             justifyContent="center"
           >
             <Button
