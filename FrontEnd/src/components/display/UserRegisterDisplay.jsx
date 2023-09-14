@@ -1,5 +1,11 @@
-import { useState } from 'react';
-import { Box, TextField, Button, Typography, useMediaQuery } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import Swal from "sweetalert2";
 
 const UserRegisterDisplay = () => {
@@ -75,7 +81,7 @@ const UserRegisterDisplay = () => {
       const response = await fetch(
         `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
         {
-          method: "POST", 
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -88,22 +94,24 @@ const UserRegisterDisplay = () => {
           title: "Email Resent",
           text: "A confirmation email has been resent to your email address.",
         });
-         if (attemptsCount < 2) {
-           setShowRetryMessage(false);
-           setResendButtonVisible(true);
-           setAttemptsCount(attemptsCount + 1);
+        if (attemptsCount < 2) {
+          setShowRetryMessage(false);
+          setResendButtonVisible(true);
+          setAttemptsCount(attemptsCount + 1);
         } else if (attemptsCount === 2) {
           setResendButtonVisible(false);
           setShowRetryMessage(true);
-         }
-        }} catch (error) {
+        }
+      }
+    } catch (error) {
       console.error("An error occurred:", error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Validar si las contraseñas coinciden
     if (inputs.password === inputs.passConfirmation) {
       setInputSuccess((prevInputSuccess) => ({
         ...prevInputSuccess,
@@ -117,6 +125,14 @@ const UserRegisterDisplay = () => {
       }));
       setLabels((prevLabels) => ({ ...prevLabels, password: "" }));
     } else {
+      // Mostrar SweetAlert de error si las contraseñas no coinciden
+      Swal.fire({
+        icon: "error",
+        title: "Password Mismatch",
+        text: "Your passwords do not match. Please check and try again.",
+      });
+  
+      // Actualizar estilos y etiquetas para mostrar el error
       setBorderStyles((prevBorderStyles) => ({
         ...prevBorderStyles,
         password: {
@@ -134,6 +150,7 @@ const UserRegisterDisplay = () => {
         ...prevLabels,
         password: "Your passwords do not match",
       }));
+      return; // Detener el flujo de registro
     }
 
     if (inputs.email.includes("@") && inputs.email !== "") {
@@ -206,7 +223,7 @@ const UserRegisterDisplay = () => {
         } else {
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
-        }        
+        }
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -225,41 +242,42 @@ const UserRegisterDisplay = () => {
     { name: "email", label: "Email", type: "email" },
   ];
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   return (
-    
-    <Box sx={{ padding: "10vw", textAlign: "center", 
-    }}>
-    <Typography variant="h4" 
-    sx={{  marginBottom: '3rem',
-    fontSize: isSmallScreen ? '1.5rem' : '2rem',
-    backgroundColor: "secondary.light",
-    display: "inline-block",
-    fontWeight: 500,
-    padding: "0.5rem", 
-    paddingTop: "1rem", }}>
-    Join the GourmetGo family!
-    </Typography>
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
-        gap: isSmallScreen ? "1.5rem" : "3vw",
-        marginTop: "2rem",
-        border: "2px solid #e0e0e0",
-        borderRadius: "8px",
-        padding: isSmallScreen ? "10px" : "20px",
-        maxWidth: isSmallScreen ? "300px" : "400px",
-        margin: "0 auto",
-      }}
+    <Box sx={{ padding: "10vw", textAlign: "center" }}>
+      <Typography
+        variant="h4"
+        sx={{
+          marginBottom: "3rem",
+          fontSize: isSmallScreen ? "1.5rem" : "2rem",
+          backgroundColor: "secondary.light",
+          display: "inline-block",
+          fontWeight: 500,
+          padding: "0.5rem",
+          paddingTop: "1rem",
+        }}
+      >
+        Join the GourmetGo family!
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+          gap: isSmallScreen ? "1.5rem" : "3vw",
+          marginTop: "2rem",
+          border: "2px solid #e0e0e0",
+          borderRadius: "8px",
+          padding: isSmallScreen ? "10px" : "20px",
+          maxWidth: isSmallScreen ? "300px" : "400px",
+          margin: "0 auto",
+        }}
       >
         {inputFields.map((field) => (
           <Box key={field.name}>
@@ -307,7 +325,8 @@ const UserRegisterDisplay = () => {
         )}
         {showRetryMessage && (
           <Typography sx={{ marginTop: "1rem", color: "red" }}>
-            You have reached the maximum number of resend attempts. Try again later.
+            You have reached the maximum number of resend attempts. Try again
+            later.
           </Typography>
         )}
       </Box>

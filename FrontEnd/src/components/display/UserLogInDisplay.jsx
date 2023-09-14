@@ -65,22 +65,19 @@ const UserLogInDisplay = () => {
 
   const handleInputChange = (field, value) => {
     setInputs((prevInputs) => ({ ...prevInputs, [field]: value }));
-    setInputSuccess((prevInputSuccess) => ({
-      ...prevInputSuccess,
-      [field]: value !== "",
-    }));
-    setBorderStyles((prevBorderStyles) => ({
-      ...prevBorderStyles,
-      [field]:
-        value !== ""
-          ? { width: "20vw", border: "none" }
-          : {
-              minWidth: "20vw",
-              maxWidth: "45vw",
-              border: "1px solid red",
-              borderRadius: "5px",
-            },
-    }));
+  
+    if (field === "username") {
+      const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      setInputSuccess((prevInputSuccess) => ({
+        ...prevInputSuccess,
+        [field]: emailPattern.test(value),
+      }));
+    } else {
+      setInputSuccess((prevInputSuccess) => ({
+        ...prevInputSuccess,
+        [field]: value !== "",
+      }));
+    }
   };
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
