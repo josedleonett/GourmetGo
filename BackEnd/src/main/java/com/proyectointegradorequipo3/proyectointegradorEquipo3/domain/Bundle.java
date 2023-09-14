@@ -76,6 +76,8 @@ public class Bundle {
     )
     private List<Category> categories;
 
+    private double price;
+
     @OneToMany(mappedBy = "bundle")
     private List<Booking> bookings;
 
