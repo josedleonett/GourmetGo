@@ -31,7 +31,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  DialogActions,
   Alert,
   AlertTitle,
   Snackbar,
