@@ -30,6 +30,7 @@ import {
   Alert,
   AlertTitle,
   Snackbar,
+  TextField,
 } from "@mui/material";
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -217,25 +218,12 @@ const handleFavoriteClick = () => {
   const closeSocialModal = () => {
     setOpenSocialModal(false);
   };
-
-  const validationSchema = Yup.object().shape({
-    NumberDinners: Yup.number()
-      .required("Obligatory")
-      .positive("You need to enter a positive number")
-      .integer("Invalid number"),
-    drinks: Yup.array().of(Yup.number().integer("Debes ingresar un número entero")),
-  });
-
-  const initialValues = {
-    NumberDinners: "",
-    drinks: [],
-  };git
-  
   const MyForm = () => {
     const handleSubmit = (values) => {
       // Aquí puedes realizar alguna acción con los valores del formulario
       console.log("Valores del formulario:", values);
-    };
+    }
+  };
   
 
   return (
