@@ -7,6 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import {
   Box,
@@ -164,14 +165,17 @@ const handleFavoriteClick = () => {
   });
   };
 
-  const openReserveDialog = () => {
-    const unavailableDates = dates.map((item) => item.date);
-    if (unavailableDates !== false) {
+  const openReserveModal = () => {
+    console.log(dates)
+    if (dates && Array.isArray(dates) && dates.length > 0) {
+      const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
+    } else {
+      // Manejar el caso cuando "dates" aún no se ha cargado o es un array vacío
+      // Puedes mostrar un mensaje de error o realizar alguna otra acción apropiada.
+      console.error("Error: 'dates' no se ha cargado correctamente.");
     }
   };
-
-  console.log(openDialog)
 
   const closeReserveDialog = () => {
     setOpenDialog(false);
@@ -180,8 +184,6 @@ const handleFavoriteClick = () => {
   const goBackOnClick = () => {
     navigate("/");
   };
-
-  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -218,13 +220,17 @@ const handleFavoriteClick = () => {
   const closeSocialModal = () => {
     setOpenSocialModal(false);
   };
-  const MyForm = () => {
-    const handleSubmit = (values) => {
-      // Aquí puedes realizar alguna acción con los valores del formulario
-      console.log("Valores del formulario:", values);
-    }
+
+  const initialValues = {
+    NumberDinners: "",
+    drinks: [],
   };
-  
+
+    const handleSubmit = (values) => {
+      console.log("Valores del formulario:", values);
+    };  
+
+    const [selectedDate, setSelectedDate] = useState(dayjs());
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -543,19 +549,23 @@ const handleFavoriteClick = () => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["MobileDatePicker"]}>
                       <DemoItem label="Select reserve date">
-                        <MobileDatePicker
-                          defaultValue={dayjs()}
-                          onAccept={handleDateAccept}
-                          shouldDisableDate={isDateUnavailable}
-                          readOnly={!isUserLoggedIn}
-                          renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
-                        />
+                      <MobileDatePicker
+  defaultValue={dayjs()}
+  onAccept={(date) => {
+    console.log(date)
+    setSelectedDate(date);
+    handleDateAccept(date); // Puedes llamar a tu función handleDateAccept aquí si es necesario
+  }}
+  shouldDisableDate={isDateUnavailable}
+  readOnly={!isUserLoggedIn}
+  renderInput={(props) => <input {...props} readOnly={!isUserLoggedIn} />}
+/>
                       </DemoItem>
                     </DemoContainer>
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={openReserveDialog}
+                      onClick={openReserveModal}
                       disabled={!isUserLoggedIn} 
                     >
                       RESERVE
@@ -579,72 +589,92 @@ const handleFavoriteClick = () => {
                 ) : (
                       <Formik
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                       >
                         {({ isSubmitting }) => (
                           <Form>
-                            <Box p={2}>
-                              <Typography variant="h6">Número de cenas:</Typography>
-                              <Field
-                                type="number"
-                                name="NumberDinners"
-                                as={TextField}
-                                fullWidth
-                                variant="outlined"
-                                label="Número de cenas"
-                                helperText={<ErrorMessage name="NumberDinners" />}
-                              />
-                            </Box>
-                            <Box p={2}>
-                              <Typography variant="h6">Cantidad de bebidas:</Typography>
-                              <FieldArray name="drinks">
-                                {({ push, remove }) => (
-                                  <Grid container spacing={2}>
-                                    {Array.isArray(initialValues.drinks) &&
-                                      initialValues.drinks.map((_, index) => (
-                                        <Grid item xs={4} key={index}>
-                                          <Field
-                                            type="number"
-                                            name={`drinks[${index}]`}
-                                            as={TextField}
-                                            fullWidth
-                                            variant="outlined"
-                                            label={`Bebida ${index + 1}`}
-                                            helperText={<ErrorMessage name={`drinks[${index}]`} />}
-                                          />
-                                          <Button
-                                            variant="outlined"
-                                            color="error"
-                                            onClick={() => remove(index)}
-                                            disabled={isSubmitting}
-                                          >
-                                            Eliminar
-                                          </Button>
-                                        </Grid>
-                                      ))}
-                                    <Grid item xs={4}>
-                                      <Button
-                                        variant="contained"
-                                        onClick={() => push(0)}
-                                        disabled={isSubmitting}
-                                      >
-                                        Agregar Bebida
-                                      </Button>
-                                    </Grid>
-                                  </Grid>
-                                )}
-                              </FieldArray>
-                            </Box>
-                            <Box p={2}>
-                              <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={isSubmitting}
-                              >
-                                Enviar
-                              </Button>
+                            <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-evenly", gap: 2}}>
+                              <Typography variant="h4" sx = {{backgroundColor: "secondary.light"}}>Reserve catering</Typography>
+                              <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", gap: 2 }}>
+                              <TextField
+                                  sx={{width: 225}}
+                                  disabled
+                                  id="filled-basic" 
+                                  fullWidth
+                                  variant="filled"
+                                  label="Name"
+                                  readOnly={true}
+                                  helperText={<ErrorMessage name="NumberDinners" />}
+                                  value={decodedToken.name + " " + decodedToken.lastName}
+                                /> 
+                                <TextField
+                                  disabled
+                                  id="filled-basic" 
+                                  name="email"
+                                  fullWidth
+                                  variant="filled"
+                                  label="Email"
+                                  readOnly={true}
+                                  helperText={<ErrorMessage name="NumberDinners" />}
+                                  value={decodedToken.email}
+                                />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                  disabled
+                                  fullWidth
+                                  readOnly={true}
+                                  value={selectedDate}
+                                />
+                                </LocalizationProvider>
+                                <Field
+                                  type="number"
+                                  name="NumberDinners"
+                                  as={TextField}
+                                  fullWidth
+                                  variant="outlined"
+                                  label="Amount of people"
+                                  helperText={<ErrorMessage name="NumberDinners" />}
+                                />
+                              </Box>
+                              <Box p={2}>
+                                <Typography variant="h6"
+                                 sx = {{backgroundColor: "secondary.light", textAlign: "center"}}>Number of drinks:</Typography>
+                                <FieldArray name="drinks">  
+                                  {({ push, remove }) => (
+                                      <Box sx = {{display: "flex", padding: 2}}>
+                                        <Paper>
+                                          <Container sx={{padding: 3, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-evenly", gap: 2}}>
+                                        {productData ?
+                                          productData.drinks.map((_, index) => (
+                                              <>
+                                              {console.log(productData.drinks[index].name)}  
+                                                  <TextField
+                                                    type="number"
+                                                    name={`drinks[${index}]`}
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    label={productData.drinks[index].name}
+                                                    helperText={<ErrorMessage name={`drinks[${index}]`} />}
+                                                  /></>
+                                              )) : [] }
+                                                </Container>
+                                            </Paper>
+                                            
+                                        </Box>
+                                  )} 
+                                                                        
+                                </FieldArray>
+                              </Box> 
+                              <Box p={2}>
+                                <Button
+                                  type="submit"
+                                  variant="contained"
+                                  color="primary"
+                                  disabled={isSubmitting}
+                                >
+                                  Enviar
+                                </Button>
+                              </Box>
                             </Box>
                           </Form>
                         )}
