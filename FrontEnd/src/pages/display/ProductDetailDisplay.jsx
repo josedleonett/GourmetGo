@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
-import { BiDish } from "react-icons/bi";
+import { BiDish, BiSend } from "react-icons/bi";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   Box,
   Container,
@@ -33,6 +36,13 @@ import {
   Avatar,
   Toolbar,
   LinearProgress,
+  Pagination,
+  Skeleton,
+  TextField,
+  Card,
+  CardContent,
+  CardActions,
+  Collapse,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -78,10 +88,52 @@ const ProductDetailDisplay = ({
   const [showWarning, setShowWarning] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
+
+  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
+  const [CommentsPage, setCommentsPage] = useState(1);
+  const commentsPerPage = 5;
+  const startIndex = (CommentsPage - 1) * commentsPerPage;
+  const endIndex = startIndex + commentsPerPage;
+
+  function countCommentsByRating(comments) {
+    const ratingCounts = {};
+  
+    comments.forEach((comment) => {
+      const rating = Math.floor(comment.rating);
+      ratingCounts[rating] = (ratingCounts[rating] || 0) + 1;
+    });
+  
+    for (let rating = 1; rating <= 5; rating++) {
+      if (!(rating in ratingCounts)) {
+        ratingCounts[rating] = 0;
+      }
+    }
+  
+    const result = Object.entries(ratingCounts).map(([rating, count]) => ({
+      rating: parseInt(rating),
+      count,
+    }));
+  
+    result.sort((a, b) => a.rating - b.rating);
+  
+    return result;
+  }
+
   let decodedToken;
   if(cookies.token !== undefined) {
     decodedToken = jwtDecode(cookies.token)
   }
+  if (accessToken !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+  const initials =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? decodedToken.name.charAt(0) + decodedToken.lastName.charAt(0)
+      : "";
+  const userFullName =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? `${decodedToken.name} ${decodedToken.lastName}`
+      : "";
 
   useEffect(() => {
     if (productData && typeof productData.favorite === 'boolean') {
@@ -603,131 +655,197 @@ const handleFavoriteClick = () => {
             </Paper>
           </Grid>
         </Grid>
+
         <Box height={50} />
 
-        <Box width="lg">
-          <Typography variant="h6">Reviews:</Typography>
-
-          <Box>
-            <Stack>
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
-              >
-                <Typography>5</Typography>
-                <LinearProgress
-                  value={50}
-                  variant="determinate"
-                  color="warning"
-                  sx={{
-                    width: "100%",
-                    height: 10,
-                    borderRadius: 5,
-                    background: (theme) => theme.palette.grey[200],
-                  }}
-                />
-              </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
-              >
-                <Typography>4</Typography>
-                <LinearProgress
-                  value={20}
-                  variant="determinate"
-                  color="warning"
-                  sx={{
-                    width: "100%",
-                    height: 10,
-                    borderRadius: 5,
-                    background: (theme) => theme.palette.grey[200],
-                  }}
-                />
-              </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
-              >
-                <Typography>3</Typography>
-                <LinearProgress
-                  value={30}
-                  variant="determinate"
-                  color="warning"
-                  sx={{
-                    width: "100%",
-                    height: 10,
-                    borderRadius: 5,
-                    background: (theme) => theme.palette.grey[200],
-                  }}
-                />
-              </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
-              >
-                <Typography>2</Typography>
-                <LinearProgress
-                  value={70}
-                  variant="determinate"
-                  color="warning"
-                  sx={{
-                    width: "100%",
-                    height: 10,
-                    borderRadius: 5,
-                    background: (theme) => theme.palette.grey[200],
-                  }}
-                />
-              </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
-              >
-                <Typography>1</Typography>
-                <LinearProgress
-                  value={60}
-                  variant="determinate"
-                  color="warning"
-                  sx={{
-                    width: "100%",
-                    height: 10,
-                    borderRadius: 5,
-                    background: (theme) => theme.palette.grey[200],
-                  }}
-                />
-              </Box>
+        <Typography variant="h5">Reviews:</Typography>
+        <Box width="lg" display="flex" flexDirection="column" gap={3}>
+          <Box
+            display="flex"
+            flexDirection={{
+              xs: "column-reverse",
+              sm: "row",
+              lg: "row",
+            }}
+            justifyContent="space-around"
+            width="100%"
+            py={2}
+          >
+            <Stack
+              width={{ xs: "100%", sm: "70%", lg: "70%" }}
+              justifyContent="space-evenly"
+            >
+              {countCommentsByRating(bundleComments).map(
+                (commentRatingCategory) => (
+                  <Box
+                    key={commentRatingCategory.rating}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    gap={1}
+                  >
+                    <Typography>{commentRatingCategory.rating}</Typography>
+                    <LinearProgress
+                      value={
+                        (commentRatingCategory.count / bundleComments.length) *
+                        100
+                      }
+                      variant="determinate"
+                      color="warning"
+                      sx={{
+                        width: "100%",
+                        height: 10,
+                        borderRadius: 5,
+                        background: (theme) => theme.palette.grey[200],
+                      }}
+                    />
+                  </Box>
+                )
+              )}
+            </Stack>
+            <Stack
+              width={{ xs: "100%", sm: "30%", lg: "30%" }}
+              alignItems="center"
+              justifyContent="center"
+              gap={1}
+            >
+              {productData ? (
+                <>
+                  <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
+                    {productData.rating}
+                  </Typography>
+                  <Rating
+                    value={productData.rating}
+                    precision={0.1}
+                    readOnly
+                    size="large"
+                  />
+                  <Typography variant="caption">
+                    {bundleComments.length} ratings
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Skeleton variant="rectangular" width={80} height={40} />
+                  <Skeleton
+                    variant="rectangular"
+                    width={150}
+                    height={30}
+                    sx={{ paddingBottom: 2 }}
+                  />
+                  <Skeleton variant="rectangular" width={100} height={15} />
+                </>
+              )}
             </Stack>
           </Box>
-
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-            {bundleComments.map((comment, index) => (
-              <Box key={index} pt={1} pb={1}>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>{getFullnameInitials(comment.name)}</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={comment.name}
-                    secondary={comment.date}
+          <Box display="flex" justifyContent="end">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddCommentIcon />}
+              onClick={() => setIsCommentFormOpen(true)}
+            >
+              ADD A COMMENT
+            </Button>
+          </Box>
+          <Collapse in={isCommentFormOpen}>
+            <Card elevation={5} sx={{ p: 2 }}>
+              <CardContent>
+                <List>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>{initials}</Avatar>
+                    </ListItemAvatar>
+                    <Stack>
+                      <ListItemText
+                        primary={userFullName}
+                        secondary={
+                          "Please share your experience with the catering service. Your review will help others make informed decisions."
+                        }
+                      />
+                      <Rating
+                        size="large"
+                        sx={{
+                          "& .MuiRating-icon": {
+                            width: 50,
+                          },
+                        }}
+                      />
+                    </Stack>
+                  </ListItem>
+                </List>
+                <Container
+                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                >
+                  <TextField
+                    placeholder="Enter a title for your review"
+                    variant="standard"
+                    fullWidth
+                    inputProps={{
+                      maxLength: 30,
+                    }}
                   />
-                  <Rating readOnly value={comment.rating} />
-                </ListItem>
-                <ListItemText
-                  primary={comment.title}
-                  secondary={comment.body}
-                />
-                <Divider sx={{ paddingTop: 3 }} />
-              </Box>
-            ))}
+                  <TextField
+                    placeholder="Tell us about your catering adventure"
+                    variant="standard"
+                    multiline
+                    fullWidth
+                    rows={4}
+                    inputProps={{
+                      maxLength: 250,
+                    }}
+                  />
+                </Container>
+              </CardContent>
+              <CardActions sx={{ justifyContent: "end" }}>
+                <Button
+                  variant="text"
+                  color="primary"
+                  startIcon={<CancelIcon />}
+                  onClick={() => setIsCommentFormOpen(false)}
+                >
+                  CANCEL
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<SendIcon />}
+                >
+                  SEND
+                </Button>
+              </CardActions>
+            </Card>
+          </Collapse>
+
+          <List sx={{ width: "100%" }}>
+            {bundleComments
+              .slice(startIndex, endIndex)
+              .map((comment, index) => (
+                <Box key={index} py={1}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>{getFullnameInitials(comment.name)}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={comment.name}
+                      secondary={comment.date}
+                    />
+                    <Rating readOnly value={comment.rating} size="small" />
+                  </ListItem>
+                  <ListItemText
+                    primary={comment.title}
+                    secondary={comment.body}
+                  />
+                  <Divider sx={{ paddingTop: 3 }} />
+                </Box>
+              ))}
+            <Stack spacing={2} alignItems="center">
+              <Pagination
+                count={Math.ceil(bundleComments.length / commentsPerPage)}
+                page={CommentsPage}
+                onChange={(event, value) => setCommentsPage(value)}
+              />
+            </Stack>
           </List>
         </Box>
       </Container>
