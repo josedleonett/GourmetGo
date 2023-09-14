@@ -1,4 +1,3 @@
-import ProductSearchedDisplay from "../display/ProductSearchedDisplay";
 import CardProductGridContainer from "../container/CardProductGridContainer";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";

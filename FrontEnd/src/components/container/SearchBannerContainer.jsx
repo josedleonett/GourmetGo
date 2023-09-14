@@ -24,13 +24,6 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
     };
   }, []);
 
-  const handleSearchSelect = (searchValue) => {
-    if (searchValue !== "" || searchValue !== null) {
-      navigate(`/search?filteredOptions=${searchValue}`);
-    }
-  }
-  
-
   return (
     <SearchBannerDisplay
       filterList={filterList}
@@ -43,7 +36,6 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
           window.dispatchEvent(selectedEvent);
         }
       }}
-      onSearchIconClick={handleSearchSelect}
     />
   );
 };

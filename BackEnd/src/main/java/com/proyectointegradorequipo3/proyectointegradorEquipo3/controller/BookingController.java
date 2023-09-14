@@ -29,18 +29,7 @@ public class BookingController {
 
     private final BookingServiceImpl bookingService;
 
-    @GetMapping
-    public ResponseEntity<List<BookingDto>> getAllBooking() {
-        List<BookingDto> list = bookingService.searchAllBooking();
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
-    @GetMapping("/dates")
-    public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {
-        Set<DateDto> dates = bookingService.getBookingDatesAfterToday();
-        return ResponseEntity.ok(dates);
-    }
-
+    //====================Create====================//
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) {
         long id = bookingService.saveBooking(request);
@@ -49,12 +38,35 @@ public class BookingController {
         return ResponseEntity.created(location).build();
     }
 
+    //====================Display all====================//
+    @GetMapping
+    public ResponseEntity<List<BookingDto>> getAllBooking() {
+        List<BookingDto> list = bookingService.searchAllBooking();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
+    //====================Display after today====================//
+    @GetMapping("/dates")
+    public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {
+        Set<DateDto> dates = bookingService.getBookingDatesAfterToday();
+        return ResponseEntity.ok(dates);
+    }
+
+
+
+    //====================Display between date====================//
     @GetMapping("/betweenDate")
     public ResponseEntity<List<Booking>> getBookingBetweenDate(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         List<Booking> list = bookingService.getBookingBetweenDate(start, end);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //====================Delete====================//
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBookingById(id);
+        return ResponseEntity.noContent().build();
     }
 }

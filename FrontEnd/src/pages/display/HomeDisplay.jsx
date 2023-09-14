@@ -4,12 +4,10 @@ import { Container, useTheme, useMediaQuery, Stack, Skeleton } from "@mui/materi
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
-import { useState } from "react";
 
 const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
-  const [filteredOptions, setFilteredOptions] = useState([]);
 
   const CardSkeleton = () => {
     return(
@@ -22,13 +20,9 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
     )
   }
 
-  const updateFilteredOptions = (options) => {
-    setFilteredOptions(options);
-  };
-
   return (
     <>
-      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList} onUpdateFilteredOptions={updateFilteredOptions}/>
+      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList}/>
       
       <Box component="section">
         <Typography
