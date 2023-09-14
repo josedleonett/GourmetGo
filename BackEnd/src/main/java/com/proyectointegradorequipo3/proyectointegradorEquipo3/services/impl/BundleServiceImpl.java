@@ -7,12 +7,10 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.ReviewDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,6 +37,8 @@ public class BundleServiceImpl implements IBundleService {
     private final PlateServiceImpl plateService;
 
     private final DrinkServiceImpl drinkService;
+
+    private final IReviewRepository reviewRepository;
 
     private final ICharacteristicRepository characteristicRepository;
 
@@ -76,6 +76,11 @@ public class BundleServiceImpl implements IBundleService {
 
         BundleDtoDetailUser dto = mapper.map(bundle, BundleDtoDetailUser.class);
         dto.setFavorite(favoriteBundleIds.contains(bundle.getId()));
+        List<Review> reviews = reviewRepository.findByBundleId(bundleId);
+        List<ReviewDto> reviewDtos = reviews.stream()
+                .map(review -> mapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
+        dto.setReviews(reviewDtos);
 
         return dto;
     }

@@ -12,5 +12,7 @@ public interface ApiConstants {
 
     String BOOKING_URI = "/v1/booking/";
 
+    String REVIEW_URI = "/v1/review/";
+
     String ASSET_URI = "/v1/asset/";
 }
