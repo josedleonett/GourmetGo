@@ -60,7 +60,13 @@ public class BundleServiceImpl implements IBundleService {
     public BundleDto searchBundleDtoById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        return modelMapper.map(bundle, BundleDto.class);
+        BundleDto dto = modelMapper.map(bundle, BundleDto.class);
+        List<Review> reviews = reviewRepository.findByBundleId(id);
+        List<ReviewDto> reviewDtos = reviews.stream()
+                .map(review -> mapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
+        dto.setReviews(reviewDtos);
+        return dto;
     }
 
     public BundleDtoDetailUser searchBundleByIdAndUser(Long userId, Long bundleId) {
