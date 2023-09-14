@@ -738,9 +738,12 @@ const handleFavoriteClick = () => {
               )}
             </Stack>
           </Box>
-          <Box display="flex" justifyContent="end">
+          <Box
+            display={isCommentFormOpen ? "none" : "flex"}
+            justifyContent="center"
+          >
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               startIcon={<AddCommentIcon />}
               onClick={() => setIsCommentFormOpen(true)}
