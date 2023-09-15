@@ -15,8 +15,6 @@ const UserFavoriteContainer = ({ accessToken }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [idToDelete, setIdToDelete] = useState('')
 
-  console.log(idToDelete);
-
   useEffect(() => {
     if (cookies.token) {
       const decoded = jwtDecode(cookies.token);
@@ -50,6 +48,7 @@ const UserFavoriteContainer = ({ accessToken }) => {
 
   useEffect(() => {
     removeFromFavorites(idToDelete)
+    setIdToDelete('')
   }, [idToDelete])
   
   const removeFromFavorites = (idToRemove) => {
