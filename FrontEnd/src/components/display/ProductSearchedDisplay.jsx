@@ -6,14 +6,19 @@ import { useNavigate } from "react-router-dom";
 import { Hidden, IconButton } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SearchBannerContainer from "../../components/container/SearchBannerContainer";
 
-const ProductSearchDisplay = (filteredOptions) => {
-  const navigate = useNavigate(); // Obtiene la función navigate
+const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
+  const navigate = useNavigate();
   const goBackOnClick = () => {
     navigate("/");
   };
+
+  console.log(filteredOptions)
+
   return (
-    <>
+    <Box sx={{display: "flex", flexDirection: "column", gap: 30, height: 600}}>
+    <SearchBannerContainer filterList={filteredOptions.categorieList} filterBundle={filteredOptions.bundleList}/>
       {filteredOptions.listFiltered &&
       filteredOptions.listFiltered.length > 0 ? (
         <Box sx={{ padding: "1vw" }}>
@@ -58,7 +63,7 @@ const ProductSearchDisplay = (filteredOptions) => {
           </Hidden>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

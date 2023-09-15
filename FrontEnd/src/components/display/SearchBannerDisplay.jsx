@@ -123,6 +123,7 @@ const SearchBannerDisplay = ({
       padding="20px"
       display="flex"
       justifyContent="center"
+      sx={{maxHeight: 70}}
     >
       <FormControl
         variant="standard"

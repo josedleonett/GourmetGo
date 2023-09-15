@@ -2,9 +2,7 @@ import SearchBannerDisplay from '../display/SearchBannerDisplay';
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 
-const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptions }) => {
-  const [selectedBundle, setSelectedBundle] = useState("");
-  const navigate = useNavigate();
+const SearchBannerContainer = ({ filterList, filterBundle }) => {
   const [dates, setDates] = useState(null);
 
   useEffect(() => {
