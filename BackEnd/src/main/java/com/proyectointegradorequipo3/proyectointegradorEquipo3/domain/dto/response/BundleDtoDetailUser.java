@@ -23,6 +23,7 @@ public class BundleDtoDetailUser {
     private List<Drink> drinks;
     private List<CharacteristicDto> characteristics;
     private List<Category> categories;
+    private List<ReviewDto> reviews;
     private Double rating;
     private boolean favorite;
     private String terms;
