@@ -13,6 +13,9 @@ const UserFavoriteContainer = ({ accessToken }) => {
   const [error, setError] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const [idToDelete, setIdToDelete] = useState('')
+
+  console.log(idToDelete);
 
   useEffect(() => {
     if (cookies.token) {
@@ -45,6 +48,16 @@ const UserFavoriteContainer = ({ accessToken }) => {
     }
   }, [decodedToken]);
 
+  useEffect(() => {
+    removeFromFavorites(idToDelete)
+  }, [idToDelete])
+  
+  const removeFromFavorites = (idToRemove) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((favorite) => favorite.id !== idToRemove)
+    );
+  };
+
   return (
     <Box>
       <Box sx={{ padding: "2vw", textAlign: "center" }}>
@@ -64,7 +77,7 @@ const UserFavoriteContainer = ({ accessToken }) => {
         </Typography>
       </Box>
       {favorites.length >= 1 ? (
-        <CardProductGridContainer list={favorites} />
+        <CardProductGridContainer list={favorites} setIdToDelete={setIdToDelete} />
       ) : isLoading ? (
         <Box display="flex" alignContent="center" justifyContent="center">
           <CircularProgress />

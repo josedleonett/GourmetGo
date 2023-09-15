@@ -54,12 +54,6 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
-import {
-  EmailIcon,
-  FacebookIcon,
-  TwitterIcon,
-  WhatsappIcon,
-} from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -87,8 +81,6 @@ const ProductDetailDisplay = ({
   const [hover, setHover] = useState(-1);
   const [showWarning, setShowWarning] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
   const commentsPerPage = 5;
