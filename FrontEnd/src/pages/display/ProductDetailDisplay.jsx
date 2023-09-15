@@ -51,6 +51,8 @@ import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
+import { FacebookIcon, TwitterIcon, EmailIcon, WhatsappIcon } from "react-share";
+
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;

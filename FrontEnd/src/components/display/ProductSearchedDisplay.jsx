@@ -12,12 +12,13 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
   const goBackOnClick = () => {
     navigate("/");
   };
-
   return (
-    <Box sx={{display: "flex", flexDirection: "column", gap: 30, height: 600}}>
-    <SearchBannerContainer filterList={filteredOptions.categorieList} filterBundle={filteredOptions.bundleList}/>
-      {filteredOptions.listFiltered &&
-      filteredOptions.listFiltered.length > 0 ? (
+    <Box>
+      <SearchBannerContainer
+        filterList={filteredOptions.categorieList}
+        filterBundle={filteredOptions.bundleList}
+      />
+      {filteredOptions.listFiltered && filteredOptions.listFiltered.length > 0 ? (
         <Box sx={{ padding: "1vw" }}>
           <IconButton
             aria-label="Back"
