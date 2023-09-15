@@ -905,7 +905,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
               startIcon={<AddCommentIcon />}
               onClick={() => setIsCommentFormOpen(true)}
             >
-              ADD A COMMENT
+              ADD A REVIEW
             </Button>
           </Box>
           <Collapse in={isCommentFormOpen}>
