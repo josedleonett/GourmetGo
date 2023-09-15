@@ -18,7 +18,8 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
         filterList={filteredOptions.categorieList}
         filterBundle={filteredOptions.bundleList}
       />
-      {filteredOptions.listFiltered && filteredOptions.listFiltered.length > 0 ? (
+      {filteredOptions.listFiltered &&
+      filteredOptions.listFiltered.length > 0 ? (
         <Box sx={{ padding: "1vw" }}>
           <IconButton
             aria-label="Back"
@@ -36,6 +37,7 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            marginTop: "30vh", 
           }}
         >
           <Box
