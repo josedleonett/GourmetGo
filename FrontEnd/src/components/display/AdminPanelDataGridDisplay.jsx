@@ -93,7 +93,6 @@ const AdminPanelDataGridDisplay = ({
     setIsLoading(true);
     setIsRefetching(true);
     setIsAllowCreateModal(props.allowCreateModal);
-    console.log(isAllowCreateModal);
     setIsAllowEditModal(props.allowEditModal);
 
     getApiData();
@@ -172,7 +171,6 @@ const AdminPanelDataGridDisplay = ({
         responseCode === 201 ||
         responseCode === 204
       ) {
-        console.log(responseCode);
         getApiData();
       }
       return responseCode;
