@@ -237,9 +237,6 @@ const AdminPanelDataGridDisplay = ({
         enableColumnOrdering
         enableStickyHeader
         enableEditing
-        //enableRowDragging
-        //onEditingRowSave={handleSaveRowEdits}
-        //onEditingRowCancel={handleCancelRowEdits}
         muiToolbarAlertBannerProps={
           isError
             ? {
@@ -331,7 +328,6 @@ const AdminPanelDataGridDisplay = ({
   );
 };
 
-//MODAL CREATE OR UPDATE
 export const CreateUpdateItemModal = ({
   open,
   rowToUpdate,
@@ -596,8 +592,6 @@ export const CreateUpdateItemModal = ({
                               formik.values[column.accessorKey]
                               &&
                               formik.values[column.accessorKey.replace(/\[.*\]/g, "")]?.map((item) => item.name)
-                              // &&
-                              // []
                             }
                             key={`input-${index}`}
                             name={column.header}
@@ -688,7 +682,6 @@ export const CreateUpdateItemModal = ({
   );
 };
 
-//MODAL DELETE
 const DeleteItemModal = ({
   isOpen,
   onClose,

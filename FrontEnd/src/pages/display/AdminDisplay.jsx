@@ -82,8 +82,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     },
   };
 
-
-
   //RENDER DETAIL PANEL:
   const bundlesRenderDetailPanel = ({ row }) => (
     <Container>

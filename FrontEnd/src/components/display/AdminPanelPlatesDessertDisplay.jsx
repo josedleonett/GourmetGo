@@ -21,8 +21,6 @@ function AdminPanelPlatesDessertDisplay() {
       width: 200,
       renderCell: (params) => (
         <Box component="img" height="90%" src={`http://localhost:8080/asset/get-object?key=${params.value}`}/>
-          
-
       ),
     },
     { field: "price", headerName: "Price", width: 120 },

@@ -171,8 +171,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
     } else {
-      // Manejar el caso cuando "dates" aún no se ha cargado o es un array vacío
-      // Puedes mostrar un mensaje de error o realizar alguna otra acción apropiada.
       console.error("Error: 'dates' no se ha cargado correctamente.");
     }
   };
@@ -553,7 +551,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                           onAccept={(date) => {
                             console.log(date);
                             setSelectedDate(date);
-                            handleDateAccept(date); // Puedes llamar a tu función handleDateAccept aquí si es necesario
+                            handleDateAccept(date);
                           }}
                           shouldDisableDate={isDateUnavailable}
                           readOnly={!isUserLoggedIn}
@@ -757,7 +755,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       {showWarning && (
         <Snackbar
           open={showWarning}
-          autoHideDuration={3000} // Controla la duración del Snackbar
+          autoHideDuration={3000}
           onClose={() => setShowWarning(false)}
         >
           <Alert severity="warning">
