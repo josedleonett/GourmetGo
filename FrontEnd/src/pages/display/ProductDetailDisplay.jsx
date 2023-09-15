@@ -23,7 +23,6 @@ import {
   IconButton,
   Dialog,
   DialogTitle,
-  Stack,
   Tooltip,
   DialogContent,
   DialogContentText,
@@ -43,12 +42,6 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
-import {
-  EmailIcon,
-  FacebookIcon,
-  TwitterIcon,
-  WhatsappIcon,
-} from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -57,7 +50,6 @@ import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
-import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {

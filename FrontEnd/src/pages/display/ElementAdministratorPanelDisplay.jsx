@@ -4,8 +4,6 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
 
 export const ElementAdministratorPanelDisplay = () => {
   const { category } = useParams();

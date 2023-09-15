@@ -8,7 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import Dialog from '@mui/material/Dialog';
-import dayjs from 'dayjs';
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 

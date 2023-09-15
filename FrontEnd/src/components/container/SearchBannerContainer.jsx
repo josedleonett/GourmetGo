@@ -1,5 +1,4 @@
 import SearchBannerDisplay from '../display/SearchBannerDisplay';
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 
 const SearchBannerContainer = ({ filterList, filterBundle }) => {
