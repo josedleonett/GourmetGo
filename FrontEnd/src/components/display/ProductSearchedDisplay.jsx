@@ -14,8 +14,6 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
     navigate("/");
   };
 
-  console.log(filteredOptions)
-
   return (
     <Box sx={{display: "flex", flexDirection: "column", gap: 30, height: 600}}>
     <SearchBannerContainer filterList={filteredOptions.categorieList} filterBundle={filteredOptions.bundleList}/>

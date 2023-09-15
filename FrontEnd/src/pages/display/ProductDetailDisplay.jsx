@@ -155,7 +155,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       }
     )
       .then((response) => {
-        console.log(response);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -166,7 +165,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
   const openReserveModal = () => {
-    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
@@ -198,7 +196,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
   const isDateUnavailable = (date) => {
-    console.log(dates);
     if (!dates) {
       return false;
     }
@@ -549,7 +546,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                         <MobileDatePicker
                           defaultValue={dayjs()}
                           onAccept={(date) => {
-                            console.log(date);
                             setSelectedDate(date);
                             handleDateAccept(date);
                           }}
