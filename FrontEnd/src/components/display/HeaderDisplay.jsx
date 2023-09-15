@@ -19,7 +19,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { companyLogo } from "../../utils/theme";
-import UserFavoriteContainer from "../../pages/container/UserFavoriteContainer"
+import UserFavoriteContainer from "../../pages/container/UserFavoriteContainer";
 
 const HeaderDisplay = ({ accessToken }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -29,7 +29,7 @@ const HeaderDisplay = ({ accessToken }) => {
     getRandomColor()
   );
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [isFavoritesOpen, setFavoritesOpen] = useState(false); 
+  const [isFavoritesOpen, setFavoritesOpen] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -72,7 +72,8 @@ const HeaderDisplay = ({ accessToken }) => {
     decodedToken && decodedToken.name && decodedToken.lastName
       ? `${decodedToken.name} ${decodedToken.lastName}`
       : "";
-  const userEmail = decodedToken && decodedToken.email ? decodedToken.email : "";
+  const userEmail =
+    decodedToken && decodedToken.email ? decodedToken.email : "";
 
   const handleFavoritesClick = () => {
     if (isFavoritesOpen) {
@@ -80,20 +81,44 @@ const HeaderDisplay = ({ accessToken }) => {
     } else {
       setFavoritesOpen(true);
     }
-  };  
+  };
 
   function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+    const minBrightness = 50;
+    const maxBrightness = 200;
+    const minColorValue = 100;
+    const maxColorValue = 200;
+
+    const randomColorComponent = () =>
+      minColorValue +
+      Math.floor(Math.random() * (maxColorValue - minColorValue + 1));
+    let color = `rgb(${randomColorComponent()}, ${randomColorComponent()}, ${randomColorComponent()})`;
+    const brightness = getBrightness(color);
+    if (brightness < minBrightness || brightness > maxBrightness) {
+      return getRandomColor();
     }
+
     return color;
   }
 
-  const RandomColorAvatar = () => {
-    setRandomBackgroundColor(getRandomColor());
-  };
+  function getBrightness(color) {
+    const hexColor = color.replace("#", "");
+    const r = parseInt(hexColor.slice(0, 2), 16);
+    const g = parseInt(hexColor.slice(2, 4), 16);
+    const b = parseInt(hexColor.slice(4, 6), 16);
+    return (r * 299 + g * 587 + b * 114) / 1000;
+  }
+
+  useEffect(() => {
+    const storedColor = localStorage.getItem("userAvatarColor");
+    if (!storedColor) {
+      const newColor = getRandomColor();
+      setRandomBackgroundColor(newColor);
+      localStorage.setItem("userAvatarColor", newColor);
+    } else {
+      setRandomBackgroundColor(storedColor);
+    }
+  }, []);
 
   return (
     <>
@@ -191,8 +216,7 @@ const HeaderDisplay = ({ accessToken }) => {
                 mr: 1,
                 justifyContent: "space-evenly",
               }}
-            >
-            </Tabs>
+            ></Tabs>
 
             <Box
               sx={{
@@ -301,12 +325,12 @@ const HeaderDisplay = ({ accessToken }) => {
             <h4>{userEmail}</h4>
           </Typography>
           <Typography
-            component={Link} 
+            component={Link}
             to="/favorites"
             sx={{
               color: "black",
               cursor: "pointer",
-              textDecoration: "none"
+              textDecoration: "none",
             }}
           >
             Favorites
@@ -320,7 +344,7 @@ const HeaderDisplay = ({ accessToken }) => {
           >
             Log out
           </Typography>
-          {(accessToken === null || accessToken === undefined)  && (
+          {(accessToken === null || accessToken === undefined) && (
             <>
               <Typography
                 component={Link}
