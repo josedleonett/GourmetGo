@@ -43,4 +43,6 @@ public class Booking {
     )
     private List<DrinkQuantity> drinks = new ArrayList<>();
 
+    private Long review;
+
 }
