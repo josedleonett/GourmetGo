@@ -50,7 +50,6 @@ export const ElementAdministratorPanelDisplay = () => {
   const [data, setData] = useState([]);
   let apiUrl = `http://localhost:8080/v1/${category}/`;
 
-  // Utilizamos useMemo para almacenar la URL de la API
   const apiURLMemoized = useMemo(() => apiUrl, [apiUrl]);
 
   useEffect(() => {

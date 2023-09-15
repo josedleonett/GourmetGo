@@ -28,7 +28,6 @@ const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
 
 function EditToolbar(props) {
   const { createApiData } = props;
-  //MODAL:
   const [open, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);

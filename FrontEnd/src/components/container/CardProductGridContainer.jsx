@@ -2,9 +2,8 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import CardProductGridDisplay from "../display/CardProductGridDisplay";
 
 const CardProductGridContainer = ({ list }) => {
-  // Verificar si list es null o undefined y manejarlo adecuadamente
   if (list === null || list === undefined) {
-    return null; // O muestra un mensaje de carga, o simplemente no muestra nada
+    return null;
   }
 
   const chunk = (arr, size) =>

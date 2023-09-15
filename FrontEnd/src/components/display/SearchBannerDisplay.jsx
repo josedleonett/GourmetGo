@@ -112,8 +112,7 @@ const SearchBannerDisplay = ({
 
     return unavailableDates.includes(formattedDate);
   };
-
-  // Verificar si el ancho de la pantalla es menor que un cierto valor (por ejemplo, 600px)
+  
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   return (
