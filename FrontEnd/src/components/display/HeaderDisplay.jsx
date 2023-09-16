@@ -303,6 +303,7 @@ const HeaderDisplay = ({ accessToken }) => {
           <Typography
             component={Link} 
             to="/favorites"
+            onClick={() => setUserDrawerOpen(false)}
             sx={{
               color: "black",
               cursor: "pointer",

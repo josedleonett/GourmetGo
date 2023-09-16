@@ -7,7 +7,8 @@ const  CardProductContainer = ({
   description,
   categoryList,
   rating,
-  favorite
+  favorite,
+  setIdToDelete
 }) => {
 
   return (
@@ -20,6 +21,7 @@ const  CardProductContainer = ({
       categoryList={categoryList}
       rating={rating}
       favorite={favorite}
+      setIdToDelete={setIdToDelete}
     />
   );
 };
