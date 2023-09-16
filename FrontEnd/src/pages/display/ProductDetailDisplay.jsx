@@ -51,8 +51,12 @@ import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
-import { FacebookIcon, TwitterIcon, EmailIcon, WhatsappIcon } from "react-share";
-
+import {
+  FacebookIcon,
+  TwitterIcon,
+  EmailIcon,
+  WhatsappIcon,
+} from "react-share";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;
@@ -722,13 +726,34 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                             </FieldArray>
                           </Box>
                           <Box p={2}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                backgroundColor: "secondary.light",
+                                textAlign: "center",
+                              }}
+                            >
+                              Comments:
+                            </Typography>
+                            <Field
+                              name="comments" 
+                              as={TextField}
+                              fullWidth
+                              multiline 
+                              rows={4} 
+                              variant="outlined"
+                              label="Write your comments here"
+                              sx = {{marginTop: 2}}
+                            />
+                          </Box>
+                          <Box p={2}>
                             <Button
                               type="submit"
                               variant="contained"
                               color="primary"
                               disabled={isSubmitting}
                             >
-                              Enviar
+                              Confirm
                             </Button>
                           </Box>
                         </Box>
