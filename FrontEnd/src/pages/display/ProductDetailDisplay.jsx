@@ -878,7 +878,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                     size="large"
                   />
                   <Typography variant="caption">
-                    {bundleComments.length} ratings
+                    {productData.reviews.length} ratings
                   </Typography>
                 </>
               ) : (
@@ -978,10 +978,11 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           </Collapse>
 
           <List sx={{ width: "100%" }}>
-            {bundleComments
+            {productData && productData.reviews
               .slice(startIndex, endIndex)
               .map((comment, index) => (
                 <Box key={index} py={1}>
+                  {console.log(comment)}
                   <ListItem>
                     <ListItemAvatar>
                       <Avatar>{getFullnameInitials(comment.name)}</Avatar>
