@@ -88,7 +88,23 @@ public class BundleServiceImpl implements IBundleService {
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
 
+        dto.getReviews().stream().map(review -> review.getRating());
+
+        boolean canReview = user.getBookings().stream()
+                        .map(Booking::getBundle)
+                        .anyMatch(currentBundle -> Objects.equals(bundle.getId(), bundleId));
+
+        dto.setCanUserReview(canReview);
+        dto.setRating(calculateAverageRating(reviewDtos));
+
         return dto;
+    }
+
+    public double calculateAverageRating(List<ReviewDto> reviews) {
+        return reviews.stream()
+                .mapToDouble(ReviewDto::getRating)
+                .average()
+                .orElse(0.0);
     }
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
