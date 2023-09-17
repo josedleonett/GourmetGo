@@ -684,7 +684,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                             </Typography>
                             <FieldArray name="drinks">
                               {({ push, remove }) => (
-                                <Box sx={{ display: "flex", padding: 2 }}>
+                                <Box sx={{ display: "flex", paddingTop: 2 }}>
                                   <Paper>
                                     <Container
                                       sx={{
