@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Box, TextField, Button, Typography, useMediaQuery  } from "@mui/material";
+import { Box, TextField, Button, Typography, useMediaQuery, CircularProgress  } from "@mui/material";
 import Swal from 'sweetalert2';
 
 const UserLogInDisplay = () => {
@@ -82,6 +82,14 @@ const UserLogInDisplay = () => {
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <Box sx={{ padding: "10vw" }}>
       <Box
@@ -92,70 +100,78 @@ const UserLogInDisplay = () => {
           gap: "1rem",
         }}
       >
-        <Typography variant="h4" sx={{
-          backgroundColor: "secondary.light",
-          display: "inline-block",
-          fontSize: isSmallScreen ? '1.5rem' : '2rem',
-          fontWeight: 500,
-          padding: "0.5rem",
-          paddingTop: "1rem",
-          marginBottom: "2rem"
-        }}>
-          Your dream starts here!
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            textAlign: "center",
-            gap: "3vw",
-            border: "2px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: isSmallScreen ? "10px" : "20px",
-            maxWidth: isSmallScreen ? "300px" : "400px",
-          }}
-        >
-          {inputFields.map((field) => (
-            <Box key={field.name}>
-              <TextField
-                name={field.name}
-                placeholder={field.label}
-                label={borderStyles[field.name].border ? "" : field.label}
-                type={field.type}
-                value={inputs[field.name]}
-                onChange={(e) => handleInputChange(field.name, e.target.value)}
+        {isLoading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <Typography variant="h4" sx={{
+              backgroundColor: "secondary.light",
+              display: "inline-block",
+              fontSize: isSmallScreen ? '1.5rem' : '2rem',
+              fontWeight: 500,
+              padding: "0.5rem",
+              paddingTop: "1rem",
+              marginBottom: "2rem"
+            }}>
+              Your dream starts here!
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                textAlign: "center",
+                gap: "3vw",
+                border: "2px solid #e0e0e0",
+                borderRadius: "8px",
+                padding: isSmallScreen ? "10px" : "20px",
+                maxWidth: isSmallScreen ? "300px" : "400px",
+              }}
+            >
+              {inputFields.map((field) => (
+                <Box key={field.name}>
+                  <TextField
+                    name={field.name}
+                    placeholder={field.label}
+                    label={borderStyles[field.name].border ? "" : field.label}
+                    type={field.type}
+                    value={inputs[field.name]}
+                    onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    sx={{
+                      ...borderStyles[field.name],
+                      "@media (max-width: 768px)": {
+                        width: "100%",
+                      },
+                    }}
+                  />
+                </Box>
+              ))}
+              <Button
+                variant="text"
+                type="submit"
                 sx={{
-                  ...borderStyles[field.name],
-                  "@media (max-width: 768px)": {
-                    width: "100%",
-                  },
+                  border: "1px solid black",
+                  borderRadius: "0px",
+                  padding: "1vw",
+                  width: "20vw",
+                  color: "black",
+                  "&:hover": { backgroundColor: "secondary.light" },
+                  transition: "background-color 0.3s",
+                  "@media (max-width: 768px)": { width: "50%" },
                 }}
-              />
+              >
+                Log in
+              </Button>
             </Box>
-          ))}
-          <Button
-            variant="text"
-            type="submit"
-            sx={{
-              border: "1px solid black",
-              borderRadius: "0px",
-              padding: "1vw",
-              width: "20vw",
-              color: "black",
-              "&:hover": { backgroundColor: "secondary.light" },
-              transition: "background-color 0.3s",
-              "@media (max-width: 768px)": { width: "50%" },
-            }}
-          >
-            Log in
-          </Button>
-        </Box>
+          </>
+        )}
       </Box>
     </Box>
   );
