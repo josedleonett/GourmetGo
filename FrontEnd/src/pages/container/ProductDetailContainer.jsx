@@ -43,8 +43,6 @@ const ProductDetailContainer = ({ accessToken }) => {
     }
   }, [id, cookies.token]);
 
-  console.log(dates)
-
   return (
     <ProductDetailDisplay
       productData={productData}

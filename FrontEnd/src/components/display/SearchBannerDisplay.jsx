@@ -8,7 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import Dialog from '@mui/material/Dialog';
-import dayjs from 'dayjs';
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -112,8 +111,7 @@ const SearchBannerDisplay = ({
 
     return unavailableDates.includes(formattedDate);
   };
-
-  // Verificar si el ancho de la pantalla es menor que un cierto valor (por ejemplo, 600px)
+  
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   return (
@@ -123,6 +121,7 @@ const SearchBannerDisplay = ({
       padding="20px"
       display="flex"
       justifyContent="center"
+     
     >
       <FormControl
         variant="standard"

@@ -26,7 +26,6 @@ import {
   IconButton,
   Dialog,
   DialogTitle,
-  Stack,
   Tooltip,
   DialogContent,
   DialogContentText,
@@ -67,8 +66,13 @@ import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
-import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+  FacebookIcon,
+  TwitterIcon,
+  EmailIcon,
+  WhatsappIcon,
+} from "react-share";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;
@@ -209,7 +213,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       }
     )
       .then((response) => {
-        console.log(response);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -220,13 +223,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
   const openReserveModal = () => {
-    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
     } else {
-      // Manejar el caso cuando "dates" aún no se ha cargado o es un array vacío
-      // Puedes mostrar un mensaje de error o realizar alguna otra acción apropiada.
       console.error("Error: 'dates' no se ha cargado correctamente.");
     }
   };
@@ -254,7 +254,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
   const isDateUnavailable = (date) => {
-    console.log(dates);
     if (!dates) {
       return false;
     }
@@ -630,9 +629,8 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                         <MobileDatePicker
                           defaultValue={dayjs()}
                           onAccept={(date) => {
-                            console.log(date);
                             setSelectedDate(date);
-                            handleDateAccept(date); // Puedes llamar a tu función handleDateAccept aquí si es necesario
+                            handleDateAccept(date);
                           }}
                           shouldDisableDate={isDateUnavailable}
                           readOnly={!isUserLoggedIn}
@@ -813,13 +811,34 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                             </FieldArray>
                           </Box>
                           <Box p={2}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                backgroundColor: "secondary.light",
+                                textAlign: "center",
+                              }}
+                            >
+                              Comments:
+                            </Typography>
+                            <Field
+                              name="comments" 
+                              as={TextField}
+                              fullWidth
+                              multiline 
+                              rows={4} 
+                              variant="outlined"
+                              label="Write your comments here"
+                              sx = {{marginTop: 2}}
+                            />
+                          </Box>
+                          <Box p={2}>
                             <Button
                               type="submit"
                               variant="contained"
                               color="primary"
                               disabled={isSubmitting}
                             >
-                              Enviar
+                              Confirm
                             </Button>
                           </Box>
                         </Box>
@@ -1078,7 +1097,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       {showWarning && (
         <Snackbar
           open={showWarning}
-          autoHideDuration={3000} // Controla la duración del Snackbar
+          autoHideDuration={3000}
           onClose={() => setShowWarning(false)}
         >
           <Alert severity="warning">
