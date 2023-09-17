@@ -65,7 +65,6 @@ function EditToolbar(props) {
     event.preventDefault();
   };
 
-
   return (
     <GridToolbarContainer>
       <Button
@@ -140,8 +139,6 @@ function EditToolbar(props) {
     </GridToolbarContainer>
   );
 }
-
-
 
 export default function AdminPanelDrinksDisplay() {
   const [rows, setRows] = useState([]);
