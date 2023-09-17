@@ -147,6 +147,18 @@ public class BundleServiceImpl implements IBundleService {
         waitForAllFutures(futureMap);
         Bundle newBundle = constructBundle(request, futureMap);
         validateBundleName(newBundle.getName());
+        double provisionalPrice = 0.;
+        provisionalPrice += newBundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+        provisionalPrice += newBundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+        provisionalPrice += newBundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        newBundle.setPrice(provisionalPrice);
         save(newBundle);
         return newBundle.getId();
     }
@@ -208,6 +220,7 @@ public class BundleServiceImpl implements IBundleService {
     }
 
     private Bundle constructBundle(BundleCreateRequest request, Map<String, CompletableFuture<?>> futureMap) throws Exception {
+        double provisionalPrice = 0.;
         Bundle.BundleBuilder builder = Bundle.builder()
                 .name(request.getName())
                 .description(request.getDescription())
