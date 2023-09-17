@@ -50,9 +50,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
+  EmailIcon,
   EmailShareButton,
+  FacebookIcon,
   FacebookShareButton,
+  TwitterIcon,
   TwitterShareButton,
+  WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
@@ -109,6 +113,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     result.sort((a, b) => a.rating - b.rating);
   
     return result;
+  }
+
+  function getRandomNumber(min = 20 , max = 100) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   let decodedToken;
@@ -299,6 +307,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       <CoverProductGalleryContainer
         imgList={productData ? productData.galleryImages : []}
         galleryId={"productGallery"}
+        isLoading={!productData}
       />
 
       <Container>
@@ -306,7 +315,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           <Box>
             <Box display="flex" minWidth="30vw">
               <Typography variant="h4">
-                {productData ? productData.name : ""}
+                {productData ? productData.name : <Skeleton variant="text" width="30vw" />}
               </Typography>
               <IconButton
                 disabled={!decodedToken}
@@ -408,7 +417,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
               </Dialog>
             </Box>
             <Typography variant="subtitle1" fontStyle="italic" fon>
-              {productData ? productData.description : ""}
+              {productData ? productData.description : <Skeleton variant="text" width="100%" />}
             </Typography>
           </Box>
           <Divider light />
@@ -419,27 +428,32 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 <List>
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <BiDish size="30" />
+                      {productData ? <BiDish size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Starter:"
+                      primary={productData ? "Starter:" : <Skeleton variant="text" width={150} />}
                       secondary={
                         <>
-                          {productData
-                            ? productData.starter.map((starterItem, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {starterItem.name}
-                                  </Typography>
-                                  {` — ${starterItem.description}`}
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.starter.map((starterItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {starterItem.name}
+                                </Typography>
+                                {` — ${starterItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -449,27 +463,32 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <RiRestaurant2Line size="30" />
+                      {productData ? <RiRestaurant2Line size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Main course:"
+                      primary={productData ? "Main course:" : <Skeleton variant="text" width={150} />}
                       secondary={
                         <>
-                          {productData
-                            ? productData.mainCourse.map((mainItem, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {mainItem.name}
-                                  </Typography>
-                                  {` — ${mainItem.description}`}
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.mainCourse.map((mainItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {mainItem.name}
+                                </Typography>
+                                {` — ${mainItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -479,29 +498,32 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <GiPieSlice size="30" />
+                      {productData ? <GiPieSlice size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Dessert:"
+                      primary={productData ? "Dessert:" : <Skeleton variant="text" width={150} />}
                       secondary={
                         <>
-                          {productData
-                            ? productData.desserts.map(
-                                (dessertsItem, index) => (
-                                  <div key={index}>
-                                    <Typography
-                                      sx={{ display: "inline" }}
-                                      component="span"
-                                      variant="body2"
-                                      color="text.primary"
-                                    >
-                                      {dessertsItem.name}
-                                    </Typography>
-                                    {` — ${dessertsItem.description}`}
-                                  </div>
-                                )
-                              )
-                            : ""}
+                          {productData ? (
+                            productData.desserts.map((dessertsItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {dessertsItem.name}
+                                </Typography>
+                                {` — ${dessertsItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -511,26 +533,31 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <MdLocalBar size="30" />
+                      {productData ? <MdLocalBar size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Drinks:"
+                      primary={productData ? "Drinks:" : <Skeleton variant="text" width={150} />}
                       secondary={
                         <>
-                          {productData
-                            ? productData.drinks.map((drinks, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {drinks.name}
-                                  </Typography>
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.drinks.map((drinks, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {drinks.name}
+                                </Typography>
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -824,33 +851,45 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
               width={{ xs: "100%", sm: "70%", lg: "70%" }}
               justifyContent="space-evenly"
             >
-              {countCommentsByRating(bundleComments).map(
-                (commentRatingCategory) => (
-                  <Box
-                    key={commentRatingCategory.rating}
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="center"
-                    gap={1}
-                  >
-                    <Typography>{commentRatingCategory.rating}</Typography>
-                    <LinearProgress
-                      value={
-                        (commentRatingCategory.count / bundleComments.length) *
-                        100
-                      }
-                      variant="determinate"
-                      color="warning"
+              {productData
+                ? countCommentsByRating(productData.reviews).map(
+                    (commentRatingCategory) => (
+                      <Box
+                        key={commentRatingCategory.rating}
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        gap={1}
+                      >
+                        <Typography>{commentRatingCategory.rating}</Typography>
+                        <LinearProgress
+                          value={
+                            (commentRatingCategory.count /
+                              productData.reviews.length) *
+                            100
+                          }
+                          variant="determinate"
+                          color="warning"
+                          sx={{
+                            width: "100%",
+                            height: 10,
+                            borderRadius: 5,
+                            background: (theme) => theme.palette.grey[200],
+                          }}
+                        />
+                      </Box>
+                    )
+                  )
+                : Array.from({ length: 5 }).map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      width="100%"
+                      height={20}
                       sx={{
-                        width: "100%",
-                        height: 10,
                         borderRadius: 5,
-                        background: (theme) => theme.palette.grey[200],
                       }}
                     />
-                  </Box>
-                )
-              )}
+                  ))}
             </Stack>
             <Stack
               width={{ xs: "100%", sm: "30%", lg: "30%" }}
@@ -875,11 +914,11 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 </>
               ) : (
                 <>
-                  <Skeleton variant="rectangular" width={80} height={40} />
+                  <Skeleton variant="rectangular" width={60} height={40} />
                   <Skeleton
                     variant="rectangular"
                     width={150}
-                    height={30}
+                    height={20}
                     sx={{ paddingBottom: 2 }}
                   />
                   <Skeleton variant="rectangular" width={100} height={15} />
@@ -888,7 +927,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
             </Stack>
           </Box>
           <Box
-            display={cookies.token == undefined || isCommentFormOpen ? "none" : "flex"}
+            display={
+              cookies.token == undefined || isCommentFormOpen ? "none" : "flex"
+            }
             justifyContent="center"
           >
             <Button
@@ -901,7 +942,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
             </Button>
           </Box>
           <Collapse in={isCommentFormOpen}>
-            <Card elevation={5} sx={{ p: 2 }}>
+            <Card raised sx={{ p: 2 }}>
               <CardContent>
                 <List>
                   <ListItem>
@@ -970,31 +1011,63 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           </Collapse>
 
           <List sx={{ width: "100%" }}>
-            {productData && productData.reviews
-              .slice(startIndex, endIndex)
-              .map((comment, index) => (
-                <Box key={index} py={1}>
-                  {console.log(comment)}
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>{getFullnameInitials(comment.name)}</Avatar>
-                    </ListItemAvatar>
+            {productData ? (
+              productData.reviews
+                .slice(startIndex, endIndex)
+                .map((comment, index) => (
+                  <Box key={index} py={1}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>{getFullnameInitials(comment.name)}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={comment.name}
+                        secondary={comment.date}
+                      />
+                      <Rating readOnly value={comment.rating} size="small" />
+                    </ListItem>
                     <ListItemText
-                      primary={comment.name}
-                      secondary={comment.date}
+                      primary={comment.title}
+                      secondary={comment.body}
                     />
-                    <Rating readOnly value={comment.rating} size="small" />
-                  </ListItem>
-                  <ListItemText
-                    primary={comment.title}
-                    secondary={comment.body}
-                  />
-                  <Divider sx={{ paddingTop: 3 }} />
-                </Box>
-              ))}
+                    <Divider sx={{ paddingTop: 3 }} />
+                  </Box>
+                ))
+            ) : (
+              <>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Box key={index} py={1}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Skeleton variant="circular" width={40} height={40} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={<Skeleton width={`${getRandomNumber()}%`} />}
+                        secondary={<Skeleton width="20%" />}
+                      />
+                      <Skeleton width={100} height={30} />
+                    </ListItem>
+                    <ListItemText
+                      primary={
+                        <Skeleton height={30} width={`${getRandomNumber()}%`} />
+                      }
+                      secondary={
+                        <>
+                          <Skeleton width={`${getRandomNumber()}%`} />
+                          <Skeleton width={`${getRandomNumber()}%`} />
+                        </>
+                      }
+                    />
+                    <Divider sx={{ paddingTop: 3 }} />
+                  </Box>
+                ))}
+              </>
+            )}
             <Stack spacing={2} alignItems="center">
               <Pagination
-                count={Math.ceil(bundleComments.length / commentsPerPage)}
+                count={Math.ceil(
+                  productData && productData.reviews.length / commentsPerPage
+                )}
                 page={CommentsPage}
                 onChange={(event, value) => setCommentsPage(value)}
               />
