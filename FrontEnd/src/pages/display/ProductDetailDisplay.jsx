@@ -286,6 +286,16 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+
+  const handleConfirmClick = () => {
+    setOpenConfirmationModal(true);
+  };
+
+  const handleCancelClick = () => {
+    setOpenConfirmationModal(false);
+  };
+
   return (
     <Box padding={2}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -764,7 +774,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                             </Typography>
                             <FieldArray name="drinks">
                               {({ push, remove }) => (
-                                <Box sx={{ display: "flex", padding: 2 }}>
+                                <Box sx={{ display: "flex", paddingTop: 2 }}>
                                   <Paper>
                                     <Container
                                       sx={{
@@ -816,25 +826,53 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                               Comments:
                             </Typography>
                             <Field
-                              name="comments" 
+                              name="comments"
                               as={TextField}
                               fullWidth
-                              multiline 
-                              rows={4} 
+                              multiline
+                              rows={4}
                               variant="outlined"
                               label="Write your comments here"
-                              sx = {{marginTop: 2}}
+                              sx={{ marginTop: 2 }}
                             />
                           </Box>
                           <Box p={2}>
                             <Button
-                              type="submit"
+                              type="button"
                               variant="contained"
                               color="primary"
-                              disabled={isSubmitting}
+                              onClick={handleConfirmClick}
                             >
                               Confirm
                             </Button>
+                            <Dialog
+                              open={openConfirmationModal}
+                              onClose={handleCancelClick}
+                            >
+                              <DialogTitle>
+                                Catering reservation confirmation
+                              </DialogTitle>
+                              <DialogContent>
+                                <Typography>
+                                  Are you sure you want to confirm this
+                                  reservation for this catering?
+                                </Typography>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button
+                                  onClick={handleCancelClick}
+                                  color="primary"
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  onClick={handleConfirmClick}
+                                  color="primary"
+                                >
+                                  Confirm
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </Box>
                         </Box>
                       </Form>

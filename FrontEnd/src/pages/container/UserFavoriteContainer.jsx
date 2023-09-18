@@ -78,7 +78,7 @@ const UserFavoriteContainer = ({ accessToken }) => {
       {favorites.length >= 1 ? (
         <CardProductGridContainer list={favorites} setIdToDelete={setIdToDelete} />
       ) : isLoading ? (
-        <Box display="flex" alignContent="center" justifyContent="center">
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
           <CircularProgress />
         </Box>
       ) : (
