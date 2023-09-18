@@ -43,6 +43,7 @@ import {
   CardContent,
   CardActions,
   Collapse,
+  Stack,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -67,12 +68,6 @@ import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  FacebookIcon,
-  TwitterIcon,
-  EmailIcon,
-  WhatsappIcon,
-} from "react-share";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;
@@ -415,13 +410,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 </div>
               </Dialog>
             </Box>
-            <Typography variant="subtitle1" fontStyle="italic" fon>
+            <Typography variant="subtitle1" fontStyle="italic">
               {productData ? productData.description : <Skeleton variant="text" width="100%" />}
             </Typography>
           </Box>
           <Divider light />
 
-          <Grid item lg={8} md={7}>
+          <Grid item lg={8} md={7} xs={12}>
             <Container>
               <Container>
                 <List>
@@ -947,10 +942,11 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           </Box>
           <Box
             display={
-              cookies.token == undefined || isCommentFormOpen ? "none" : "flex"
+              productData && productData.canUserReview && cookies.token == undefined || isCommentFormOpen ? "none" : "flex"
             }
             justifyContent="center"
           >
+            {productData && console.log(productData)}
             <Button
               variant="outlined"
               color="primary"
