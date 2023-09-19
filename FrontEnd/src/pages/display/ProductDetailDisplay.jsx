@@ -12,6 +12,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import {
   Box,
   Container,
@@ -66,7 +67,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
@@ -89,6 +90,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
+
+  const today = new Date().toISOString().split('T')[0];
+
 
   function countCommentsByRating(comments) {
     const ratingCounts = {};
@@ -296,6 +300,24 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     setOpenConfirmationModal(false);
   };
 
+  const formikAddReview = useFormik({
+    initialValues: {
+      userId: decodedToken && decodedToken.id,
+      name: userFullName,
+      bundle: parseInt(id),
+      date: today,
+      rating: 0,
+      title: "",
+      body: "",
+    },
+    //initialValues: reviewInitialValues,
+    //enableReinitialize: true,
+    onSubmit: async (values) => {
+      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+    },
+  });
+
   return (
     <Box padding={2}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -319,7 +341,11 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           <Box>
             <Box display="flex" minWidth="30vw">
               <Typography variant="h4">
-                {productData ? productData.name : <Skeleton variant="text" width="30vw" />}
+                {productData ? (
+                  productData.name
+                ) : (
+                  <Skeleton variant="text" width="30vw" />
+                )}
               </Typography>
               <IconButton
                 disabled={!decodedToken}
@@ -421,7 +447,11 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
               </Dialog>
             </Box>
             <Typography variant="subtitle1" fontStyle="italic">
-              {productData ? productData.description : <Skeleton variant="text" width="100%" />}
+              {productData ? (
+                productData.description
+              ) : (
+                <Skeleton variant="text" width="100%" />
+              )}
             </Typography>
           </Box>
           <Divider light />
@@ -432,10 +462,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 <List>
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      {productData ? <BiDish size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
+                      {productData ? (
+                        <BiDish size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary={productData ? "Starter:" : <Skeleton variant="text" width={150} />}
+                      primary={
+                        productData ? (
+                          "Starter:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData ? (
@@ -467,10 +507,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      {productData ? <RiRestaurant2Line size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
+                      {productData ? (
+                        <RiRestaurant2Line size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary={productData ? "Main course:" : <Skeleton variant="text" width={150} />}
+                      primary={
+                        productData ? (
+                          "Main course:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData ? (
@@ -502,10 +552,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      {productData ? <GiPieSlice size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
+                      {productData ? (
+                        <GiPieSlice size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary={productData ? "Dessert:" : <Skeleton variant="text" width={150} />}
+                      primary={
+                        productData ? (
+                          "Dessert:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData ? (
@@ -537,10 +597,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      {productData ? <MdLocalBar size="30" /> : <Skeleton variant="circular" width={40} height={40} />}
+                      {productData ? (
+                        <MdLocalBar size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary={productData ? "Drinks:" : <Skeleton variant="text" width={150} />}
+                      primary={
+                        productData ? (
+                          "Drinks:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData ? (
@@ -888,103 +958,131 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
         <Typography variant="h5">Reviews:</Typography>
         <Box width="lg" display="flex" flexDirection="column" gap={3}>
-          <Box
-            display="flex"
-            flexDirection={{
-              xs: "column-reverse",
-              sm: "row",
-              lg: "row",
-            }}
-            justifyContent="space-around"
-            width="100%"
-            py={2}
-          >
-            <Stack
-              width={{ xs: "100%", sm: "70%", lg: "70%" }}
-              justifyContent="space-evenly"
-            >
-              {productData
-                ? countCommentsByRating(productData.reviews).map(
-                    (commentRatingCategory) => (
-                      <Box
-                        key={commentRatingCategory.rating}
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="center"
-                        gap={1}
-                      >
-                        <Typography>{commentRatingCategory.rating}</Typography>
-                        <LinearProgress
-                          value={
-                            (commentRatingCategory.count /
-                              productData.reviews.length) *
-                            100
-                          }
-                          variant="determinate"
-                          color="warning"
-                          sx={{
-                            width: "100%",
-                            height: 10,
-                            borderRadius: 5,
-                            background: (theme) => theme.palette.grey[200],
-                          }}
-                        />
-                      </Box>
-                    )
-                  )
-                : Array.from({ length: 5 }).map((_, index) => (
-                    <Skeleton
-                      key={index}
-                      width="100%"
-                      height={20}
-                      sx={{
-                        borderRadius: 5,
-                      }}
-                    />
-                  ))}
-            </Stack>
-            <Stack
-              width={{ xs: "100%", sm: "30%", lg: "30%" }}
+          {productData && productData.reviews.length === 0 ? (
+            <Box
+              display="flex"
+              flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              gap={1}
+              width="100%"
+              py={2}
             >
-              {productData ? (
-                <>
-                  <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
-                    {productData.rating}
-                  </Typography>
-                  <Rating
-                    value={productData.rating}
-                    precision={0.1}
-                    readOnly
-                    size="large"
-                  />
-                  <Typography variant="caption">
-                    {productData.reviews.length} ratings
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  <Skeleton variant="rectangular" width={60} height={40} />
-                  <Skeleton
-                    variant="rectangular"
-                    width={150}
-                    height={20}
-                    sx={{ paddingBottom: 2 }}
-                  />
-                  <Skeleton variant="rectangular" width={100} height={15} />
-                </>
-              )}
-            </Stack>
-          </Box>
+              <CommentsDisabledIcon
+                color="disabled"
+                style={{ fontSize: 30, marginBottom: 16 }}
+              />
+              <Typography variant="h6" color="GrayText" gutterBottom>
+                This catering package has no reviews yet.
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Be the first to share your experience!
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              display="flex"
+              flexDirection={{
+                xs: "column-reverse",
+                sm: "row",
+                lg: "row",
+              }}
+              justifyContent="space-around"
+              width="100%"
+              py={2}
+            >
+              <Stack
+                width={{ xs: "100%", sm: "70%", lg: "70%" }}
+                justifyContent="space-evenly"
+              >
+                {productData
+                  ? countCommentsByRating(productData.reviews).map(
+                      (commentRatingCategory) => (
+                        <Box
+                          key={commentRatingCategory.rating}
+                          display="flex"
+                          flexDirection="row"
+                          alignItems="center"
+                          gap={1}
+                        >
+                          <Typography>
+                            {commentRatingCategory.rating}
+                          </Typography>
+                          <LinearProgress
+                            value={
+                              (commentRatingCategory.count /
+                                productData.reviews.length) *
+                              100
+                            }
+                            variant="determinate"
+                            color="warning"
+                            sx={{
+                              width: "100%",
+                              height: 10,
+                              borderRadius: 5,
+                              background: (theme) => theme.palette.grey[200],
+                            }}
+                          />
+                        </Box>
+                      )
+                    )
+                  : Array.from({ length: 5 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        width="100%"
+                        height={20}
+                        sx={{
+                          borderRadius: 5,
+                        }}
+                      />
+                    ))}
+              </Stack>
+              <Stack
+                width={{ xs: "100%", sm: "30%", lg: "30%" }}
+                alignItems="center"
+                justifyContent="center"
+                gap={1}
+              >
+                {productData ? (
+                  <>
+                    <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
+                      {productData.rating}
+                    </Typography>
+                    <Rating
+                      value={productData.rating}
+                      precision={0.1}
+                      readOnly
+                      size="large"
+                    />
+                    <Typography variant="caption">
+                      {productData.reviews.length} ratings
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Skeleton variant="rectangular" width={60} height={40} />
+                    <Skeleton
+                      variant="rectangular"
+                      width={150}
+                      height={20}
+                      sx={{ paddingBottom: 2 }}
+                    />
+                    <Skeleton variant="rectangular" width={100} height={15} />
+                  </>
+                )}
+              </Stack>
+            </Box>
+          )}
           <Box
             display={
-              productData && productData.canUserReview && cookies.token == undefined || isCommentFormOpen ? "none" : "flex"
+              (productData &&
+                productData.canUserReview &&
+                cookies.token == undefined) ||
+              isCommentFormOpen
+                ? "none"
+                : "flex"
             }
             justifyContent="center"
           >
-            {productData && console.log(productData)}
             <Button
               variant="outlined"
               color="primary"
@@ -996,70 +1094,90 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           </Box>
           <Collapse in={isCommentFormOpen}>
             <Card raised sx={{ p: 2 }}>
-              <CardContent>
-                <List>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>{initials}</Avatar>
-                    </ListItemAvatar>
-                    <Stack>
-                      <ListItemText
-                        primary={userFullName}
-                        secondary={
-                          "Please share your experience with the catering service. Your review will help others make informed decisions."
-                        }
-                      />
-                      <Rating
-                        size="large"
-                        sx={{
-                          "& .MuiRating-icon": {
-                            width: 50,
-                          },
-                        }}
-                      />
-                    </Stack>
-                  </ListItem>
-                </List>
-                <Container
-                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                >
-                  <TextField
-                    placeholder="Enter a title for your review"
-                    variant="standard"
-                    fullWidth
-                    inputProps={{
-                      maxLength: 30,
+              <form onSubmit={formikAddReview.handleSubmit}>
+                <CardContent>
+                  <List>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>{initials}</Avatar>
+                      </ListItemAvatar>
+                      <Stack>
+                        <ListItemText
+                          primary={userFullName}
+                          secondary={
+                            "Please share your experience with the catering service. Your review will help others make informed decisions."
+                          }
+                        />
+                        <Rating
+                          id="rating"
+                          value={formikAddReview.values.rating}
+                          onChange={(event, newValue) => {
+                            formikAddReview.setFieldValue("rating", newValue);
+                          }}
+                          size="large"
+                          sx={{
+                            "& .MuiRating-icon": {
+                              width: 50,
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </ListItem>
+                  </List>
+                  <Container
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
+                    <TextField
+                      id="title"
+                      placeholder="Enter a title for your review"
+                      variant="standard"
+                      fullWidth
+                      value={formikAddReview.values.title}
+                      onChange={formikAddReview.handleChange}
+                      inputProps={{
+                        maxLength: 30,
+                      }}
+                    />
+                    <TextField
+                      id="body"
+                      placeholder="Tell us about your catering adventure"
+                      variant="standard"
+                      multiline
+                      fullWidth
+                      value={formikAddReview.values.body}
+                      onChange={formikAddReview.handleChange}
+                      rows={4}
+                      inputProps={{
+                        maxLength: 250,
+                      }}
+                    />
+                  </Container>
+                </CardContent>
+                <CardActions sx={{ justifyContent: "end" }}>
+                  <Button
+                    type="reset"
+                    variant="text"
+                    color="primary"
+                    startIcon={<CancelIcon />}
+                    onClick={() => {
+                      setIsCommentFormOpen(false);
+                      formikAddReview.resetForm();
+                      formikAddReview.setFieldValue("rating", 0);
                     }}
-                  />
-                  <TextField
-                    placeholder="Tell us about your catering adventure"
-                    variant="standard"
-                    multiline
-                    fullWidth
-                    rows={4}
-                    inputProps={{
-                      maxLength: 250,
-                    }}
-                  />
-                </Container>
-              </CardContent>
-              <CardActions sx={{ justifyContent: "end" }}>
-                <Button
-                  variant="text"
-                  color="primary"
-                  startIcon={<CancelIcon />}
-                  onClick={() => setIsCommentFormOpen(false)}
-                >
-                  CANCEL
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<SendIcon />}
-                >
-                  SEND
-                </Button>
-              </CardActions>
+                  >
+                    CANCEL
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<SendIcon />}
+                    onClick={formikAddReview.handleSubmit}
+                  >
+                    SEND
+                  </Button>
+                </CardActions>
+              </form>
             </Card>
           </Collapse>
 
