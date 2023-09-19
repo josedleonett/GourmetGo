@@ -27,36 +27,6 @@ const UserLogInDisplay = () => {
   });
 
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {  
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputs),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const authorizationHeader = response.headers.get("authorization");
-        setCookie("token", data.accessToken, { path: '/' })
-        window.location.href = "/";
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login error',
-          text: 'The login was not successful. Please verify your credentials and try again.',
-        });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   const inputFields = [
     { name: "username", label: "Email", type: "email" },
@@ -89,6 +59,58 @@ const UserLogInDisplay = () => {
       setIsLoading(false);
     }, 2000);
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Iniciar el indicador de carga
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {  
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const authorizationHeader = response.headers.get("authorization");
+        setCookie("token", data.accessToken, { path: '/' })
+        setAccessToken(data.accessToken);
+        // Detener el indicador de carga
+        setIsLoading(false);
+
+        // Mostrar la alerta de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Login successful',
+          text: 'You have successfully logged in!',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirigir al usuario a la página de inicio (o donde corresponda)
+            window.location.href = "/";
+          }
+        });
+      } else {
+        // Detener el indicador de carga en caso de error
+        setIsLoading(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login error',
+          text: 'The login was not successful. Please verify your credentials and try again.',
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Detener el indicador de carga en caso de error
+      setIsLoading(false);
+    }
+  };
+
+
 
   return (
     <Box sx={{ padding: "10vw" }}>

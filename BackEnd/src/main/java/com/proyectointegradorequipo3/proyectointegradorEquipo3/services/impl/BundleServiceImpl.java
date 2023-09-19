@@ -22,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -50,6 +51,8 @@ public class BundleServiceImpl implements IBundleService {
 
     private final S3Service s3Service;
 
+    DecimalFormat df = new DecimalFormat("#.#");
+
     Logger logger = Logger.getLogger(BundleServiceImpl.class.getName());
 
     @Autowired
@@ -66,6 +69,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
         return dto;
     }
 
@@ -92,20 +96,27 @@ public class BundleServiceImpl implements IBundleService {
 
         boolean canReview = user.getBookings().stream()
                         .map(Booking::getBundle)
-                        .anyMatch(currentBundle -> Objects.equals(bundle.getId(), bundleId));
+                        .anyMatch(currentBundle -> Objects.equals(currentBundle.getId(), bundleId));
 
         dto.setCanUserReview(canReview);
-        dto.setRating(calculateAverageRating(reviewDtos));
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
 
         return dto;
     }
 
     public double calculateAverageRating(List<ReviewDto> reviews) {
-        return reviews.stream()
+        double average = reviews.stream()
                 .mapToDouble(ReviewDto::getRating)
                 .average()
                 .orElse(0.0);
+
+        return roundToOneDecimal(average);
     }
+    double roundToOneDecimal(double value) {
+        return Math.round(value * 10.0) / 10.0;
+    }
+
+
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
         UserEntity user = userRepository.findById(userId)
@@ -147,6 +158,18 @@ public class BundleServiceImpl implements IBundleService {
         waitForAllFutures(futureMap);
         Bundle newBundle = constructBundle(request, futureMap);
         validateBundleName(newBundle.getName());
+        double provisionalPrice = 0.;
+        provisionalPrice += newBundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+        provisionalPrice += newBundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+        provisionalPrice += newBundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        newBundle.setPrice(provisionalPrice);
         save(newBundle);
         return newBundle.getId();
     }
@@ -208,6 +231,7 @@ public class BundleServiceImpl implements IBundleService {
     }
 
     private Bundle constructBundle(BundleCreateRequest request, Map<String, CompletableFuture<?>> futureMap) throws Exception {
+        double provisionalPrice = 0.;
         Bundle.BundleBuilder builder = Bundle.builder()
                 .name(request.getName())
                 .description(request.getDescription())

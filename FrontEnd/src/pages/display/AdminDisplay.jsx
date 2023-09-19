@@ -383,6 +383,13 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: false,
         size: 80,
       },
+      {
+        accessorKey: "price",
+        id: "price",
+        header: "Price",
+        isMultiline: false,
+        size: 80,
+      },
     ],
   };
 

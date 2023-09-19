@@ -8,6 +8,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
+
 
 const UserRegisterDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -45,6 +48,9 @@ const UserRegisterDisplay = () => {
   const [resendButtonVisible, setResendButtonVisible] = useState(false);
   const [attemptsCount, setAttemptsCount] = useState(0);
   const [showRetryMessage, setShowRetryMessage] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+  const navigate = useNavigate();
+
 
   const regex = /^[A-Za-z]+$/;
 
@@ -79,6 +85,9 @@ const UserRegisterDisplay = () => {
 
   const handleResendConfirmationEmail = async () => {
     try {
+      // Mostrar CircularProgress mientras se realiza la solicitud
+      setIsLoading(true);
+  
       const response = await fetch(
         `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
         {
@@ -88,26 +97,30 @@ const UserRegisterDisplay = () => {
           },
         }
       );
-
+  
       if (response.ok) {
         Swal.fire({
           icon: "success",
           title: "Email Resent",
           text: "A confirmation email has been resent to your email address.",
-        });
-        if (attemptsCount < 2) {
-          setShowRetryMessage(false);
-          setResendButtonVisible(true);
-          setAttemptsCount(attemptsCount + 1);
-        } else if (attemptsCount === 2) {
-          setResendButtonVisible(false);
-          setShowRetryMessage(true);
-        }
+        })
+        setResendButtonVisible(true);
+        setAttemptsCount(attemptsCount + 1);
+        setShowRetryMessage(false);
+      } else {
+        const errorResponse = await response.json();
+        console.error("Failed to resend confirmation email:", errorResponse.message);
+        setShowRetryMessage(true);
       }
     } catch (error) {
       console.error("An error occurred:", error);
+    } finally {
+      // Ocultar CircularProgress después de completar la solicitud
+      setIsLoading(false);
     }
   };
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -201,6 +214,9 @@ const UserRegisterDisplay = () => {
 
     if (Object.values(inputSuccess).every((success) => success)) {
       try {
+        // Mostrar el CircularProgress mientras se procesa la solicitud
+        setIsLoading(true);
+    
         const response = await fetch("http://localhost:8080/auth/createUser", {
           method: "POST",
           headers: {
@@ -208,22 +224,33 @@ const UserRegisterDisplay = () => {
           },
           body: JSON.stringify(inputs),
         });
-
+    
         if (response.ok) {
+          // Ocultar el CircularProgress cuando la solicitud es exitosa
+          setIsLoading(false);
+    
           Swal.fire({
             icon: "success",
             title: "Successful registration",
             text: "Please check your email for further instructions.",
-          });
+          })
           setResendButtonVisible(true);
         } else {
+          // Ocultar el CircularProgress si hay un error en la solicitud
+          setIsLoading(false);
+    
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
         }
       } catch (error) {
+        // Ocultar el CircularProgress si ocurre un error
+        setIsLoading(false);
+    
         console.error("An error occurred:", error);
       }
     }
+    
+    
   };
 
   const inputFields = [
@@ -249,7 +276,7 @@ const UserRegisterDisplay = () => {
   }, []);
 
   return (
-    <Box sx={{ padding: "10vw", textAlign: "center" }}>
+    <>
       {isLoading ? (
         <Box
           sx={{
@@ -262,96 +289,111 @@ const UserRegisterDisplay = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <>
-          <Typography
-            variant="h4"
-            sx={{
-              marginBottom: "3rem",
-              fontSize: isSmallScreen ? "1.5rem" : "2rem",
-              backgroundColor: "secondary.light",
-              display: "inline-block",
-              fontWeight: 500,
-              padding: "0.5rem",
-              paddingTop: "1rem",
-            }}
-          >
-            Join the GourmetGo family!
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-              gap: isSmallScreen ? "1.5rem" : "3vw",
-              marginTop: "2rem",
-              border: "2px solid #e0e0e0",
-              borderRadius: "8px",
-              padding: isSmallScreen ? "10px" : "20px",
-              maxWidth: isSmallScreen ? "300px" : "400px",
-              margin: "0 auto",
-            }}
-          >
-            {inputFields.map((field) => (
-              <Box key={field.name}>
-                <TextField
-                  name={field.name}
-                  placeholder={field.label}
-                  label={borderStyles[field.name].border ? "" : field.label}
-                  type={field.type}
-                  value={inputs[field.name]}
-                  onChange={(e) =>
-                    handleInputChange(field.name, e.target.value)
-                  }
-                  sx={{
-                    ...borderStyles[field.name],
-                    "@media (max-width: 768px)": {
-                      width: "100%",
-                    },
-                  }}
-                />
-                <Typography>{labels[field.name]}</Typography>
-              </Box>
-            ))}
-            <Button
-              variant="text"
-              type="submit"
+        <Box sx={{ padding: "10vw", textAlign: "center" }}>
+          {isLoading ? (
+            <Box
               sx={{
-                border: "1px solid black",
-                borderRadius: "0px",
-                padding: "1vw",
-                width: "20vw",
-                "&:hover": { backgroundColor: "secondary.light" },
-                transition: "background-color 0.3s",
-                color: "black",
-                "@media (max-width: 768px)": { width: "50%" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
               }}
             >
-              Create Account
-            </Button>
-            {resendButtonVisible && (
-              <Button
-                variant="text"
-                type="button"
-                onClick={handleResendConfirmationEmail}
+              <CircularProgress />
+            </Box>
+          ) : (
+            <>
+              <Typography
+                variant="h4"
+                sx={{
+                  marginBottom: "3rem",
+                  fontSize: isSmallScreen ? "1.5rem" : "2rem",
+                  backgroundColor: "secondary.light",
+                  display: "inline-block",
+                  fontWeight: 500,
+                  padding: "0.5rem",
+                  paddingTop: "1rem",
+                }}
               >
-                Resend email
-              </Button>
-            )}
-            {showRetryMessage && (
-              <Typography sx={{ marginTop: "1rem", color: "red" }}>
-                You have reached the maximum number of resend attempts. Try
-                again later.
+                Join the GourmetGo family!
               </Typography>
-            )}
-          </Box>
-        </>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  gap: isSmallScreen ? "1.5rem" : "3vw",
+                  marginTop: "2rem",
+                  border: "2px solid #e0e0e0",
+                  borderRadius: "8px",
+                  padding: isSmallScreen ? "10px" : "20px",
+                  maxWidth: isSmallScreen ? "300px" : "400px",
+                  margin: "0 auto",
+                }}
+              >
+                {inputFields.map((field) => (
+                  <Box key={field.name}>
+                    <TextField
+                      name={field.name}
+                      placeholder={field.label}
+                      label={borderStyles[field.name].border ? "" : field.label}
+                      type={field.type}
+                      value={inputs[field.name]}
+                      onChange={(e) =>
+                        handleInputChange(field.name, e.target.value)
+                      }
+                      sx={{
+                        ...borderStyles[field.name],
+                        "@media (max-width: 768px)": {
+                          width: "100%",
+                        },
+                      }}
+                    />
+                    <Typography>{labels[field.name]}</Typography>
+                  </Box>
+                ))}
+                <Button
+                  variant="text"
+                  type="submit"
+                  sx={{
+                    border: "1px solid black",
+                    borderRadius: "0px",
+                    padding: "1vw",
+                    width: "20vw",
+                    "&:hover": { backgroundColor: "secondary.light" },
+                    transition: "background-color 0.3s",
+                    color: "black",
+                    "@media (max-width: 768px)": { width: "50%" },
+                  }}
+                >
+                  Create Account
+                </Button>
+                {resendButtonVisible && (
+                  <Button
+                    variant="text"
+                    type="button"
+                    onClick={handleResendConfirmationEmail}
+                  >
+                    Resend email
+                  </Button>
+                )}
+                {showRetryMessage && (
+                  <Typography sx={{ marginTop: "1rem", color: "red" }}>
+                    You have reached the maximum number of resend attempts. Try
+                    again later.
+                  </Typography>
+                )}
+              </Box>
+            </>
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 

@@ -23,4 +23,7 @@ public class PlateCreateRequest {
 
     @NotBlank
     private MultipartFile image;
+
+    @NotBlank
+    private double price;
 }
