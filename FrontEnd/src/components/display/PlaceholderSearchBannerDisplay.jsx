@@ -52,7 +52,7 @@ const PlaceholderSearchBannerDisplay = ({
               variant="standard"
               InputProps={{
                 ...params.InputProps,
-                style: { width: "auto" }, // Establecer el ancho automático
+                style: { width: "auto" },
                 startAdornment: (
                   <>
                     {selectedFilters.map((filter) => (

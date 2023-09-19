@@ -5,6 +5,7 @@ import {
   TextField,
   Autocomplete,
   CircularProgress,
+  useMediaQuery
 } from "@mui/material";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -14,7 +15,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import Dialog from "@mui/material/Dialog";
-import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -145,13 +145,9 @@ const SearchBannerDisplay = ({
   const handleDateAcceptAndCheckUnavailable = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM-DD");
-      // Haz lo que necesites con la fecha formateada
       console.log("Selected Date:", formattedDate);
-  
-      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
-        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
         console.log("Selected Date is unavailable.");
       }
     }
