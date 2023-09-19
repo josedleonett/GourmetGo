@@ -22,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -50,6 +51,8 @@ public class BundleServiceImpl implements IBundleService {
 
     private final S3Service s3Service;
 
+    DecimalFormat df = new DecimalFormat("#.#");
+
     Logger logger = Logger.getLogger(BundleServiceImpl.class.getName());
 
     @Autowired
@@ -66,6 +69,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
         return dto;
     }
 
@@ -95,7 +99,7 @@ public class BundleServiceImpl implements IBundleService {
                         .anyMatch(currentBundle -> Objects.equals(bundle.getId(), bundleId));
 
         dto.setCanUserReview(canReview);
-        dto.setRating(calculateAverageRating(reviewDtos));
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
 
         return dto;
     }
