@@ -97,6 +97,10 @@ public class PlateServiceImpl implements IPlateService {
                 plateDto.setDescription(request.getDescription());
             }
 
+            if (request.getPrice() != null) {
+                plateDto.setPrice(request.getPrice());
+            }
+
             MultipartFile newImage = request.getImage();
             if (newImage != null && !newImage.isEmpty()) {
                 s3Service.deleteObject(plateDto.getImage());
