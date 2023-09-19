@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -8,13 +8,12 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography,
-  Switch,
-  CircularProgress,
+  Typography, Switch,
 } from "@mui/material";
 import { Route, Routes, useLocation } from "react-router-dom";
 import AdminPanelDrawerContainer from "../../components/container/AdminPanelDrawerContainer";
-import AdminPanelDataGridDisplay from "../../components/display/AdminPanelDataGridDisplay";
+import AdminPanelDataGridDisplay, {
+} from "../../components/display/AdminPanelDataGridDisplay";
 import NotFoundContainer from "../container/NotFoundContainer";
 import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
@@ -31,44 +30,41 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const [drinksOptions, setDrinksOptions] = useState([]);
   const [characteristicsOptions, setCharacteristicsOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
-
+  
   const getOptions = async (API_BASE_URL, filter) => {
     try {
       const response = await axios.get(API_BASE_URL);
-
+  
       if (filter != undefined) {
         const dataFiltered = response.data.filter(
           (item) => item.hasOwnProperty("type") && item.type === filter
         );
-
-        const typeValues = dataFiltered.map((item) => item.name);
+  
+        const typeValues = dataFiltered.map(item => item.name);
         return typeValues;
       } else {
-        const typeValues = response.data.map((item) => item.name);
+  
+        const typeValues = response.data.map(item => item.name);
         return typeValues;
       }
     } catch (error) {
       console.error("Error get Options:", error);
     }
-  };
+  }
 
   useEffect(() => {
     const fetchPlateOptions = async () => {
       const platesOptionsResponse = await getOptions(API_BASE_URL + "plate/");
       const drinksOptionsResponse = await getOptions(API_BASE_URL + "drink/");
-      const categoryOptionsResponse = await getOptions(
-        API_BASE_URL + "category/"
-      );
-      const characteristicOptionsResponse = await getOptions(
-        API_BASE_URL + "characteristic/"
-      );
+      const categoryOptionsResponse = await getOptions(API_BASE_URL + "category/");
+      const characteristicOptionsResponse = await getOptions(API_BASE_URL + "characteristic/");
 
       setPlatesOptions(platesOptionsResponse);
       setDrinksOptions(drinksOptionsResponse);
       setCategoryOptions(categoryOptionsResponse);
       setCharacteristicsOptions(characteristicOptionsResponse);
     };
-
+  
     fetchPlateOptions();
   }, []);
 
@@ -383,8 +379,16 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         isMultiline: false,
         size: 80,
       },
+      {
+        accessorKey: "price",
+        id: "price",
+        header: "Price",
+        isMultiline: false,
+        size: 80,
+      },
     ],
   };
+
 
   const drinkDataGridProps = {
     API_BASE_URL: API_BASE_URL + "drink/",
@@ -504,28 +508,26 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Is admin",
         size: 140,
         Cell: ({ renderedCellValue, row }) => {
-          const [isChecked, setIsChecked] = useState(
-            row.original.role === "ADMIN"
-          );
+          const [isChecked, setIsChecked] = useState(row.original.role === 'ADMIN');
 
           const handleChange = async () => {
-            const newRole = isChecked ? "USER" : "ADMIN";
+            const newRole = isChecked ? 'USER' : 'ADMIN';
             setIsChecked(!isChecked);
-
+  
             const formData = new FormData();
-            formData.append("role", newRole);
-            formData.append("confirmed", row.original.confirmed);
-
+            formData.append('role', newRole);
+            formData.append('confirmed', row.original.confirmed)
+  
             try {
               const response = await axios.patch(
                 usersDataGridProps.API_BASE_URL + row.original.id,
                 formData
               );
             } catch (error) {
-              console.error("Error updating user role:", error);
+              console.error('Error updating user role:', error);
             }
           };
-
+  
           return <Switch checked={isChecked} onChange={handleChange} />;
         },
       },
@@ -540,10 +542,10 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
           const handleChange = async (e) => {
             const newConfirmedValue = e.target.checked;
             setIsChecked(newConfirmedValue);
-
+            
             const formData = new FormData();
-            formData.append("confirmed", newConfirmedValue);
-
+            formData.append('confirmed', newConfirmedValue);
+        
             try {
               const response = await axios.patch(
                 usersDataGridProps.API_BASE_URL + row.original.id,
@@ -553,15 +555,16 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                 console.log(pair[0], pair[1]);
               }
             } catch (error) {
-              console.error("Error updating user role:", error);
+              console.error('Error updating user role:', error);
             }
           };
-
+        
           return <Switch checked={isChecked} onChange={handleChange} />;
         },
       },
     ],
   };
+  
 
   const categoryDataGridProps = {
     API_BASE_URL: API_BASE_URL + "category/",
@@ -630,96 +633,79 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     ],
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+  
 
   return (
     <>
-      {isLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Box sx={{ display: "flex" }}>
-          <AdminPanelDrawerContainer sidebarMenuList={sidebarMenu} />
+      <Box sx={{ display: "flex" }}>
+        <AdminPanelDrawerContainer sidebarMenuList={sidebarMenu} />
 
-          <Routes>
-            <Route
-              path="bundles"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={bundlesDataGridProps}
-                  renderDetailPanel={bundlesRenderDetailPanel}
-                />
-              }
-            />
-            <Route
-              path="plates/starter"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={plateDataGridProps}
-                  filter={"starter"}
-                />
-              }
-            />
-            <Route
-              path="plates/mainCourse"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={plateDataGridProps}
-                  filter={"mainCourse"}
-                />
-              }
-              //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
-              //loader={AdminPanelDataGridLoader}
-            />
-            <Route
-              path="plates/dessert"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={plateDataGridProps}
-                  filter={"dessert"}
-                />
-              }
-            />
-            <Route
-              path="drinks"
-              element={<AdminPanelDataGridDisplay props={drinkDataGridProps} />}
-            />
-            <Route
-              path="categories"
-              element={
-                <AdminPanelDataGridDisplay props={categoryDataGridProps} />
-              }
-            />
-            <Route
-              path="user"
-              element={<AdminPanelDataGridDisplay props={usersDataGridProps} />}
-            />
-            <Route
-              path="characteristic"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={characteristicsDataGridProps}
-                />
-              }
-            />
-            <Route path="/*" element={<NotFoundContainer />} />
-          </Routes>
-        </Box>
-      )}
+        <Routes>
+          <Route
+            path="bundles"
+            element={
+              <AdminPanelDataGridDisplay
+                props={bundlesDataGridProps}
+                renderDetailPanel={bundlesRenderDetailPanel}
+              />
+            }
+          />
+          <Route
+            path="plates/starter"
+            element={
+              <AdminPanelDataGridDisplay
+                props={plateDataGridProps}
+                filter={"starter"}
+              />
+            }
+          />
+          <Route
+            path="plates/mainCourse"
+            element={
+              <AdminPanelDataGridDisplay
+                props={plateDataGridProps}
+                filter={"mainCourse"}
+              />
+            }
+            //FALTA IMPLEMENTAR LOADER DE REACT-ROUTER-DOM
+            //loader={AdminPanelDataGridLoader}
+          />
+          <Route
+            path="plates/dessert"
+            element={
+              <AdminPanelDataGridDisplay
+                props={plateDataGridProps}
+                filter={"dessert"}
+              />
+            }
+          />
+          <Route
+            path="drinks"
+            element={<AdminPanelDataGridDisplay props={drinkDataGridProps} />}
+          />
+          <Route
+            path="categories"
+            element={
+              <AdminPanelDataGridDisplay props={categoryDataGridProps} />
+            }
+          />
+          <Route
+            path="user"
+            element={
+              <AdminPanelDataGridDisplay
+                props={usersDataGridProps}
+              />
+            }
+          />
+          <Route
+            path="characteristic"
+            element={
+              <AdminPanelDataGridDisplay props={characteristicsDataGridProps} />
+            }
+          />
+          <Route path="/*" element={<NotFoundContainer />} />
+        </Routes>
+      </Box>
     </>
   );
 };

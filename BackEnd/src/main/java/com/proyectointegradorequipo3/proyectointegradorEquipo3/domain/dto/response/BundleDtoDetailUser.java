@@ -25,6 +25,7 @@ public class BundleDtoDetailUser {
     private List<Category> categories;
     private List<ReviewDto> reviews;
     private boolean canUserReview;
+    private double price;
     private Double rating;
     private boolean favorite;
     private String terms;

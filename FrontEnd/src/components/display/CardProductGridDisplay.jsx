@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import CardProductContainer from "../container/CardProductContainer";
 import { Grid, Pagination, Container, Box, Skeleton, Stack } from "@mui/material";
 
-const CardProductGridDisplay = ({ list, setIdToDelete }) => {
+const CardProductGridDisplay = ({ list }) => {
   const [page, setPage] = useState(1);
   const containerRef = useRef(null);
 
@@ -42,7 +42,6 @@ const CardProductGridDisplay = ({ list, setIdToDelete }) => {
                   rating={item.rating}
                   numberDiners={item.numberDiners}
                   favorite={item.favorite}
-                  setIdToDelete={setIdToDelete}
                 />
               </Grid>
             ))

@@ -20,7 +20,6 @@ const CardProductDisplay = ({
   rating,
   numberDiners,
   favorite,
-  setIdToDelete
 }) => {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -33,9 +32,10 @@ const CardProductDisplay = ({
 
   const handleIconClick = () => {
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
     const bundleId = id;
+
     if (isFavorite) {
-      setIdToDelete(id)
       fetch(
         `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
         {

@@ -1,8 +1,8 @@
 import CoverProductGalleryDisplay from "../display/CoverProductGalleryDisplay";
 
-const CoverProductGalleryContainer = ({ imgList, galleryId, isLoading }) => {
+const CoverProductGalleryContainer = ({ imgList, galleryId }) => {
 
-  return <CoverProductGalleryDisplay imgList={imgList} galleryId={galleryId} isLoading={isLoading} />;
+  return <CoverProductGalleryDisplay imgList={imgList} galleryId={galleryId} />;
 };
 
 export default CoverProductGalleryContainer;
