@@ -9,6 +9,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import {
   Box,
   Container,
@@ -31,6 +35,14 @@ import {
   AlertTitle,
   Snackbar,
   TextField,
+  Card,
+  CardContent,
+  CardActions,
+  Collapse,
+  Stack,
+  Stepper,
+  Step,
+  StepLabel,
 } from "@mui/material";
 import { cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -49,10 +61,11 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
+import * as yup from 'yup';
 import CloseIcon from "@mui/icons-material/Close";
-import { FacebookIcon, TwitterIcon, EmailIcon, WhatsappIcon } from "react-share";
-
+import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
+import axios from "axios";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;
@@ -70,6 +83,46 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const [showWarning, setShowWarning] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
+  const [CommentsPage, setCommentsPage] = useState(1);
+  const commentsPerPage = 5;
+  const startIndex = (CommentsPage - 1) * commentsPerPage;
+  const endIndex = startIndex + commentsPerPage;
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const [activeStep, setActiveStep] = useState(0);
+
+  // Define los pasos de tu formulario en un array
+  const steps = ["Step 1", "Step 2", "Step 3"];
+
+  function countCommentsByRating(comments) {
+    const ratingCounts = {};
+
+    comments.forEach((comment) => {
+      const rating = Math.floor(comment.rating);
+      ratingCounts[rating] = (ratingCounts[rating] || 0) + 1;
+    });
+
+    for (let rating = 1; rating <= 5; rating++) {
+      if (!(rating in ratingCounts)) {
+        ratingCounts[rating] = 0;
+      }
+    }
+
+    const result = Object.entries(ratingCounts).map(([rating, count]) => ({
+      rating: parseInt(rating),
+      count,
+    }));
+
+    result.sort((a, b) => a.rating - b.rating);
+
+    return result;
+  }
+
+  function getRandomNumber(min = 20, max = 100) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   let decodedToken;
   if (cookies.token !== undefined) {
@@ -205,7 +258,24 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     );
   };
 
-  const shareUrl = `http://127.0.0.1:5173/product/${id}`;
+  const handleDateAcceptAndCheckUnavailable = (date) => {
+    if (date) {
+      const formattedDate = date.format("YYYY-MM-DD");
+      // Haz lo que necesites con la fecha formateada
+      console.log("Selected Date:", formattedDate);
+
+      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
+      const isUnavailable = isDateUnavailable(dayjs(date));
+      if (isUnavailable) {
+        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
+        console.log("Selected Date is unavailable.");
+      }
+    }
+  };
+
+  const minDate = dayjs().add(1, "week");
+
+  const shareUrl = window.location.href;
 
   const [openSocialModal, setOpenSocialModal] = useState(false);
 
@@ -218,6 +288,14 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
   const [selectedDate, setSelectedDate] = useState(dayjs());
+  function getFullnameInitials(fullname) {
+    const words = fullname.split(" ");
+    const fullnameInitials = words
+      .slice(0, 2)
+      .map((word) => word[0].toUpperCase())
+      .join("");
+    return fullnameInitials;
+  }
 
   let initialValues = {
   };
@@ -262,6 +340,58 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   };
 
 
+  const validationSchemaAddReview = yup.object({
+    title: yup
+      .string('Enter your title')
+      .max(50, 'Title should be of maximum 50 characters'),
+    body: yup
+      .string('Enter your body')
+      .max(500, 'Review body should be of maximum 500 characters'),
+  });
+
+  const [badWordsResponse, setBadWordsResponse] = useState([])
+
+  const formikAddReview = useFormik({
+    initialValues: {
+      userId: decodedToken && decodedToken.id,
+      name: userFullName,
+      bundle: parseInt(id),
+      date: today,
+      rating: 3,
+      title: "",
+      body: "",
+    },
+    validationSchema: validationSchemaAddReview,
+    onSubmit: async (values) => {
+      alert(JSON.stringify(values, null, 2));
+      console.log(values, MODERATOR_CONTENT_URL_BASE);
+
+      try {
+        const moderatorContentResponse = await axios.get(
+          MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
+        );
+        console.log(moderatorContentResponse);
+        setBadWordsResponse(moderatorContentResponse.data.bad_words)
+
+        if (badWordsResponse.length == 0) {
+          const response = await axios.post(
+            API_BASE_URL + "review/create",
+            JSON.stringify(values),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(response);
+        }
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+  });
+
   return (
     <Box sx={{ padding: 2 }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -282,9 +412,12 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       <Container>
         <Grid container padding={2} lg={12}>
           <Box>
-            <div style={{ display: "flex" }}>
               <Typography variant="h4">
-                {productData ? productData.name : ""}
+                {productData ? (
+                  productData.name
+                ) : (
+                  <Skeleton variant="text" width="30vw" />
+                )}
               </Typography>
               <IconButton
                 disabled={!decodedToken}
@@ -384,11 +517,14 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                   <div style={{ margin: 12 }}></div>{" "}
                 </div>
               </Dialog>
-            </div>
-            <Typography variant="subtitle1" fontStyle="italic" fon>
-              {productData ? productData.description : ""}
+            </Box>
+            <Typography variant="subtitle1" fontStyle="italic">
+              {productData ? (
+                productData.description
+              ) : (
+                <Skeleton variant="text" width="100%" />
+              )}
             </Typography>
-          </Box>
           <Divider light />
 
           <Grid item lg={8} md={7}>
@@ -397,10 +533,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 <List>
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <BiDish size="30" />
+                      {productData ? (
+                        <BiDish size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Main course:"
+                      primary={
+                        productData ? (
+                          "Starter:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData
@@ -427,10 +573,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <RiRestaurant2Line size="30" />
+                      {productData ? (
+                        <RiRestaurant2Line size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Main course:"
+                      primary={
+                        productData ? (
+                          "Main course:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData
@@ -457,10 +613,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <GiPieSlice size="30" />
+                      {productData ? (
+                        <GiPieSlice size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Dessert:"
+                      primary={
+                        productData ? (
+                          "Dessert:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData
@@ -489,10 +655,20 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
 
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <MdLocalBar size="30" />
+                      {productData ? (
+                        <MdLocalBar size="30" />
+                      ) : (
+                        <Skeleton variant="circular" width={40} height={40} />
+                      )}
                     </ListItemAvatar>
                     <ListItemText
-                      primary="Drinks:"
+                      primary={
+                        productData ? (
+                          "Drinks:"
+                        ) : (
+                          <Skeleton variant="text" width={150} />
+                        )
+                      }
                       secondary={
                         <>
                           {productData
@@ -582,8 +758,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                           defaultValue={dayjs()}
                           name="date"
                           onAccept={(date) => {
+                            handleDateAcceptAndCheckUnavailable(date);
                             setSelectedDate(date);
                           }}
+                          minDate={minDate}
                           shouldDisableDate={isDateUnavailable}
                           readOnly={!isUserLoggedIn}
                           renderInput={(props) => (
@@ -653,18 +831,253 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                               <CloseIcon />
                             </IconButton>
                           )}
-                          <Typography
-                            variant="h4"
-                            sx={{ backgroundColor: "secondary.light" }}
-                          >
-                            Reserve catering
-                          </Typography>
+                          {/* Agrega el Stepper para mostrar los pasos */}
+                          <Stepper activeStep={activeStep}>
+                            {steps.map((label, index) => (
+                              <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                              </Step>
+                            ))}
+                          </Stepper>
+
+                          {activeStep === 0 && (
+                            <Box>
+                              {/* Contenido del primer paso */}
+                              <Box p={2}>
+                                <Typography
+                                  variant="h4"
+                                  sx={{ backgroundColor: "secondary.light" }}
+                                >
+                                  Reserve catering
+                                </Typography>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 2,
+                                  }}
+                                >
+                                  <TextField
+                                    sx={{
+                                      width: "100%",
+                                      marginTop: 2,
+                                    }}
+                                    disabled
+                                    id="filled-basic"
+                                    fullWidth
+                                    variant="filled"
+                                    label="Name"
+                                    readOnly={true}
+                                    helperText={
+                                      <ErrorMessage name="NumberDinners" />
+                                    }
+                                    value={
+                                      decodedToken.name +
+                                      " " +
+                                      decodedToken.lastName
+                                    }
+                                  />
+                                  <TextField
+                                    sx={{
+                                      width: "100%",
+                                      marginTop: 2,
+                                      marginBottom: 2,
+                                    }}
+                                    disabled
+                                    id="filled-basic"
+                                    name="email"
+                                    fullWidth
+                                    variant="filled"
+                                    label="Email"
+                                    readOnly={true}
+                                    helperText={
+                                      <ErrorMessage name="NumberDinners" />
+                                    }
+                                    value={decodedToken.email}
+                                  />
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
+                                    <DatePicker
+                                      disabled
+                                      fullWidth
+                                      readOnly={true}
+                                      value={selectedDate}
+                                    />
+                                  </LocalizationProvider>
+                                  <Typography
+                                    variant="h6"
+                                    sx={{
+                                      backgroundColor: "secondary.light",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    Your guests:
+                                  </Typography>
+                                  {/* El tercer campo no necesita ajustes */}
+                                  <Field
+                                    type="number"
+                                    name="NumberDinners"
+                                    as={TextField}
+                                    fullWidth
+                                    variant="outlined"
+                                    label="Amount of people"
+                                    helperText={
+                                      <ErrorMessage name="NumberDinners" />
+                                    }
+                                  />
+                                </Box>
+                              </Box>
+                            </Box>
+                          )}
+
+                          {activeStep === 1 && (
+                            <Box>
+                              {/* Contenido del segundo paso */}
+                              <Box p={2}>
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    backgroundColor: "secondary.light",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  Number of drinks:
+                                </Typography>
+                                <FieldArray name="drinks">
+                                  {({ push, remove }) => (
+                                    <Box
+                                      sx={{ display: "flex", paddingTop: 2 }}
+                                    >
+                                      <Paper>
+                                        <Container
+                                          sx={{
+                                            padding: 3,
+                                            height: "100%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "space-evenly",
+                                            gap: 2,
+                                          }}
+                                        >
+                                          {productData
+                                            ? productData.drinks.map(
+                                                (_, index) => (
+                                                  <>
+                                                    {console.log(
+                                                      productData.drinks[index]
+                                                        .name
+                                                    )}
+                                                    <TextField
+                                                      type="number"
+                                                      name={`drinks[${index}]`}
+                                                      fullWidth
+                                                      variant="outlined"
+                                                      label={
+                                                        productData.drinks[
+                                                          index
+                                                        ].name
+                                                      }
+                                                      helperText={
+                                                        <ErrorMessage
+                                                          name={`drinks[${index}]`}
+                                                        />
+                                                      }
+                                                    />
+                                                  </>
+                                                )
+                                              )
+                                            : []}
+                                        </Container>
+                                      </Paper>
+                                    </Box>
+                                  )}
+                                </FieldArray>
+                              </Box>
+                            </Box>
+                          )}
+                          {activeStep === 2 && (
+                            <Box>
+                              {/* Contenido del tercer paso */}
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  backgroundColor: "secondary.light",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Indications:
+                              </Typography>
+                              <Field
+                                name="comments"
+                                as={TextField}
+                                fullWidth
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                label="Write your comments here"
+                                sx={{ marginTop: 2 }}
+                              />
+                              <Dialog
+                                open={openConfirmationModal}
+                                onClose={handleCancelClick}
+                              >
+                                <DialogTitle>
+                                  Catering reservation confirmation
+                                </DialogTitle>
+                                <DialogContent>
+                                  <Typography>
+                                    Are you sure you want to confirm the
+                                    reservation for this catering?
+                                  </Typography>
+                                  <ul>
+                                    <li>
+                                      <Typography>
+                                        <strong>Name:</strong>{" "}
+                                        {decodedToken.name}{" "}
+                                        {decodedToken.lastName}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Email:</strong>{" "}
+                                        {decodedToken.email}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Date:</strong>{" "}
+                                        {selectedDate.format("MM-DD-YYYY")}
+                                      </Typography>
+                                    </li>
+                                  </ul>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button
+                                    onClick={handleCancelClick}
+                                    color="primary"
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    onClick={handleConfirmClick}
+                                    color="primary"
+                                  >
+                                    Confirm
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </Box>
+                          )}
+                          {/* Botones de navegación entre pasos */}
                           <Box
+                            p={2}
                             sx={{
                               display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-evenly",
-                              gap: 2,
+                              justifyContent: "space-between",
+                              "& > button": {
+                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                              },
                             }}
                           >
                             <TextField
@@ -773,6 +1186,34 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                             >
                               Enviar
                             </Button>
+                            {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => setActiveStep(activeStep - 1)}
+                              >
+                                Back
+                              </Button>
+                            )}
+                            {activeStep < steps.length - 1 && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => setActiveStep(activeStep + 1)}
+                              >
+                                Next
+                              </Button>
+                            )}
+                            {activeStep === steps.length - 1 && (
+                              <Button
+                                type="button"
+                                variant="contained"
+                                color="primary"
+                                onClick={handleConfirmClick}
+                              >
+                                Confirm
+                              </Button>
+                            )}
                           </Box>
                         </Box>
                       </Form>
@@ -784,6 +1225,327 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
           </Grid>
         </Grid>
         <Box height={50} />
+
+        <Typography variant="h5">Reviews:</Typography>
+        <Box width="lg" display="flex" flexDirection="column" gap={3}>
+          {productData && productData.reviews.length === 0 ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+              py={2}
+            >
+              <CommentsDisabledIcon
+                color="disabled"
+                style={{ fontSize: 30, marginBottom: 16 }}
+              />
+              <Typography variant="h6" color="GrayText" gutterBottom>
+                This catering package has no reviews yet.
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Be the first to share your experience!
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              display="flex"
+              flexDirection={{
+                xs: "column-reverse",
+                sm: "row",
+                lg: "row",
+              }}
+              justifyContent="space-around"
+              width="100%"
+              py={2}
+            >
+              <Stack
+                width={{ xs: "100%", sm: "70%", lg: "70%" }}
+                justifyContent="space-evenly"
+              >
+                {productData
+                  ? countCommentsByRating(productData.reviews).map(
+                      (commentRatingCategory) => (
+                        <Box
+                          key={commentRatingCategory.rating}
+                          display="flex"
+                          flexDirection="row"
+                          alignItems="center"
+                          gap={1}
+                        >
+                          <Typography>
+                            {commentRatingCategory.rating}
+                          </Typography>
+                          <LinearProgress
+                            value={
+                              (commentRatingCategory.count /
+                                productData.reviews.length) *
+                              100
+                            }
+                            variant="determinate"
+                            color="warning"
+                            sx={{
+                              width: "100%",
+                              height: 10,
+                              borderRadius: 5,
+                              background: (theme) => theme.palette.grey[200],
+                            }}
+                          />
+                        </Box>
+                      )
+                    )
+                  : Array.from({ length: 5 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        width="100%"
+                        height={20}
+                        sx={{
+                          borderRadius: 5,
+                        }}
+                      />
+                    ))}
+              </Stack>
+              <Stack
+                width={{ xs: "100%", sm: "30%", lg: "30%" }}
+                alignItems="center"
+                justifyContent="center"
+                gap={1}
+              >
+                {productData ? (
+                  <>
+                    <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
+                      {productData.rating}
+                    </Typography>
+                    <Rating
+                      value={productData.rating}
+                      precision={0.1}
+                      readOnly
+                      size="large"
+                    />
+                    <Typography variant="caption">
+                      {productData.reviews.length} ratings
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Skeleton variant="rectangular" width={60} height={40} />
+                    <Skeleton
+                      variant="rectangular"
+                      width={150}
+                      height={20}
+                      sx={{ paddingBottom: 2 }}
+                    />
+                    <Skeleton variant="rectangular" width={100} height={15} />
+                  </>
+                )}
+              </Stack>
+            </Box>
+          )}
+          <Box
+            display={
+              (productData &&
+                productData.canUserReview &&
+                cookies.token == undefined) ||
+              isCommentFormOpen
+                ? "none"
+                : "flex"
+            }
+            justifyContent="center"
+          >
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<AddCommentIcon />}
+              onClick={() => setIsCommentFormOpen(true)}
+            >
+              ADD A REVIEW
+            </Button>
+          </Box>
+          <Collapse in={isCommentFormOpen}>
+            <Card raised sx={{ p: 2 }}>
+              <form onSubmit={formikAddReview.handleSubmit}>
+                <CardContent>
+                  <List>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>{initials}</Avatar>
+                      </ListItemAvatar>
+                      <Stack>
+                        <ListItemText
+                          primary={userFullName}
+                          secondary={
+                            "Please share your experience with the catering service. Your review will help others make informed decisions."
+                          }
+                        />
+                        <Rating
+                          id="rating"
+                          value={formikAddReview.values.rating}
+                          onChange={(event, newValue) => {
+                            formikAddReview.setFieldValue("rating", newValue);
+                          }}
+                          size="large"
+                          sx={{
+                            "& .MuiRating-icon": {
+                              width: 50,
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </ListItem>
+                  </List>
+                  <Container
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
+                    <TextField
+                      id="title"
+                      placeholder="Enter a title for your review"
+                      variant="standard"
+                      fullWidth
+                      value={formikAddReview.values.title}
+                      onChange={formikAddReview.handleChange}
+                      onBlur={formikAddReview.handleBlur}
+                      error={
+                        formikAddReview.touched.title &&
+                        Boolean(formikAddReview.errors.title)
+                      }
+                      helperText={
+                        formikAddReview.touched.title &&
+                        formikAddReview.errors.title
+                      }
+                      inputProps={{
+                        maxLength: 50,
+                      }}
+                    />
+                    <TextField
+                      id="body"
+                      placeholder="Tell us about your catering adventure"
+                      variant="standard"
+                      multiline
+                      fullWidth
+                      value={formikAddReview.values.body}
+                      onChange={formikAddReview.handleChange}
+                      onBlur={formikAddReview.handleBlur}
+                      error={
+                        formikAddReview.touched.body &&
+                        Boolean(formikAddReview.errors.body)
+                      }
+                      helperText={
+                        formikAddReview.touched.body &&
+                        formikAddReview.errors.body
+                      }
+                      rows={4}
+                      inputProps={{
+                        maxLength: 500,
+                      }}
+                    />
+                  </Container>
+                </CardContent>
+                <CardContent>
+                  <Alert severity="warning">
+                    <AlertTitle>
+                      Your review violates our community guidelines
+                    </AlertTitle>
+                    We've noticed that some words in your review may not align
+                    with our community guidelines. Please review your content
+                    and remove any inappropriate language or content.
+                    <br />
+                    <br />
+                    Inappropriate words:{" "}
+                    <strong>{badWordsResponse.join(", ")}</strong>
+                  </Alert>
+                </CardContent>
+                <CardActions sx={{ justifyContent: "end" }}>
+                  <Button
+                    type="reset"
+                    variant="text"
+                    color="primary"
+                    startIcon={<CancelIcon />}
+                    onClick={() => {
+                      setIsCommentFormOpen(false);
+                      formikAddReview.resetForm();
+                    }}
+                  >
+                    CANCEL
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<SendIcon />}
+                    onClick={formikAddReview.handleSubmit}
+                  >
+                    SEND
+                  </Button>
+                </CardActions>
+              </form>
+            </Card>
+          </Collapse>
+
+          <List sx={{ width: "100%" }}>
+            {productData ? (
+              productData.reviews
+                .slice(startIndex, endIndex)
+                .map((comment, index) => (
+                  <Box key={index} py={1}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>{getFullnameInitials(comment.name)}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={comment.name}
+                        secondary={comment.date}
+                      />
+                      <Rating readOnly value={comment.rating} size="small" />
+                    </ListItem>
+                    <ListItemText
+                      primary={comment.title}
+                      secondary={comment.body}
+                    />
+                    <Divider sx={{ paddingTop: 3 }} />
+                  </Box>
+                ))
+            ) : (
+              <>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Box key={index} py={1}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Skeleton variant="circular" width={40} height={40} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={<Skeleton width={`${getRandomNumber()}%`} />}
+                        secondary={<Skeleton width="20%" />}
+                      />
+                      <Skeleton width={100} height={30} />
+                    </ListItem>
+                    <ListItemText
+                      primary={
+                        <Skeleton height={30} width={`${getRandomNumber()}%`} />
+                      }
+                      secondary={
+                        <>
+                          <Skeleton width={`${getRandomNumber()}%`} />
+                          <Skeleton width={`${getRandomNumber()}%`} />
+                        </>
+                      }
+                    />
+                    <Divider sx={{ paddingTop: 3 }} />
+                  </Box>
+                ))}
+              </>
+            )}
+            <Stack spacing={2} alignItems="center">
+              <Pagination
+                count={Math.ceil(
+                  productData && productData.reviews.length / commentsPerPage
+                )}
+                page={CommentsPage}
+                onChange={(event, value) => setCommentsPage(value)}
+              />
+            </Stack>
+          </List>
+        </Box>
       </Container>
       {showWarning && (
         <Snackbar

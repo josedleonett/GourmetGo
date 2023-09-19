@@ -1,6 +1,15 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+<<<<<<< HEAD
 import { Container, useTheme, useMediaQuery, Stack, Skeleton } from "@mui/material";
+=======
+import {
+  Container,
+  useTheme,
+  useMediaQuery,
+  CircularProgress,
+} from "@mui/material";
+>>>>>>> 0dc08e9bcfcfbcdd9362891939e46b07644b3333
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
@@ -22,6 +31,7 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
 
   return (
     <>
+<<<<<<< HEAD
       <SearchBannerContainer filterList={categorieList} filterBundle={bundleList}/>
       
       <Box component="section">
@@ -49,6 +59,25 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
           )}
           </Container>
       </Box>
+=======
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <SearchBannerContainer
+            filterList={categorieList}
+            filterBundle={bundleList}
+          />
+>>>>>>> 0dc08e9bcfcfbcdd9362891939e46b07644b3333
 
       <Box component="section">
         <Typography

@@ -10,6 +10,7 @@ import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import Dialog from '@mui/material/Dialog';
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const SearchBannerDisplay = ({
   filterList,
@@ -98,9 +99,6 @@ const SearchBannerDisplay = ({
     }
   };
 
-  const handleDateAccept = (date) => {
-    const formattedDate = date.format("YYYY-MM-DD");
-  };
 
   const isDateUnavailable = (date) => {
     if (!dates) {
@@ -114,6 +112,34 @@ const SearchBannerDisplay = ({
   
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
+<<<<<<< HEAD
+=======
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  const handleDateAcceptAndCheckUnavailable = (date) => {
+    if (date) {
+      const formattedDate = date.format("YYYY-MM-DD");
+      // Haz lo que necesites con la fecha formateada
+      console.log("Selected Date:", formattedDate);
+  
+      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
+      const isUnavailable = isDateUnavailable(dayjs(date));
+      if (isUnavailable) {
+        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
+        console.log("Selected Date is unavailable.");
+      }
+    }
+  };
+  
+  const minDate = dayjs().add(1, 'week');
+
+>>>>>>> 0dc08e9bcfcfbcdd9362891939e46b07644b3333
   return (
     <Box
       component="section"
@@ -157,6 +183,7 @@ const SearchBannerDisplay = ({
             filterList={filterList}
             handleCategorySelect={handleSelectedFiltersChange}
           />
+<<<<<<< HEAD
         )}
         {!isSmallScreen && (<Divider orientation="vertical" flexItem />)}
         <Autocomplete
@@ -184,6 +211,27 @@ const SearchBannerDisplay = ({
                 "& fieldset": { border: "none" },
               }}
               inputRef={searchInputRef} 
+=======
+          {isCalendarVisible && (
+            <Dialog open={isCalendarVisible} onClose={handleCloseCalendar}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <StaticDatePicker
+  onAccept={(date) => {
+    handleDateAcceptAndCheckUnavailable(date);
+    handleCloseCalendar();
+  }}
+  minDate={minDate}
+  shouldDisableDate={(date) => isDateUnavailable(dayjs(date))}
+/>
+              </LocalizationProvider>
+            </Dialog>
+          )}
+          <Divider orientation="vertical" flexItem />
+          {!isSmallScreen && (
+            <PlaceholderSearchBannerDisplay
+              filterList={filterList}
+              handleCategorySelect={handleSelectedFiltersChange}
+>>>>>>> 0dc08e9bcfcfbcdd9362891939e46b07644b3333
             />
           )}
         />

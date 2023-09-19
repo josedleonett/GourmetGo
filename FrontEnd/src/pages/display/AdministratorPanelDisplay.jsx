@@ -41,6 +41,17 @@ const ContainerBox = styled(Box)(({ theme }) => ({
 }));
 
 export const AdministratorPanelDisplay = () => {
+<<<<<<< HEAD
+=======
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+>>>>>>> 0dc08e9bcfcfbcdd9362891939e46b07644b3333
   return (
     <ContainerBox>
       <TitleBox>
