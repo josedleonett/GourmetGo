@@ -70,6 +70,8 @@ import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
 import * as yup from 'yup';
 import CloseIcon from "@mui/icons-material/Close";
+import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
+import axios from "axios";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const packageList = cateringPackages;
@@ -310,6 +312,8 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       .max(500, 'Review body should be of maximum 500 characters'),
   });
 
+  const [badWordsResponse, setBadWordsResponse] = useState([])
+
   const formikAddReview = useFormik({
     initialValues: {
       userId: decodedToken && decodedToken.id,
@@ -323,7 +327,31 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     validationSchema: validationSchemaAddReview,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log(values);
+      console.log(values, MODERATOR_CONTENT_URL_BASE);
+
+      try {
+        const moderatorContentResponse = await axios.get(
+          MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
+        );
+        console.log(moderatorContentResponse);
+        setBadWordsResponse(moderatorContentResponse.data.bad_words)
+
+        if (badWordsResponse.length == 0) {
+          const response = await axios.post(
+            API_BASE_URL + "review/create",
+            JSON.stringify(values),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(response);
+        }
+
+      } catch (error) {
+        console.error(error.message);
+      }
     },
   });
 
@@ -1145,9 +1173,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       onChange={formikAddReview.handleChange}
                       onBlur={formikAddReview.handleBlur}
                       error={
-                        formikAddReview.touched.title && Boolean(formikAddReview.errors.title)
+                        formikAddReview.touched.title &&
+                        Boolean(formikAddReview.errors.title)
                       }
-                      helperText={formikAddReview.touched.title && formikAddReview.errors.title}
+                      helperText={
+                        formikAddReview.touched.title &&
+                        formikAddReview.errors.title
+                      }
                       inputProps={{
                         maxLength: 50,
                       }}
@@ -1162,15 +1194,33 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       onChange={formikAddReview.handleChange}
                       onBlur={formikAddReview.handleBlur}
                       error={
-                        formikAddReview.touched.body && Boolean(formikAddReview.errors.body)
+                        formikAddReview.touched.body &&
+                        Boolean(formikAddReview.errors.body)
                       }
-                      helperText={formikAddReview.touched.body && formikAddReview.errors.body}
+                      helperText={
+                        formikAddReview.touched.body &&
+                        formikAddReview.errors.body
+                      }
                       rows={4}
                       inputProps={{
                         maxLength: 500,
                       }}
                     />
                   </Container>
+                </CardContent>
+                <CardContent>
+                  <Alert severity="warning">
+                    <AlertTitle>
+                      Your review violates our community guidelines
+                    </AlertTitle>
+                    We've noticed that some words in your review may not align
+                    with our community guidelines. Please review your content
+                    and remove any inappropriate language or content.
+                    <br />
+                    <br />
+                    Inappropriate words:{" "}
+                    <strong>{badWordsResponse.join(", ")}</strong>
+                  </Alert>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "end" }}>
                   <Button
