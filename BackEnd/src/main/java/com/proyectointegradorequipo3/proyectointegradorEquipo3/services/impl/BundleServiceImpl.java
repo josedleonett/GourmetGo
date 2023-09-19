@@ -66,10 +66,6 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-<<<<<<< Updated upstream
-=======
-        dto.setRating(calculateAverageRating(reviewDtos));
->>>>>>> Stashed changes
         return dto;
     }
 
