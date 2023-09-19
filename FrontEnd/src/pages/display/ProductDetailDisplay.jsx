@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
-import { BiDish, BiSend } from "react-icons/bi";
+import { BiDish } from "react-icons/bi";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -35,7 +35,6 @@ import {
   AlertTitle,
   Snackbar,
   Avatar,
-  Toolbar,
   LinearProgress,
   Pagination,
   Skeleton,
@@ -271,13 +270,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const handleDateAcceptAndCheckUnavailable = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM-DD");
-      // Haz lo que necesites con la fecha formateada
       console.log("Selected Date:", formattedDate);
-
-      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
-        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
         console.log("Selected Date is unavailable.");
       }
     }
