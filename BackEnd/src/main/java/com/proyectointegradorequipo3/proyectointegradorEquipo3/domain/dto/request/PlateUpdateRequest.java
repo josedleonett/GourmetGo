@@ -22,5 +22,8 @@ public class PlateUpdateRequest {
     private String description;
 
     @NotBlank
+    private Double price;
+
+    @NotBlank
     private MultipartFile image;
 }
