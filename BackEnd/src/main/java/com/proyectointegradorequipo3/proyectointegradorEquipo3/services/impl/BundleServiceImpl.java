@@ -4,10 +4,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.ReviewDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.*;
@@ -69,7 +66,9 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating(calculateAverageRating(reviewDtos));
+
+        dto.setPrice(calculateTotalPrice(bundle));
         return dto;
     }
 
@@ -99,10 +98,31 @@ public class BundleServiceImpl implements IBundleService {
                         .anyMatch(currentBundle -> Objects.equals(currentBundle.getId(), bundleId));
 
         dto.setCanUserReview(canReview);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating(calculateAverageRating(reviewDtos));
+
+        dto.setPrice(calculateTotalPrice(bundle));
 
         return dto;
     }
+
+    public double calculateTotalPrice(Bundle bundle) {
+        double provisionalPrice = 0.;
+
+        provisionalPrice += bundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        return provisionalPrice;
+    }
+
 
     public double calculateAverageRating(List<ReviewDto> reviews) {
         double average = reviews.stream()
@@ -158,18 +178,6 @@ public class BundleServiceImpl implements IBundleService {
         waitForAllFutures(futureMap);
         Bundle newBundle = constructBundle(request, futureMap);
         validateBundleName(newBundle.getName());
-        double provisionalPrice = 0.;
-        provisionalPrice += newBundle.getStarter().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-        provisionalPrice += newBundle.getMainCourse().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-        provisionalPrice += newBundle.getDesserts().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        newBundle.setPrice(provisionalPrice);
         save(newBundle);
         return newBundle.getId();
     }
