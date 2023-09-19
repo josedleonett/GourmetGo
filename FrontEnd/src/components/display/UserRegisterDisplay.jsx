@@ -10,8 +10,6 @@ import {
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-
-
 const UserRegisterDisplay = () => {
   const [inputs, setInputs] = useState({
     name: "",
@@ -51,7 +49,6 @@ const UserRegisterDisplay = () => {
   const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
 
-
   const regex = /^[A-Za-z]+$/;
 
   const handleInputChange = (field, value) => {
@@ -85,9 +82,7 @@ const UserRegisterDisplay = () => {
 
   const handleResendConfirmationEmail = async () => {
     try {
-      // Mostrar CircularProgress mientras se realiza la solicitud
       setIsLoading(true);
-  
       const response = await fetch(
         `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
         {
@@ -97,7 +92,6 @@ const UserRegisterDisplay = () => {
           },
         }
       );
-  
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -115,13 +109,10 @@ const UserRegisterDisplay = () => {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      // Ocultar CircularProgress después de completar la solicitud
       setIsLoading(false);
     }
   };
   
-  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputs.password === inputs.passConfirmation) {
@@ -214,9 +205,7 @@ const UserRegisterDisplay = () => {
 
     if (Object.values(inputSuccess).every((success) => success)) {
       try {
-        // Mostrar el CircularProgress mientras se procesa la solicitud
         setIsLoading(true);
-    
         const response = await fetch("http://localhost:8080/auth/createUser", {
           method: "POST",
           headers: {
@@ -224,9 +213,7 @@ const UserRegisterDisplay = () => {
           },
           body: JSON.stringify(inputs),
         });
-    
         if (response.ok) {
-          // Ocultar el CircularProgress cuando la solicitud es exitosa
           setIsLoading(false);
     
           Swal.fire({
@@ -236,22 +223,16 @@ const UserRegisterDisplay = () => {
           })
           setResendButtonVisible(true);
         } else {
-          // Ocultar el CircularProgress si hay un error en la solicitud
           setIsLoading(false);
-    
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
         }
       } catch (error) {
-        // Ocultar el CircularProgress si ocurre un error
         setIsLoading(false);
-    
         console.error("An error occurred:", error);
       }
     }
-    
-    
-  };
+ };
 
   const inputFields = [
     { name: "name", label: "Name", type: "text" },
@@ -266,7 +247,6 @@ const UserRegisterDisplay = () => {
   ];
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Box, TextField, Button, Typography, useMediaQuery, CircularProgress  } from "@mui/material";
-import Swal from 'sweetalert2';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  useMediaQuery,
+  CircularProgress,
+} from "@mui/material";
+import Swal from "sweetalert2";
 
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -9,7 +16,7 @@ const UserLogInDisplay = () => {
     password: "",
   });
 
-  const [accessToken, setAccessToken] = useState ();
+  const [accessToken, setAccessToken] = useState();
 
   const [inputSuccess, setInputSuccess] = useState({
     password: false,
@@ -26,7 +33,7 @@ const UserLogInDisplay = () => {
     username: "",
   });
 
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const inputFields = [
     { name: "username", label: "Email", type: "email" },
@@ -35,7 +42,7 @@ const UserLogInDisplay = () => {
 
   const handleInputChange = (field, value) => {
     setInputs((prevInputs) => ({ ...prevInputs, [field]: value }));
-  
+
     if (field === "username") {
       const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
       setInputSuccess((prevInputSuccess) => ({
@@ -50,7 +57,7 @@ const UserLogInDisplay = () => {
     }
   };
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,12 +69,10 @@ const UserLogInDisplay = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Iniciar el indicador de carga
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {  
+      const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,39 +83,31 @@ const UserLogInDisplay = () => {
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
-        setCookie("token", data.accessToken, { path: '/' })
+        setCookie("token", data.accessToken, { path: "/" });
         setAccessToken(data.accessToken);
-        // Detener el indicador de carga
         setIsLoading(false);
-
-        // Mostrar la alerta de éxito
         Swal.fire({
-          icon: 'success',
-          title: 'Login successful',
-          text: 'You have successfully logged in!',
+          icon: "success",
+          title: "Login successful",
+          text: "You have successfully logged in!",
         }).then((result) => {
           if (result.isConfirmed) {
-            // Redirigir al usuario a la página de inicio (o donde corresponda)
             window.location.href = "/";
           }
         });
       } else {
-        // Detener el indicador de carga en caso de error
         setIsLoading(false);
         Swal.fire({
-          icon: 'error',
-          title: 'Login error',
-          text: 'The login was not successful. Please verify your credentials and try again.',
+          icon: "error",
+          title: "Login error",
+          text: "The login was not successful. Please verify your credentials and try again.",
         });
       }
     } catch (error) {
       console.error("Error:", error);
-      // Detener el indicador de carga en caso de error
       setIsLoading(false);
     }
   };
-
-
 
   return (
     <Box sx={{ padding: "10vw" }}>
@@ -123,20 +120,30 @@ const UserLogInDisplay = () => {
         }}
       >
         {isLoading ? (
-          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
             <CircularProgress />
           </Box>
         ) : (
           <>
-            <Typography variant="h4" sx={{
-              backgroundColor: "secondary.light",
-              display: "inline-block",
-              fontSize: isSmallScreen ? '1.5rem' : '2rem',
-              fontWeight: 500,
-              padding: "0.5rem",
-              paddingTop: "1rem",
-              marginBottom: "2rem"
-            }}>
+            <Typography
+              variant="h4"
+              sx={{
+                backgroundColor: "secondary.light",
+                display: "inline-block",
+                fontSize: isSmallScreen ? "1.5rem" : "2rem",
+                fontWeight: 500,
+                padding: "0.5rem",
+                paddingTop: "1rem",
+                marginBottom: "2rem",
+              }}
+            >
               Your dream starts here!
             </Typography>
             <Box
@@ -165,7 +172,9 @@ const UserLogInDisplay = () => {
                     label={borderStyles[field.name].border ? "" : field.label}
                     type={field.type}
                     value={inputs[field.name]}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange(field.name, e.target.value)
+                    }
                     sx={{
                       ...borderStyles[field.name],
                       "@media (max-width: 768px)": {
