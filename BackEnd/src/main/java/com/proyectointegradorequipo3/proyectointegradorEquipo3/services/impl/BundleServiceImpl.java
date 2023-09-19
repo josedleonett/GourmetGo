@@ -96,7 +96,7 @@ public class BundleServiceImpl implements IBundleService {
 
         boolean canReview = user.getBookings().stream()
                         .map(Booking::getBundle)
-                        .anyMatch(currentBundle -> Objects.equals(bundle.getId(), bundleId));
+                        .anyMatch(currentBundle -> Objects.equals(currentBundle.getId(), bundleId));
 
         dto.setCanUserReview(canReview);
         dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
