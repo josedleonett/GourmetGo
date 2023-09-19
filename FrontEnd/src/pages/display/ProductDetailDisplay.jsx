@@ -68,6 +68,7 @@ import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
+import * as yup from 'yup';
 import CloseIcon from "@mui/icons-material/Close";
 
 const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
@@ -300,16 +301,26 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     setOpenConfirmationModal(false);
   };
 
+  const validationSchemaAddReview = yup.object({
+    title: yup
+      .string('Enter your title')
+      .max(50, 'Title should be of maximum 50 characters'),
+    body: yup
+      .string('Enter your body')
+      .max(500, 'Review body should be of maximum 500 characters'),
+  });
+
   const formikAddReview = useFormik({
     initialValues: {
       userId: decodedToken && decodedToken.id,
       name: userFullName,
       bundle: parseInt(id),
       date: today,
-      rating: 0,
+      rating: 3,
       title: "",
       body: "",
     },
+    validationSchema: validationSchemaAddReview,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       console.log(values);
@@ -1132,8 +1143,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       fullWidth
                       value={formikAddReview.values.title}
                       onChange={formikAddReview.handleChange}
+                      onBlur={formikAddReview.handleBlur}
+                      error={
+                        formikAddReview.touched.title && Boolean(formikAddReview.errors.title)
+                      }
+                      helperText={formikAddReview.touched.title && formikAddReview.errors.title}
                       inputProps={{
-                        maxLength: 30,
+                        maxLength: 50,
                       }}
                     />
                     <TextField
@@ -1144,9 +1160,14 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       fullWidth
                       value={formikAddReview.values.body}
                       onChange={formikAddReview.handleChange}
+                      onBlur={formikAddReview.handleBlur}
+                      error={
+                        formikAddReview.touched.body && Boolean(formikAddReview.errors.body)
+                      }
+                      helperText={formikAddReview.touched.body && formikAddReview.errors.body}
                       rows={4}
                       inputProps={{
-                        maxLength: 250,
+                        maxLength: 500,
                       }}
                     />
                   </Container>
@@ -1160,7 +1181,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                     onClick={() => {
                       setIsCommentFormOpen(false);
                       formikAddReview.resetForm();
-                      formikAddReview.setFieldValue("rating", 0);
                     }}
                   >
                     CANCEL
