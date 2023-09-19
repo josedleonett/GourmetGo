@@ -66,6 +66,10 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
+<<<<<<< Updated upstream
+=======
+        dto.setRating(calculateAverageRating(reviewDtos));
+>>>>>>> Stashed changes
         return dto;
     }
 
@@ -101,11 +105,18 @@ public class BundleServiceImpl implements IBundleService {
     }
 
     public double calculateAverageRating(List<ReviewDto> reviews) {
-        return reviews.stream()
+        double average = reviews.stream()
                 .mapToDouble(ReviewDto::getRating)
                 .average()
                 .orElse(0.0);
+
+        return roundToOneDecimal(average);
     }
+    double roundToOneDecimal(double value) {
+        return Math.round(value * 10.0) / 10.0;
+    }
+
+
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
         UserEntity user = userRepository.findById(userId)
