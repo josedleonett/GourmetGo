@@ -28,35 +28,6 @@ const UserLogInDisplay = () => {
 
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {  
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputs),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const authorizationHeader = response.headers.get("authorization");
-        setCookie("token", data.accessToken, { path: '/' })
-        window.location.href = "/";
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login error',
-          text: 'The login was not successful. Please verify your credentials and try again.',
-        });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const inputFields = [
     { name: "username", label: "Email", type: "email" },
     { name: "password", label: "Password", type: "password" },
