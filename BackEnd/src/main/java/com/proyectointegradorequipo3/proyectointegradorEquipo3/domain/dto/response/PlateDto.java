@@ -13,4 +13,5 @@ public class PlateDto {
     private String type;
     private String description;
     private String image;
+    private double price;
 }
