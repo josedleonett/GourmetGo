@@ -78,9 +78,11 @@ const UserLogInDisplay = () => {
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
+        setCookie("token", data.accessToken, { path: '/' })
         setAccessToken(data.accessToken);
         // Detener el indicador de carga
         setIsLoading(false);
+
         // Mostrar la alerta de éxito
         Swal.fire({
           icon: 'success',
@@ -107,6 +109,8 @@ const UserLogInDisplay = () => {
       setIsLoading(false);
     }
   };
+
+
 
   return (
     <Box sx={{ padding: "10vw" }}>
