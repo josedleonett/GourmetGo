@@ -310,8 +310,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       title: "",
       body: "",
     },
-    //initialValues: reviewInitialValues,
-    //enableReinitialize: true,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       console.log(values);
