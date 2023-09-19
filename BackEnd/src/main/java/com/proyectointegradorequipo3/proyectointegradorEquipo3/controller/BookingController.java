@@ -4,6 +4,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BookingCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -43,6 +45,17 @@ public class BookingController {
     public ResponseEntity<List<BookingDto>> getAllBooking() {
         List<BookingDto> list = bookingService.searchAllBooking();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //====================Display by id====================//
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getById(@Valid @NotNull @PathVariable("id") Long id) {
+        BookingDto booking = bookingService.searchBookingById(id);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //====================Display after today====================//

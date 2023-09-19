@@ -68,7 +68,7 @@ public class BookingServiceImpl implements IBookingService {
     public List<BookingDto> searchAllBooking() {
         List<Booking> bookings = bookingRepository.findAll();
         List<BookingDto> bookingDtos = bookings.stream()
-                .map(booking -> bookingMapper.toDto(booking))
+                .map(booking -> BookingMapper.toDto(booking))
                 .collect(Collectors.toList());
         return bookingDtos;
     }
@@ -78,7 +78,7 @@ public class BookingServiceImpl implements IBookingService {
     public BookingDto searchBookingById(Long id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        return mapper.map(booking, BookingDto.class);
+        return BookingMapper.toDto(booking);
     }
 
 
