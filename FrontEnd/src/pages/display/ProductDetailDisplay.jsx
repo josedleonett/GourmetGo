@@ -251,7 +251,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     }
   };
 
-  
   const isDateUnavailable = (date) => {
     if (!dates) {
       return false;
@@ -267,7 +266,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       const formattedDate = date.format("YYYY-MM-DD");
       // Haz lo que necesites con la fecha formateada
       console.log("Selected Date:", formattedDate);
-  
+
       // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
@@ -276,9 +275,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       }
     }
   };
-  
-  const minDate = dayjs().add(1, 'week');
-  
+
+  const minDate = dayjs().add(1, "week");
+
   const shareUrl = window.location.href;
 
   const [openSocialModal, setOpenSocialModal] = useState(false);
@@ -704,20 +703,19 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["MobileDatePicker"]}>
                       <DemoItem label="Select reserve date">
-                      <MobileDatePicker
-  defaultValue={dayjs()}
-  onAccept={(date) => {
-    handleDateAcceptAndCheckUnavailable(date);
-    setSelectedDate(date);
-  }}
-  minDate={minDate}
-  shouldDisableDate={isDateUnavailable}
-  readOnly={!isUserLoggedIn}
-  renderInput={(props) => (
-    <input {...props} readOnly={!isUserLoggedIn} />
-  )}
-/>
-
+                        <MobileDatePicker
+                          defaultValue={dayjs()}
+                          onAccept={(date) => {
+                            handleDateAcceptAndCheckUnavailable(date);
+                            setSelectedDate(date);
+                          }}
+                          minDate={minDate}
+                          shouldDisableDate={isDateUnavailable}
+                          readOnly={!isUserLoggedIn}
+                          renderInput={(props) => (
+                            <input {...props} readOnly={!isUserLoggedIn} />
+                          )}
+                        />
                       </DemoItem>
                     </DemoContainer>
 

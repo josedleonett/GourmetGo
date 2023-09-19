@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, useTheme, useMediaQuery, CircularProgress } from "@mui/material";
+import {
+  Container,
+  useTheme,
+  useMediaQuery,
+  CircularProgress,
+} from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
@@ -20,12 +25,22 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   return (
     <>
       {isLoading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (
         <>
-          <SearchBannerContainer filterList={categorieList} filterBundle={bundleList} />
+          <SearchBannerContainer
+            filterList={categorieList}
+            filterBundle={bundleList}
+          />
 
           <Box component="section">
             <Typography

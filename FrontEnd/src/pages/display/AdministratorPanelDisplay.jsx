@@ -41,7 +41,6 @@ const ContainerBox = styled(Box)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
 export const AdministratorPanelDisplay = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,7 +49,7 @@ export const AdministratorPanelDisplay = () => {
       setIsLoading(false);
     }, 2000);
   }, []);
-  
+
   return (
     <>
       {isLoading ? (
