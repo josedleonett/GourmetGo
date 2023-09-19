@@ -28,4 +28,6 @@ public class Plate {
 
     @ManyToMany(mappedBy = "desserts")
     private List<Bundle> bundlesAsDesserts;
+
+    private double price;
 }
