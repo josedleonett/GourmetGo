@@ -16,6 +16,7 @@ import PlaceholderSearchBannerDisplay from "./PlaceholderSearchBannerDisplay";
 import Dialog from "@mui/material/Dialog";
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const SearchBannerDisplay = ({
   filterList,
@@ -120,9 +121,6 @@ const SearchBannerDisplay = ({
     }
   };
 
-  const handleDateAccept = (date) => {
-    const formattedDate = date.format("YYYY-MM-DD");
-  };
 
   const isDateUnavailable = (date) => {
     if (!dates) {
@@ -143,6 +141,23 @@ const SearchBannerDisplay = ({
       setIsLoading(false);
     }, 2000);
   }, []);
+
+  const handleDateAcceptAndCheckUnavailable = (date) => {
+    if (date) {
+      const formattedDate = date.format("YYYY-MM-DD");
+      // Haz lo que necesites con la fecha formateada
+      console.log("Selected Date:", formattedDate);
+  
+      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
+      const isUnavailable = isDateUnavailable(dayjs(date));
+      if (isUnavailable) {
+        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
+        console.log("Selected Date is unavailable.");
+      }
+    }
+  };
+  
+  const minDate = dayjs().add(1, 'week');
 
   return (
     <Box
@@ -185,11 +200,14 @@ const SearchBannerDisplay = ({
           {isCalendarVisible && (
             <Dialog open={isCalendarVisible} onClose={handleCloseCalendar}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <StaticDatePicker
-                  onAccept={handleDateAccept}
-                  onClose={handleCloseCalendar}
-                  shouldDisableDate={isDateUnavailable}
-                />
+              <StaticDatePicker
+  onAccept={(date) => {
+    handleDateAcceptAndCheckUnavailable(date);
+    handleCloseCalendar();
+  }}
+  minDate={minDate}
+  shouldDisableDate={(date) => isDateUnavailable(dayjs(date))}
+/>
               </LocalizationProvider>
             </Dialog>
           )}
