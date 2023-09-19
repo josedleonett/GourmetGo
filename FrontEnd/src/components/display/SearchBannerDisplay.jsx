@@ -5,7 +5,7 @@ import {
   TextField,
   Autocomplete,
   CircularProgress,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -121,7 +121,6 @@ const SearchBannerDisplay = ({
     }
   };
 
-
   const isDateUnavailable = (date) => {
     if (!dates) {
       return false;
@@ -145,15 +144,14 @@ const SearchBannerDisplay = ({
   const handleDateAcceptAndCheckUnavailable = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM-DD");
-      console.log("Selected Date:", formattedDate);
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
         console.log("Selected Date is unavailable.");
       }
     }
   };
-  
-  const minDate = dayjs().add(1, 'week');
+
+  const minDate = dayjs().add(1, "week");
 
   return (
     <Box
@@ -196,14 +194,14 @@ const SearchBannerDisplay = ({
           {isCalendarVisible && (
             <Dialog open={isCalendarVisible} onClose={handleCloseCalendar}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <StaticDatePicker
-  onAccept={(date) => {
-    handleDateAcceptAndCheckUnavailable(date);
-    handleCloseCalendar();
-  }}
-  minDate={minDate}
-  shouldDisableDate={(date) => isDateUnavailable(dayjs(date))}
-/>
+                <StaticDatePicker
+                  onAccept={(date) => {
+                    handleDateAcceptAndCheckUnavailable(date);
+                    handleCloseCalendar();
+                  }}
+                  minDate={minDate}
+                  shouldDisableDate={(date) => isDateUnavailable(dayjs(date))}
+                />
               </LocalizationProvider>
             </Dialog>
           )}
