@@ -85,6 +85,9 @@ const UserRegisterDisplay = () => {
 
   const handleResendConfirmationEmail = async () => {
     try {
+      // Mostrar CircularProgress mientras se realiza la solicitud
+      setIsLoading(true);
+  
       const response = await fetch(
         `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
         {
@@ -94,26 +97,29 @@ const UserRegisterDisplay = () => {
           },
         }
       );
-
+  
       if (response.ok) {
         Swal.fire({
           icon: "success",
           title: "Email Resent",
           text: "A confirmation email has been resent to your email address.",
-        });
-        if (attemptsCount < 2) {
-          setShowRetryMessage(false);
-          setResendButtonVisible(true);
-          setAttemptsCount(attemptsCount + 1);
-        } else if (attemptsCount === 2) {
-          setResendButtonVisible(false);
-          setShowRetryMessage(true);
-        }
+        })
+        setResendButtonVisible(true);
+        setAttemptsCount(attemptsCount + 1);
+        setShowRetryMessage(false);
+      } else {
+        const errorResponse = await response.json();
+        console.error("Failed to resend confirmation email:", errorResponse.message);
+        setShowRetryMessage(true);
       }
     } catch (error) {
       console.error("An error occurred:", error);
+    } finally {
+      // Ocultar CircularProgress después de completar la solicitud
+      setIsLoading(false);
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -207,6 +213,9 @@ const UserRegisterDisplay = () => {
 
     if (Object.values(inputSuccess).every((success) => success)) {
       try {
+        // Mostrar el CircularProgress mientras se procesa la solicitud
+        setIsLoading(true);
+    
         const response = await fetch("http://localhost:8080/auth/createUser", {
           method: "POST",
           headers: {
@@ -216,25 +225,30 @@ const UserRegisterDisplay = () => {
         });
     
         if (response.ok) {
+          // Ocultar el CircularProgress cuando la solicitud es exitosa
+          setIsLoading(false);
+    
           Swal.fire({
             icon: "success",
             title: "Successful registration",
             text: "Please check your email for further instructions.",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Redirigir al usuario a la página de inicio de sesión (login) después de hacer clic en "OK"
-              navigate("/user-login");
-            }
-          });
+          })
           setResendButtonVisible(true);
         } else {
+          // Ocultar el CircularProgress si hay un error en la solicitud
+          setIsLoading(false);
+    
           const errorResponse = await response.json();
           console.error("Failed to create user:", errorResponse.message);
         }
       } catch (error) {
+        // Ocultar el CircularProgress si ocurre un error
+        setIsLoading(false);
+    
         console.error("An error occurred:", error);
       }
     }
+    
     
   };
 
