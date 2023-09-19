@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,8 @@ public class BookingServiceImpl implements IBookingService {
     private final ModelMapper mapper;
 
     private final BookingMapper bookingMapper;
+
+    private final EmailService emailService;
 
 
     //===================Search===================//
@@ -85,7 +88,7 @@ public class BookingServiceImpl implements IBookingService {
     //===================Create===================//
     @Override
     @Transactional
-    public Long saveBooking(BookingCreateRequest request) {
+    public Long saveBooking(BookingCreateRequest request) throws IOException {
         UserEntity user = userRepository.findById(request.getUser())
                 .orElseThrow(() -> new ResourceNotFoundException("User", request.getUser()));
         Bundle bundle = bundleRepository.findById(request.getBundle())
@@ -117,7 +120,7 @@ public class BookingServiceImpl implements IBookingService {
         booking.setPrice(totalprice);
 
         bookingRepository.save(booking);
-
+        emailService.sendBookingConfirmationEmail(user, booking);
         return booking.getId();
     }
 
