@@ -389,7 +389,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
         header: "Price",
         isMultiline: false,
         size: 80,
-      }, 
+      },
     ],
   };
 
