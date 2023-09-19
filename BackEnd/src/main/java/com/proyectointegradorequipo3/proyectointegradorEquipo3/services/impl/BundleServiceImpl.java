@@ -69,7 +69,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating(calculateAverageRating(reviewDtos));
         return dto;
     }
 
@@ -99,7 +99,7 @@ public class BundleServiceImpl implements IBundleService {
                         .anyMatch(currentBundle -> Objects.equals(currentBundle.getId(), bundleId));
 
         dto.setCanUserReview(canReview);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating(calculateAverageRating(reviewDtos));
 
         return dto;
     }
