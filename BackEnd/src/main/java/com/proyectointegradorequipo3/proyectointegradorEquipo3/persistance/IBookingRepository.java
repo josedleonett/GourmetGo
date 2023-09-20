@@ -17,4 +17,6 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
 
     Optional<Booking> findTopByUserIdAndBundleIdOrderByDateDesc(Long userId, Long bundleId);
 
+    List<Booking> findByUserId(Long userId);
+
 }

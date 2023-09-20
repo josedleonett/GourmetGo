@@ -44,6 +44,8 @@ public class BundleServiceImpl implements IBundleService {
 
     private final IUserRepository userRepository;
 
+    private final IBookingRepository bookingRepository;
+
     private final ModelMapper mapper;
 
     private final S3Service s3Service;
@@ -93,9 +95,12 @@ public class BundleServiceImpl implements IBundleService {
 
         dto.getReviews().stream().map(review -> review.getRating());
 
-        boolean canReview = user.getBookings().stream()
-                        .map(Booking::getBundle)
-                        .anyMatch(currentBundle -> Objects.equals(currentBundle.getId(), bundleId));
+        boolean canReview = false;
+        Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(userId, bundleId);
+        if (bookingOpt.get().getReview() == null) {
+            canReview = true;
+        }
+
 
         dto.setCanUserReview(canReview);
         dto.setRating(calculateAverageRating(reviewDtos));
