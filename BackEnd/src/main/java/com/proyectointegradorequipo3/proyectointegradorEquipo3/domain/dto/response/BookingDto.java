@@ -18,7 +18,7 @@ public class BookingDto {
 
     private Long bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private List<Long> drinks;
 

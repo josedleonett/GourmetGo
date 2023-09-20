@@ -68,7 +68,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating((calculateAverageRating(reviewDtos)));
         return dto;
     }
 

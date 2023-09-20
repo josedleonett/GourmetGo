@@ -30,7 +30,7 @@ public class Booking {
     @JoinColumn(name = "bundle_id")
     private Bundle bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private Integer diners;
 

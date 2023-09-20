@@ -19,7 +19,7 @@ public class BookingCreateRequest {
 
     private Long bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private List<DrinkQuantity> drinks;
 
