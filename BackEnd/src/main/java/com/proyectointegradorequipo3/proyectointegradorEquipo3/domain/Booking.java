@@ -46,4 +46,7 @@ public class Booking {
 
     private Long review;
 
+    @Column(length = 2000)
+    private String comment;
+
 }

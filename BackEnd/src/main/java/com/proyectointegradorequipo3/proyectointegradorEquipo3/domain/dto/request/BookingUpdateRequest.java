@@ -23,4 +23,6 @@ public class BookingUpdateRequest {
     private Integer diners;
 
     private Double price;
+
+    private String comment;
 }
