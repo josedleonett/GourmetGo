@@ -387,6 +387,8 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
     return <Dialog open={true}>hi</Dialog>
   }
 
+  {console.log(productData)}
+
   return (
     <Box padding={2}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -1254,12 +1256,12 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
           )}
           <Box
             display={
-              (productData &&
-                productData.canUserReview &&
-                cookies.token == undefined) ||
-              isCommentFormOpen
-                ? "none"
-                : "flex"
+              productData &&
+              productData.canUserReview &&
+              !isCommentFormOpen &&
+              cookies.token !== undefined
+                ? "flex"
+                : "none"
             }
             justifyContent="center"
           >
