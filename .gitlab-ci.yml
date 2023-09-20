@@ -38,6 +38,6 @@ deploy:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
-    - ssh -o StrictHostKeyChecking=no ec2-user@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
+    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
 
 
