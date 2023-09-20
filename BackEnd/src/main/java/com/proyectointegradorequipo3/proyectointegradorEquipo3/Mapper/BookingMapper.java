@@ -25,7 +25,6 @@ public class BookingMapper {
         dto.setDate(booking.getDate());
         dto.setDiners(booking.getDiners());
         dto.setPrice(booking.getPrice());
-        dto.setReview(booking.getReview());
         dto.setComment(booking.getComment());
 
         if (booking.getDrinks() != null) {

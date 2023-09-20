@@ -64,15 +64,6 @@ public class ReviewServiceImpl implements IReviewService {
             review.setBody(request.getBody());
             review = reviewRepository.save(review);
 
-            Optional<Booking> matchingBooking = bookings.stream()
-                    .filter(booking -> booking.getBundle().getId().equals(request.getBundleId()))
-                    .findFirst();
-            if (matchingBooking.isPresent()) {
-                Booking foundBooking = matchingBooking.get();
-                foundBooking.setReview(review.getId());
-            } else {
-                throw new Exception("Booking not found");
-            }
             return review.getId();
         } else {
             throw new ReviewNotAllowedException("Error leaving review");

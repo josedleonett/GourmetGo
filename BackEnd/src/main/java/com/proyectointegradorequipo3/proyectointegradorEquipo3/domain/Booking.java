@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +42,6 @@ public class Booking {
             inverseJoinColumns = @JoinColumn(name = "drink_quantity_id")
     )
     private List<DrinkQuantity> drinks = new ArrayList<>();
-
-    private Long review;
 
     @Column(length = 2000)
     private String comment;
