@@ -28,6 +28,12 @@ deploy:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
   script:
+    - apt-get update
+    - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+    - echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+    - apt-get update
+    - apt-get install -y docker-ce docker-ce-cli containerd.io
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
