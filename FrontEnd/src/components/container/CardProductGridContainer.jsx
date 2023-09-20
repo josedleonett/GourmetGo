@@ -1,7 +1,7 @@
 import { useMediaQuery, useTheme } from "@mui/material";
 import CardProductGridDisplay from "../display/CardProductGridDisplay";
 
-const CardProductGridContainer = ({ list }) => {
+const CardProductGridContainer = ({ list, setIdToDelete }) => {
   if (list === null || list === undefined) {
     return null;
   }
@@ -26,7 +26,7 @@ const CardProductGridContainer = ({ list }) => {
 
   const chunkedProductList = chunk(shuffledListProduct, screenIsUpLg ? 10 : 9);
 
-  return <CardProductGridDisplay list={chunkedProductList} />;
+  return <CardProductGridDisplay list={chunkedProductList} setIdToDelete={setIdToDelete}/>;
 };
 
 export default CardProductGridContainer;

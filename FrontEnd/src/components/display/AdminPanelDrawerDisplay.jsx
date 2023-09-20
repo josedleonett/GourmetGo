@@ -14,7 +14,6 @@ const AdminPanelDrawerDisplay = ({sidebarMenuList}) => {
     const minDrawerWidth = "230px";
     const maxDrawerWidth = "360px";
   
-  
   return (
     <Drawer
           variant="permanent"

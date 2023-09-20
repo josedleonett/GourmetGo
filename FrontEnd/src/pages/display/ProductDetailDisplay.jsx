@@ -13,6 +13,7 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
+import Swal from 'sweetalert2';
 import {
   Box,
   Container,
@@ -34,6 +35,10 @@ import {
   Alert,
   AlertTitle,
   Snackbar,
+  Avatar,
+  LinearProgress,
+  Pagination,
+  Skeleton,
   TextField,
   Card,
   CardContent,
@@ -44,14 +49,18 @@ import {
   Step,
   StepLabel,
 } from "@mui/material";
-import { cateringPackages } from "../../test/dataApiSample";
+import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
+  EmailIcon,
   EmailShareButton,
+  FacebookIcon,
   FacebookShareButton,
+  TwitterIcon,
   TwitterShareButton,
+  WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
 import CoverProductGalleryContainer from "../../components/container/CoverProductGalleryContainer";
@@ -82,12 +91,59 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const [hover, setHover] = useState(-1);
   const [showWarning, setShowWarning] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
+  const [diners, setDiners] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
+  const [drinkQuantities, setDrinkQuantities] = useState({});
+  const [pricePerPerson, setPricePerPerson] = useState(0);
+const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+
+  useEffect(() => {
+    if (productData && productData.drinks) {
+      const initialQuantities = productData.drinks.reduce((quantities, drink) => {
+        quantities[drink.id] = ''; 
+        return quantities;
+      }, {});
+      setDrinkQuantities(initialQuantities);
+    }
+  }, [productData]);
+
+  const handleQuantityChange = (drinkId, quantity) => {
+    setDrinkQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [drinkId]: quantity
+    }));
+  };
+
+  useEffect(() => {
+    // Calcular el precio en función de las cantidades de bebidas y comensales
+    let totalPrice = 0;
+    let personPrice = 0;
+    let drinkPrice = 0;
+  
+    // Multiplicar productData.price por la cantidad de comensales (diners)
+    totalPrice += productData ? productData.price * diners : 0;
+    personPrice = productData.price * diners;
+    setPricePerPerson(personPrice);
+  
+    // Sumar el precio de las bebidas según la cantidad
+    if (productData && productData.drinks) {
+      productData.drinks.forEach((drink) => {
+        const quantity = drinkQuantities[drink.id] || 0;
+        drinkPrice += quantity * drink.price; // Sumar al drinkPrice
+      });
+    }
+  
+    setTotalDrinkPrice(drinkPrice);
+  
+    // Sumar el precio de las bebidas al totalPrice
+    totalPrice += drinkPrice;
+    setTotalPrice(totalPrice);
+  }, [drinkQuantities, diners, productData]);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -128,6 +184,17 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   if (cookies.token !== undefined) {
     decodedToken = jwtDecode(cookies.token);
   }
+  if (accessToken !== undefined && cookies.token) {
+    decodedToken = jwtDecode(cookies.token);
+  }
+  const initials =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? decodedToken.name.charAt(0) + decodedToken.lastName.charAt(0)
+      : "";
+  const userFullName =
+    decodedToken && decodedToken.name && decodedToken.lastName
+      ? `${decodedToken.name} ${decodedToken.lastName}`
+      : "";
 
   useEffect(() => {
     if (productData && typeof productData.favorite === "boolean") {
@@ -221,7 +288,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     }
   };
 
-
   const closeReserveDialog = () => {
     setOpenDialog(false);
   };
@@ -240,34 +306,22 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     }
   };
 
-  const handleDateAccept = (date) => {
-    const formattedDate = date.format("YYYY-MM-DD");
-    setFieldValue('date', date.format('YYYY-MM-DD'));
-  };
-
   const isDateUnavailable = (date) => {
     if (!dates) {
       return false;
     }
-  
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
-  
-    return unavailableDates.some((unavailableDate) =>
-      dayjs(formattedDate).isSame(unavailableDate)
-    );
+
+    return unavailableDates.includes(formattedDate);
   };
 
   const handleDateAcceptAndCheckUnavailable = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM-DD");
-      // Haz lo que necesites con la fecha formateada
       console.log("Selected Date:", formattedDate);
-
-      // Ahora verifica si la fecha es inaccesible usando la función isDateUnavailable
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
-        // La fecha seleccionada es inaccesible, realiza alguna acción aquí si es necesario
         console.log("Selected Date is unavailable.");
       }
     }
@@ -287,7 +341,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     setOpenSocialModal(false);
   };
 
-  const [selectedDate, setSelectedDate] = useState(dayjs());
   function getFullnameInitials(fullname) {
     const words = fullname.split(" ");
     const fullnameInitials = words
@@ -297,48 +350,22 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     return fullnameInitials;
   }
 
-  let initialValues = {
+  const handleSubmit = (values) => {
+    console.log("Valores del formulario:", values);
   };
 
-  if(productData !== null) {
-    initialValues = {
-      user: decodedToken.id,
-      diners: "",
-      drinks: productData.drinks.map((drink) => ({
-        drinkId: drink.id,
-        quantity: ""
-      })),
-      date: selectedDate.format("YYYY-MM-DD"),
-      bundle: productData.id,
-      price: 0
-    };
-  }
+  const [selectedDate, setSelectedDate] = useState(dayjs());
 
-  const handleSubmitReserveForm = async (values, { setSubmitting }) => {
-    console.log(values);
-    console.log(productData.drinks)
-    console.log(JSON.stringify(values));
-    try {
-      const response = await fetch("http://localhost:8080/v1/booking/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(values),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Form submission successful:", data);
-      } else {
-        console.error("Form submission failed:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-    setSubmitting(false);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+
+  const handleConfirmClick = () => {
+    console.log("Form values:", initialValuesReserveForm);
+    setOpenConfirmationModal(true);
   };
 
+  const handleCancelClick = () => {
+    setOpenConfirmationModal(false);
+  };
 
   const validationSchemaAddReview = yup.object({
     title: yup
@@ -392,8 +419,63 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     },
   });
 
+  let initialValuesReserveForm = {
+  };
+
+  if (productData !== null) {
+    var currentDate = new Date(); 
+    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); 
+  
+    initialValuesReserveForm = {
+      user: decodedToken.id,
+      diners: diners,
+      drinks: productData.drinks.map((drink) => ({
+        drinkId: drink.id,
+        quantity: drinkQuantities[drink.id] || '',
+      })),
+      date: formattedDate, 
+      bundle: productData.id,
+      price: 0
+    };
+  }
+  
+
+  const handleSubmitConfirmation = () => {
+    console.log(productData)
+    fetch("http://localhost:8080/v1/booking/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(initialValuesReserveForm)
+    })
+    .then(response => {
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Reservation confirmed',
+          text: 'Your reservation has been confirmed successfully!',
+        });
+        return response.json();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'There was an error confirming the reservation. Please try again later.',
+        });
+        throw new Error("Form submission failed");
+      }
+    })
+    .then(data => {
+      console.log("Form submission successful:", data);
+    })
+    .catch(error => {
+      console.error("Error submitting form:", error);
+    });
+  };
+
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box padding={2}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <IconButton
           aria-label="Back"
@@ -407,11 +489,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       <CoverProductGalleryContainer
         imgList={productData ? productData.galleryImages : []}
         galleryId={"productGallery"}
+        isLoading={!productData}
       />
 
       <Container>
         <Grid container padding={2} lg={12}>
           <Box>
+            <Box display="flex" minWidth="30vw">
               <Typography variant="h4">
                 {productData ? (
                   productData.name
@@ -525,9 +609,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                 <Skeleton variant="text" width="100%" />
               )}
             </Typography>
+          </Box>
           <Divider light />
 
-          <Grid item lg={8} md={7}>
+          <Grid item lg={8} md={7} xs={12}>
             <Container>
               <Container>
                 <List>
@@ -549,21 +634,26 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       }
                       secondary={
                         <>
-                          {productData
-                            ? productData.starter.map((starterItem, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {starterItem.name}
-                                  </Typography>
-                                  {` — ${starterItem.description}`}
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.starter.map((starterItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {starterItem.name}
+                                </Typography>
+                                {` — ${starterItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -589,21 +679,26 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       }
                       secondary={
                         <>
-                          {productData
-                            ? productData.mainCourse.map((mainItem, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {mainItem.name}
-                                  </Typography>
-                                  {` — ${mainItem.description}`}
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.mainCourse.map((mainItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {mainItem.name}
+                                </Typography>
+                                {` — ${mainItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -629,23 +724,26 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       }
                       secondary={
                         <>
-                          {productData
-                            ? productData.desserts.map(
-                                (dessertsItem, index) => (
-                                  <div key={index}>
-                                    <Typography
-                                      sx={{ display: "inline" }}
-                                      component="span"
-                                      variant="body2"
-                                      color="text.primary"
-                                    >
-                                      {dessertsItem.name}
-                                    </Typography>
-                                    {` — ${dessertsItem.description}`}
-                                  </div>
-                                )
-                              )
-                            : ""}
+                          {productData ? (
+                            productData.desserts.map((dessertsItem, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {dessertsItem.name}
+                                </Typography>
+                                {` — ${dessertsItem.description}`}
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -671,20 +769,25 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       }
                       secondary={
                         <>
-                          {productData
-                            ? productData.drinks.map((drinks, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    sx={{ display: "inline" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                  >
-                                    {drinks.name}
-                                  </Typography>
-                                </div>
-                              ))
-                            : ""}
+                          {productData ? (
+                            productData.drinks.map((drinks, index) => (
+                              <div key={index}>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {drinks.name}
+                                </Typography>
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton variant="text" width="80%" />
+                              <Skeleton variant="text" width="50%" />
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -756,7 +859,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                       <DemoItem label="Select reserve date">
                         <MobileDatePicker
                           defaultValue={dayjs()}
-                          name="date"
                           onAccept={(date) => {
                             handleDateAcceptAndCheckUnavailable(date);
                             setSelectedDate(date);
@@ -770,7 +872,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                         />
                       </DemoItem>
                     </DemoContainer>
-
+                    {productData ? (
+                      <Typography>
+                        Price per person: ${productData.price} (USD)
+                      </Typography>
+                    ) : (
+                      ""
+                    )}
                     <Button
                       variant="contained"
                       color="secondary"
@@ -810,7 +918,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                     </Box>
                   </LocalizationProvider>
                 ) : (
-                  <Formik initialValues={initialValues} onSubmit={handleSubmitReserveForm}>
+                  <Formik initialValues={initialValuesReserveForm} onSubmit={handleSubmit}>
                     {({ isSubmitting }) => (
                       <Form>
                         <Box
@@ -912,21 +1020,25 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                       textAlign: "center",
                                     }}
                                   >
-                                    Your guests:
+                                    Amount of guests:
                                   </Typography>
                                   {/* El tercer campo no necesita ajustes */}
                                   <Field
                                     type="number"
-                                    name="NumberDinners"
-                                    as={TextField}
+                                    name="diners"
+                                    as={TextField}  // Set the 'as' prop to TextField
                                     fullWidth
                                     variant="outlined"
                                     label="Amount of people"
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
+                                    helperText={<ErrorMessage name="diners" />}
+                                    value={diners}
+                                    onChange={(e) => setDiners(e.target.value)} 
                                   />
+                                  <div style={{ textAlign: 'center' }}>
+                                    <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+                                  </div>
                                 </Box>
+
                               </Box>
                             </Box>
                           )}
@@ -946,9 +1058,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                 </Typography>
                                 <FieldArray name="drinks">
                                   {({ push, remove }) => (
-                                    <Box
-                                      sx={{ display: "flex", paddingTop: 2 }}
-                                    >
+                                    <Box sx={{ display: "flex", paddingTop: 2 }}>
                                       <Paper>
                                         <Container
                                           sx={{
@@ -961,32 +1071,29 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                           }}
                                         >
                                           {productData
-                                            ? productData.drinks.map(
-                                                (_, index) => (
-                                                  <>
-                                                    {console.log(
-                                                      productData.drinks[index]
-                                                        .name
-                                                    )}
-                                                    <TextField
-                                                      type="number"
-                                                      name={`drinks[${index}]`}
-                                                      fullWidth
-                                                      variant="outlined"
-                                                      label={
-                                                        productData.drinks[
-                                                          index
-                                                        ].name
-                                                      }
-                                                      helperText={
-                                                        <ErrorMessage
-                                                          name={`drinks[${index}]`}
-                                                        />
-                                                      }
-                                                    />
-                                                  </>
-                                                )
-                                              )
+                                            ? productData.drinks.map((drink, index) => (
+                                                <div key={index}>
+                                                  <Typography
+                                                    variant="body1"
+                                                    component="span"
+                                                    color="textPrimary"
+                                                  >
+                                                    {drink.name}
+                                                  </Typography>
+                                                  <TextField
+                                                    type="number"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    helperText={
+                                                      <ErrorMessage name={`drinks[${index}].quantity`} />
+                                                    }
+                                                    value={drinkQuantities[drink.id]}
+                                                    onChange={(e) =>
+                                                      handleQuantityChange(drink.id, e.target.value)
+                                                    }
+                                                  />
+                                                </div>
+                                              ))
                                             : []}
                                         </Container>
                                       </Paper>
@@ -994,6 +1101,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                   )}
                                 </FieldArray>
                               </Box>
+                              <div style={{ textAlign: 'center' }}>
+                              <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+                              </div>
                             </Box>
                           )}
                           {activeStep === 2 && (
@@ -1050,6 +1160,24 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                         {selectedDate.format("MM-DD-YYYY")}
                                       </Typography>
                                     </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price by diners: </strong>{" "}
+                                        ${pricePerPerson}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total drinks price: </strong>{" "}
+                                        ${totalDrinkPrice}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price: </strong>{" "}
+                                        ${totalPrice}
+                                      </Typography>
+                                    </li>
                                   </ul>
                                 </DialogContent>
                                 <DialogActions>
@@ -1060,7 +1188,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                     Cancel
                                   </Button>
                                   <Button
-                                    onClick={handleConfirmClick}
+                                        onClick={() => {
+                                          handleSubmitConfirmation();
+                                          closeReserveDialog();
+                                        }}
                                     color="primary"
                                   >
                                     Confirm
@@ -1080,112 +1211,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                               },
                             }}
                           >
-                            <TextField
-                              sx={{ width: 225 }}
-                              disabled
-                              id="filled-basic"
-                              fullWidth
-                              variant="filled"
-                              label="Name"
-                              readOnly={true}
-                              helperText={<ErrorMessage name="NumberDinners" />}
-                              value={
-                                decodedToken.name + " " + decodedToken.lastName
-                              }
-                            />
-                            <TextField
-                              disabled
-                              id="filled-basic"
-                              name="email"
-                              fullWidth
-                              variant="filled"
-                              label="Email"
-                              readOnly={true}
-                              helperText={<ErrorMessage name="NumberDinners" />}
-                              value={decodedToken.email}
-                            />
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                                disabled
-                                fullWidth
-                                name="date"
-                                readOnly={true}
-                                value={selectedDate}
-                              />
-                            </LocalizationProvider>
-                            <Field
-                              type="number"
-                              name="diners"
-                              as={TextField}
-                              fullWidth
-                              variant="outlined"
-                              label="Amount of people"
-                              helperText={<ErrorMessage name="NumberDinners" />}
-                            />
-                          </Box>
-                          <Box p={2}>
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                backgroundColor: "secondary.light",
-                                textAlign: "center",
-                              }}
-                            >
-                              Number of drinks:
-                            </Typography>
-                            <FieldArray name="drinks">
-                              {({ push, remove, form }) => (
-                                <Box sx={{ display: 'flex', padding: 2 }}>
-                                  <Paper>
-                                    <Container
-                                      sx={{
-                                        padding: 3,
-                                        height: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'space-evenly',
-                                        gap: 2,
-                                      }}
-                                    >
-                                      {productData
-                                        ? productData.drinks.map((drink, index) => (
-                                            <div key={index}>
-                                              <Typography
-                                                variant="body1"
-                                                component="span"
-                                                color="textPrimary"
-                                              >
-                                                {drink.name}
-                                              </Typography>
-                                              <Field
-                                                type="number"
-                                                name={`drinks[${index}].quantity`}  // Updated the name
-                                                as={TextField}
-                                                fullWidth
-                                                variant="outlined"
-                                                label={`Quantity of ${drink.name}`}
-                                                helperText={
-                                                  <ErrorMessage name={`drinks[${index}].quantity`} /> // Updated the name
-                                                }
-                                              />
-                                            </div>
-                                          ))
-                                        : []}
-                                    </Container>
-                                  </Paper>
-                                </Box>
-                              )}
-                            </FieldArray>
-                          </Box>
-                          <Box p={2}>
-                            <Button
-                              type="submit"
-                              variant="contained"
-                              color="primary"
-                              disabled={isSubmitting}
-                            >
-                              Enviar
-                            </Button>
                             {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
                               <Button
                                 variant="outlined"
@@ -1224,6 +1249,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
             </Paper>
           </Grid>
         </Grid>
+
         <Box height={50} />
 
         <Typography variant="h5">Reviews:</Typography>
