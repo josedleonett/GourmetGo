@@ -280,6 +280,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   };
 
   const openReserveModal = () => {
+    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
@@ -423,8 +424,8 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   };
 
   if (productData !== null) {
-    var currentDate = new Date(); 
-    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); 
+    
+    var formattedDate = today;
   
     initialValuesReserveForm = {
       user: decodedToken.id,
