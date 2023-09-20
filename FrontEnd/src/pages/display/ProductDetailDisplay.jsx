@@ -47,6 +47,7 @@ import {
   Stepper,
   Step,
   StepLabel,
+  CircularProgress,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -75,7 +76,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
-const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
+const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken }) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().slice(0, 19);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -332,12 +333,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   });
 
   const [badWordsResponse, setBadWordsResponse] = useState([])
+  const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false)
 
   const formikAddReview = useFormik({
     initialValues: {
       userId: decodedToken && decodedToken.id,
       name: userFullName,
-      bundle: parseInt(id),
+      bundleId: parseInt(id),
       date: today,
       rating: 3,
       title: "",
@@ -346,16 +348,18 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     validationSchema: validationSchemaAddReview,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log(values, MODERATOR_CONTENT_URL_BASE);
+      setIsAddReviewFormSending(true)
 
       try {
         const moderatorContentResponse = await axios.get(
           MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
         );
-        console.log(moderatorContentResponse);
+        
+        const hasBadWords = moderatorContentResponse.data.bad_words.length != 0
         setBadWordsResponse(moderatorContentResponse.data.bad_words)
-
-        if (badWordsResponse.length == 0) {
+        
+        if (!hasBadWords) {
+          console.log("POSTING...");
           const response = await axios.post(
             API_BASE_URL + "review/create",
             JSON.stringify(values),
@@ -371,8 +375,17 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       } catch (error) {
         console.error(error.message);
       }
+      setIsAddReviewFormSending(false)
     },
   });
+
+  const addReviewHandleCancel = () => {
+    setIsCommentFormOpen(false);
+    setBadWordsResponse([])
+    formikAddReview.resetForm();
+
+    return <Dialog open={true}>hi</Dialog>
+  }
 
   return (
     <Box padding={2}>
@@ -1331,37 +1344,36 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                         formikAddReview.touched.body &&
                         formikAddReview.errors.body
                       }
-                      rows={4}
+                      rows={5}
                       inputProps={{
                         maxLength: 500,
                       }}
                     />
                   </Container>
                 </CardContent>
-                <CardContent>
-                  <Alert severity="warning">
-                    <AlertTitle>
-                      Your review violates our community guidelines
-                    </AlertTitle>
-                    We've noticed that some words in your review may not align
-                    with our community guidelines. Please review your content
-                    and remove any inappropriate language or content.
-                    <br />
-                    <br />
-                    Inappropriate words:{" "}
-                    <strong>{badWordsResponse.join(", ")}</strong>
-                  </Alert>
-                </CardContent>
+                <Collapse in={badWordsResponse.length > 0}>
+                  <CardContent>
+                    <Alert severity="warning">
+                      <AlertTitle>
+                        Your review violates our community guidelines
+                      </AlertTitle>
+                      We've noticed that some words in your review may not align
+                      with our community guidelines. Please review your content
+                      and remove any inappropriate language or content.
+                      <br />
+                      <br />
+                      Inappropriate words:{" "}
+                      <strong>{badWordsResponse.join(", ")}</strong>
+                    </Alert>
+                  </CardContent>
+                </Collapse>
                 <CardActions sx={{ justifyContent: "end" }}>
                   <Button
                     type="reset"
                     variant="text"
                     color="primary"
                     startIcon={<CancelIcon />}
-                    onClick={() => {
-                      setIsCommentFormOpen(false);
-                      formikAddReview.resetForm();
-                    }}
+                    onClick={addReviewHandleCancel}
                   >
                     CANCEL
                   </Button>
@@ -1369,7 +1381,14 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                     type="submit"
                     variant="contained"
                     color="primary"
-                    startIcon={<SendIcon />}
+                    disabled={isAddReviewFormSending}
+                    startIcon={
+                      isAddReviewFormSending ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        <SendIcon />
+                      )
+                    }
                     onClick={formikAddReview.handleSubmit}
                   >
                     SEND
