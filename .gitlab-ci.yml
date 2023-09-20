@@ -14,13 +14,12 @@ build:
 deploy:
   stage: deploy
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which ssh-agent || ( apk update && apk add openssh-client )' # Cambiado de apt-get a apk
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
