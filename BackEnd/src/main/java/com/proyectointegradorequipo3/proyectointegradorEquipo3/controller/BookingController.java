@@ -4,6 +4,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BookingCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingCounterService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,13 @@ import static com.proyectointegradorequipo3.proyectointegradorEquipo3.api.ApiCon
 public class BookingController {
 
     private final BookingServiceImpl bookingService;
+
+    private final BookingCounterService bookingCounter;
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getBookingCount(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(bookingCounter.getCurrentCount(date));
+    }
 
 
     //====================Create====================//

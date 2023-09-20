@@ -43,12 +43,11 @@ public class BookingServiceImpl implements IBookingService {
 
     private final BundleServiceImpl bundleService;
 
-    private final ModelMapper mapper;
-
-    private final BookingMapper bookingMapper;
-
     private final EmailService emailService;
 
+    private final BookingCounterService bookingCounter;
+
+    private final ModelMapper mapper;
 
     //===================Search===================//
     public Set<DateDto> getBookingDatesAfterToday() {
@@ -101,40 +100,47 @@ public class BookingServiceImpl implements IBookingService {
     @Override
     @Transactional
     public Long saveBooking(BookingCreateRequest request) throws IOException {
-        UserEntity user = userRepository.findById(request.getUser())
-                .orElseThrow(() -> new ResourceNotFoundException("User", request.getUser()));
-        Bundle bundle = bundleRepository.findById(request.getBundle())
-                .orElseThrow(() -> new ResourceNotFoundException("Bundle", request.getBundle()));
+        if (bookingCounter.canBook(request.getDate())){
+            UserEntity user = userRepository.findById(request.getUser())
+                    .orElseThrow(() -> new ResourceNotFoundException("User", request.getUser()));
+            Bundle bundle = bundleRepository.findById(request.getBundle())
+                    .orElseThrow(() -> new ResourceNotFoundException("Bundle", request.getBundle()));
 
-        BundleDto currentBundle = bundleService.searchBundleDtoById(request.getBundle());
-        double dinnersPrice = currentBundle.getPrice() * request.getDiners();
+            BundleDto currentBundle = bundleService.searchBundleDtoById(request.getBundle());
+            double dinnersPrice = currentBundle.getPrice() * request.getDiners();
 
-        double drinksPrice = 0.;
-        List<DrinkQuantity> persistedDrinks = new ArrayList<>();
-        if (!request.getDrinks().isEmpty()) {
+            double drinksPrice = 0.;
+            List<DrinkQuantity> persistedDrinks = new ArrayList<>();
+            if (!request.getDrinks().isEmpty()) {
 
-            for (DrinkQuantity drink : request.getDrinks()) {
-                DrinkDto currentDrink = drinkService.searchDrinkById(drink.getDrinkId());
-                drinksPrice += (drink.getQuantity() * currentDrink.getPrice());
-                DrinkQuantity persistedDrink = drinkQuantityRepository.save(drink);
-                persistedDrinks.add(persistedDrink);
+                for (DrinkQuantity drink : request.getDrinks()) {
+                    DrinkDto currentDrink = drinkService.searchDrinkById(drink.getDrinkId());
+                    drinksPrice += (drink.getQuantity() * currentDrink.getPrice());
+                    DrinkQuantity persistedDrink = drinkQuantityRepository.save(drink);
+                    persistedDrinks.add(persistedDrink);
+                }
             }
+
+            double totalprice = dinnersPrice + drinksPrice;
+
+            Booking booking = new Booking();
+            booking.setUser(user);
+            booking.setBundle(bundle);
+            booking.setDate(request.getDate());
+            booking.setDrinks(persistedDrinks);
+            booking.setDiners(request.getDiners());
+            booking.setPrice(totalprice);
+            booking.setComment(request.getComment());
+
+            System.out.println(bookingCounter.getCurrentCount(request.getDate()));
+            bookingRepository.save(booking);
+            System.out.println(bookingCounter.getCurrentCount(request.getDate()));
+            emailService.sendBookingConfirmationEmail(user, booking);
+            return booking.getId();
+        }else {
+            throw new RuntimeException("Reservation quota exhausted");
         }
 
-        double totalprice = dinnersPrice + drinksPrice;
-
-        Booking booking = new Booking();
-        booking.setUser(user);
-        booking.setBundle(bundle);
-        booking.setDate(request.getDate());
-        booking.setDrinks(persistedDrinks);
-        booking.setDiners(request.getDiners());
-        booking.setPrice(totalprice);
-        booking.setComment(request.getComment());
-
-        bookingRepository.save(booking);
-        emailService.sendBookingConfirmationEmail(user, booking);
-        return booking.getId();
     }
 
     //===================Delete===================//
