@@ -29,11 +29,12 @@ deploy:
 
   script:
     - apt-get update
-    - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    - apt-get install -y apt-transport-https apt-transport-https ca-certificates curl gnupg lsb-release
     - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
     - echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
     - apt-get update
     - apt-get install -y docker-ce docker-ce-cli containerd.io
+    - docker build -t $DOCKER_USERNAME/mi-aplicacion:latest BackEnd # Aquí está la línea que hemos añadido
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
