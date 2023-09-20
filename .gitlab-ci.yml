@@ -19,6 +19,7 @@ deploy:
     - mkdir -p /root/.ssh
     - 'echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa'
     - 'chmod 600 /root/.ssh/id_rsa'
+    - $ ssh-keygen -p -m PEM -f /root/.ssh/id_rsa
     - 'which ssh-agent || ( apk update && apk add openssh-client )' # Cambiado de apt-get a apk
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
