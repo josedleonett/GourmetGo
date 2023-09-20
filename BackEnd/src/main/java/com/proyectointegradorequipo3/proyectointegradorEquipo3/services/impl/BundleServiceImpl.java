@@ -108,6 +108,24 @@ public class BundleServiceImpl implements IBundleService {
         return dto;
     }
 
+    public double calculateTotalPrice(Bundle bundle) {
+        double provisionalPrice = 0.;
+
+        provisionalPrice += bundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        return provisionalPrice;
+    }
+
     public double calculateAverageRating(List<ReviewDto> reviews) {
         double average = reviews.stream()
                 .mapToDouble(ReviewDto::getRating)
