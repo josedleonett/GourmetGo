@@ -2,31 +2,22 @@ stages:
   - build
   - deploy
 
-variables:
-  APP_NAME: my-spring-boot-app
-  JAR_FILE: target/my-spring-boot-app.jar
-
-# Build Stage
-build_backend:
+build:
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   stage: build
-  only:
-    changes:
-      - BackEnd/**/*
   script:
-    - cd BackEnd
-    - mvn clean package
-  artifacts:
-    paths:
-      - $JAR_FILE
+    - docker build -t mi-aplicacion .
 
-deploy_backend:
+deploy:
   stage: deploy
-  only:
-    changes:
-      - BackEnd/**/*
   script:
-    - scp $JAR_FILE ec2-user@$EC2_PUBLIC_IP:~/
-    - ssh ec2-user@$EC2_PUBLIC_IP "pkill -f $APP_NAME && nohup java -jar $JAR_FILE > /dev/null 2>&1 &"
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
+    - docker push $DOCKER_USERNAME/mi-aplicacion:latest
+    - ssh -o StrictHostKeyChecking=no ec2-user@MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
+
 
 
 
