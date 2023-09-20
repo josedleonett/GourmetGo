@@ -97,7 +97,7 @@ public class BundleServiceImpl implements IBundleService {
 
         boolean canReview = false;
         Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(userId, bundleId);
-        if (bookingOpt.get().getReview() == null) {
+        if (bookingOpt.isPresent() && bookingOpt.get().getReview() == null) {
             canReview = true;
         }
 
