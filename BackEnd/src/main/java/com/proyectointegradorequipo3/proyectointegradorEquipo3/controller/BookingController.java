@@ -59,6 +59,17 @@ public class BookingController {
         }
     }
 
+    //====================Display by userId====================//
+    @GetMapping(path = "/byUser/{id}")
+    public ResponseEntity<?> getAllBookingByUserId(@Valid @NotNull @PathVariable("id") Long id) {
+        List<BookingDto> bookingDtos = bookingService.searchAllBookingByUserId(id);
+        if (bookingDtos != null) {
+            return ResponseEntity.ok(bookingDtos);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //====================Display after today====================//
     @GetMapping("/dates")
     public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {

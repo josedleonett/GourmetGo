@@ -26,7 +26,5 @@ public class BookingDto {
 
     private Double price;
 
-    private Long review;
-
     private String comment;
 }
