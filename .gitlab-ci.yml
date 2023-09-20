@@ -12,11 +12,11 @@ build:
     - docker build -t mi-aplicacion .
 
 deploy:
-  image: alpine:latest
+  image: debian:bullseye-slim
   stage: deploy
   before_script:
-    - apk update && apk upgrade
-    - apk add openssh-client
+    - apt-get update && apt-get upgrade -y
+    - apt-get install -y openssh-client
     - mkdir -p /root/.ssh
     - echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
     - chmod 600 /root/.ssh/id_rsa
@@ -30,7 +30,6 @@ deploy:
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
     - ssh -o StrictHostKeyChecking=no ec2-user@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
-
 
 
 
