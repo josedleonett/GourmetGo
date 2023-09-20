@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class Booking {
     @JoinColumn(name = "bundle_id")
     private Bundle bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private Integer diners;
 
@@ -44,6 +43,7 @@ public class Booking {
     )
     private List<DrinkQuantity> drinks = new ArrayList<>();
 
-    private Long review;
+    @Column(length = 2000)
+    private String comment;
 
 }

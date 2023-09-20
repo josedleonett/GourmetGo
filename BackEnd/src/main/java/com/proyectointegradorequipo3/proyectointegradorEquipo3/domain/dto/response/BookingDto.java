@@ -18,7 +18,7 @@ public class BookingDto {
 
     private Long bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private List<Long> drinks;
 
@@ -26,5 +26,5 @@ public class BookingDto {
 
     private Double price;
 
-    private Long review;
+    private String comment;
 }

@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DateDto {
-    private LocalDateTime date;
+    private LocalDate date;
 }

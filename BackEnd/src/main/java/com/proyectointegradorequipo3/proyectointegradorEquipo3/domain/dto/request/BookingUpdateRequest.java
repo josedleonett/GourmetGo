@@ -16,11 +16,13 @@ public class BookingUpdateRequest {
 
     private Long bundle;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private List<Long> drinks;
 
     private Integer diners;
 
     private Double price;
+
+    private String comment;
 }

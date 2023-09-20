@@ -64,11 +64,9 @@ public class BundleServiceImpl implements IBundleService {
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
         BundleDto dto = modelMapper.map(bundle, BundleDto.class);
         List<Review> reviews = reviewRepository.findByBundleId(id);
-        List<ReviewDto> reviewDtos = reviews.stream()
-                .map(review -> mapper.map(review, ReviewDto.class))
-                .collect(Collectors.toList());
+        List<ReviewDto> reviewDtos = convertAndSortReviews(reviews);
         dto.setReviews(reviewDtos);
-        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
+        dto.setRating((calculateAverageRating(reviewDtos)));
         return dto;
     }
 
@@ -86,16 +84,18 @@ public class BundleServiceImpl implements IBundleService {
         BundleDtoDetailUser dto = mapper.map(bundle, BundleDtoDetailUser.class);
         dto.setFavorite(favoriteBundleIds.contains(bundle.getId()));
         List<Review> reviews = reviewRepository.findByBundleId(bundleId);
-        List<ReviewDto> reviewDtos = reviews.stream()
-                .map(review -> mapper.map(review, ReviewDto.class))
-                .collect(Collectors.toList());
+        List<ReviewDto> reviewDtos = convertAndSortReviews(reviews);
         dto.setReviews(reviewDtos);
 
         dto.getReviews().stream().map(review -> review.getRating());
 
         boolean canReview = false;
-        Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(userId, bundleId);
-        if (bookingOpt.isPresent() && bookingOpt.get().getReview() == null) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+        boolean containsBooking = bookings.stream()
+                .anyMatch(booking -> booking.getBundle().getId().equals(bundleId));
+
+        if (containsBooking) {
             canReview = true;
         }
 
@@ -107,37 +107,6 @@ public class BundleServiceImpl implements IBundleService {
 
         return dto;
     }
-
-    public double calculateTotalPrice(Bundle bundle) {
-        double provisionalPrice = 0.;
-
-        provisionalPrice += bundle.getStarter().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        provisionalPrice += bundle.getMainCourse().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        provisionalPrice += bundle.getDesserts().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        return provisionalPrice;
-    }
-
-    public double calculateAverageRating(List<ReviewDto> reviews) {
-        double average = reviews.stream()
-                .mapToDouble(ReviewDto::getRating)
-                .average()
-                .orElse(0.0);
-
-        return roundToOneDecimal(average);
-    }
-    double roundToOneDecimal(double value) {
-        return Math.round(value * 10.0) / 10.0;
-    }
-
 
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
@@ -160,7 +129,6 @@ public class BundleServiceImpl implements IBundleService {
 
         return result;
     }
-
 
 
     @Cacheable(value = "searchBundleDtoByIdForCards", unless = "#result == null")
@@ -321,11 +289,13 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setDrinks(drinks);
         }
 
-        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
+        if (request.getCategories() != null) {
+            List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
             existingBundle.setCategories(categories);
         }
 
-        if (request.getCharacteristics() != null) {List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
+        if (request.getCharacteristics() != null) {
+            List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
             existingBundle.setCharacteristics(characteristics);
         }
 
@@ -405,15 +375,54 @@ public class BundleServiceImpl implements IBundleService {
 
     private void existsName(String name) {
         Bundle existingBundle = bundleRepository.findByName(name);
-        if (existingBundle != null ) {
+        if (existingBundle != null) {
             throw new ExistNameException(name);
         }
     }
+
     private void existsName(String name, Long excludeId) {
         Bundle existingBundle = bundleRepository.findByName(name);
         if (existingBundle != null && !existingBundle.getId().equals(excludeId)) {
             throw new ExistNameException(name);
         }
+    }
+
+    public List<ReviewDto> convertAndSortReviews(List<Review> reviews) {
+        return reviews.stream()
+                .map(review -> mapper.map(review, ReviewDto.class))
+                .sorted(Comparator.comparing(ReviewDto::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public double calculateTotalPrice(Bundle bundle) {
+        double provisionalPrice = 0.;
+
+        provisionalPrice += bundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        return provisionalPrice;
+    }
+
+    public double calculateAverageRating(List<ReviewDto> reviews) {
+        double average = reviews.stream()
+                .mapToDouble(ReviewDto::getRating)
+                .average()
+                .orElse(0.0);
+
+        return roundToOneDecimal(average);
+    }
+
+    double roundToOneDecimal(double value) {
+        return Math.round(value * 10.0) / 10.0;
     }
 
 }

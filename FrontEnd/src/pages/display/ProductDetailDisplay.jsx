@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MdLocalBar } from "react-icons/md";
+import { MdFormatListBulleted, MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
@@ -9,11 +9,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import SendIcon from '@mui/icons-material/Send';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
-import Swal from 'sweetalert2';
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import SendIcon from "@mui/icons-material/Send";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
+import Swal from "sweetalert2";
 import {
   Box,
   Container,
@@ -48,6 +48,7 @@ import {
   Stepper,
   Step,
   StepLabel,
+  formLabelClasses,
   CircularProgress,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
@@ -71,8 +72,15 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
-import * as yup from 'yup';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldArray,
+  useFormik,
+} from "formik";
+import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
@@ -94,7 +102,7 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
-  const [diners, setDiners] = useState('');
+  const [diners, setDiners] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
@@ -102,22 +110,28 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
 
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
-const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+  const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+  const [formErrors, setFormErrors] = useState({});
+  const [drinkErrors, setDrinkErrors] = useState(false);
+  const [dinerErrors, setDinerErrors] = useState(false)
 
   useEffect(() => {
     if (productData && productData.drinks) {
-      const initialQuantities = productData.drinks.reduce((quantities, drink) => {
-        quantities[drink.id] = ''; 
-        return quantities;
-      }, {});
+      const initialQuantities = productData.drinks.reduce(
+        (quantities, drink) => {
+          quantities[drink.id] = "";
+          return quantities;
+        },
+        {}
+      );
       setDrinkQuantities(initialQuantities);
     }
   }, [productData]);
 
   const handleQuantityChange = (drinkId, quantity) => {
-    setDrinkQuantities(prevQuantities => ({
+    setDrinkQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [drinkId]: quantity
+      [drinkId]: quantity,
     }));
   };
 
@@ -126,12 +140,12 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
     let totalPrice = 0;
     let personPrice = 0;
     let drinkPrice = 0;
-  
+
     // Multiplicar productData.price por la cantidad de comensales (diners)
     totalPrice += productData ? productData.price * diners : 0;
     personPrice = productData && productData.price * diners;
     setPricePerPerson(personPrice);
-  
+
     // Sumar el precio de las bebidas según la cantidad
     if (productData && productData.drinks) {
       productData.drinks.forEach((drink) => {
@@ -139,15 +153,15 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
         drinkPrice += quantity * drink.price; // Sumar al drinkPrice
       });
     }
-  
+
     setTotalDrinkPrice(drinkPrice);
-  
+
     // Sumar el precio de las bebidas al totalPrice
     totalPrice += drinkPrice;
     setTotalPrice(totalPrice);
   }, [drinkQuantities, diners, productData]);
 
-  const today = new Date().toISOString().slice(0, 19);
+  const today = new Date().toISOString().split("T")[0];
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -282,6 +296,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   };
 
   const openReserveModal = () => {
+    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
@@ -371,14 +386,14 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
 
   const validationSchemaAddReview = yup.object({
     title: yup
-      .string('Enter your title')
-      .max(50, 'Title should be of maximum 50 characters'),
+      .string("Enter your title")
+      .max(50, "Title should be of maximum 50 characters"),
     body: yup
-      .string('Enter your body')
-      .max(500, 'Review body should be of maximum 500 characters'),
+      .string("Enter your body")
+      .max(500, "Review body should be of maximum 500 characters"),
   });
 
-  const [badWordsResponse, setBadWordsResponse] = useState([])
+  const [badWordsResponse, setBadWordsResponse] = useState([]);
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false)
 
   const formikAddReview = useFormik({
@@ -402,7 +417,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
         );
         
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0
-        setBadWordsResponse(moderatorContentResponse.data.bad_words)
+        setBadWordsResponse(moderatorContentResponse.data.bad_words);
         
         if (!hasBadWords) {
           console.log("POSTING...");
@@ -417,7 +432,6 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
           );
           console.log(response);
         }
-
       } catch (error) {
         console.error(error.message);
       }
@@ -435,60 +449,75 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
 
   {console.log(productData)}
 
-  let initialValuesReserveForm = {
-  };
+  let initialValuesReserveForm = {};
 
   if (productData !== null) {
-    var currentDate = new Date(); 
-    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); 
-  
+    var formattedDate = today;
+
     initialValuesReserveForm = {
       user: decodedToken.id,
       diners: diners,
       drinks: productData.drinks.map((drink) => ({
         drinkId: drink.id,
-        quantity: drinkQuantities[drink.id] || '',
+        quantity: drinkQuantities[drink.id] || "",
       })),
-      date: formattedDate, 
+      date: formattedDate,
       bundle: productData.id,
-      price: 0
+      price: 0,
     };
   }
-  
 
   const handleSubmitConfirmation = () => {
-    console.log(productData)
+    console.log(productData);
     fetch("http://localhost:8080/v1/booking/create", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(initialValuesReserveForm)
+      body: JSON.stringify(initialValuesReserveForm),
     })
-    .then(response => {
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Reservation confirmed',
-          text: 'Your reservation has been confirmed successfully!',
-        });
-        return response.json();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'There was an error confirming the reservation. Please try again later.',
-        });
-        throw new Error("Form submission failed");
-      }
-    })
-    .then(data => {
-      console.log("Form submission successful:", data);
-    })
-    .catch(error => {
-      console.error("Error submitting form:", error);
-    });
+      .then((response) => {
+        if (response.ok) {
+          Swal.fire({
+            icon: "success",
+            title: "Reservation confirmed",
+            text: "Your reservation has been confirmed successfully!",
+          });
+          return response.json();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "There was an error confirming the reservation. Please try again later.",
+          });
+          throw new Error("Form submission failed");
+        }
+      })
+      .then((data) => {
+        console.log("Form submission successful:", data);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
   };
+
+  const validateDrinks = (drinks) => {
+    setDrinkErrors(false)
+    if(drinks < 0 ) {
+      setDrinkErrors(true)
+      return "Invalid number of drinks"
+    } 
+  };
+
+  const validateDiners = (diners) => {
+      console.log("validateDiners called with:", diners);
+    setDinerErrors(false)
+    if(diners < 0 ) {
+      setDinerErrors(true)
+      return "Invalid number of guests"
+    } 
+  };
+  
 
   return (
     <Box padding={2}>
@@ -934,332 +963,403 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                     </Box>
                   </LocalizationProvider>
                 ) : (
-                  <Formik initialValues={initialValuesReserveForm} onSubmit={handleSubmit}>
-                    {({ isSubmitting }) => (
-                      <Form>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "space-evenly",
-                            gap: 2,
-                          }}
-                        >
-                          {openDialog && (
-                            <IconButton
-                              color="primary"
-                              onClick={closeReserveDialog}
-                              sx={{ marginLeft: "auto" }}
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          )}
-                          {/* Agrega el Stepper para mostrar los pasos */}
-                          <Stepper activeStep={activeStep}>
-                            {steps.map((label, index) => (
-                              <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                              </Step>
-                            ))}
-                          </Stepper>
+                  <Formik
+  initialValues={initialValuesReserveForm}
+  onSubmit={handleSubmit}
+>
+  {({ isSubmitting }) => (
+    <Form>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          gap: 2,
+        }}
+      >
+        {openDialog && (
+          <IconButton
+            color="primary"
+            onClick={closeReserveDialog}
+            sx={{ marginLeft: "auto" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+        {/* Agrega el Stepper para mostrar los pasos */}
+        <Stepper activeStep={activeStep}>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
-                          {activeStep === 0 && (
-                            <Box>
-                              {/* Contenido del primer paso */}
-                              <Box p={2}>
-                                <Typography
-                                  variant="h4"
-                                  sx={{ backgroundColor: "secondary.light" }}
-                                >
-                                  Reserve catering
-                                </Typography>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 2,
-                                  }}
-                                >
-                                  <TextField
-                                    sx={{
-                                      width: "100%",
-                                      marginTop: 2,
-                                    }}
-                                    disabled
-                                    id="filled-basic"
-                                    fullWidth
-                                    variant="filled"
-                                    label="Name"
-                                    readOnly={true}
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
-                                    value={
-                                      decodedToken.name +
-                                      " " +
-                                      decodedToken.lastName
-                                    }
-                                  />
-                                  <TextField
-                                    sx={{
-                                      width: "100%",
-                                      marginTop: 2,
-                                      marginBottom: 2,
-                                    }}
-                                    disabled
-                                    id="filled-basic"
-                                    name="email"
-                                    fullWidth
-                                    variant="filled"
-                                    label="Email"
-                                    readOnly={true}
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
-                                    value={decodedToken.email}
-                                  />
-                                  <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
-                                  >
-                                    <DatePicker
-                                      disabled
-                                      fullWidth
-                                      readOnly={true}
-                                      value={selectedDate}
-                                    />
-                                  </LocalizationProvider>
+        {activeStep === 0 && (
+          <Box>
+            {/* Contenido del primer paso */}
+            <Box p={2}>
+              <Typography
+                variant="h4"
+                sx={{ backgroundColor: "secondary.light" }}
+              >
+                Reserve catering
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                }}
+              >
+                <TextField
+                  sx={{
+                    width: "100%",
+                    marginTop: 2,
+                  }}
+                  disabled
+                  id="filled-basic"
+                  fullWidth
+                  variant="filled"
+                  label="Name"
+                  readOnly={true}
+                  helperText={
+                    <ErrorMessage name="NumberDinners" />
+                  }
+                  value={
+                    decodedToken.name +
+                    " " +
+                    decodedToken.lastName
+                  }
+                />
+                <TextField
+                  sx={{
+                    width: "100%",
+                    marginTop: 2,
+                    marginBottom: 2,
+                  }}
+                  disabled
+                  id="filled-basic"
+                  name="email"
+                  fullWidth
+                  variant="filled"
+                  label="Email"
+                  readOnly={true}
+                  helperText={
+                    <ErrorMessage name="NumberDinners" />
+                  }
+                  value={decodedToken.email}
+                />
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                >
+                  <DatePicker
+                    disabled
+                    fullWidth
+                    readOnly={true}
+                    value={selectedDate}
+                  />
+                </LocalizationProvider>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    backgroundColor: "secondary.light",
+                    textAlign: "center",
+                  }}
+                >
+                  Amount of guests:
+                </Typography>
+                {/* El tercer campo no necesita ajustes */}
+                <Field
+                  type="number"
+                  name="diners"
+                  as={TextField}
+                  fullWidth
+                  variant="outlined"
+                  label="Amount of people"
+                  helperText={
+                    formErrors.diners && (
+                      <div style={{ color: "red" }}>
+                        {formErrors.diners}
+                      </div>
+                    )
+                  }
+                  value={diners}
+                  onChange={(e) => {
+                    const value = parseInt(
+                      e.target.value,
+                      10
+                    );
+                    const dinersError = validateDiners(value); // Llamamos a validateDiners aquí
+                    setFormErrors((prevErrors) => ({
+                      ...prevErrors,
+                      diners: dinersError,
+                    }));
+                    setDiners(value);
+                  }}
+                />
+
+                <div style={{ textAlign: "center" }}>
+                  <Typography>
+                    <strong>
+                      Total price: ${totalPrice}
+                    </strong>
+                  </Typography>
+                </div>
+              </Box>
+            </Box>
+          </Box>
+        )}
+
+        {activeStep === 1 && (
+          <Box>
+            {/* Contenido del segundo paso */}
+            <Box p={2}>
+              <Typography
+                variant="h6"
+                sx={{
+                  backgroundColor: "secondary.light",
+                  textAlign: "center",
+                }}
+              >
+                Number of drinks:
+              </Typography>
+              <FieldArray name="drinks">
+                {({ push, remove }) => (
+                  <Box
+                    sx={{ display: "flex", paddingTop: 2 }}
+                  >
+                    <Paper>
+                      <Container
+                        sx={{
+                          padding: 3,
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-evenly",
+                          gap: 2,
+                        }}
+                      >
+                        {productData
+                          ? productData.drinks.map(
+                              (drink, index) => (
+                                <div key={index}>
                                   <Typography
-                                    variant="h6"
-                                    sx={{
-                                      backgroundColor: "secondary.light",
-                                      textAlign: "center",
-                                    }}
+                                    variant="body1"
+                                    component="span"
+                                    color="textPrimary"
                                   >
-                                    Amount of guests:
+                                    {drink.name}
                                   </Typography>
-                                  {/* El tercer campo no necesita ajustes */}
-                                  <Field
+                                  <TextField
                                     type="number"
-                                    name="diners"
-                                    as={TextField}  // Set the 'as' prop to TextField
                                     fullWidth
                                     variant="outlined"
-                                    label="Amount of people"
-                                    helperText={<ErrorMessage name="diners" />}
-                                    value={diners}
-                                    onChange={(e) => setDiners(e.target.value)} 
+                                    helperText={
+                                      formErrors.drinks &&
+                                      formErrors.drinks[index] && (
+                                        <div style={{ color: "red" }}>
+                                          {formErrors.drinks[index]}
+                                        </div>
+                                      )
+                                    }
+                                    value={
+                                      drinkQuantities[
+                                        drink.id
+                                      ]
+                                    }
+                                    onChange={(e) => {
+                                      const value = parseInt(
+                                        e.target.value,
+                                        10
+                                      );
+                                      handleQuantityChange(
+                                        drink.id,
+                                        value
+                                      );
+                                      setFormErrors(
+                                        (prevErrors) => ({
+                                          ...prevErrors,
+                                          drinks: {
+                                            ...(prevErrors.drinks ||
+                                              {}),
+                                            [index]:
+                                              validateDrinks(
+                                                value
+                                              ),
+                                          },
+                                        })
+                                      );
+                                    }}
                                   />
-                                  <div style={{ textAlign: 'center' }}>
-                                    <Typography><strong>Total price: ${totalPrice}</strong></Typography>
-                                  </div>
-                                </Box>
+                                </div>
+                              )
+                            )
+                          : []}
+                      </Container>
+                    </Paper>
+                  </Box>
+                )}
+              </FieldArray>
+            </Box>
+            <div style={{ textAlign: "center" }}>
+              <Typography>
+                <strong>Total price: ${totalPrice}</strong>
+              </Typography>
+            </div>
+          </Box>
+        )}
+        {activeStep === 2 && (
+          <Box>
+            {/* Contenido del tercer paso */}
+            <Typography
+              variant="h6"
+              sx={{
+                backgroundColor: "secondary.light",
+                textAlign: "center",
+              }}
+            >
+              Indications:
+            </Typography>
+            <Field
+              name="comments"
+              as={TextField}
+              fullWidth
+              multiline
+              rows={4}
+              variant="outlined"
+              label="Write your comments here"
+              sx={{ marginTop: 2 }}
+            />
+            <Dialog
+              open={openConfirmationModal}
+              onClose={handleCancelClick}
+            >
+              <DialogTitle>
+                Catering reservation confirmation
+              </DialogTitle>
+              <DialogContent>
+                <Typography>
+                  Are you sure you want to confirm the
+                  reservation for this catering?
+                </Typography>
+                <ul>
+                  <li>
+                    <Typography>
+                      <strong>Name:</strong>{" "}
+                      {decodedToken.name}{" "}
+                      {decodedToken.lastName}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography>
+                      <strong>Email:</strong>{" "}
+                      {decodedToken.email}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography>
+                      <strong>Date:</strong>{" "}
+                      {selectedDate.format("MM-DD-YYYY")}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography>
+                      <strong>Total price by diners: </strong>{" "}
+                      ${pricePerPerson}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography>
+                      <strong>Total drinks price: </strong> $
+                      {totalDrinkPrice}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography>
+                      <strong>Total price: </strong> $
+                      {totalPrice}
+                    </Typography>
+                  </li>
+                </ul>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={handleCancelClick}
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleSubmitConfirmation();
+                    closeReserveDialog();
+                  }}
+                  color="primary"
+                >
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        )}
+        {/* Botones de navegación entre pasos */}
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            "& > button": {
+              margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+            },
+          }}
+        >
+          {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setActiveStep(activeStep - 1)}
+            >
+              Back
+            </Button>
+          )}
+          {activeStep < steps.length - 1 && (
+            <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              
+              if (dinerErrors || drinkErrors) {
+                // Si hay errores, no permitir avanzar
+                return;
+              }
+          
+              // Si no hay errores, permitir avanzar al siguiente paso
+              setActiveStep(activeStep + 1);
+            }}
+          >
+            Next
+          </Button>
+          
+          
+          )}
+          {activeStep === steps.length - 1 && (
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              onClick={handleConfirmClick}
+            >
+              Confirm
+            </Button>
+          )}
+        </Box>
+      </Box>
+    </Form>
+  )}
+</Formik>
 
-                              </Box>
-                            </Box>
-                          )}
-
-                          {activeStep === 1 && (
-                            <Box>
-                              {/* Contenido del segundo paso */}
-                              <Box p={2}>
-                                <Typography
-                                  variant="h6"
-                                  sx={{
-                                    backgroundColor: "secondary.light",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  Number of drinks:
-                                </Typography>
-                                <FieldArray name="drinks">
-                                  {({ push, remove }) => (
-                                    <Box sx={{ display: "flex", paddingTop: 2 }}>
-                                      <Paper>
-                                        <Container
-                                          sx={{
-                                            padding: 3,
-                                            height: "100%",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "space-evenly",
-                                            gap: 2,
-                                          }}
-                                        >
-                                          {productData
-                                            ? productData.drinks.map((drink, index) => (
-                                                <div key={index}>
-                                                  <Typography
-                                                    variant="body1"
-                                                    component="span"
-                                                    color="textPrimary"
-                                                  >
-                                                    {drink.name}
-                                                  </Typography>
-                                                  <TextField
-                                                    type="number"
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    helperText={
-                                                      <ErrorMessage name={`drinks[${index}].quantity`} />
-                                                    }
-                                                    value={drinkQuantities[drink.id]}
-                                                    onChange={(e) =>
-                                                      handleQuantityChange(drink.id, e.target.value)
-                                                    }
-                                                  />
-                                                </div>
-                                              ))
-                                            : []}
-                                        </Container>
-                                      </Paper>
-                                    </Box>
-                                  )}
-                                </FieldArray>
-                              </Box>
-                              <div style={{ textAlign: 'center' }}>
-                              <Typography><strong>Total price: ${totalPrice}</strong></Typography>
-                              </div>
-                            </Box>
-                          )}
-                          {activeStep === 2 && (
-                            <Box>
-                              {/* Contenido del tercer paso */}
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  backgroundColor: "secondary.light",
-                                  textAlign: "center",
-                                }}
-                              >
-                                Indications:
-                              </Typography>
-                              <Field
-                                name="comments"
-                                as={TextField}
-                                fullWidth
-                                multiline
-                                rows={4}
-                                variant="outlined"
-                                label="Write your comments here"
-                                sx={{ marginTop: 2 }}
-                              />
-                              <Dialog
-                                open={openConfirmationModal}
-                                onClose={handleCancelClick}
-                              >
-                                <DialogTitle>
-                                  Catering reservation confirmation
-                                </DialogTitle>
-                                <DialogContent>
-                                  <Typography>
-                                    Are you sure you want to confirm the
-                                    reservation for this catering?
-                                  </Typography>
-                                  <ul>
-                                    <li>
-                                      <Typography>
-                                        <strong>Name:</strong>{" "}
-                                        {decodedToken.name}{" "}
-                                        {decodedToken.lastName}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Email:</strong>{" "}
-                                        {decodedToken.email}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Date:</strong>{" "}
-                                        {selectedDate.format("MM-DD-YYYY")}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price by diners: </strong>{" "}
-                                        ${pricePerPerson}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total drinks price: </strong>{" "}
-                                        ${totalDrinkPrice}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price: </strong>{" "}
-                                        ${totalPrice}
-                                      </Typography>
-                                    </li>
-                                  </ul>
-                                </DialogContent>
-                                <DialogActions>
-                                  <Button
-                                    onClick={handleCancelClick}
-                                    color="primary"
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                        onClick={() => {
-                                          handleSubmitConfirmation();
-                                          closeReserveDialog();
-                                        }}
-                                    color="primary"
-                                  >
-                                    Confirm
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                            </Box>
-                          )}
-                          {/* Botones de navegación entre pasos */}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-                              },
-                            }}
-                          >
-                            {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
-                              <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={() => setActiveStep(activeStep - 1)}
-                              >
-                                Back
-                              </Button>
-                            )}
-                            {activeStep < steps.length - 1 && (
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setActiveStep(activeStep + 1)}
-                              >
-                                Next
-                              </Button>
-                            )}
-                            {activeStep === steps.length - 1 && (
-                              <Button
-                                type="button"
-                                variant="contained"
-                                color="primary"
-                                onClick={handleConfirmClick}
-                              >
-                                Confirm
-                              </Button>
-                            )}
-                          </Box>
-                        </Box>
-                      </Form>
-                    )}
-                  </Formik>
                 )}
               </Container>
             </Paper>
