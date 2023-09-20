@@ -94,8 +94,12 @@ public class BundleServiceImpl implements IBundleService {
         dto.getReviews().stream().map(review -> review.getRating());
 
         boolean canReview = false;
-        Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(userId, bundleId);
-        if (bookingOpt.isPresent() && bookingOpt.get().getReview() == null) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+        boolean containsBooking = bookings.stream()
+                .anyMatch(booking -> booking.getBundle().getId().equals(bundleId));
+
+        if (containsBooking) {
             canReview = true;
         }
 
