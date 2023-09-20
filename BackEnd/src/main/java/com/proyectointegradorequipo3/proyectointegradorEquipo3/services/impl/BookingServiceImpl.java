@@ -84,6 +84,18 @@ public class BookingServiceImpl implements IBookingService {
         return BookingMapper.toDto(booking);
     }
 
+    public List<BookingDto> searchAllBookingByUserId(Long userId) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+        if (bookings.isEmpty()) {
+            throw new ResourceNotFoundException(NAME, userId);
+        }
+
+        return bookings.stream()
+                .map(BookingMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
     //===================Create===================//
     @Override

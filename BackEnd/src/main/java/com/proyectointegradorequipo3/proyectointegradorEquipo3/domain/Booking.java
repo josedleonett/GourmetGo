@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Booking {
     @JoinColumn(name = "bundle_id")
     private Bundle bundle;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     private Integer diners;
 
