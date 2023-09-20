@@ -4,7 +4,6 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BookingCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DateDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,9 +31,10 @@ public class BookingController {
 
     private final BookingServiceImpl bookingService;
 
+
     //====================Create====================//
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) {
+    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) throws IOException {
         long id = bookingService.saveBooking(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(id).toUri();
