@@ -9,29 +9,21 @@ build:
   stage: build
   script:
     - cd BackEnd
-    - docker build -t mi-aplicacion .
+    - docker build -t mi-aplicacion:$CI_COMMIT_SHA .
 
 deploy:
   image: debian:bullseye-slim
   stage: deploy
   before_script:
-    - apt-get update && apt-get upgrade -y
-    - apt-get install -y openssh-client
-    - mkdir -p /root/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > /root/.ssh/id_rsa
+    - apt-get update && apt-get install -y openssh-client
     - chmod 600 /root/.ssh/id_rsa
     - eval $(ssh-agent -s)
-    # Intenta agregar la clave. Si falla, conviértela a PEM y luego agrégala.
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - || (echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-keygen -p -m PEM -f /root/.ssh/id_rsa > /root/.ssh/id_rsa.pem && ssh-add /root/.ssh/id_rsa.pem)
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
-    - docker push $DOCKER_USERNAME/mi-aplicacion:latest
-    - ssh -o StrictHostKeyChecking=no ec2-user@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
-
+    - docker tag mi-aplicacion:$CI_COMMIT_SHA $DOCKER_USERNAME/mi-aplicacion:$CI_COMMIT_SHA
+    - docker push $DOCKER_USERNAME/mi-aplicacion:$CI_COMMIT_SHA
+    - ssh -o StrictHostKeyChecking=no ec2-user@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:$CI_COMMIT_SHA && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:$CI_COMMIT_SHA'
 
 
