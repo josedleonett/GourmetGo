@@ -35,8 +35,12 @@ public class ReviewServiceImpl implements IReviewService {
     @Override
     @Transactional
     public Long saveReview(ReviewCreateRequest request) throws Exception {
-        Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(request.getUserId(), request.getBundleId());
-        if (bookingOpt.isPresent() && (bookingOpt.get().getReview() == null)) {
+        List<Booking> bookings = bookingRepository.findByUserId(request.getUserId());
+
+        boolean containsBooking = bookings.stream()
+                .anyMatch(booking -> booking.getBundle().getId().equals(request.getBundleId()));
+
+        if (containsBooking) {
             System.out.println("El usuario tiene reserva y puede comentar");
             int MAX_BODY_LENGTH = 2000;
             if (request.getBody().length() > MAX_BODY_LENGTH) {
@@ -59,8 +63,16 @@ public class ReviewServiceImpl implements IReviewService {
             review.setTitle(request.getTitle());
             review.setBody(request.getBody());
             review = reviewRepository.save(review);
-            Booking booking = bookingOpt.get();
-            booking.setReview(review.getId());
+
+            Optional<Booking> matchingBooking = bookings.stream()
+                    .filter(booking -> booking.getBundle().getId().equals(request.getBundleId()))
+                    .findFirst();
+            if (matchingBooking.isPresent()) {
+                Booking foundBooking = matchingBooking.get();
+                foundBooking.setReview(review.getId());
+            } else {
+                throw new Exception("Booking not found");
+            }
             return review.getId();
         } else {
             throw new ReviewNotAllowedException("Error leaving review");
