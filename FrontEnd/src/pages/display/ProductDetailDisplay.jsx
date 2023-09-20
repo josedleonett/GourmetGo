@@ -127,7 +127,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   
     // Multiplicar productData.price por la cantidad de comensales (diners)
     totalPrice += productData ? productData.price * diners : 0;
-    personPrice = productData.price * diners;
+    personPrice = productData && productData.price * diners;
     setPricePerPerson(personPrice);
   
     // Sumar el precio de las bebidas según la cantidad
