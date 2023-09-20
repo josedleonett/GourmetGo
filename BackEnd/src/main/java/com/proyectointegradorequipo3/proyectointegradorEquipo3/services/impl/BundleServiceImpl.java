@@ -68,9 +68,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-        dto.setRating(calculateAverageRating(reviewDtos));
-
-        dto.setPrice(calculateTotalPrice(bundle));
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
         return dto;
     }
 
@@ -109,25 +107,6 @@ public class BundleServiceImpl implements IBundleService {
 
         return dto;
     }
-
-    public double calculateTotalPrice(Bundle bundle) {
-        double provisionalPrice = 0.;
-
-        provisionalPrice += bundle.getStarter().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        provisionalPrice += bundle.getMainCourse().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        provisionalPrice += bundle.getDesserts().stream()
-                .mapToDouble(Plate::getPrice)
-                .sum();
-
-        return provisionalPrice;
-    }
-
 
     public double calculateAverageRating(List<ReviewDto> reviews) {
         double average = reviews.stream()

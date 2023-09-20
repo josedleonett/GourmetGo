@@ -13,6 +13,7 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
+import Swal from 'sweetalert2';
 import {
   Box,
   Container,
@@ -92,9 +93,57 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
+  const [diners, setDiners] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
+  const [drinkQuantities, setDrinkQuantities] = useState({});
+  const [pricePerPerson, setPricePerPerson] = useState(0);
+const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+
+  useEffect(() => {
+    if (productData && productData.drinks) {
+      const initialQuantities = productData.drinks.reduce((quantities, drink) => {
+        quantities[drink.id] = ''; 
+        return quantities;
+      }, {});
+      setDrinkQuantities(initialQuantities);
+    }
+  }, [productData]);
+
+  const handleQuantityChange = (drinkId, quantity) => {
+    setDrinkQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [drinkId]: quantity
+    }));
+  };
+
+  useEffect(() => {
+    // Calcular el precio en función de las cantidades de bebidas y comensales
+    let totalPrice = 0;
+    let personPrice = 0;
+    let drinkPrice = 0;
+  
+    // Multiplicar productData.price por la cantidad de comensales (diners)
+    totalPrice += productData ? productData.price * diners : 0;
+    personPrice = productData.price * diners;
+    setPricePerPerson(personPrice);
+  
+    // Sumar el precio de las bebidas según la cantidad
+    if (productData && productData.drinks) {
+      productData.drinks.forEach((drink) => {
+        const quantity = drinkQuantities[drink.id] || 0;
+        drinkPrice += quantity * drink.price; // Sumar al drinkPrice
+      });
+    }
+  
+    setTotalDrinkPrice(drinkPrice);
+  
+    // Sumar el precio de las bebidas al totalPrice
+    totalPrice += drinkPrice;
+    setTotalPrice(totalPrice);
+  }, [drinkQuantities, diners, productData]);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -301,11 +350,6 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
     return fullnameInitials;
   }
 
-  const initialValues = {
-    NumberDinners: "",
-    drinks: [],
-  };
-
   const handleSubmit = (values) => {
     console.log("Valores del formulario:", values);
   };
@@ -315,6 +359,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
   const handleConfirmClick = () => {
+    console.log("Form values:", initialValuesReserveForm);
     setOpenConfirmationModal(true);
   };
 
@@ -373,6 +418,61 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
       }
     },
   });
+
+  let initialValuesReserveForm = {
+  };
+
+  if (productData !== null) {
+    var currentDate = new Date(); 
+    var formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); 
+  
+    initialValuesReserveForm = {
+      user: decodedToken.id,
+      diners: diners,
+      drinks: productData.drinks.map((drink) => ({
+        drinkId: drink.id,
+        quantity: drinkQuantities[drink.id] || '',
+      })),
+      date: formattedDate, 
+      bundle: productData.id,
+      price: 0
+    };
+  }
+  
+
+  const handleSubmitConfirmation = () => {
+    console.log(productData)
+    fetch("http://localhost:8080/v1/booking/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(initialValuesReserveForm)
+    })
+    .then(response => {
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Reservation confirmed',
+          text: 'Your reservation has been confirmed successfully!',
+        });
+        return response.json();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'There was an error confirming the reservation. Please try again later.',
+        });
+        throw new Error("Form submission failed");
+      }
+    })
+    .then(data => {
+      console.log("Form submission successful:", data);
+    })
+    .catch(error => {
+      console.error("Error submitting form:", error);
+    });
+  };
 
   return (
     <Box padding={2}>
@@ -772,7 +872,13 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                         />
                       </DemoItem>
                     </DemoContainer>
-
+                    {productData ? (
+                      <Typography>
+                        Price per person: ${productData.price} (USD)
+                      </Typography>
+                    ) : (
+                      ""
+                    )}
                     <Button
                       variant="contained"
                       color="secondary"
@@ -812,7 +918,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                     </Box>
                   </LocalizationProvider>
                 ) : (
-                  <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                  <Formik initialValues={initialValuesReserveForm} onSubmit={handleSubmit}>
                     {({ isSubmitting }) => (
                       <Form>
                         <Box
@@ -914,21 +1020,25 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                       textAlign: "center",
                                     }}
                                   >
-                                    Your guests:
+                                    Amount of guests:
                                   </Typography>
                                   {/* El tercer campo no necesita ajustes */}
                                   <Field
                                     type="number"
-                                    name="NumberDinners"
-                                    as={TextField}
+                                    name="diners"
+                                    as={TextField}  // Set the 'as' prop to TextField
                                     fullWidth
                                     variant="outlined"
                                     label="Amount of people"
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
+                                    helperText={<ErrorMessage name="diners" />}
+                                    value={diners}
+                                    onChange={(e) => setDiners(e.target.value)} 
                                   />
+                                  <div style={{ textAlign: 'center' }}>
+                                    <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+                                  </div>
                                 </Box>
+
                               </Box>
                             </Box>
                           )}
@@ -948,9 +1058,7 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                 </Typography>
                                 <FieldArray name="drinks">
                                   {({ push, remove }) => (
-                                    <Box
-                                      sx={{ display: "flex", paddingTop: 2 }}
-                                    >
+                                    <Box sx={{ display: "flex", paddingTop: 2 }}>
                                       <Paper>
                                         <Container
                                           sx={{
@@ -963,32 +1071,29 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                           }}
                                         >
                                           {productData
-                                            ? productData.drinks.map(
-                                                (_, index) => (
-                                                  <>
-                                                    {console.log(
-                                                      productData.drinks[index]
-                                                        .name
-                                                    )}
-                                                    <TextField
-                                                      type="number"
-                                                      name={`drinks[${index}]`}
-                                                      fullWidth
-                                                      variant="outlined"
-                                                      label={
-                                                        productData.drinks[
-                                                          index
-                                                        ].name
-                                                      }
-                                                      helperText={
-                                                        <ErrorMessage
-                                                          name={`drinks[${index}]`}
-                                                        />
-                                                      }
-                                                    />
-                                                  </>
-                                                )
-                                              )
+                                            ? productData.drinks.map((drink, index) => (
+                                                <div key={index}>
+                                                  <Typography
+                                                    variant="body1"
+                                                    component="span"
+                                                    color="textPrimary"
+                                                  >
+                                                    {drink.name}
+                                                  </Typography>
+                                                  <TextField
+                                                    type="number"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    helperText={
+                                                      <ErrorMessage name={`drinks[${index}].quantity`} />
+                                                    }
+                                                    value={drinkQuantities[drink.id]}
+                                                    onChange={(e) =>
+                                                      handleQuantityChange(drink.id, e.target.value)
+                                                    }
+                                                  />
+                                                </div>
+                                              ))
                                             : []}
                                         </Container>
                                       </Paper>
@@ -996,6 +1101,9 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                   )}
                                 </FieldArray>
                               </Box>
+                              <div style={{ textAlign: 'center' }}>
+                              <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+                              </div>
                             </Box>
                           )}
                           {activeStep === 2 && (
@@ -1052,6 +1160,24 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                         {selectedDate.format("MM-DD-YYYY")}
                                       </Typography>
                                     </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price by diners: </strong>{" "}
+                                        ${pricePerPerson}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total drinks price: </strong>{" "}
+                                        ${totalDrinkPrice}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price: </strong>{" "}
+                                        ${totalPrice}
+                                      </Typography>
+                                    </li>
                                   </ul>
                                 </DialogContent>
                                 <DialogActions>
@@ -1062,7 +1188,10 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
                                     Cancel
                                   </Button>
                                   <Button
-                                    onClick={handleConfirmClick}
+                                        onClick={() => {
+                                          handleSubmitConfirmation();
+                                          closeReserveDialog();
+                                        }}
                                     color="primary"
                                   >
                                     Confirm
