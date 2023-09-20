@@ -68,9 +68,7 @@ public class BundleServiceImpl implements IBundleService {
                 .map(review -> mapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
         dto.setReviews(reviewDtos);
-        dto.setRating(calculateAverageRating(reviewDtos));
-
-        dto.setPrice(calculateTotalPrice(bundle));
+        dto.setRating(Double.valueOf(df.format(calculateAverageRating(reviewDtos))));
         return dto;
     }
 
@@ -97,7 +95,7 @@ public class BundleServiceImpl implements IBundleService {
 
         boolean canReview = false;
         Optional<Booking> bookingOpt = bookingRepository.findTopByUserIdAndBundleIdOrderByDateDesc(userId, bundleId);
-        if (bookingOpt.get().getReview() == null) {
+        if (bookingOpt.isPresent() && bookingOpt.get().getReview() == null) {
             canReview = true;
         }
 
@@ -127,7 +125,6 @@ public class BundleServiceImpl implements IBundleService {
 
         return provisionalPrice;
     }
-
 
     public double calculateAverageRating(List<ReviewDto> reviews) {
         double average = reviews.stream()
