@@ -24,4 +24,7 @@ public class BookingCreateRequest {
     private List<DrinkQuantity> drinks;
 
     private Integer diners;
+
+    private String comment;
+
 }

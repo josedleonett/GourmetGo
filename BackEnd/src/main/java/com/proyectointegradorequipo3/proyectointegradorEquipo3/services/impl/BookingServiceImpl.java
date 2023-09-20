@@ -71,7 +71,7 @@ public class BookingServiceImpl implements IBookingService {
     public List<BookingDto> searchAllBooking() {
         List<Booking> bookings = bookingRepository.findAll();
         List<BookingDto> bookingDtos = bookings.stream()
-                .map(booking -> BookingMapper.toDto(booking))
+                .map(BookingMapper::toDto)
                 .collect(Collectors.toList());
         return bookingDtos;
     }
@@ -130,6 +130,7 @@ public class BookingServiceImpl implements IBookingService {
         booking.setDrinks(persistedDrinks);
         booking.setDiners(request.getDiners());
         booking.setPrice(totalprice);
+        booking.setComment(request.getComment());
 
         bookingRepository.save(booking);
         emailService.sendBookingConfirmationEmail(user, booking);

@@ -26,6 +26,7 @@ public class BookingMapper {
         dto.setDiners(booking.getDiners());
         dto.setPrice(booking.getPrice());
         dto.setReview(booking.getReview());
+        dto.setComment(booking.getComment());
 
         if (booking.getDrinks() != null) {
             dto.setDrinks(booking.getDrinks().stream().map(DrinkQuantity::getId).collect(Collectors.toList()));
