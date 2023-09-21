@@ -50,7 +50,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
       initialValues: {},
       onSubmit: async (values) => {
         setIsLoading(true);
-        alert(JSON.stringify(values, null, 2));
         const responseCode = await apiDataCreate(values);
         setIsFormSubmitted(true);
 

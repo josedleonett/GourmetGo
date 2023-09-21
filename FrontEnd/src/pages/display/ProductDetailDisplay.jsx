@@ -335,9 +335,6 @@ const ProductDetailDisplay = ({
       console.log("Selected Date:", selectedDate.toISOString());
     }
   };
- 
-
-  
 
   const isDateUnavailable = (date) => {
     if (!dates) {
@@ -425,7 +422,6 @@ const ProductDetailDisplay = ({
     },
     validationSchema: validationSchemaAddReview,
     onSubmit: async (newReviewValues) => {
-      alert(JSON.stringify(newReviewValues, null, 2));
       setIsAddReviewFormSending(true);
 
       try {
