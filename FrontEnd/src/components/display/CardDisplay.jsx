@@ -6,7 +6,6 @@ import { CardActionArea } from '@mui/material';
 
 const CardDisplay = ({props}) => {
   return (
-    
     <Card sx={{ width: "20vw", height: "30vw" }}>
     <CardActionArea>
       <CardMedia

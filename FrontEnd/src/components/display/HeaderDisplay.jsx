@@ -88,7 +88,6 @@ const HeaderDisplay = ({ accessToken }) => {
     const maxBrightness = 200;
     const minColorValue = 100;
     const maxColorValue = 200;
-
     const randomColorComponent = () =>
       minColorValue +
       Math.floor(Math.random() * (maxColorValue - minColorValue + 1));
@@ -97,7 +96,6 @@ const HeaderDisplay = ({ accessToken }) => {
     if (brightness < minBrightness || brightness > maxBrightness) {
       return getRandomColor();
     }
-
     return color;
   }
 
@@ -186,7 +184,6 @@ const HeaderDisplay = ({ accessToken }) => {
                 )}
               </List>
             </Drawer>
-
             <IconButton
               edge="start"
               color="inherit"
@@ -196,7 +193,6 @@ const HeaderDisplay = ({ accessToken }) => {
             >
               <MenuIcon />
             </IconButton>
-
             <Link to="/">
               <Box
                 component="img"
@@ -205,7 +201,6 @@ const HeaderDisplay = ({ accessToken }) => {
                 maxHeight={"50px"}
               />
             </Link>
-
             <Tabs
               variant="fullWidth"
               centered
@@ -217,7 +212,6 @@ const HeaderDisplay = ({ accessToken }) => {
                 justifyContent: "space-evenly",
               }}
             ></Tabs>
-
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -255,7 +249,6 @@ const HeaderDisplay = ({ accessToken }) => {
                   >
                     LOG OUT
                   </Button>
-
                   <Avatar
                     onClick={() => setUserDrawerOpen(true)}
                     sx={{

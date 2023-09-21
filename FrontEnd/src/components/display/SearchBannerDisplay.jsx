@@ -127,7 +127,6 @@ const SearchBannerDisplay = ({
     }
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
-
     return unavailableDates.includes(formattedDate);
   };
 
