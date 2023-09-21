@@ -85,7 +85,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
-const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken }) => {
+const ProductDetailDisplay = ({
+  productData,
+  setProductData,
+  dates,
+  accessToken,
+}) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
@@ -113,7 +118,7 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
   const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   const [formErrors, setFormErrors] = useState({});
   const [drinkErrors, setDrinkErrors] = useState(false);
-  const [dinerErrors, setDinerErrors] = useState(false)
+  const [dinerErrors, setDinerErrors] = useState(false);
 
   useEffect(() => {
     if (productData && productData.drinks) {
@@ -394,7 +399,7 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
   });
 
   const [badWordsResponse, setBadWordsResponse] = useState([]);
-  const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false)
+  const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -409,16 +414,16 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
     validationSchema: validationSchemaAddReview,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      setIsAddReviewFormSending(true)
+      setIsAddReviewFormSending(true);
 
       try {
         const moderatorContentResponse = await axios.get(
           MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
         );
-        
-        const hasBadWords = moderatorContentResponse.data.bad_words.length != 0
+
+        const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
         setBadWordsResponse(moderatorContentResponse.data.bad_words);
-        
+
         if (!hasBadWords) {
           console.log("POSTING...");
           const response = await axios.post(
@@ -435,19 +440,17 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
       } catch (error) {
         console.error(error.message);
       }
-      setIsAddReviewFormSending(false)
+      setIsAddReviewFormSending(false);
     },
   });
 
   const addReviewHandleCancel = () => {
     setIsCommentFormOpen(false);
-    setBadWordsResponse([])
+    setBadWordsResponse([]);
     formikAddReview.resetForm();
 
-    return <Dialog open={true}>hi</Dialog>
-  }
-
-  {console.log(productData)}
+    return <Dialog open={true}>hi</Dialog>;
+  };
 
   let initialValuesReserveForm = {};
 
@@ -502,22 +505,21 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
   };
 
   const validateDrinks = (drinks) => {
-    setDrinkErrors(false)
-    if(drinks < 0 ) {
-      setDrinkErrors(true)
-      return "Invalid number of drinks"
-    } 
+    setDrinkErrors(false);
+    if (drinks < 0) {
+      setDrinkErrors(true);
+      return "Invalid number of drinks";
+    }
   };
 
   const validateDiners = (diners) => {
-      console.log("validateDiners called with:", diners);
-    setDinerErrors(false)
-    if(diners < 0 ) {
-      setDinerErrors(true)
-      return "Invalid number of guests"
-    } 
+    console.log("validateDiners called with:", diners);
+    setDinerErrors(false);
+    if (diners < 0) {
+      setDinerErrors(true);
+      return "Invalid number of guests";
+    }
   };
-  
 
   return (
     <Box padding={2}>
@@ -964,402 +966,408 @@ const ProductDetailDisplay = ({ productData, setProductData, dates, accessToken 
                   </LocalizationProvider>
                 ) : (
                   <Formik
-  initialValues={initialValuesReserveForm}
-  onSubmit={handleSubmit}
->
-  {({ isSubmitting }) => (
-    <Form>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          gap: 2,
-        }}
-      >
-        {openDialog && (
-          <IconButton
-            color="primary"
-            onClick={closeReserveDialog}
-            sx={{ marginLeft: "auto" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        )}
-        {/* Agrega el Stepper para mostrar los pasos */}
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
-        {activeStep === 0 && (
-          <Box>
-            {/* Contenido del primer paso */}
-            <Box p={2}>
-              <Typography
-                variant="h4"
-                sx={{ backgroundColor: "secondary.light" }}
-              >
-                Reserve catering
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                }}
-              >
-                <TextField
-                  sx={{
-                    width: "100%",
-                    marginTop: 2,
-                  }}
-                  disabled
-                  id="filled-basic"
-                  fullWidth
-                  variant="filled"
-                  label="Name"
-                  readOnly={true}
-                  helperText={
-                    <ErrorMessage name="NumberDinners" />
-                  }
-                  value={
-                    decodedToken.name +
-                    " " +
-                    decodedToken.lastName
-                  }
-                />
-                <TextField
-                  sx={{
-                    width: "100%",
-                    marginTop: 2,
-                    marginBottom: 2,
-                  }}
-                  disabled
-                  id="filled-basic"
-                  name="email"
-                  fullWidth
-                  variant="filled"
-                  label="Email"
-                  readOnly={true}
-                  helperText={
-                    <ErrorMessage name="NumberDinners" />
-                  }
-                  value={decodedToken.email}
-                />
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                >
-                  <DatePicker
-                    disabled
-                    fullWidth
-                    readOnly={true}
-                    value={selectedDate}
-                  />
-                </LocalizationProvider>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    backgroundColor: "secondary.light",
-                    textAlign: "center",
-                  }}
-                >
-                  Amount of guests:
-                </Typography>
-                {/* El tercer campo no necesita ajustes */}
-                <Field
-                  type="number"
-                  name="diners"
-                  as={TextField}
-                  fullWidth
-                  variant="outlined"
-                  label="Amount of people"
-                  helperText={
-                    formErrors.diners && (
-                      <div style={{ color: "red" }}>
-                        {formErrors.diners}
-                      </div>
-                    )
-                  }
-                  value={diners}
-                  onChange={(e) => {
-                    const value = parseInt(
-                      e.target.value,
-                      10
-                    );
-                    const dinersError = validateDiners(value); // Llamamos a validateDiners aquí
-                    setFormErrors((prevErrors) => ({
-                      ...prevErrors,
-                      diners: dinersError,
-                    }));
-                    setDiners(value);
-                  }}
-                />
-
-                <div style={{ textAlign: "center" }}>
-                  <Typography>
-                    <strong>
-                      Total price: ${totalPrice}
-                    </strong>
-                  </Typography>
-                </div>
-              </Box>
-            </Box>
-          </Box>
-        )}
-
-        {activeStep === 1 && (
-          <Box>
-            {/* Contenido del segundo paso */}
-            <Box p={2}>
-              <Typography
-                variant="h6"
-                sx={{
-                  backgroundColor: "secondary.light",
-                  textAlign: "center",
-                }}
-              >
-                Number of drinks:
-              </Typography>
-              <FieldArray name="drinks">
-                {({ push, remove }) => (
-                  <Box
-                    sx={{ display: "flex", paddingTop: 2 }}
+                    initialValues={initialValuesReserveForm}
+                    onSubmit={handleSubmit}
                   >
-                    <Paper>
-                      <Container
-                        sx={{
-                          padding: 3,
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-evenly",
-                          gap: 2,
-                        }}
-                      >
-                        {productData
-                          ? productData.drinks.map(
-                              (drink, index) => (
-                                <div key={index}>
-                                  <Typography
-                                    variant="body1"
-                                    component="span"
-                                    color="textPrimary"
-                                  >
-                                    {drink.name}
-                                  </Typography>
+                    {({ isSubmitting }) => (
+                      <Form>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "space-evenly",
+                            gap: 2,
+                          }}
+                        >
+                          {openDialog && (
+                            <IconButton
+                              color="primary"
+                              onClick={closeReserveDialog}
+                              sx={{ marginLeft: "auto" }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          )}
+                          {/* Agrega el Stepper para mostrar los pasos */}
+                          <Stepper activeStep={activeStep}>
+                            {steps.map((label, index) => (
+                              <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                              </Step>
+                            ))}
+                          </Stepper>
+
+                          {activeStep === 0 && (
+                            <Box>
+                              {/* Contenido del primer paso */}
+                              <Box p={2}>
+                                <Typography
+                                  variant="h4"
+                                  sx={{ backgroundColor: "secondary.light" }}
+                                >
+                                  Reserve catering
+                                </Typography>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 2,
+                                  }}
+                                >
                                   <TextField
+                                    sx={{
+                                      width: "100%",
+                                      marginTop: 2,
+                                    }}
+                                    disabled
+                                    id="filled-basic"
+                                    fullWidth
+                                    variant="filled"
+                                    label="Name"
+                                    readOnly={true}
+                                    helperText={
+                                      <ErrorMessage name="NumberDinners" />
+                                    }
+                                    value={
+                                      decodedToken.name +
+                                      " " +
+                                      decodedToken.lastName
+                                    }
+                                  />
+                                  <TextField
+                                    sx={{
+                                      width: "100%",
+                                      marginTop: 2,
+                                      marginBottom: 2,
+                                    }}
+                                    disabled
+                                    id="filled-basic"
+                                    name="email"
+                                    fullWidth
+                                    variant="filled"
+                                    label="Email"
+                                    readOnly={true}
+                                    helperText={
+                                      <ErrorMessage name="NumberDinners" />
+                                    }
+                                    value={decodedToken.email}
+                                  />
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
+                                    <DatePicker
+                                      disabled
+                                      fullWidth
+                                      readOnly={true}
+                                      value={selectedDate}
+                                    />
+                                  </LocalizationProvider>
+                                  <Typography
+                                    variant="h6"
+                                    sx={{
+                                      backgroundColor: "secondary.light",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    Amount of guests:
+                                  </Typography>
+                                  {/* El tercer campo no necesita ajustes */}
+                                  <Field
                                     type="number"
+                                    name="diners"
+                                    as={TextField}
                                     fullWidth
                                     variant="outlined"
+                                    label="Amount of people"
                                     helperText={
-                                      formErrors.drinks &&
-                                      formErrors.drinks[index] && (
+                                      formErrors.diners && (
                                         <div style={{ color: "red" }}>
-                                          {formErrors.drinks[index]}
+                                          {formErrors.diners}
                                         </div>
                                       )
                                     }
-                                    value={
-                                      drinkQuantities[
-                                        drink.id
-                                      ]
-                                    }
+                                    value={diners}
                                     onChange={(e) => {
                                       const value = parseInt(
                                         e.target.value,
                                         10
                                       );
-                                      handleQuantityChange(
-                                        drink.id,
-                                        value
-                                      );
-                                      setFormErrors(
-                                        (prevErrors) => ({
-                                          ...prevErrors,
-                                          drinks: {
-                                            ...(prevErrors.drinks ||
-                                              {}),
-                                            [index]:
-                                              validateDrinks(
-                                                value
-                                              ),
-                                          },
-                                        })
-                                      );
+                                      const dinersError = validateDiners(value); // Llamamos a validateDiners aquí
+                                      setFormErrors((prevErrors) => ({
+                                        ...prevErrors,
+                                        diners: dinersError,
+                                      }));
+                                      setDiners(value);
                                     }}
                                   />
-                                </div>
-                              )
-                            )
-                          : []}
-                      </Container>
-                    </Paper>
-                  </Box>
-                )}
-              </FieldArray>
-            </Box>
-            <div style={{ textAlign: "center" }}>
-              <Typography>
-                <strong>Total price: ${totalPrice}</strong>
-              </Typography>
-            </div>
-          </Box>
-        )}
-        {activeStep === 2 && (
-          <Box>
-            {/* Contenido del tercer paso */}
-            <Typography
-              variant="h6"
-              sx={{
-                backgroundColor: "secondary.light",
-                textAlign: "center",
-              }}
-            >
-              Indications:
-            </Typography>
-            <Field
-              name="comments"
-              as={TextField}
-              fullWidth
-              multiline
-              rows={4}
-              variant="outlined"
-              label="Write your comments here"
-              sx={{ marginTop: 2 }}
-            />
-            <Dialog
-              open={openConfirmationModal}
-              onClose={handleCancelClick}
-            >
-              <DialogTitle>
-                Catering reservation confirmation
-              </DialogTitle>
-              <DialogContent>
-                <Typography>
-                  Are you sure you want to confirm the
-                  reservation for this catering?
-                </Typography>
-                <ul>
-                  <li>
-                    <Typography>
-                      <strong>Name:</strong>{" "}
-                      {decodedToken.name}{" "}
-                      {decodedToken.lastName}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography>
-                      <strong>Email:</strong>{" "}
-                      {decodedToken.email}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography>
-                      <strong>Date:</strong>{" "}
-                      {selectedDate.format("MM-DD-YYYY")}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography>
-                      <strong>Total price by diners: </strong>{" "}
-                      ${pricePerPerson}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography>
-                      <strong>Total drinks price: </strong> $
-                      {totalDrinkPrice}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography>
-                      <strong>Total price: </strong> $
-                      {totalPrice}
-                    </Typography>
-                  </li>
-                </ul>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={handleCancelClick}
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => {
-                    handleSubmitConfirmation();
-                    closeReserveDialog();
-                  }}
-                  color="primary"
-                >
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-        )}
-        {/* Botones de navegación entre pasos */}
-        <Box
-          p={2}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            "& > button": {
-              margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-            },
-          }}
-        >
-          {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => setActiveStep(activeStep - 1)}
-            >
-              Back
-            </Button>
-          )}
-          {activeStep < steps.length - 1 && (
-            <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              
-              if (dinerErrors || drinkErrors) {
-                // Si hay errores, no permitir avanzar
-                return;
-              }
-          
-              // Si no hay errores, permitir avanzar al siguiente paso
-              setActiveStep(activeStep + 1);
-            }}
-          >
-            Next
-          </Button>
-          
-          
-          )}
-          {activeStep === steps.length - 1 && (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={handleConfirmClick}
-            >
-              Confirm
-            </Button>
-          )}
-        </Box>
-      </Box>
-    </Form>
-  )}
-</Formik>
 
+                                  <div style={{ textAlign: "center" }}>
+                                    <Typography>
+                                      <strong>
+                                        Total price: ${totalPrice}
+                                      </strong>
+                                    </Typography>
+                                  </div>
+                                </Box>
+                              </Box>
+                            </Box>
+                          )}
+
+                          {activeStep === 1 && (
+                            <Box>
+                              {/* Contenido del segundo paso */}
+                              <Box p={2}>
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    backgroundColor: "secondary.light",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  Number of drinks:
+                                </Typography>
+                                <FieldArray name="drinks">
+                                  {({ push, remove }) => (
+                                    <Box
+                                      sx={{ display: "flex", paddingTop: 2 }}
+                                    >
+                                      <Paper>
+                                        <Container
+                                          sx={{
+                                            padding: 3,
+                                            height: "100%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "space-evenly",
+                                            gap: 2,
+                                          }}
+                                        >
+                                          {productData
+                                            ? productData.drinks.map(
+                                                (drink, index) => (
+                                                  <div key={index}>
+                                                    <Typography
+                                                      variant="body1"
+                                                      component="span"
+                                                      color="textPrimary"
+                                                    >
+                                                      {drink.name}
+                                                    </Typography>
+                                                    <TextField
+                                                      type="number"
+                                                      fullWidth
+                                                      variant="outlined"
+                                                      helperText={
+                                                        formErrors.drinks &&
+                                                        formErrors.drinks[
+                                                          index
+                                                        ] && (
+                                                          <div
+                                                            style={{
+                                                              color: "red",
+                                                            }}
+                                                          >
+                                                            {
+                                                              formErrors.drinks[
+                                                                index
+                                                              ]
+                                                            }
+                                                          </div>
+                                                        )
+                                                      }
+                                                      value={
+                                                        drinkQuantities[
+                                                          drink.id
+                                                        ]
+                                                      }
+                                                      onChange={(e) => {
+                                                        const value = parseInt(
+                                                          e.target.value,
+                                                          10
+                                                        );
+                                                        handleQuantityChange(
+                                                          drink.id,
+                                                          value
+                                                        );
+                                                        setFormErrors(
+                                                          (prevErrors) => ({
+                                                            ...prevErrors,
+                                                            drinks: {
+                                                              ...(prevErrors.drinks ||
+                                                                {}),
+                                                              [index]:
+                                                                validateDrinks(
+                                                                  value
+                                                                ),
+                                                            },
+                                                          })
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                )
+                                              )
+                                            : []}
+                                        </Container>
+                                      </Paper>
+                                    </Box>
+                                  )}
+                                </FieldArray>
+                              </Box>
+                              <div style={{ textAlign: "center" }}>
+                                <Typography>
+                                  <strong>Total price: ${totalPrice}</strong>
+                                </Typography>
+                              </div>
+                            </Box>
+                          )}
+                          {activeStep === 2 && (
+                            <Box>
+                              {/* Contenido del tercer paso */}
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  backgroundColor: "secondary.light",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Indications:
+                              </Typography>
+                              <Field
+                                name="comments"
+                                as={TextField}
+                                fullWidth
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                label="Write your comments here"
+                                sx={{ marginTop: 2 }}
+                              />
+                              <Dialog
+                                open={openConfirmationModal}
+                                onClose={handleCancelClick}
+                              >
+                                <DialogTitle>
+                                  Catering reservation confirmation
+                                </DialogTitle>
+                                <DialogContent>
+                                  <Typography>
+                                    Are you sure you want to confirm the
+                                    reservation for this catering?
+                                  </Typography>
+                                  <ul>
+                                    <li>
+                                      <Typography>
+                                        <strong>Name:</strong>{" "}
+                                        {decodedToken.name}{" "}
+                                        {decodedToken.lastName}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Email:</strong>{" "}
+                                        {decodedToken.email}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Date:</strong>{" "}
+                                        {selectedDate.format("MM-DD-YYYY")}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price by diners: </strong>{" "}
+                                        ${pricePerPerson}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total drinks price: </strong> $
+                                        {totalDrinkPrice}
+                                      </Typography>
+                                    </li>
+                                    <li>
+                                      <Typography>
+                                        <strong>Total price: </strong> $
+                                        {totalPrice}
+                                      </Typography>
+                                    </li>
+                                  </ul>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button
+                                    onClick={handleCancelClick}
+                                    color="primary"
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      handleSubmitConfirmation();
+                                      closeReserveDialog();
+                                    }}
+                                    color="primary"
+                                  >
+                                    Confirm
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </Box>
+                          )}
+                          {/* Botones de navegación entre pasos */}
+                          <Box
+                            p={2}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              "& > button": {
+                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                              },
+                            }}
+                          >
+                            {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => setActiveStep(activeStep - 1)}
+                              >
+                                Back
+                              </Button>
+                            )}
+                            {activeStep < steps.length - 1 && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                  if (dinerErrors || drinkErrors) {
+                                    // Si hay errores, no permitir avanzar
+                                    return;
+                                  }
+
+                                  // Si no hay errores, permitir avanzar al siguiente paso
+                                  setActiveStep(activeStep + 1);
+                                }}
+                              >
+                                Next
+                              </Button>
+                            )}
+                            {activeStep === steps.length - 1 && (
+                              <Button
+                                type="button"
+                                variant="contained"
+                                color="primary"
+                                onClick={handleConfirmClick}
+                              >
+                                Confirm
+                              </Button>
+                            )}
+                          </Box>
+                        </Box>
+                      </Form>
+                    )}
+                  </Formik>
                 )}
               </Container>
             </Paper>
