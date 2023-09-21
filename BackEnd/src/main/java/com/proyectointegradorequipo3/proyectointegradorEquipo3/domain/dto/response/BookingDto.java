@@ -18,6 +18,8 @@ public class BookingDto {
 
     private Long bundle;
 
+    private String bundleName;
+
     private LocalDate date;
 
     private List<Long> drinks;
