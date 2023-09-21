@@ -119,6 +119,15 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
     }));
   };
 
+  const calcularTotalBebidas = (bebidas, cantidades) => {
+    let total = 0;
+    bebidas.forEach((bebida) => {
+      const cantidad = cantidades[bebida.id] || 0;
+      total += cantidad;
+    });
+    return total;
+  };
+
   useEffect(() => {
     // Calcular el precio en función de las cantidades de bebidas y comensales
     let totalPrice = 0;
@@ -150,7 +159,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
 
   // Define los pasos de tu formulario en un array
-  const steps = ["Step 1", "Step 2", "Step 3"];
+  const steps = ["", "", "", ""];
 
   function countCommentsByRating(comments) {
     const ratingCounts = {};
@@ -424,18 +433,17 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
   };
 
   if (productData !== null) {
-    
     var formattedDate = today;
   
     initialValuesReserveForm = {
-      user: decodedToken.id,
+      user: decodedToken?.id || '',
       diners: diners,
-      drinks: productData.drinks.map((drink) => ({
-        drinkId: drink.id,
-        quantity: drinkQuantities[drink.id] || '',
+      drinks: (productData?.drinks || []).map((drink) => ({
+        drinkId: drink?.id || '',
+        quantity: drinkQuantities[drink?.id] || '',
       })),
-      date: formattedDate, 
-      bundle: productData.id,
+      date: formattedDate,
+      bundle: productData?.id || '',
       price: 0
     };
   }
@@ -859,7 +867,6 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                     <DemoContainer components={["MobileDatePicker"]}>
                       <DemoItem label="Select reserve date">
                         <MobileDatePicker
-                          defaultValue={dayjs()}
                           onAccept={(date) => {
                             handleDateAcceptAndCheckUnavailable(date);
                             setSelectedDate(date);
@@ -1079,7 +1086,7 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                                     component="span"
                                                     color="textPrimary"
                                                   >
-                                                    {drink.name}
+                                                    {drink.name} (Price per unit: {drink.price})
                                                   </Typography>
                                                   <TextField
                                                     type="number"
@@ -1129,6 +1136,34 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                 label="Write your comments here"
                                 sx={{ marginTop: 2 }}
                               />
+                            </Box>
+                          )}
+                                                                               {activeStep === 3 && (
+                            <Box>
+                              <Box sx={{alignItems: "center"}}>
+                                {productData.drinks.map((drink, index) => {
+                                  const quantity = drinkQuantities[drink.id] || 0;
+                                  const drinkTotal = quantity * drink.price;
+
+                                  return (
+                                    <Typography key={index}>
+                                      {`${drink.name}: $${drinkTotal}`}
+                                    </Typography>
+                                  );
+                                })}
+                                <Divider />
+                                <Typography>
+                                   Drinks price: ${totalDrinkPrice}
+                                </Typography>
+                                <Typography>
+                                   Diners price: ${pricePerPerson}
+                                </Typography>
+                                <Divider/>
+                                <Divider/>
+                                <Typography>
+                                  <strong> Total price: ${totalPrice}</strong>
+                                </Typography>
+                              </Box>
                               <Dialog
                                 open={openConfirmationModal}
                                 onClose={handleCancelClick}
@@ -1212,6 +1247,17 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                               },
                             }}
                           >
+                          {/* Botones de navegación entre pasos */}
+                          <Box
+                            p={2}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              "& > button": {
+                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                              },
+                            }}
+                          ></Box>
                             {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
                               <Button
                                 variant="outlined"
