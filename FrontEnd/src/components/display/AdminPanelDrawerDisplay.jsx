@@ -29,7 +29,6 @@ const AdminPanelDrawerDisplay = ({sidebarMenuList}) => {
                 ADMIN PANEL
               </ListItemText>
             </List>
-
             <Divider />
             <List
               sx={{

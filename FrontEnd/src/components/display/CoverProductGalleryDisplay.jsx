@@ -16,13 +16,11 @@ const CoverProductGalleryDisplay = ({ imgList, galleryId, isLoading }) => {
       pswpModule: () => import("photoswipe"),
     });
     lightbox.init();
-
     return () => {
       lightbox.destroy();
       lightbox = null;
     };
   }, []);
-
     const maxImages = 4;
 
   return (

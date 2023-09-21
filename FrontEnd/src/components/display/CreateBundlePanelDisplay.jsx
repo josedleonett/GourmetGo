@@ -36,7 +36,6 @@ const CreateBundlePanelDisplay = () => {
           axios.get("http://localhost:8080/v1/drink/"),
           axios.get("http://localhost:8080/v1/category/"),
         ]);
-
         setStarters(plateRes.data.filter((item) => item.type === "starter"));
         setMainCourses(
           plateRes.data.filter((item) => item.type === "mainCourse")
@@ -48,7 +47,6 @@ const CreateBundlePanelDisplay = () => {
         console.error("Error al obtener la data", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -59,7 +57,6 @@ const CreateBundlePanelDisplay = () => {
 
   const handleFileChange = (event) => {
     const { name, files } = event.target;
-
     if (name === "galleryImages") {
       for (let i = 0; i < files.length; i++) {
         formData.append(name, files[i]);
@@ -113,7 +110,6 @@ const CreateBundlePanelDisplay = () => {
           fullWidth
           sx={{ mb: 2 }}
         />
-
         <TextField
           variant="outlined"
           type="file"
@@ -124,7 +120,6 @@ const CreateBundlePanelDisplay = () => {
           fullWidth
           sx={{ mb: 2 }}
         />
-
         <TextField
           variant="outlined"
           type="file"
@@ -136,7 +131,6 @@ const CreateBundlePanelDisplay = () => {
           sx={{ mb: 2 }}
           inputProps={{ multiple: true }}
         />
-
         {[
           { data: starters, name: "starter" },
           { data: mainCourses, name: "mainCourse" },
@@ -163,7 +157,6 @@ const CreateBundlePanelDisplay = () => {
             ))}
           </FormGroup>
         ))}
-
         <Button
           variant="contained"
           color="primary"
