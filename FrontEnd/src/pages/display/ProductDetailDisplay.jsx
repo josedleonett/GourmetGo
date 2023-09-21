@@ -1423,41 +1423,55 @@ const ProductDetailDisplay = ({
                                     },
                                   }}
                                 ></Box>
-                                {activeStep !== 0 && (
-                                  <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    onClick={() =>
-                                      setActiveStep(activeStep - 1)
-                                    }
-                                  >
-                                    Back
-                                  </Button>
-                                )}
-                                {activeStep < steps.length - 1 && (
-                                  <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => {
-                                      if (dinerErrors || drinkErrors) {
-                                        return;
+                                <Box
+                                  p={2}
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    "& > button": {
+                                      marginRight: 4,
+                                    },
+                                  }}
+                                >
+                                  {activeStep !== 0 && (
+                                    <Button
+                                      variant="outlined"
+                                      color="primary"
+                                      onClick={() =>
+                                        setActiveStep(activeStep - 1)
                                       }
-                                      setActiveStep(activeStep + 1);
-                                    }}
-                                  >
-                                    Next
-                                  </Button>
-                                )}
-                                {activeStep === steps.length - 1 && (
-                                  <Button
-                                    type="button"
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleConfirmClick}
-                                  >
-                                    Confirm
-                                  </Button>
-                                )}
+                                      sx={{ marginLeft: "auto" }} // Ajusta el margen izquierdo
+                                    >
+                                      Back
+                                    </Button>
+                                  )}
+                                  {activeStep < steps.length - 1 && (
+                                    <Button
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={() => {
+                                        if (dinerErrors || drinkErrors) {
+                                          return;
+                                        }
+                                        setActiveStep(activeStep + 1);
+                                      }}
+                                      sx={{ marginLeft: "auto" }} // Ajusta el margen izquierdo
+                                    >
+                                      Next
+                                    </Button>
+                                  )}
+                                  {activeStep === steps.length - 1 && (
+                                    <Button
+                                      type="button"
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={handleConfirmClick}
+                                      sx={{ marginLeft: "auto" }} // Ajusta el margen izquierdo
+                                    >
+                                      Confirm
+                                    </Button>
+                                  )}
+                                </Box>
                               </Box>
                             </Box>
                           </Form>
