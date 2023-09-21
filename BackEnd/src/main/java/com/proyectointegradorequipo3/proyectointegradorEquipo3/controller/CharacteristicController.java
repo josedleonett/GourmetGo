@@ -8,6 +8,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Cha
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,6 +30,7 @@ public class CharacteristicController {
     private final CharacteristicServiceImpl characteristicService;
 
     //====================Create====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCharacteristic(@Valid @RequestBody CharacteristicCreateRequest request) {
         long id = characteristicService.saveCharacteristic(request);
@@ -64,6 +66,7 @@ public class CharacteristicController {
     }
 
     //====================Update====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCharacteristic(@PathVariable Long id,
@@ -72,6 +75,7 @@ public class CharacteristicController {
     }
 
     //===================Delete===================//
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCharacteristicById(@PathVariable Long id) {

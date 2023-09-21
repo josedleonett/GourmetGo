@@ -8,6 +8,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Cat
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,7 +28,7 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     //====================Create====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@ModelAttribute @Valid CategoryCreateRequest request,
                                                @RequestPart MultipartFile image) {
@@ -67,6 +68,7 @@ public class CategoryController {
     }
 
     //====================Update====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCategory(@PathVariable Long id, @ModelAttribute @Valid CategoryUpdateRequest updateModel) {
@@ -74,6 +76,7 @@ public class CategoryController {
     }
 
     //===================Delete===================//
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable Long id) {
