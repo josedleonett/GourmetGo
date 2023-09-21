@@ -34,6 +34,7 @@ public class BookingController {
 
     private final BookingCounterService bookingCounter;
 
+    //====================Counter of booking====================//
     @GetMapping("/count")
     public ResponseEntity<Long> getBookingCount(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok(bookingCounter.getCurrentCount(date));
