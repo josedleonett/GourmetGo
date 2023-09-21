@@ -86,6 +86,7 @@ import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FlagIcon from '@mui/icons-material/Flag';
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
@@ -414,6 +415,38 @@ const ProductDetailDisplay = ({
   const [badWordsResponse, setBadWordsResponse] = useState([]);
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
   const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isReviewOptionsOpen = Boolean(anchorEl);
+  const reviewOptionsMenuHandleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const reviewOptionsMenuHandleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const reviewOptionsMenuHandleDelete = async (event, reviewIdToDelete) => {
+    console.log("to delete", reviewIdToDelete);
+    try {
+      const response = await axios.delete(
+        API_BASE_URL + "review/" + reviewIdToDelete
+      );
+      console.log(response);
+      if (response.status === 204) {
+        setProductData((prevProductData) => {
+          const updatedReviews = prevProductData.reviews.filter(
+            (review) => review.id !== reviewIdToDelete
+          );
+          return {
+            ...prevProductData,
+            reviews: updatedReviews,
+          };
+        });
+        reviewOptionsMenuHandleClose();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -1700,17 +1733,55 @@ const ProductDetailDisplay = ({
                         secondary={comment.date}
                       />
                       <Rating readOnly value={comment.rating} size="small" />
-                      <Tooltip title="Delete" arrow>
+                      <Tooltip title="Options" arrow>
                         <IconButton
-                          aria-label="delete"
-                          onClick={() => {}}
+                          id="basic-button"
+                          aria-controls={
+                            isReviewOptionsOpen ? "basic-menu" : undefined
+                          }
+                          aria-haspopup="true"
+                          aria-expanded={
+                            isReviewOptionsOpen ? "true" : undefined
+                          }
+                          onClick={reviewOptionsMenuHandleClick}
                         >
                           <MoreVertIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Menu>
-                        <DeleteIcon fontSize="small" />
-                        <MenuItem>Delete</MenuItem>
+                      <Menu
+                        id="reviews-options-menu"
+                        variant="menu"
+                        anchorEl={anchorEl}
+                        open={isReviewOptionsOpen}
+                        onClose={reviewOptionsMenuHandleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                        elevation={1}
+                        sx={{
+                          "& .MuiPaper-root": {
+                            marginTop: 1,
+                            minWidth: 100,
+                            "& .MuiMenu-list": {
+                              padding: "4px 0",
+                            },
+                            "& .MuiMenuItem-root": {
+                              "& .MuiSvgIcon-root": {
+                                fontSize: 18,
+                                color: "secondary",
+                                marginRight: 1.5,
+                              },
+                            },
+                          },
+                        }}
+                      >
+                        <MenuItem id={comment.id} onClick={(value) => {reviewOptionsMenuHandleDelete(value, comment.id)}}>
+                          {console.log(comment)}
+                          <DeleteIcon fontSize="small" color="primary"/> Delete
+                        </MenuItem>
+                        <MenuItem onClick={reviewOptionsMenuHandleClose}>
+                          <FlagIcon fontSize="small" color="primary"/> Report
+                        </MenuItem>
                       </Menu>
                     </ListItem>
                     <ListItemText
