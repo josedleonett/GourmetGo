@@ -111,7 +111,6 @@ const ProductDetailDisplay = ({
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
   const [diners, setDiners] = useState("");
-  const [comments, setComments] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
@@ -176,10 +175,6 @@ const ProductDetailDisplay = ({
     totalPrice += drinkPrice;
     setTotalPrice(totalPrice);
   }, [drinkQuantities, diners, productData]);
-
-  const handleCommentsChange = (event) => {
-    setComments(event.target.value);
-  };
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -489,14 +484,9 @@ const ProductDetailDisplay = ({
         quantity: drinkQuantities[drink?.id] || "",
       })),
       date: formattedDate,
-<<<<<<< HEAD
-      bundle: productData?.id || '',
       comment: comments || '',
-      price: 0
-=======
       bundle: productData?.id || "",
       price: 0,
->>>>>>> 5e2c2ce35abde8d4ace66eaeb667dd37342a7138
     };
   }
 
@@ -549,9 +539,6 @@ const ProductDetailDisplay = ({
     }
   };
 
-<<<<<<< HEAD
-  console.log(selectedDate)
-=======
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -559,7 +546,6 @@ const ProductDetailDisplay = ({
       setIsLoading(false);
     }, 2000);
   }, []);
->>>>>>> 5e2c2ce35abde8d4ace66eaeb667dd37342a7138
 
   return (
     <>
@@ -1457,88 +1443,6 @@ const ProductDetailDisplay = ({
                                       }
                                       sx={{ marginLeft: "auto" }} // Ajusta el margen izquierdo
                                     >
-<<<<<<< HEAD
-                                      <Paper>
-                                        <Container
-                                          sx={{
-                                            padding: 3,
-                                            height: "100%",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "space-evenly",
-                                            gap: 2,
-                                          }}
-                                        >
-                                          {productData
-                                            ? productData.drinks.map(
-                                                (drink, index) => (
-                                                  <div key={`drink-${index}`}>
-                                                    <Typography
-                                                      variant="body1"
-                                                      component="span"
-                                                      color="textPrimary"
-                                                    >
-                                                      {drink.name} (Price per unit: {drink.price})
-                                                    </Typography>
-                                                    <TextField
-                                                      type="number"
-                                                      fullWidth
-                                                      variant="outlined"
-                                                      helperText={
-                                                        formErrors.drinks &&
-                                                        formErrors.drinks[
-                                                          index
-                                                        ] && (
-                                                          <div
-                                                            style={{
-                                                              color: "red",
-                                                            }}
-                                                          >
-                                                            {
-                                                              formErrors.drinks[
-                                                                index
-                                                              ]
-                                                            }
-                                                          </div>
-                                                        )
-                                                      }
-                                                      value={
-                                                        drinkQuantities[
-                                                          drink.id
-                                                        ]
-                                                      }
-                                                      onChange={(e) => {
-                                                        const value = parseInt(
-                                                          e.target.value,
-                                                          10
-                                                        );
-                                                        handleQuantityChange(
-                                                          drink.id,
-                                                          value
-                                                        );
-                                                        setFormErrors(
-                                                          (prevErrors) => ({
-                                                            ...prevErrors,
-                                                            drinks: {
-                                                              ...(prevErrors.drinks ||
-                                                                {}),
-                                                              [index]:
-                                                                validateDrinks(
-                                                                  value
-                                                                ),
-                                                            },
-                                                          })
-                                                        );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                )
-                                              )
-                                            : []}
-                                        </Container>
-                                      </Paper>
-                                    </Box>
-=======
                                       Back
                                     </Button>
                                   )}
@@ -1567,7 +1471,6 @@ const ProductDetailDisplay = ({
                                     >
                                       Confirm
                                     </Button>
->>>>>>> 5e2c2ce35abde8d4ace66eaeb667dd37342a7138
                                   )}
                                 </Box>
                               </Box>
@@ -1649,252 +1552,6 @@ const ProductDetailDisplay = ({
                                   background: (theme) =>
                                     theme.palette.grey[200],
                                 }}
-<<<<<<< HEAD
-                              >
-                                Indications:
-                              </Typography>
-                              <Field
-                                name="comments"
-                                as={TextField}
-                                fullWidth
-                                multiline
-                                onChange={handleCommentsChange}
-                                rows={4}
-                                variant="outlined"
-                                label="Write your comments here"
-                                sx={{ marginTop: 2 }}
-                              />
-                            </Box>
-                          )}
-                                                                               {activeStep === 3 && (
-                            <Box>
-                              <Box sx={{alignItems: "center"}}>
-                                {productData.drinks.map((drink, index) => {
-                                  const quantity = drinkQuantities[drink.id] || 0;
-                                  const drinkTotal = quantity * drink.price;
-
-                                  return (
-                                    <Typography key={`drink-total-${index}`}>
-                                      {`${drink.name}: $${drinkTotal}`}
-                                    </Typography>
-                                  );
-                                })}
-                                <Divider />
-                                <Typography>
-                                   Drinks price: ${totalDrinkPrice}
-                                </Typography>
-                                <Typography>
-                                   Diners price: ${pricePerPerson}
-                                </Typography>
-                                <Divider/>
-                                <Divider/>
-                                <Typography>
-                                  <strong> Total price: ${totalPrice}</strong>
-                                </Typography>
-                              </Box>
-                              <Dialog
-                                open={openConfirmationModal}
-                                onClose={handleCancelClick}
-                              >
-                                <DialogTitle>
-                                  Catering reservation confirmation
-                                </DialogTitle>
-                                <DialogContent>
-                                  <Typography>
-                                    Are you sure you want to confirm the
-                                    reservation for this catering?
-                                  </Typography>
-                                  <ul>
-                                    <li>
-                                      <Typography>
-                                        <strong>Name:</strong>{" "}
-                                        {decodedToken.name}{" "}
-                                        {decodedToken.lastName}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Email:</strong>{" "}
-                                        {decodedToken.email}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Date:</strong>{" "}
-                                        {selectedDate.format("MM-DD-YYYY")}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price by diners: </strong>{" "}
-                                        ${pricePerPerson}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total drinks price: </strong> $
-                                        {totalDrinkPrice}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price: </strong> $
-                                        {totalPrice}
-                                      </Typography>
-                                    </li>
-                                  </ul>
-                                </DialogContent>
-                                <DialogActions>
-                                  <Button
-                                    onClick={handleCancelClick}
-                                    color="primary"
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      handleSubmitConfirmation();
-                                      closeReserveDialog();
-                                    }}
-                                    color="primary"
-                                  >
-                                    Confirm
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                            </Box>
-                          )}
-                          {/* Botones de navegación entre pasos */}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-                              },
-                            }}
-                          >
-                          {/* Botones de navegación entre pasos */}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-                              },
-                            }}
-                          ></Box>
-                            {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
-                              <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={() => setActiveStep(activeStep - 1)}
-                              >
-                                Back
-                              </Button>
-                            )}
-                            {activeStep < steps.length - 1 && (
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => {
-                                  if (dinerErrors || drinkErrors) {
-                                    // Si hay errores, no permitir avanzar
-                                    return;
-                                  }
-
-                                  // Si no hay errores, permitir avanzar al siguiente paso
-                                  setActiveStep(activeStep + 1);
-                                }}
-                              >
-                                Next
-                              </Button>
-                            )}
-                            {activeStep === steps.length - 1 && (
-                              <Button
-                                type="button"
-                                variant="contained"
-                                color="primary"
-                                onClick={handleConfirmClick}
-                              >
-                                Confirm
-                              </Button>
-                            )}
-                          </Box>
-                        </Box>
-                      </Form>
-                    )}
-                  </Formik>
-                )}
-              </Container>
-            </Paper>
-          </Grid>
-        </Grid>
-
-        <Box height={50} />
-
-        <Typography variant="h5">Reviews:</Typography>
-        <Box width="lg" display="flex" flexDirection="column" gap={3}>
-          {productData && productData.reviews.length === 0 ? (
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
-              py={2}
-            >
-              <CommentsDisabledIcon
-                color="disabled"
-                style={{ fontSize: 30, marginBottom: 16 }}
-              />
-              <Typography variant="h6" color="GrayText" gutterBottom>
-                This catering package has no reviews yet.
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Be the first to share your experience!
-              </Typography>
-            </Box>
-          ) : (
-            <Box
-              display="flex"
-              flexDirection={{
-                xs: "column-reverse",
-                sm: "row",
-                lg: "row",
-              }}
-              justifyContent="space-around"
-              width="100%"
-              py={2}
-            >
-              <Stack
-                width={{ xs: "100%", sm: "70%", lg: "70%" }}
-                justifyContent="space-evenly"
-              >
-                {productData
-                  ? countCommentsByRating(productData.reviews).map(
-                      (commentRatingCategory) => (
-                        <Box
-                          key={commentRatingCategory.rating}
-                          display="flex"
-                          flexDirection="row"
-                          alignItems="center"
-                          gap={1}
-                        >
-                          <Typography>
-                            {commentRatingCategory.rating}
-                          </Typography>
-                          <LinearProgress
-                            value={
-                              (commentRatingCategory.count /
-                                productData.reviews.length) *
-                              100
-                            }
-                            variant="determinate"
-                            color="warning"
-=======
                               />
                             </Box>
                           )
@@ -1904,7 +1561,6 @@ const ProductDetailDisplay = ({
                             key={index}
                             width="100%"
                             height={20}
->>>>>>> 5e2c2ce35abde8d4ace66eaeb667dd37342a7138
                             sx={{
                               borderRadius: 5,
                             }}
