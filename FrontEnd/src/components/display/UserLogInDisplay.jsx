@@ -70,7 +70,6 @@ const UserLogInDisplay = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
@@ -79,7 +78,6 @@ const UserLogInDisplay = () => {
         },
         body: JSON.stringify(inputs),
       });
-
       if (response.ok) {
         const data = await response.json();
         const authorizationHeader = response.headers.get("authorization");
