@@ -14,7 +14,6 @@ const CreateBundleComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
@@ -25,13 +24,11 @@ const CreateBundleComponent = () => {
     desserts.forEach((item) => formData.append("desserts", item));
     drinks.forEach((item) => formData.append("drinks", item));
     categories.forEach((item) => formData.append("categories", item));
-
     try {
       const response = await fetch("http://your-api-endpoint/create", {
         method: "POST",
         body: formData,
       });
-
       if (response.ok) {
         console.log("Bundle created successfully");
       } else {

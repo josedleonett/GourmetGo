@@ -6,7 +6,6 @@ const ProductSearchedContainer = () => {
   const [productData, setProductData] = useState(null);
   const [categorieList, setCategorieList] = useState([]);
   const [bundleList, setBundleList] = useState([]);
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const filteredOptions = searchParams.get("filteredOptions");
@@ -20,9 +19,6 @@ const ProductSearchedContainer = () => {
       setCategorieList(categoryNames);
     })
     .catch(error => console.error("Error fetching categories:", error));
-
-
-
     fetch(`http://localhost:8080/v1/bundle/`)
       .then((response) => response.json())
       .then((data) => {
@@ -34,7 +30,6 @@ const ProductSearchedContainer = () => {
           
           return matchesOptions && matchesCategories;
         });
-
         setProductData(filteredData);
       })
       .catch((error) => console.error("Error fetching product data:", error));

@@ -5,7 +5,6 @@ import CreatePlatesPanelDisplay from "../../components/display/CreatePlatesPanel
 
 const CreateElementPanelDisplay = () => {
   const { category } = useParams();
-
   let modalContent;
 
   switch (category) {

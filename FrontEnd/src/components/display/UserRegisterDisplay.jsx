@@ -48,7 +48,6 @@ const UserRegisterDisplay = () => {
   const [showRetryMessage, setShowRetryMessage] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
-
   const regex = /^[A-Za-z]+$/;
 
   const handleInputChange = (field, value) => {
@@ -215,7 +214,6 @@ const UserRegisterDisplay = () => {
         });
         if (response.ok) {
           setIsLoading(false);
-    
           Swal.fire({
             icon: "success",
             title: "Successful registration",

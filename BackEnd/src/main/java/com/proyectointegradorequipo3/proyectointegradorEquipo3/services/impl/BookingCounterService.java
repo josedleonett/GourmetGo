@@ -23,7 +23,11 @@ public class BookingCounterService {
     }
 
     public long getCurrentCount(LocalDate date) {
-        return bookingRepository.countByDate(date);
+        long bookingAvailable = MAX_BOOKINGS - bookingRepository.countByDate(date);
+        if (bookingAvailable < 0){
+            bookingAvailable = 0;
+        }
+        return bookingAvailable;
     }
 
 
