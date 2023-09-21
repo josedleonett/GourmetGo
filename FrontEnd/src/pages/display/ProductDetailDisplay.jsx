@@ -351,9 +351,6 @@ const ProductDetailDisplay = ({
       if (isUnavailable) {
         // Manejar la fecha no disponible si es necesario
       }
-      console.log(formattedDate);
-
-      // Realizar una solicitud HTTP para obtener el conteo
       fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
         .then((response) => {
           console.log(response);
@@ -363,19 +360,14 @@ const ProductDetailDisplay = ({
           return response.json();
         })
         .then((data) => {
-          console.log(data);
-          // Actualizar el estado con el conteo
           setCount(data);
-
-          // Resto de tu lógica...
         })
         .catch((error) => {
           console.error("Error al obtener el conteo:", error);
         });
-
-      setSelectedDate(formattedDate); // Establecer la fecha seleccionada
+      setSelectedDate(formattedDate);
     } else {
-      setSelectedDate(null); // Si no se selecciona ninguna fecha, establecer selectedDate en null
+      setSelectedDate(null);
     }
   };
 
@@ -539,8 +531,8 @@ const ProductDetailDisplay = ({
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
-  };
-
+  }; 
+  
   const validateDrinks = (drinks) => {
     setDrinkErrors(false);
     if (drinks < 0) {
@@ -1049,7 +1041,6 @@ const ProductDetailDisplay = ({
                                   <CloseIcon />
                                 </IconButton>
                               )}
-                              {/* Agrega el Stepper para mostrar los pasos */}
                               <Stepper activeStep={activeStep}>
                                 {steps.map((label, index) => (
                                   <Step key={label}>
@@ -1060,7 +1051,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 0 && (
                                 <Box>
-                                  {/* Contenido del primer paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h4"
@@ -1134,7 +1124,6 @@ const ProductDetailDisplay = ({
                                       >
                                         Amount of guests:
                                       </Typography>
-                                      {/* El tercer campo no necesita ajustes */}
                                       <Field
                                         type="number"
                                         name="diners"
@@ -1164,7 +1153,6 @@ const ProductDetailDisplay = ({
                                           setDiners(value);
                                         }}
                                       />
-
                                       <div style={{ textAlign: "center" }}>
                                         <Typography>
                                           <strong>
@@ -1179,7 +1167,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 1 && (
                                 <Box>
-                                  {/* Contenido del segundo paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h6"
@@ -1296,7 +1283,6 @@ const ProductDetailDisplay = ({
                               )}
                               {activeStep === 2 && (
                                 <Box>
-                                  {/* Contenido del tercer paso */}
                                   <Typography
                                     variant="h6"
                                     sx={{
@@ -1328,7 +1314,7 @@ const ProductDetailDisplay = ({
 
                                       return (
                                         <Typography key={index}>
-                                          {`${drink.name}: $${drinkTotal}`}
+                                          {`${drink.name}: $${drinkTotal} USD`}
                                         </Typography>
                                       );
                                     })}
