@@ -36,8 +36,16 @@ deploy:
     - docker build -t $DOCKER_USERNAME/mi-aplicacion:latest BackEnd
     - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
+
+    # Detener todos los contenedores en la instancia EC2
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker stop $(sudo docker ps -q) || true"
+
+    # Eliminar todos los contenedores detenidos en la instancia EC2
+    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker rm $(sudo docker ps -a -q) || true"
+
+    # Ejecutar el nuevo contenedor
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker pull ${DOCKER_USERNAME}/mi-aplicacion:latest && sudo docker run -d -p 8080:8080 ${DOCKER_USERNAME}/mi-aplicacion:latest"
+
 
 
 
