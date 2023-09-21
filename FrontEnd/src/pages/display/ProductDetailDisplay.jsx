@@ -115,7 +115,6 @@ const ProductDetailDisplay = ({
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
-
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
   const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
@@ -342,7 +341,6 @@ const ProductDetailDisplay = ({
     }
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
-
     return unavailableDates.includes(formattedDate);
   };
 
@@ -353,12 +351,12 @@ const ProductDetailDisplay = ({
       if (isUnavailable) {
         // Manejar la fecha no disponible si es necesario
       }
-      console.log(formattedDate)
-  
+      console.log(formattedDate);
+
       // Realizar una solicitud HTTP para obtener el conteo
       fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
         .then((response) => {
-          console.log(response)
+          console.log(response);
           if (!response.ok) {
             throw new Error("Respuesta del servidor no exitosa");
           }
@@ -368,19 +366,19 @@ const ProductDetailDisplay = ({
           console.log(data);
           // Actualizar el estado con el conteo
           setCount(data);
-  
+
           // Resto de tu lógica...
         })
         .catch((error) => {
           console.error("Error al obtener el conteo:", error);
         });
-  
+
       setSelectedDate(formattedDate); // Establecer la fecha seleccionada
     } else {
       setSelectedDate(null); // Si no se selecciona ninguna fecha, establecer selectedDate en null
     }
   };
-  
+
   const minDate = dayjs().add(1, "week");
 
   const shareUrl = window.location.href;
@@ -453,10 +451,8 @@ const ProductDetailDisplay = ({
           MODERATOR_CONTENT_URL_BASE +
             `&msg=${newReviewValues.title} ${newReviewValues.body} `
         );
-
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
         setBadWordsResponse(moderatorContentResponse.data.bad_words);
-
         if (!hasBadWords) {
           const response = await axios.post(
             API_BASE_URL + "review/create",
@@ -593,13 +589,11 @@ const ProductDetailDisplay = ({
               <ArrowBackIcon />
             </IconButton>
           </div>
-
           <CoverProductGalleryContainer
             imgList={productData ? productData.galleryImages : []}
             galleryId={"productGallery"}
             isLoading={!productData}
           />
-
           <Container>
             <Grid container padding={2} lg={12}>
               <Box>
@@ -719,7 +713,6 @@ const ProductDetailDisplay = ({
                 </Typography>
               </Box>
               <Divider light />
-
               <Grid item lg={8} md={7} xs={12}>
                 <Container>
                   <Container>
@@ -772,9 +765,7 @@ const ProductDetailDisplay = ({
                           }
                         />
                       </ListItem>
-
                       <Divider variant="inset" component="li" />
-
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                           {productData ? (
@@ -1017,12 +1008,12 @@ const ProductDetailDisplay = ({
                           RESERVE
                         </Button>
                         {selectedDate !== null && count !== null && (
-  <>
-    <Typography>
-      Count: {count}
-    </Typography>
-    {console.log("Count:", count)} {/* Agrega este console.log */}
-  </> )}
+                          <>
+                          <Typography style={{ color: '#00008B' }}>
+                            There are {count} reservations available this day!
+                          </Typography>
+                        </>
+                        )}
 
                         <Box
                           sx={{
