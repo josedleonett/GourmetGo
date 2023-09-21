@@ -1850,7 +1850,6 @@ const ProductDetailDisplay = ({
               </Alert>
             </Snackbar>
           )}
-
           {
             <Snackbar open={isAddReviewFormSubmitted}>
               <Alert
