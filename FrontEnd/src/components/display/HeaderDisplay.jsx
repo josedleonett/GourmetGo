@@ -55,7 +55,7 @@ const HeaderDisplay = ({ accessToken }) => {
 
   const handleLogout = () => {
     removeCookie("token", { path: "/" });
-    window.location.reload();
+    window.location.href = "/";
   };
 
   let decodedToken = null;

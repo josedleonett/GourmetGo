@@ -9,7 +9,6 @@ const CategoryFilterDisplay = (categoryData, bundlesData) => {
   const goBackOnClick = () => {
     navigate("/");
   };
-
   return (
     <Box sx={{ backgroundColor: "grey", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", padding: "2vw" }}>
       <IconButton
