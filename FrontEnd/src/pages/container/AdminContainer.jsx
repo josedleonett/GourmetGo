@@ -8,6 +8,7 @@ import { BiDish } from "react-icons/bi";
 import { GiPieSlice } from "react-icons/gi";
 import { useLocation } from "react-router-dom";
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const AdminContainer = () => {
   const mainUrl = useLocation();
@@ -66,6 +67,11 @@ const AdminContainer = () => {
       title: "Characteristic",
       url: "characteristic",
       icon: <AiOutlineCheckCircle size="30" />,
+    },
+    {
+      title: "Reserves",
+      url: "reserves",
+      icon: <CalendarMonthIcon size="30" />,
     },
   ];
 

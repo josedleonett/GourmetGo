@@ -20,6 +20,7 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import axios from "axios";
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
@@ -83,10 +84,70 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       galleryImages: false,
       categories: false,
       terms: false,
+      comment: false,
     },
   };
 
   //RENDER DETAIL PANEL:
+  const reservesRenderDetailPanel = ({ row }) => (
+    <Container>
+      <Container>
+        <List>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <MdLocalBar size="30" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Drinks:"
+              secondary={
+                <>
+                  {row.original.drinks &&
+                    row.original.drinks.map((drinksItem) => (
+                      <Box>
+                        <Typography
+                          key={`drinksItemId_${drinksItem.id}`}
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {drinksItem.quantity}
+                        </Typography>
+                        {` — `}
+                      </Box>
+                    ))}
+                </>
+              }
+            />
+          </ListItem>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <EditNoteIcon fontSize="large" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Indications:"
+              secondary={
+                <>
+                      <Box>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {row.original.comment}
+                        </Typography>
+                        {` — `}
+                      </Box>
+                </>
+              }
+            />
+          </ListItem>
+        </List>
+      </Container>
+    </Container>
+  );
+
   const bundlesRenderDetailPanel = ({ row }) => (
     <Container>
       <Container>
@@ -637,6 +698,49 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     ],
   };
 
+  const reservesDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "booking/",
+    API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
+    columns: [
+      {
+        accessorKey: "diners",
+        id: "diners",
+        header: "Diners",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "price",
+        id: "price",
+        header: "Price",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "date",
+        id: "date",
+        header: "Date",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "drinks",
+        id: "drinks",
+        header: "Drinks",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "comment",
+        id: "comment",
+        header: "Comment",
+        isMultiline: true,
+        size: 140,
+      },
+    ],
+  };
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -722,6 +826,11 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                   props={characteristicsDataGridProps}
                 />
               }
+            />
+            <Route
+              path="reserves"
+              element={<AdminPanelDataGridDisplay props={reservesDataGridProps} renderDetailPanel={reservesRenderDetailPanel}/>}
+
             />
             <Route path="/*" element={<NotFoundContainer />} />
           </Routes>

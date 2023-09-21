@@ -108,6 +108,7 @@ const ProductDetailDisplay = ({
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
   const [diners, setDiners] = useState("");
+  const [comments, setComments] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
@@ -174,6 +175,10 @@ const ProductDetailDisplay = ({
     totalPrice += drinkPrice;
     setTotalPrice(totalPrice);
   }, [drinkQuantities, diners, productData]);
+
+  const handleCommentsChange = (event) => {
+    setComments(event.target.value);
+  };
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -310,7 +315,6 @@ const ProductDetailDisplay = ({
   };
 
   const openReserveModal = () => {
-    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
@@ -475,6 +479,7 @@ const ProductDetailDisplay = ({
       })),
       date: formattedDate,
       bundle: productData?.id || '',
+      comment: comments || '',
       price: 0
     };
   }
@@ -529,6 +534,8 @@ const ProductDetailDisplay = ({
       return "Invalid number of guests";
     }
   };
+
+  console.log(selectedDate)
 
   return (
     <Box padding={2}>
@@ -1135,7 +1142,7 @@ const ProductDetailDisplay = ({
                                           {productData
                                             ? productData.drinks.map(
                                                 (drink, index) => (
-                                                  <div key={index}>
+                                                  <div key={`drink-${index}`}>
                                                     <Typography
                                                       variant="body1"
                                                       component="span"
@@ -1228,6 +1235,7 @@ const ProductDetailDisplay = ({
                                 as={TextField}
                                 fullWidth
                                 multiline
+                                onChange={handleCommentsChange}
                                 rows={4}
                                 variant="outlined"
                                 label="Write your comments here"
@@ -1243,7 +1251,7 @@ const ProductDetailDisplay = ({
                                   const drinkTotal = quantity * drink.price;
 
                                   return (
-                                    <Typography key={index}>
+                                    <Typography key={`drink-total-${index}`}>
                                       {`${drink.name}: $${drinkTotal}`}
                                     </Typography>
                                   );
