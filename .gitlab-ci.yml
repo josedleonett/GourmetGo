@@ -38,16 +38,17 @@ deploy:
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
 
     # Detener todos los contenedores en la instancia EC2
-    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker stop $(sudo docker ps -q) || true"
+    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker stop \$(sudo docker ps -q) || true"
 
-# Eliminar todos los contenedores en la instancia EC2
-    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker rm $(sudo docker ps -a -q) || true"
+    # Eliminar todos los contenedores en la instancia EC2
+    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker rm \$(sudo docker ps -a -q) || true"
 
-# Opcional: Matar el proceso que está usando el puerto 8080
+    # Opcional: Matar el proceso que está usando el puerto 8080
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo fuser -k 8080/tcp || true"
 
-# Ahora intenta ejecutar el contenedor nuevamente
+    # Ahora intenta ejecutar el contenedor nuevamente
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker pull ${DOCKER_USERNAME}/mi-aplicacion:latest && sudo docker run -d -p 8080:8080 ${DOCKER_USERNAME}/mi-aplicacion:latest"
+
 
 
 
