@@ -943,25 +943,6 @@ const ProductDetailDisplay = ({
                         gap: "2vw",
                       }}
                     >
-                      <Rating
-                        name="combined-rating"
-                        value={userRating !== null ? userRating : averageRating}
-                        precision={0.1}
-                        readOnly={userRating !== null || !isUserLoggedIn}
-                        onChange={(event, newValue) =>
-                          handleRatingChange(newValue)
-                        }
-                        onChangeActive={(event, newHover) => {
-                          setHover(newHover);
-                        }}
-                      />
-                      <Typography>
-                        {userRating !== null
-                          ? userRating.toFixed(1)
-                          : averageRating !== null
-                          ? averageRating.toFixed(1)
-                          : ""}
-                      </Typography>
                     </Box>
                   </LocalizationProvider>
                 ) : (
