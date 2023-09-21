@@ -82,7 +82,7 @@ public class BookingController {
     //====================Display after today====================//
     @GetMapping("/dates")
     public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {
-        Set<DateDto> dates = bookingService.getBookingDatesAfterToday();
+        Set<DateDto> dates = bookingService.findBusyBookingDates();
         return ResponseEntity.ok(dates);
     }
 
