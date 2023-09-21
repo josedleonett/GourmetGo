@@ -3,6 +3,8 @@ package com.proyectointegradorequipo3.proyectointegradorEquipo3.controller;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.ReviewCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.ReviewServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,12 +24,15 @@ public class ReviewController {
 
     //====================Create====================//
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewCreateRequest request) throws Exception {
+    public ResponseEntity<Long> createReview(@Valid @RequestBody ReviewCreateRequest request) throws Exception {
         long id = reviewService.saveReview(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(id).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(location);
+        return new ResponseEntity<>(id, headers, HttpStatus.CREATED);
     }
+
 
     //====================Delete====================//
     @DeleteMapping("/{id}")

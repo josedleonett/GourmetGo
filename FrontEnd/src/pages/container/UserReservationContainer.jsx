@@ -19,6 +19,8 @@ const ReservationItem = ({ reservation, itemSize }) => {
     width: "250px",
     paddingTop: "10px",
     textAlign: "center",
+    marginLeft: "20%",
+    alignItems: "center"
   };
 
   const typographyStyle = {
@@ -88,15 +90,13 @@ const UserReservationContainer = ({ accessToken }) => {
     fetchReservations();
   }, [decodedToken]);
 
-  let itemSize = 2;
+  let itemSize = 4;
 
   if (!isSmallScreen) {
-    itemSize = 2;
-  } else if (isSmallScreen && !isLoading) {
     itemSize = 4;
   }
 
-  const itemsPerPage = 12;
+  const itemsPerPage = isSmallScreen ? 3 : 6;
   const totalPages = Math.ceil(reservations.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -116,7 +116,7 @@ const UserReservationContainer = ({ accessToken }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100vh",
+            height: "80vh",
           }}
         >
           <CircularProgress />
