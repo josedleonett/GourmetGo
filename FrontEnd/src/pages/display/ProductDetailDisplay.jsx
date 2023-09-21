@@ -50,6 +50,8 @@ import {
   StepLabel,
   formLabelClasses,
   CircularProgress,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -82,6 +84,8 @@ import {
 } from "formik";
 import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
@@ -418,6 +422,7 @@ const ProductDetailDisplay = ({
 
   const [badWordsResponse, setBadWordsResponse] = useState([]);
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
+  const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] = useState(false)
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -430,13 +435,14 @@ const ProductDetailDisplay = ({
       body: "",
     },
     validationSchema: validationSchemaAddReview,
-    onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (newReviewValues) => {
+      alert(JSON.stringify(newReviewValues, null, 2));
       setIsAddReviewFormSending(true);
 
       try {
         const moderatorContentResponse = await axios.get(
-          MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
+          MODERATOR_CONTENT_URL_BASE +
+            `&msg=${newReviewValues.title} ${newReviewValues.body} `
         );
 
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
@@ -446,7 +452,7 @@ const ProductDetailDisplay = ({
           console.log("POSTING...");
           const response = await axios.post(
             API_BASE_URL + "review/create",
-            JSON.stringify(values),
+            JSON.stringify(newReviewValues),
             {
               headers: {
                 "Content-Type": "application/json",
@@ -454,11 +460,25 @@ const ProductDetailDisplay = ({
             }
           );
           console.log(response);
+          if (response.status === 201) {
+            setProductData((prevProductData) => ({
+              ...prevProductData,
+              reviews: [newReviewValues, ...prevProductData.reviews],
+            }));
+
+            setIsAddReviewFormSubmitted(true)
+            addReviewHandleCancel();
+          }
         }
       } catch (error) {
         console.error(error.message);
+
+      } finally {
+        setIsAddReviewFormSending(false);
+        setTimeout(() => {
+          setIsAddReviewFormSubmitted(true);
+        }, 5000);
       }
-      setIsAddReviewFormSending(false);
     },
   });
 
@@ -466,14 +486,12 @@ const ProductDetailDisplay = ({
     setIsCommentFormOpen(false);
     setBadWordsResponse([]);
     formikAddReview.resetForm();
-
-    return <Dialog open={true}>hi</Dialog>;
   };
 
   let initialValuesReserveForm = {};
 
   if (productData !== null) {
-    var formattedDate = today;
+    var formattedDate = selectedDate;
 
     initialValuesReserveForm = {
       user: decodedToken?.id || '',
@@ -959,8 +977,7 @@ const ProductDetailDisplay = ({
                         justifyContent: "center",
                         gap: "2vw",
                       }}
-                    >
-                    </Box>
+                    ></Box>
                   </LocalizationProvider>
                 ) : (
                   <Formik
@@ -1150,7 +1167,8 @@ const ProductDetailDisplay = ({
                                                       component="span"
                                                       color="textPrimary"
                                                     >
-                                                      {drink.name} (Price per unit: {drink.price})
+                                                      {drink.name} (Price per
+                                                      unit: {drink.price})
                                                     </Typography>
                                                     <TextField
                                                       type="number"
@@ -1244,11 +1262,12 @@ const ProductDetailDisplay = ({
                               />
                             </Box>
                           )}
-                                                                               {activeStep === 3 && (
+                          {activeStep === 3 && (
                             <Box>
-                              <Box sx={{alignItems: "center"}}>
+                              <Box sx={{ alignItems: "center" }}>
                                 {productData.drinks.map((drink, index) => {
-                                  const quantity = drinkQuantities[drink.id] || 0;
+                                  const quantity =
+                                    drinkQuantities[drink.id] || 0;
                                   const drinkTotal = quantity * drink.price;
 
                                   return (
@@ -1259,13 +1278,13 @@ const ProductDetailDisplay = ({
                                 })}
                                 <Divider />
                                 <Typography>
-                                   Drinks price: ${totalDrinkPrice}
+                                  Drinks price: ${totalDrinkPrice}
                                 </Typography>
                                 <Typography>
-                                   Diners price: ${pricePerPerson}
+                                  Diners price: ${pricePerPerson}
                                 </Typography>
-                                <Divider/>
-                                <Divider/>
+                                <Divider />
+                                <Divider />
                                 <Typography>
                                   <strong> Total price: ${totalPrice}</strong>
                                 </Typography>
@@ -1353,17 +1372,17 @@ const ProductDetailDisplay = ({
                               },
                             }}
                           >
-                          {/* Botones de navegación entre pasos */}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-                              },
-                            }}
-                          ></Box>
+                            {/* Botones de navegación entre pasos */}
+                            <Box
+                              p={2}
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                "& > button": {
+                                  margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                                },
+                              }}
+                            ></Box>
                             {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
                               <Button
                                 variant="outlined"
@@ -1690,6 +1709,18 @@ const ProductDetailDisplay = ({
                         secondary={comment.date}
                       />
                       <Rating readOnly value={comment.rating} size="small" />
+                      <Tooltip title="Delete" arrow>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => {}}
+                        >
+                          <MoreVertIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Menu>
+                        <DeleteIcon fontSize="small" />
+                        <MenuItem>Delete</MenuItem>
+                      </Menu>
                     </ListItem>
                     <ListItemText
                       primary={comment.title}
@@ -1752,6 +1783,22 @@ const ProductDetailDisplay = ({
           </Alert>
         </Snackbar>
       )}
+
+      {
+        <Snackbar open={isAddReviewFormSubmitted}>
+          <Alert
+            onClose={() => {
+              setIsAddReviewFormSubmitted(false);
+            }}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            <AlertTitle>Review Posted Successfully!</AlertTitle>
+            Thank you for your Feedback! Your Review Has Been Published.
+          </Alert>
+        </Snackbar>
+      }
     </Box>
   );
 };

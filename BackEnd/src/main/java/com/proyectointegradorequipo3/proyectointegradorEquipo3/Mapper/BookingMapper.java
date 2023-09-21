@@ -33,6 +33,10 @@ public class BookingMapper {
             dto.setDrinks(new ArrayList<>());
         }
 
+        if (booking.getBundle() != null) {
+            dto.setBundleName(booking.getBundle().getName());
+        }
+
         return dto;
     }
 }
