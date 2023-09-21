@@ -99,7 +99,6 @@ const AdminPanelDataGridDisplay = ({
     !data.length ? setIsLoading(true) : setIsRefetching(true);
     try {
       const response = await axios.get(API_BASE_URL);
-      console.log(response.data)
       if (filter != undefined) {
         const dataFiltered = response.data.filter(
           (item) => item.hasOwnProperty("type") && item.type === filter
