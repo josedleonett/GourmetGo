@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewDto {
+    private Long id;
     private Long userId;
     private String name;
     private Long bundle;

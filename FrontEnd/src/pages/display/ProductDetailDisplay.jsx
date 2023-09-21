@@ -51,6 +51,7 @@ import {
   CircularProgress,
   Menu,
   MenuItem,
+  Backdrop,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -85,6 +86,8 @@ import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from '@mui/icons-material/Done';
+import FlagIcon from "@mui/icons-material/Flag";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
@@ -115,7 +118,6 @@ const ProductDetailDisplay = ({
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
-
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
   const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
@@ -123,7 +125,7 @@ const ProductDetailDisplay = ({
   const [drinkErrors, setDrinkErrors] = useState(false);
   const [dinerErrors, setDinerErrors] = useState(false);
   const [reservationError, setReservationError] = useState("");
-  const [selecteDate, setSelecteDate] = useState(null);
+  const [count, setCount] = useState(null);
 
   useEffect(() => {
     if (productData && productData.drinks) {
@@ -342,7 +344,6 @@ const ProductDetailDisplay = ({
     }
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
-
     return unavailableDates.includes(formattedDate);
   };
 
@@ -351,7 +352,22 @@ const ProductDetailDisplay = ({
       const formattedDate = date.format("YYYY-MM-DD");
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
+        // Manejar la fecha no disponible si es necesario
       }
+      fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
+        .then((response) => {
+          console.log(response);
+          if (!response.ok) {
+            throw new Error("Respuesta del servidor no exitosa");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setCount(data);
+        })
+        .catch((error) => {
+          console.error("Error al obtener el conteo:", error);
+        });
       setSelectedDate(formattedDate);
     } else {
       setSelectedDate(null);
@@ -379,6 +395,19 @@ const ProductDetailDisplay = ({
       .map((word) => word[0].toUpperCase())
       .join("");
     return fullnameInitials;
+  }
+  function calculateOfflineAverageRating(comments) {
+    if (comments.length === 0) {
+      return 0;
+    }
+
+    const ratings = comments.map((comment) => comment.rating);
+    const sumRatings = ratings.reduce(
+      (accumulator, rating) => accumulator + rating
+    );
+    const averageRating = sumRatings / comments.length;
+
+    return parseFloat(averageRating.toFixed(1));
   }
 
   const handleSubmit = (values) => {
@@ -410,6 +439,46 @@ const ProductDetailDisplay = ({
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
   const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] =
     useState(false);
+  const [isDeleteReviewFormSubmitted, setIsDeleteReviewFormSubmitted] =
+    useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isReviewOptionsOpen = Boolean(anchorEl);
+  const reviewOptionsMenuHandleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const reviewOptionsMenuHandleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const reviewOptionsMenuHandleDelete = async ( reviewIdToDelete) => {
+    setIsAddReviewFormSubmitted(false)
+    setIsDeleteReviewFormSubmitted(false)
+    setIsAddReviewFormSending(true)
+    console.log("to delete", reviewIdToDelete);
+    try {
+      const response = await axios.delete(
+        API_BASE_URL + "review/" + reviewIdToDelete
+      );
+      if (response.status === 204) {
+        setProductData((prevProductData) => {
+          const updatedReviews = prevProductData.reviews.filter(
+            (review) => review.id !== reviewIdToDelete
+          );
+          return {
+            ...prevProductData,
+            reviews: updatedReviews,
+            rating: calculateOfflineAverageRating(prevProductData.reviews),
+          };
+        });
+        setIsDeleteReviewFormSubmitted(true)
+        reviewOptionsMenuHandleClose();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsAddReviewFormSending(false)
+    }
+  };
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -430,10 +499,8 @@ const ProductDetailDisplay = ({
           MODERATOR_CONTENT_URL_BASE +
             `&msg=${newReviewValues.title} ${newReviewValues.body} `
         );
-
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
         setBadWordsResponse(moderatorContentResponse.data.bad_words);
-
         if (!hasBadWords) {
           const response = await axios.post(
             API_BASE_URL + "review/create",
@@ -445,9 +512,15 @@ const ProductDetailDisplay = ({
             }
           );
           if (response.status === 201) {
+            const idResponse = response.data
+            const newReviewValuesWithIdResponse = {
+              ...newReviewValues,
+              id: idResponse,
+            };
             setProductData((prevProductData) => ({
               ...prevProductData,
-              reviews: [newReviewValues, ...prevProductData.reviews],
+              reviews: [newReviewValuesWithIdResponse, ...prevProductData.reviews],
+              rating: calculateOfflineAverageRating(prevProductData.reviews)
             }));
 
             setIsAddReviewFormSubmitted(true);
@@ -459,7 +532,7 @@ const ProductDetailDisplay = ({
       } finally {
         setIsAddReviewFormSending(false);
         setTimeout(() => {
-          setIsAddReviewFormSubmitted(true);
+          setIsAddReviewFormSubmitted(false);
         }, 5000);
       }
     },
@@ -505,6 +578,10 @@ const ProductDetailDisplay = ({
             title: "Reservation confirmed",
             text: "Your reservation has been confirmed successfully!",
           });
+          setProductData((prevState) => ({
+            ...prevState,
+            canUserReview: true,
+          }));
           return response.json();
         } else {
           Swal.fire({
@@ -521,8 +598,8 @@ const ProductDetailDisplay = ({
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
-  };
-
+  }; 
+  
   const validateDrinks = (drinks) => {
     setDrinkErrors(false);
     if (drinks < 0) {
@@ -571,13 +648,11 @@ const ProductDetailDisplay = ({
               <ArrowBackIcon />
             </IconButton>
           </div>
-
           <CoverProductGalleryContainer
             imgList={productData ? productData.galleryImages : []}
             galleryId={"productGallery"}
             isLoading={!productData}
           />
-
           <Container>
             <Grid container padding={2} lg={12}>
               <Box>
@@ -697,7 +772,6 @@ const ProductDetailDisplay = ({
                 </Typography>
               </Box>
               <Divider light />
-
               <Grid item lg={8} md={7} xs={12}>
                 <Container>
                   <Container>
@@ -750,9 +824,7 @@ const ProductDetailDisplay = ({
                           }
                         />
                       </ListItem>
-
                       <Divider variant="inset" component="li" />
-
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                           {productData ? (
@@ -994,6 +1066,13 @@ const ProductDetailDisplay = ({
                         >
                           RESERVE
                         </Button>
+                        {selectedDate !== null && count !== null && (
+                          <>
+                          <Typography style={{ color: '#00008B' }}>
+                            There are {count} reservations available this day!
+                          </Typography>
+                        </>
+                        )}
 
                         <Box
                           sx={{
@@ -1029,7 +1108,6 @@ const ProductDetailDisplay = ({
                                   <CloseIcon />
                                 </IconButton>
                               )}
-                              {/* Agrega el Stepper para mostrar los pasos */}
                               <Stepper activeStep={activeStep}>
                                 {steps.map((label, index) => (
                                   <Step key={label}>
@@ -1040,7 +1118,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 0 && (
                                 <Box>
-                                  {/* Contenido del primer paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h4"
@@ -1114,7 +1191,6 @@ const ProductDetailDisplay = ({
                                       >
                                         Amount of guests:
                                       </Typography>
-                                      {/* El tercer campo no necesita ajustes */}
                                       <Field
                                         type="number"
                                         name="diners"
@@ -1144,7 +1220,6 @@ const ProductDetailDisplay = ({
                                           setDiners(value);
                                         }}
                                       />
-
                                       <div style={{ textAlign: "center" }}>
                                         <Typography>
                                           <strong>
@@ -1159,7 +1234,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 1 && (
                                 <Box>
-                                  {/* Contenido del segundo paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h6"
@@ -1276,7 +1350,6 @@ const ProductDetailDisplay = ({
                               )}
                               {activeStep === 2 && (
                                 <Box>
-                                  {/* Contenido del tercer paso */}
                                   <Typography
                                     variant="h6"
                                     sx={{
@@ -1308,7 +1381,7 @@ const ProductDetailDisplay = ({
 
                                       return (
                                         <Typography key={index}>
-                                          {`${drink.name}: $${drinkTotal}`}
+                                          {`${drink.name}: $${drinkTotal} USD`}
                                         </Typography>
                                       );
                                     })}
@@ -1769,8 +1842,9 @@ const ProductDetailDisplay = ({
                 {productData ? (
                   productData.reviews
                     .slice(startIndex, endIndex)
-                    .map((comment, index) => (
-                      <Box key={index} py={1}>
+                    .map((comment) => (
+                      <Box key={comment.id} py={1}>
+                        {console.log(comment.id)}
                         <ListItem>
                           <ListItemAvatar>
                             <Avatar>{getFullnameInitials(comment.name)}</Avatar>
@@ -1785,14 +1859,16 @@ const ProductDetailDisplay = ({
                             size="small"
                           />
                           <Tooltip title="Delete" arrow>
-                            <IconButton aria-label="delete" onClick={() => {}}>
-                              <MoreVertIcon fontSize="small" />
+                            <IconButton
+                              id={comment.id}
+                              disabled={isAddReviewFormSending}
+                              onClick={() => {
+                                reviewOptionsMenuHandleDelete(comment.id);
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" color="secondary" />
                             </IconButton>
                           </Tooltip>
-                          <Menu>
-                            <DeleteIcon fontSize="small" />
-                            <MenuItem>Delete</MenuItem>
-                          </Menu>
                         </ListItem>
                         <ListItemText
                           primary={comment.title}
@@ -1865,18 +1941,35 @@ const ProductDetailDisplay = ({
               </Alert>
             </Snackbar>
           )}
+
+          <Backdrop open={isAddReviewFormSending}>
+            <CircularProgress color="secondary"/>
+          </Backdrop>
           {
-            <Snackbar open={isAddReviewFormSubmitted}>
+            <Snackbar
+              open={isAddReviewFormSubmitted || isDeleteReviewFormSubmitted}
+            >
               <Alert
                 onClose={() => {
                   setIsAddReviewFormSubmitted(false);
+                  setIsDeleteReviewFormSubmitted(false);
                 }}
                 severity="success"
                 variant="filled"
                 sx={{ width: "100%" }}
               >
-                <AlertTitle>Review Posted Successfully!</AlertTitle>
-                Thank you for your Feedback! Your Review Has Been Published.
+                <AlertTitle>
+                  {isAddReviewFormSubmitted
+                    ? "Review Posted Successfully!"
+                    : isDeleteReviewFormSubmitted
+                    ? "Review Deleted Successfully!"
+                    : ""}
+                </AlertTitle>
+                {isAddReviewFormSubmitted
+                  ? "Thank you for your Feedback! Your Review Has Been Published."
+                  : isDeleteReviewFormSubmitted
+                  ? "Your review has been successfully removed. We appreciate your feedback!"
+                  : ""}
               </Alert>
             </Snackbar>
           }

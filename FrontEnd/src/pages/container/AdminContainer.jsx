@@ -63,16 +63,11 @@ const AdminContainer = () => {
       url: "user",
       icon: <FaUserFriends size="30" />,
     },
-    {
-      title: "Characteristic",
-      url: "characteristic",
-      icon: <AiOutlineCheckCircle size="30" />,
-    },
-    {
-      title: "Reserves",
-      url: "reserves",
-      icon: <CalendarMonthIcon size="30" />,
-    },
+    // {
+    //   title: "Characteristic",
+    //   url: "characteristic",
+    //   icon: <AiOutlineCheckCircle size="30" />,
+    // },
   ];
 
   return <AdminDisplay sidebarMenu={sidebarMenu} menuSelected={menuSelected}/>;
