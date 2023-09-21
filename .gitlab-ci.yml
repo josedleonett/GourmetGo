@@ -10,16 +10,10 @@ build:
   script:
     - cd BackEnd
     - docker build -t mi-aplicacion .
-    - docker save -o mi-aplicacion.tar mi-aplicacion
-  artifacts:
-    paths:
-      - BackEnd/mi-aplicacion.tar
 
 deploy:
   image: debian:bullseye-slim
   stage: deploy
-  dependencies:
-    - build
   before_script:
     - apt-get update && apt-get upgrade -y
     - apt-get install -y openssh-client
@@ -39,10 +33,8 @@ deploy:
     - echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
     - apt-get update
     - apt-get install -y docker-ce docker-ce-cli containerd.io
-    - cd BackEnd
-    - docker load -i mi-aplicacion.tar
+    - docker build -t $DOCKER_USERNAME/mi-aplicacion:latest BackEnd # Aquí está la línea que hemos añadido
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
-
