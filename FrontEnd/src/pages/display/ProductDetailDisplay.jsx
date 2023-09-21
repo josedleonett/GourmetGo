@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MdLocalBar } from "react-icons/md";
+import { MdFormatListBulleted, MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
@@ -9,11 +9,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import SendIcon from '@mui/icons-material/Send';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
-import Swal from 'sweetalert2';
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import SendIcon from "@mui/icons-material/Send";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
+import Swal from "sweetalert2";
 import {
   Box,
   Container,
@@ -48,6 +48,8 @@ import {
   Stepper,
   Step,
   StepLabel,
+  formLabelClasses,
+  CircularProgress,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -70,13 +72,25 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { Formik, Form, Field, ErrorMessage, FieldArray, useFormik } from "formik";
-import * as yup from 'yup';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldArray,
+  useFormik,
+} from "formik";
+import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
-const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
+const ProductDetailDisplay = ({
+  productData,
+  setProductData,
+  dates,
+  accessToken,
+}) => {
   const packageList = cateringPackages;
   const { id } = useParams();
   const navigate = useNavigate();
@@ -93,29 +107,36 @@ const ProductDetailDisplay = ({ productData, dates, accessToken }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const [CommentsPage, setCommentsPage] = useState(1);
-  const [diners, setDiners] = useState('');
+  const [diners, setDiners] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
+
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
-const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+  const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
+  const [formErrors, setFormErrors] = useState({});
+  const [drinkErrors, setDrinkErrors] = useState(false);
+  const [dinerErrors, setDinerErrors] = useState(false);
 
   useEffect(() => {
     if (productData && productData.drinks) {
-      const initialQuantities = productData.drinks.reduce((quantities, drink) => {
-        quantities[drink.id] = ''; 
-        return quantities;
-      }, {});
+      const initialQuantities = productData.drinks.reduce(
+        (quantities, drink) => {
+          quantities[drink.id] = "";
+          return quantities;
+        },
+        {}
+      );
       setDrinkQuantities(initialQuantities);
     }
   }, [productData]);
 
   const handleQuantityChange = (drinkId, quantity) => {
-    setDrinkQuantities(prevQuantities => ({
+    setDrinkQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [drinkId]: quantity
+      [drinkId]: quantity,
     }));
   };
 
@@ -133,12 +154,12 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
     let totalPrice = 0;
     let personPrice = 0;
     let drinkPrice = 0;
-  
+
     // Multiplicar productData.price por la cantidad de comensales (diners)
     totalPrice += productData ? productData.price * diners : 0;
     personPrice = productData && productData.price * diners;
     setPricePerPerson(personPrice);
-  
+
     // Sumar el precio de las bebidas según la cantidad
     if (productData && productData.drinks) {
       productData.drinks.forEach((drink) => {
@@ -146,15 +167,15 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
         drinkPrice += quantity * drink.price; // Sumar al drinkPrice
       });
     }
-  
+
     setTotalDrinkPrice(drinkPrice);
-  
+
     // Sumar el precio de las bebidas al totalPrice
     totalPrice += drinkPrice;
     setTotalPrice(totalPrice);
   }, [drinkQuantities, diners, productData]);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -379,20 +400,21 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
 
   const validationSchemaAddReview = yup.object({
     title: yup
-      .string('Enter your title')
-      .max(50, 'Title should be of maximum 50 characters'),
+      .string("Enter your title")
+      .max(50, "Title should be of maximum 50 characters"),
     body: yup
-      .string('Enter your body')
-      .max(500, 'Review body should be of maximum 500 characters'),
+      .string("Enter your body")
+      .max(500, "Review body should be of maximum 500 characters"),
   });
 
-  const [badWordsResponse, setBadWordsResponse] = useState([])
+  const [badWordsResponse, setBadWordsResponse] = useState([]);
+  const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
 
   const formikAddReview = useFormik({
     initialValues: {
       userId: decodedToken && decodedToken.id,
       name: userFullName,
-      bundle: parseInt(id),
+      bundleId: parseInt(id),
       date: today,
       rating: 3,
       title: "",
@@ -401,16 +423,18 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
     validationSchema: validationSchemaAddReview,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log(values, MODERATOR_CONTENT_URL_BASE);
+      setIsAddReviewFormSending(true);
 
       try {
         const moderatorContentResponse = await axios.get(
           MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
         );
-        console.log(moderatorContentResponse);
-        setBadWordsResponse(moderatorContentResponse.data.bad_words)
 
-        if (badWordsResponse.length == 0) {
+        const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
+        setBadWordsResponse(moderatorContentResponse.data.bad_words);
+
+        if (!hasBadWords) {
+          console.log("POSTING...");
           const response = await axios.post(
             API_BASE_URL + "review/create",
             JSON.stringify(values),
@@ -422,19 +446,26 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
           );
           console.log(response);
         }
-
       } catch (error) {
         console.error(error.message);
       }
+      setIsAddReviewFormSending(false);
     },
   });
 
-  let initialValuesReserveForm = {
+  const addReviewHandleCancel = () => {
+    setIsCommentFormOpen(false);
+    setBadWordsResponse([]);
+    formikAddReview.resetForm();
+
+    return <Dialog open={true}>hi</Dialog>;
   };
+
+  let initialValuesReserveForm = {};
 
   if (productData !== null) {
     var formattedDate = today;
-  
+
     initialValuesReserveForm = {
       user: decodedToken?.id || '',
       diners: diners,
@@ -447,40 +478,56 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
       price: 0
     };
   }
-  
 
   const handleSubmitConfirmation = () => {
-    console.log(productData)
+    console.log(productData);
     fetch("http://localhost:8080/v1/booking/create", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(initialValuesReserveForm)
+      body: JSON.stringify(initialValuesReserveForm),
     })
-    .then(response => {
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Reservation confirmed',
-          text: 'Your reservation has been confirmed successfully!',
-        });
-        return response.json();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'There was an error confirming the reservation. Please try again later.',
-        });
-        throw new Error("Form submission failed");
-      }
-    })
-    .then(data => {
-      console.log("Form submission successful:", data);
-    })
-    .catch(error => {
-      console.error("Error submitting form:", error);
-    });
+      .then((response) => {
+        if (response.ok) {
+          Swal.fire({
+            icon: "success",
+            title: "Reservation confirmed",
+            text: "Your reservation has been confirmed successfully!",
+          });
+          return response.json();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "There was an error confirming the reservation. Please try again later.",
+          });
+          throw new Error("Form submission failed");
+        }
+      })
+      .then((data) => {
+        console.log("Form submission successful:", data);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
+  };
+
+  const validateDrinks = (drinks) => {
+    setDrinkErrors(false);
+    if (drinks < 0) {
+      setDrinkErrors(true);
+      return "Invalid number of drinks";
+    }
+  };
+
+  const validateDiners = (diners) => {
+    console.log("validateDiners called with:", diners);
+    setDinerErrors(false);
+    if (diners < 0) {
+      setDinerErrors(true);
+      return "Invalid number of guests";
+    }
   };
 
   return (
@@ -904,29 +951,13 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                         gap: "2vw",
                       }}
                     >
-                      <Rating
-                        name="combined-rating"
-                        value={userRating !== null ? userRating : averageRating}
-                        precision={0.1}
-                        readOnly={userRating !== null || !isUserLoggedIn}
-                        onChange={(event, newValue) =>
-                          handleRatingChange(newValue)
-                        }
-                        onChangeActive={(event, newHover) => {
-                          setHover(newHover);
-                        }}
-                      />
-                      <Typography>
-                        {userRating !== null
-                          ? userRating.toFixed(1)
-                          : averageRating !== null
-                          ? averageRating.toFixed(1)
-                          : ""}
-                      </Typography>
                     </Box>
                   </LocalizationProvider>
                 ) : (
-                  <Formik initialValues={initialValuesReserveForm} onSubmit={handleSubmit}>
+                  <Formik
+                    initialValues={initialValuesReserveForm}
+                    onSubmit={handleSubmit}
+                  >
                     {({ isSubmitting }) => (
                       <Form>
                         <Box
@@ -1034,19 +1065,40 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                   <Field
                                     type="number"
                                     name="diners"
-                                    as={TextField}  // Set the 'as' prop to TextField
+                                    as={TextField}
                                     fullWidth
                                     variant="outlined"
                                     label="Amount of people"
-                                    helperText={<ErrorMessage name="diners" />}
+                                    helperText={
+                                      formErrors.diners && (
+                                        <div style={{ color: "red" }}>
+                                          {formErrors.diners}
+                                        </div>
+                                      )
+                                    }
                                     value={diners}
-                                    onChange={(e) => setDiners(e.target.value)} 
+                                    onChange={(e) => {
+                                      const value = parseInt(
+                                        e.target.value,
+                                        10
+                                      );
+                                      const dinersError = validateDiners(value); // Llamamos a validateDiners aquí
+                                      setFormErrors((prevErrors) => ({
+                                        ...prevErrors,
+                                        diners: dinersError,
+                                      }));
+                                      setDiners(value);
+                                    }}
                                   />
-                                  <div style={{ textAlign: 'center' }}>
-                                    <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+
+                                  <div style={{ textAlign: "center" }}>
+                                    <Typography>
+                                      <strong>
+                                        Total price: ${totalPrice}
+                                      </strong>
+                                    </Typography>
                                   </div>
                                 </Box>
-
                               </Box>
                             </Box>
                           )}
@@ -1066,7 +1118,9 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                 </Typography>
                                 <FieldArray name="drinks">
                                   {({ push, remove }) => (
-                                    <Box sx={{ display: "flex", paddingTop: 2 }}>
+                                    <Box
+                                      sx={{ display: "flex", paddingTop: 2 }}
+                                    >
                                       <Paper>
                                         <Container
                                           sx={{
@@ -1079,29 +1133,70 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                           }}
                                         >
                                           {productData
-                                            ? productData.drinks.map((drink, index) => (
-                                                <div key={index}>
-                                                  <Typography
-                                                    variant="body1"
-                                                    component="span"
-                                                    color="textPrimary"
-                                                  >
-                                                    {drink.name} (Price per unit: {drink.price})
-                                                  </Typography>
-                                                  <TextField
-                                                    type="number"
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    helperText={
-                                                      <ErrorMessage name={`drinks[${index}].quantity`} />
-                                                    }
-                                                    value={drinkQuantities[drink.id]}
-                                                    onChange={(e) =>
-                                                      handleQuantityChange(drink.id, e.target.value)
-                                                    }
-                                                  />
-                                                </div>
-                                              ))
+                                            ? productData.drinks.map(
+                                                (drink, index) => (
+                                                  <div key={index}>
+                                                    <Typography
+                                                      variant="body1"
+                                                      component="span"
+                                                      color="textPrimary"
+                                                    >
+                                                      {drink.name} (Price per unit: {drink.price})
+                                                    </Typography>
+                                                    <TextField
+                                                      type="number"
+                                                      fullWidth
+                                                      variant="outlined"
+                                                      helperText={
+                                                        formErrors.drinks &&
+                                                        formErrors.drinks[
+                                                          index
+                                                        ] && (
+                                                          <div
+                                                            style={{
+                                                              color: "red",
+                                                            }}
+                                                          >
+                                                            {
+                                                              formErrors.drinks[
+                                                                index
+                                                              ]
+                                                            }
+                                                          </div>
+                                                        )
+                                                      }
+                                                      value={
+                                                        drinkQuantities[
+                                                          drink.id
+                                                        ]
+                                                      }
+                                                      onChange={(e) => {
+                                                        const value = parseInt(
+                                                          e.target.value,
+                                                          10
+                                                        );
+                                                        handleQuantityChange(
+                                                          drink.id,
+                                                          value
+                                                        );
+                                                        setFormErrors(
+                                                          (prevErrors) => ({
+                                                            ...prevErrors,
+                                                            drinks: {
+                                                              ...(prevErrors.drinks ||
+                                                                {}),
+                                                              [index]:
+                                                                validateDrinks(
+                                                                  value
+                                                                ),
+                                                            },
+                                                          })
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                )
+                                              )
                                             : []}
                                         </Container>
                                       </Paper>
@@ -1109,8 +1204,10 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                   )}
                                 </FieldArray>
                               </Box>
-                              <div style={{ textAlign: 'center' }}>
-                              <Typography><strong>Total price: ${totalPrice}</strong></Typography>
+                              <div style={{ textAlign: "center" }}>
+                                <Typography>
+                                  <strong>Total price: ${totalPrice}</strong>
+                                </Typography>
                               </div>
                             </Box>
                           )}
@@ -1204,14 +1301,14 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                     </li>
                                     <li>
                                       <Typography>
-                                        <strong>Total drinks price: </strong>{" "}
-                                        ${totalDrinkPrice}
+                                        <strong>Total drinks price: </strong> $
+                                        {totalDrinkPrice}
                                       </Typography>
                                     </li>
                                     <li>
                                       <Typography>
-                                        <strong>Total price: </strong>{" "}
-                                        ${totalPrice}
+                                        <strong>Total price: </strong> $
+                                        {totalPrice}
                                       </Typography>
                                     </li>
                                   </ul>
@@ -1224,10 +1321,10 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                                     Cancel
                                   </Button>
                                   <Button
-                                        onClick={() => {
-                                          handleSubmitConfirmation();
-                                          closeReserveDialog();
-                                        }}
+                                    onClick={() => {
+                                      handleSubmitConfirmation();
+                                      closeReserveDialog();
+                                    }}
                                     color="primary"
                                   >
                                     Confirm
@@ -1271,7 +1368,15 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                               <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => setActiveStep(activeStep + 1)}
+                                onClick={() => {
+                                  if (dinerErrors || drinkErrors) {
+                                    // Si hay errores, no permitir avanzar
+                                    return;
+                                  }
+
+                                  // Si no hay errores, permitir avanzar al siguiente paso
+                                  setActiveStep(activeStep + 1);
+                                }}
                               >
                                 Next
                               </Button>
@@ -1417,12 +1522,12 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
           )}
           <Box
             display={
-              (productData &&
-                productData.canUserReview &&
-                cookies.token == undefined) ||
-              isCommentFormOpen
-                ? "none"
-                : "flex"
+              productData &&
+              productData.canUserReview &&
+              !isCommentFormOpen &&
+              cookies.token !== undefined
+                ? "flex"
+                : "none"
             }
             justifyContent="center"
           >
@@ -1507,37 +1612,36 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                         formikAddReview.touched.body &&
                         formikAddReview.errors.body
                       }
-                      rows={4}
+                      rows={5}
                       inputProps={{
                         maxLength: 500,
                       }}
                     />
                   </Container>
                 </CardContent>
-                <CardContent>
-                  <Alert severity="warning">
-                    <AlertTitle>
-                      Your review violates our community guidelines
-                    </AlertTitle>
-                    We've noticed that some words in your review may not align
-                    with our community guidelines. Please review your content
-                    and remove any inappropriate language or content.
-                    <br />
-                    <br />
-                    Inappropriate words:{" "}
-                    <strong>{badWordsResponse.join(", ")}</strong>
-                  </Alert>
-                </CardContent>
+                <Collapse in={badWordsResponse.length > 0}>
+                  <CardContent>
+                    <Alert severity="warning">
+                      <AlertTitle>
+                        Your review violates our community guidelines
+                      </AlertTitle>
+                      We've noticed that some words in your review may not align
+                      with our community guidelines. Please review your content
+                      and remove any inappropriate language or content.
+                      <br />
+                      <br />
+                      Inappropriate words:{" "}
+                      <strong>{badWordsResponse.join(", ")}</strong>
+                    </Alert>
+                  </CardContent>
+                </Collapse>
                 <CardActions sx={{ justifyContent: "end" }}>
                   <Button
                     type="reset"
                     variant="text"
                     color="primary"
                     startIcon={<CancelIcon />}
-                    onClick={() => {
-                      setIsCommentFormOpen(false);
-                      formikAddReview.resetForm();
-                    }}
+                    onClick={addReviewHandleCancel}
                   >
                     CANCEL
                   </Button>
@@ -1545,7 +1649,14 @@ const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
                     type="submit"
                     variant="contained"
                     color="primary"
-                    startIcon={<SendIcon />}
+                    disabled={isAddReviewFormSending}
+                    startIcon={
+                      isAddReviewFormSending ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        <SendIcon />
+                      )
+                    }
                     onClick={formikAddReview.handleSubmit}
                   >
                     SEND
