@@ -7,10 +7,8 @@ const CarouselCategoryContainer = ({ elementsList }) => {
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
       arr.slice(i * size, i * size + size)
     );
-
   const theme = useTheme();
   const screenIsUpLg = useMediaQuery(theme.breakpoints.up("lg"));
-
   const chunkedCategories = chunk(elementsList, screenIsUpLg ? 5 : 1);
   return <CarouselCategoryDisplay elementsGroup={chunkedCategories} />;
 };
