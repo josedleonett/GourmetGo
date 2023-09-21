@@ -118,7 +118,6 @@ const ProductDetailDisplay = ({
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
   const endIndex = startIndex + commentsPerPage;
-
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
   const [totalDrinkPrice, setTotalDrinkPrice] = useState(0);
@@ -126,7 +125,7 @@ const ProductDetailDisplay = ({
   const [drinkErrors, setDrinkErrors] = useState(false);
   const [dinerErrors, setDinerErrors] = useState(false);
   const [reservationError, setReservationError] = useState("");
-  const [selecteDate, setSelecteDate] = useState(null);
+  const [count, setCount] = useState(null);
 
   useEffect(() => {
     if (productData && productData.drinks) {
@@ -345,7 +344,6 @@ const ProductDetailDisplay = ({
     }
     const formattedDate = date.format("YYYY-MM-DD");
     const unavailableDates = dates.map((item) => item.date);
-
     return unavailableDates.includes(formattedDate);
   };
 
@@ -354,7 +352,22 @@ const ProductDetailDisplay = ({
       const formattedDate = date.format("YYYY-MM-DD");
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
+        // Manejar la fecha no disponible si es necesario
       }
+      fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
+        .then((response) => {
+          console.log(response);
+          if (!response.ok) {
+            throw new Error("Respuesta del servidor no exitosa");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setCount(data);
+        })
+        .catch((error) => {
+          console.error("Error al obtener el conteo:", error);
+        });
       setSelectedDate(formattedDate);
     } else {
       setSelectedDate(null);
@@ -486,10 +499,8 @@ const ProductDetailDisplay = ({
           MODERATOR_CONTENT_URL_BASE +
             `&msg=${newReviewValues.title} ${newReviewValues.body} `
         );
-
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
         setBadWordsResponse(moderatorContentResponse.data.bad_words);
-
         if (!hasBadWords) {
           const response = await axios.post(
             API_BASE_URL + "review/create",
@@ -586,8 +597,8 @@ const ProductDetailDisplay = ({
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
-  };
-
+  }; 
+  
   const validateDrinks = (drinks) => {
     setDrinkErrors(false);
     if (drinks < 0) {
@@ -636,13 +647,11 @@ const ProductDetailDisplay = ({
               <ArrowBackIcon />
             </IconButton>
           </div>
-
           <CoverProductGalleryContainer
             imgList={productData ? productData.galleryImages : []}
             galleryId={"productGallery"}
             isLoading={!productData}
           />
-
           <Container>
             <Grid container padding={2} lg={12}>
               <Box>
@@ -762,7 +771,6 @@ const ProductDetailDisplay = ({
                 </Typography>
               </Box>
               <Divider light />
-
               <Grid item lg={8} md={7} xs={12}>
                 <Container>
                   <Container>
@@ -815,9 +823,7 @@ const ProductDetailDisplay = ({
                           }
                         />
                       </ListItem>
-
                       <Divider variant="inset" component="li" />
-
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                           {productData ? (
@@ -1059,6 +1065,13 @@ const ProductDetailDisplay = ({
                         >
                           RESERVE
                         </Button>
+                        {selectedDate !== null && count !== null && (
+                          <>
+                          <Typography style={{ color: '#00008B' }}>
+                            There are {count} reservations available this day!
+                          </Typography>
+                        </>
+                        )}
 
                         <Box
                           sx={{
@@ -1094,7 +1107,6 @@ const ProductDetailDisplay = ({
                                   <CloseIcon />
                                 </IconButton>
                               )}
-                              {/* Agrega el Stepper para mostrar los pasos */}
                               <Stepper activeStep={activeStep}>
                                 {steps.map((label, index) => (
                                   <Step key={label}>
@@ -1105,7 +1117,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 0 && (
                                 <Box>
-                                  {/* Contenido del primer paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h4"
@@ -1179,7 +1190,6 @@ const ProductDetailDisplay = ({
                                       >
                                         Amount of guests:
                                       </Typography>
-                                      {/* El tercer campo no necesita ajustes */}
                                       <Field
                                         type="number"
                                         name="diners"
@@ -1209,7 +1219,6 @@ const ProductDetailDisplay = ({
                                           setDiners(value);
                                         }}
                                       />
-
                                       <div style={{ textAlign: "center" }}>
                                         <Typography>
                                           <strong>
@@ -1224,7 +1233,6 @@ const ProductDetailDisplay = ({
 
                               {activeStep === 1 && (
                                 <Box>
-                                  {/* Contenido del segundo paso */}
                                   <Box p={2}>
                                     <Typography
                                       variant="h6"
@@ -1341,7 +1349,6 @@ const ProductDetailDisplay = ({
                               )}
                               {activeStep === 2 && (
                                 <Box>
-                                  {/* Contenido del tercer paso */}
                                   <Typography
                                     variant="h6"
                                     sx={{
@@ -1373,7 +1380,7 @@ const ProductDetailDisplay = ({
 
                                       return (
                                         <Typography key={index}>
-                                          {`${drink.name}: $${drinkTotal}`}
+                                          {`${drink.name}: $${drinkTotal} USD`}
                                         </Typography>
                                       );
                                     })}

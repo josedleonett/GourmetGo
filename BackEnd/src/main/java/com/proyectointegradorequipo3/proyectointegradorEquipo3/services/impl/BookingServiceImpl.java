@@ -21,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -60,6 +58,27 @@ public class BookingServiceImpl implements IBookingService {
                     return dateDto;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    public Set<DateDto> findBusyBookingDates() {
+        LocalDate currentDate = LocalDate.now();
+
+        List<Object[]> dateCounts = bookingRepository.findBusyDatesWithCount();
+
+        List<Object[]> filteredDateCounts = dateCounts.stream()
+                .filter(objects -> !((LocalDate) objects[0]).isBefore(currentDate))
+                .collect(Collectors.toList());
+
+        Set<DateDto> busyDates = new HashSet<>();
+
+        for (Object[] dateCount : filteredDateCounts) {
+            LocalDate date = (LocalDate) dateCount[0];
+            DateDto dateDto = new DateDto();
+            dateDto.setDate(date);
+            busyDates.add(dateDto);
+        }
+
+        return busyDates;
     }
 
     public List<Booking> getBookingBetweenDate(LocalDate start, LocalDate end) {

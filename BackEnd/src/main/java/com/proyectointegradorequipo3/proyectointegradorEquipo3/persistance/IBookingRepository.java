@@ -26,4 +26,7 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
 
     long countByDate(LocalDate bookingDate);
 
+    @Query("SELECT b.date, COUNT(b) FROM Booking b GROUP BY b.date HAVING COUNT(b) >= 20")
+    List<Object[]> findBusyDatesWithCount();
+
 }
