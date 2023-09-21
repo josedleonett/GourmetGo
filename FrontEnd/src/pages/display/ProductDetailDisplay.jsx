@@ -389,7 +389,7 @@ const ProductDetailDisplay = ({
     console.log("Valores del formulario:", values);
   };
 
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
@@ -482,7 +482,7 @@ const ProductDetailDisplay = ({
   let initialValuesReserveForm = {};
 
   if (productData !== null) {
-    var formattedDate = today;
+    var formattedDate = selectedDate;
 
     initialValuesReserveForm = {
       user: decodedToken?.id || '',
