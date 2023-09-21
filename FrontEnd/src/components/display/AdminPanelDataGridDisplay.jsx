@@ -172,6 +172,7 @@ const AdminPanelDataGridDisplay = ({
   };
 
   const deleteApiData = async (targetIdToDelete) => {
+    console.log(targetIdToDelete);
     try {
       const response = await axios.delete(API_BASE_URL + targetIdToDelete);
       const responseCode = response.status;
