@@ -123,7 +123,7 @@ const ProductDetailDisplay = ({
   const [drinkErrors, setDrinkErrors] = useState(false);
   const [dinerErrors, setDinerErrors] = useState(false);
   const [reservationError, setReservationError] = useState("");
-  const [selecteDate, setSelecteDate] = useState(null);
+  const [count, setCount] = useState(null);
 
   useEffect(() => {
     if (productData && productData.drinks) {
@@ -351,13 +351,36 @@ const ProductDetailDisplay = ({
       const formattedDate = date.format("YYYY-MM-DD");
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
+        // Manejar la fecha no disponible si es necesario
       }
-      setSelectedDate(formattedDate);
+      console.log(formattedDate)
+  
+      // Realizar una solicitud HTTP para obtener el conteo
+      fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
+        .then((response) => {
+          console.log(response)
+          if (!response.ok) {
+            throw new Error("Respuesta del servidor no exitosa");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // Actualizar el estado con el conteo
+          setCount(data);
+  
+          // Resto de tu lógica...
+        })
+        .catch((error) => {
+          console.error("Error al obtener el conteo:", error);
+        });
+  
+      setSelectedDate(formattedDate); // Establecer la fecha seleccionada
     } else {
-      setSelectedDate(null);
+      setSelectedDate(null); // Si no se selecciona ninguna fecha, establecer selectedDate en null
     }
   };
-
+  
   const minDate = dayjs().add(1, "week");
 
   const shareUrl = window.location.href;
@@ -993,6 +1016,13 @@ const ProductDetailDisplay = ({
                         >
                           RESERVE
                         </Button>
+                        {selectedDate !== null && count !== null && (
+  <>
+    <Typography>
+      Count: {count}
+    </Typography>
+    {console.log("Count:", count)} {/* Agrega este console.log */}
+  </> )}
 
                         <Box
                           sx={{
