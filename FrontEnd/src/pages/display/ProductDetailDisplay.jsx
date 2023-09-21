@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MdFormatListBulleted, MdLocalBar } from "react-icons/md";
+import { MdLocalBar } from "react-icons/md";
 import { GiPieSlice } from "react-icons/gi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
@@ -48,7 +48,6 @@ import {
   Stepper,
   Step,
   StepLabel,
-  formLabelClasses,
   CircularProgress,
   Menu,
   MenuItem,
@@ -156,27 +155,23 @@ const ProductDetailDisplay = ({
   };
 
   useEffect(() => {
-    // Calcular el precio en función de las cantidades de bebidas y comensales
     let totalPrice = 0;
     let personPrice = 0;
     let drinkPrice = 0;
 
-    // Multiplicar productData.price por la cantidad de comensales (diners)
     totalPrice += productData ? productData.price * diners : 0;
     personPrice = productData && productData.price * diners;
     setPricePerPerson(personPrice);
 
-    // Sumar el precio de las bebidas según la cantidad
     if (productData && productData.drinks) {
       productData.drinks.forEach((drink) => {
         const quantity = drinkQuantities[drink.id] || 0;
-        drinkPrice += quantity * drink.price; // Sumar al drinkPrice
+        drinkPrice += quantity * drink.price;
       });
     }
 
     setTotalDrinkPrice(drinkPrice);
 
-    // Sumar el precio de las bebidas al totalPrice
     totalPrice += drinkPrice;
     setTotalPrice(totalPrice);
   }, [drinkQuantities, diners, productData]);
@@ -185,7 +180,6 @@ const ProductDetailDisplay = ({
 
   const [activeStep, setActiveStep] = useState(0);
 
-  // Define los pasos de tu formulario en un array
   const steps = ["", "", "", ""];
 
   function countCommentsByRating(comments) {
@@ -361,12 +355,11 @@ const ProductDetailDisplay = ({
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
       }
-      setSelectedDate(formattedDate); // Establecer la fecha seleccionada
+      setSelectedDate(formattedDate);
     } else {
-      setSelectedDate(null); // Si no se selecciona ninguna fecha, establecer selectedDate en null
+      setSelectedDate(null); 
     }
   };
-  
 
   const minDate = dayjs().add(1, "week");
 
@@ -1100,7 +1093,7 @@ const ProductDetailDisplay = ({
                                         e.target.value,
                                         10
                                       );
-                                      const dinersError = validateDiners(value); // Llamamos a validateDiners aquí
+                                      const dinersError = validateDiners(value);
                                       setFormErrors((prevErrors) => ({
                                         ...prevErrors,
                                         diners: dinersError,
@@ -1353,29 +1346,27 @@ const ProductDetailDisplay = ({
                               </Dialog>
                             </Box>
                           )}
-                          {/* Botones de navegación entre pasos */}
                           <Box
                             p={2}
                             sx={{
                               display: "flex",
                               justifyContent: "space-between",
                               "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                                margin: "0 8px",
                               },
                             }}
                           >
-                            {/* Botones de navegación entre pasos */}
                             <Box
                               p={2}
                               sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
                                 "& > button": {
-                                  margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                                  margin: "0 8px",
                                 },
                               }}
                             ></Box>
-                            {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
+                            {activeStep !== 0 && (
                               <Button
                                 variant="outlined"
                                 color="primary"
@@ -1390,11 +1381,8 @@ const ProductDetailDisplay = ({
                                 color="primary"
                                 onClick={() => {
                                   if (dinerErrors || drinkErrors) {
-                                    // Si hay errores, no permitir avanzar
                                     return;
                                   }
-
-                                  // Si no hay errores, permitir avanzar al siguiente paso
                                   setActiveStep(activeStep + 1);
                                 }}
                               >
