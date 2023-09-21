@@ -119,6 +119,8 @@ const ProductDetailDisplay = ({
   const [formErrors, setFormErrors] = useState({});
   const [drinkErrors, setDrinkErrors] = useState(false);
   const [dinerErrors, setDinerErrors] = useState(false);
+  const [reservationError, setReservationError] = useState('');
+  const [selecteDate, setSelecteDate] = useState(null);
 
   useEffect(() => {
     if (productData && productData.drinks) {
@@ -336,6 +338,9 @@ const ProductDetailDisplay = ({
       console.log("Selected Date:", selectedDate.toISOString());
     }
   };
+ 
+
+  
 
   const isDateUnavailable = (date) => {
     if (!dates) {
@@ -355,8 +360,12 @@ const ProductDetailDisplay = ({
       if (isUnavailable) {
         console.log("Selected Date is unavailable.");
       }
+      setSelectedDate(formattedDate); // Establecer la fecha seleccionada
+    } else {
+      setSelectedDate(null); // Si no se selecciona ninguna fecha, establecer selectedDate en null
     }
   };
+  
 
   const minDate = dayjs().add(1, "week");
 
@@ -385,7 +394,7 @@ const ProductDetailDisplay = ({
     console.log("Valores del formulario:", values);
   };
 
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
@@ -524,7 +533,7 @@ const ProductDetailDisplay = ({
   const validateDiners = (diners) => {
     console.log("validateDiners called with:", diners);
     setDinerErrors(false);
-    if (diners < 0) {
+    if (diners < 1) {
       setDinerErrors(true);
       return "Invalid number of guests";
     }
@@ -938,7 +947,7 @@ const ProductDetailDisplay = ({
                       variant="contained"
                       color="secondary"
                       onClick={openReserveModal}
-                      disabled={!isUserLoggedIn}
+                      disabled={!isUserLoggedIn || selectedDate === null}
                     >
                       RESERVE
                     </Button>
