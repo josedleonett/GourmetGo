@@ -35,8 +35,6 @@ const CreateDrinksPanelDisplay = () => {
     }
   };
 
-  
-
   return (
     <>
       <Box

@@ -358,7 +358,6 @@ export const CreateUpdateItemModal = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       setIsFormSending(true);
-      //alert(JSON.stringify(values, null, 2));
 
       let responseCode = -1;
       let responseStatusProps = { ...responseStatus };
