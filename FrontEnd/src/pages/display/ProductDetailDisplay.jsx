@@ -1067,10 +1067,10 @@ const ProductDetailDisplay = ({
                         </Button>
                         {selectedDate !== null && count !== null && (
                           <>
-                          <Typography style={{ color: '#00008B' }}>
-                            There are {count} reservations available this day!
-                          </Typography>
-                        </>
+                            <Typography style={{ color: "#00008B" }}>
+                              There are {count} reservations available this day!
+                            </Typography>
+                          </>
                         )}
 
                         <Box
@@ -1860,12 +1860,24 @@ const ProductDetailDisplay = ({
                           <Tooltip title="Delete" arrow>
                             <IconButton
                               id={comment.id}
-                              disabled={isAddReviewFormSending}
+                              disabled={
+                                (decodedToken &&
+                                  decodedToken.id !== comment.userId) ||
+                                isAddReviewFormSending
+                              }
                               onClick={() => {
                                 reviewOptionsMenuHandleDelete(comment.id);
                               }}
                             >
-                              <DeleteIcon fontSize="small" color="secondary" />
+                              <DeleteIcon
+                                fontSize="small"
+                                color={
+                                  decodedToken &&
+                                  decodedToken.id !== comment.userId
+                                    ? "disabled"
+                                    : "secondary"
+                                }
+                              />
                             </IconButton>
                           </Tooltip>
                         </ListItem>
@@ -1942,7 +1954,7 @@ const ProductDetailDisplay = ({
           )}
 
           <Backdrop open={isAddReviewFormSending}>
-            <CircularProgress color="secondary"/>
+            <CircularProgress color="secondary" />
           </Backdrop>
           {
             <Snackbar
