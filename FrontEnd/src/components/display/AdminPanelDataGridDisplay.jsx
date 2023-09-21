@@ -73,7 +73,6 @@ const AdminPanelDataGridDisplay = ({
   const columns = useMemo(() => props.columns);
   const [initialState, setInitialState] = useState(props.initialState);
   const [data, setData] = useState([]);
-
   const [isAllowEditModal, setIsAllowEditModal] = useState(true)
   const [isAllowCreateModal, setIsAllowCreateModal] = useState(true)
   const [rowToUpdate, setRowToUpdate] = useState({});
@@ -86,7 +85,6 @@ const AdminPanelDataGridDisplay = ({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isFormDeleting, setIsFormDeleting] = useState(false);
-
   const location = useLocation();
 
   useEffect(() => {
@@ -94,13 +92,11 @@ const AdminPanelDataGridDisplay = ({
     setIsRefetching(true);
     setIsAllowCreateModal(props.allowCreateModal);
     setIsAllowEditModal(props.allowEditModal);
-
     getApiData();
   }, [location.pathname, props]);
 
   const getApiData = async () => {
     !data.length ? setIsLoading(true) : setIsRefetching(true);
-
     try {
       const response = await axios.get(API_BASE_URL);
       console.log(response.data)
@@ -116,7 +112,6 @@ const AdminPanelDataGridDisplay = ({
       setIsError(true);
       console.error("Error fetching data:", error);
     }
-
     setIsError(false);
     setIsLoading(false);
     setIsRefetching(false);
@@ -125,7 +120,6 @@ const AdminPanelDataGridDisplay = ({
   const postApiData = async (propertiesToCreate) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToCreate) {
         if (key === "galleryImages") {
           propertiesToCreate.galleryImages.forEach((image) => {
@@ -140,7 +134,6 @@ const AdminPanelDataGridDisplay = ({
       for (const [key, value] of formData.entries()) {
         console.log(key, value);
       }
-
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
       return responseCode;
@@ -154,13 +147,11 @@ const AdminPanelDataGridDisplay = ({
   const updateApiData = async (targetIdToUpdate, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
           formData.append(key, propertiesToUpdate[key]);
         }
       }
-
       const response = await axios.patch(
         API_BASE_URL + targetIdToUpdate,
         formData
@@ -196,12 +187,10 @@ const AdminPanelDataGridDisplay = ({
   const handleCreateNewRow = (values) => {
     data.push(values);
     setData([...data]);
-
     const responseCode = postApiData(values);
     if (responseCode === 201) {
       getApiData();
     }
-
     return responseCode;
   };
 
@@ -288,7 +277,6 @@ const AdminPanelDataGridDisplay = ({
                 </IconButton>
               </Tooltip>
             )}
-
             <Tooltip arrow placement="right" title="Delete">
               <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                 <Delete />
@@ -310,7 +298,6 @@ const AdminPanelDataGridDisplay = ({
         isLoading={isLoading}
         API_BASE_IMAGE_URL={API_BASE_IMAGE_URL}
       />
-
       <DeleteItemModal
         isOpen={isDeleteModalOpen}
         onClose={() => {
@@ -358,11 +345,8 @@ export const CreateUpdateItemModal = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       setIsFormSending(true);
-      //alert(JSON.stringify(values, null, 2));
-
       let responseCode = -1;
       let responseStatusProps = { ...responseStatus };
-
       if (isRowToUpdateEmpty) {
         const convertedToArrayPlates = convertPropertiesToArray(values);
         if (convertedToArrayPlates !== null) {
@@ -370,7 +354,6 @@ export const CreateUpdateItemModal = ({
         }
       } else {
         const modifiedProperties = getModifiedProperties(values, rowToUpdate);
-
         if (modifiedProperties === null) {
           responseStatusProps = {
             ...responseStatusProps,
@@ -414,13 +397,11 @@ export const CreateUpdateItemModal = ({
           messageTitle: "Error",
         };
       }
-
       if (responseCode === -1 || responseCode === 201 || responseCode === 204) {
         setTimeout(() => {
           onCloseHandler();
         }, 1500);
       }
-
       setResponseStatus(responseStatusProps);
       setIsFormSending(false);
     },
@@ -428,7 +409,6 @@ export const CreateUpdateItemModal = ({
 
   const getModifiedProperties = (newRow = {}, oldRow = {}) => {
     const modifiedProperties = {};
-
     for (const key in newRow) {
       if (newRow.hasOwnProperty(key) && oldRow.hasOwnProperty(key)) {
         if (newRow[key] !== oldRow[key]) {
@@ -436,21 +416,17 @@ export const CreateUpdateItemModal = ({
         }
       }
     }
-
     if (Object.keys(modifiedProperties).length == 0) {
       return null;
     }
-
     if ("img" in rowToUpdate) {
       delete rowToUpdate.img;
     }
-
     return modifiedProperties;
   };
 
   function convertPropertiesToArray(inputObject) {
     const outputObject = { ...inputObject };
-
     const propertiesToConvert = [
       "starter",
       "mainCourse",
@@ -459,7 +435,6 @@ export const CreateUpdateItemModal = ({
       "characteristics",
       "categories",
     ];
-
     for (const propertyName in outputObject) {
       if (outputObject[propertyName] instanceof FileList) {
         outputObject[propertyName] = Array.from(outputObject[propertyName]);
@@ -475,7 +450,6 @@ export const CreateUpdateItemModal = ({
         }
       }
     }
-
     return outputObject;
   }
 
@@ -638,7 +612,6 @@ export const CreateUpdateItemModal = ({
               ))}
             </Stack>
           </form>
-
           <Toolbar />
         </DialogContent>
         <DialogActions sx={{ p: "1.25rem" }}>
@@ -696,7 +669,6 @@ const DeleteItemModal = ({
     messageTitle: "",
   });
   const submitButtonLabel = isFormDeleting ? "DELETING..." : "DELETE";
-
   const onConfirmHandler = async () => {
     setIsFormDeleting(true);
     const responseCode = await onSubmitDeleteHandler(rowToDelete);
@@ -704,18 +676,14 @@ const DeleteItemModal = ({
     if (responseCode === 204) {
       const updatedData = data.filter((item) => item.id !== rowToDelete);
       setData(updatedData);
-
       setResponseStatus({
         ...responseStatus,
         status: "success",
         message: "Item was deleted successfully",
         messageTitle: "Delete",
       });
-
       setIsFormSubmitted(true);
-
       onClose();
-
       setTimeout(() => {
         setIsFormSubmitted(false);
       }, 3000);

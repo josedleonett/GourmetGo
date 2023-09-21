@@ -16,7 +16,6 @@ function AdminPanelPlatesDessertDisplay() {
   });
   const [editMode, setEditMode] = useState(false);
   const [editDrinkId, setEditDrinkId] = useState(null);
-
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "name", headerName: "Name", width: 200 },
@@ -69,7 +68,6 @@ function AdminPanelPlatesDessertDisplay() {
       formData.append("name", newDrinkData.name);
       formData.append("image", newDrinkData.imageFile);
       formData.append("price", newDrinkData.price);
-
       await axios.post(API_BASE_URL + "create", formData);
       fetchData();
       setNewDrinkData({ name: "", image: "", price: 0, imageFile: null });
@@ -95,7 +93,6 @@ function AdminPanelPlatesDessertDisplay() {
       formData.append("name", newDrinkData.name);
       formData.append("image", newDrinkData.imageFile);
       formData.append("price", newDrinkData.price);
-
       await axios.patch(API_BASE_URL + editDrinkId, formData);
       fetchData();
       setEditMode(false);

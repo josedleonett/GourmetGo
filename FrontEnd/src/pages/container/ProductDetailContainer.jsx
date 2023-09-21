@@ -27,7 +27,6 @@ const ProductDetailContainer = ({ accessToken }) => {
           .then((response) => response.json())
           .then((data) => {
             setProductData(data);
-            console.log(data);
           })
           .catch((error) =>
             console.error("Error fetching product data:", error)
@@ -36,7 +35,6 @@ const ProductDetailContainer = ({ accessToken }) => {
         fetch(`http://localhost:8080/v1/bundle/${id}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             setProductData(data);
           })
           .catch((error) =>

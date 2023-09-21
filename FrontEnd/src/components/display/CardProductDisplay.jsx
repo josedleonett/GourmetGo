@@ -30,7 +30,6 @@ const CardProductDisplay = ({
   if (cookies !== undefined && cookies.token) {
     decodedToken = jwtDecode(cookies.token);
   }
-
   const handleIconClick = () => {
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
     const bundleId = id;

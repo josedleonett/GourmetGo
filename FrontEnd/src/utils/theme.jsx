@@ -1,6 +1,3 @@
-
-// ESTA ES UN TEMA QUE ME GENERO CHAT GPT QUE ESTOY USANDO DE PRUEBA
-
 import "@fontsource/josefin-sans";
 import { createTheme } from "@mui/material";
 

@@ -28,4 +28,11 @@ public class ReviewController {
                 .path("/{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    //====================Delete====================//
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        reviewService.deleteReviewById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

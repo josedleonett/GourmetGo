@@ -20,10 +20,10 @@ import ProductSearchedContainer from "./components/container/ProductSearchedCont
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 import UserFavoriteContainer from "./pages/container/UserFavoriteContainer";
+import UserReservaionContainer from "./pages/container/UserReservationContainer"
 
 function Main() {
   const [cookies] = useCookies(['token']);
-  
   
   let decodedToken;
 
@@ -87,6 +87,10 @@ function Main() {
         {
           path: "/favorites",
           element: <UserFavoriteContainer />,
+        },
+        {
+          path: "/reservations",
+          element: <UserReservaionContainer />,
         },
       ],
     },

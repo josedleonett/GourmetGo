@@ -20,7 +20,6 @@ const CardProductGridDisplay = ({ list, setIdToDelete }) => {
   const handleChange = (event, value) => {
     event.preventDefault();
     setPage(value);
-
     containerRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
