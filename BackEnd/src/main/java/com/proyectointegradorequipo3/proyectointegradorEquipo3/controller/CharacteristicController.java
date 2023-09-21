@@ -30,7 +30,6 @@ public class CharacteristicController {
     private final CharacteristicServiceImpl characteristicService;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCharacteristic(@Valid @RequestBody CharacteristicCreateRequest request) {
         long id = characteristicService.saveCharacteristic(request);
@@ -66,7 +65,6 @@ public class CharacteristicController {
     }
 
     //====================Update====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCharacteristic(@PathVariable Long id,
@@ -75,7 +73,6 @@ public class CharacteristicController {
     }
 
     //===================Delete===================//
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCharacteristicById(@PathVariable Long id) {

@@ -31,7 +31,6 @@ public class PlateController {
     private final GetAllServiceImpl getAllService;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createPlate(@Valid PlateCreateRequest request) {
         long id = plateService.savePlate(request);
@@ -66,7 +65,6 @@ public class PlateController {
 
 
     //====================Update====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePlate(@PathVariable("id") @NotNull Long id, @ModelAttribute @Valid PlateUpdateRequest request) throws Exception {
@@ -74,7 +72,6 @@ public class PlateController {
     }
 
     //====================Delete====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlate(@PathVariable @NotBlank @Valid Long id) throws Exception {

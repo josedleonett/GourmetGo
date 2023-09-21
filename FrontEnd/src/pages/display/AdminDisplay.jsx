@@ -20,6 +20,7 @@ import { BiDish } from "react-icons/bi";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import axios from "axios";
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
@@ -31,6 +32,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   const [drinksOptions, setDrinksOptions] = useState([]);
   const [characteristicsOptions, setCharacteristicsOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [drinksData, setDrinksData] = useState(null);
 
   const getOptions = async (API_BASE_URL, filter) => {
     try {
@@ -51,6 +53,8 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       console.error("Error get Options:", error);
     }
   };
+
+  const [matchDrinksList, setMatchDrinksList] = useState([])
 
   useEffect(() => {
     const fetchPlateOptions = async () => {
@@ -83,104 +87,15 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
       galleryImages: false,
       categories: false,
       terms: false,
+      comment: false,
     },
   };
-
   //RENDER DETAIL PANEL:
-  const bundlesRenderDetailPanel = ({ row }) => (
+  const reservesRenderDetailPanel = ({ row }) => {
+    return(
     <Container>
       <Container>
         <List>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <BiDish size="30" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Starter:"
-              secondary={
-                <>
-                  {row.original.starter &&
-                    row.original.starter.map((starterItem) => (
-                      <Box>
-                        <Typography
-                          key={`starterItemId_${starterItem.id}`}
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {starterItem.name}
-                        </Typography>
-                        {` — ${starterItem.description}`}
-                      </Box>
-                    ))}
-                </>
-              }
-            />
-          </ListItem>
-
-          <Divider variant="inset" component="li" />
-
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <RiRestaurant2Line size="30" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Main Course:"
-              secondary={
-                <>
-                  {row.original.mainCourse &&
-                    row.original.mainCourse.map((mainCourseItem) => (
-                      <Box>
-                        <Typography
-                          key={`mainCourseItemId_${mainCourseItem.id}`}
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {mainCourseItem.name}
-                        </Typography>
-                        {` — ${mainCourseItem.description}`}
-                      </Box>
-                    ))}
-                </>
-              }
-            />
-          </ListItem>
-
-          <Divider variant="inset" component="li" />
-
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <GiPieSlice size="30" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Dessert:"
-              secondary={
-                <>
-                  {row.original.desserts &&
-                    row.original.desserts.map((dessertsItem) => (
-                      <Box>
-                        <Typography
-                          key={`dessertsItemId_${dessertsItem.id}`}
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {dessertsItem.name}
-                        </Typography>
-                        {` — ${dessertsItem.description}`}
-                      </Box>
-                    ))}
-                </>
-              }
-            />
-          </ListItem>
-
-          <Divider variant="inset" component="li" />
-
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <MdLocalBar size="30" />
@@ -199,7 +114,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                           variant="body2"
                           color="text.primary"
                         >
-                          {drinksItem.name}
+                          {drinksItem.quantity}
                         </Typography>
                         {` — `}
                       </Box>
@@ -208,10 +123,162 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               }
             />
           </ListItem>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <EditNoteIcon fontSize="large" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Indications:"
+              secondary={
+                <>
+                      <Box>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {row.original.comment}
+                        </Typography>
+                        {` — `}
+                      </Box>
+                </>
+              }
+            />
+          </ListItem>
         </List>
       </Container>
     </Container>
   );
+  }
+
+
+
+
+  const bundlesRenderDetailPanel = ({ row }) => {
+  
+    return (
+      <Container>
+        <Container>
+          <List>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <BiDish size="30" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Starter:"
+                secondary={
+                  <>
+                    {row.original.starter &&
+                      row.original.starter.map((starterItem) => (
+                        <Box key={`starterItemId_${starterItem.id}`}>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {starterItem.name}
+                          </Typography>
+                          {` — ${starterItem.description}`}
+                        </Box>
+                      ))}
+                  </>
+                }
+              />
+            </ListItem>
+  
+            <Divider variant="inset" component="li" />
+  
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <RiRestaurant2Line size="30" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Main Course:"
+                secondary={
+                  <>
+                    {row.original.mainCourse &&
+                      row.original.mainCourse.map((mainCourseItem) => (
+                        <Box key={`mainCourseItemId_${mainCourseItem.id}`}>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {mainCourseItem.name}
+                          </Typography>
+                          {` — ${mainCourseItem.description}`}
+                        </Box>
+                      ))}
+                  </>
+                }
+              />
+            </ListItem>
+  
+            <Divider variant="inset" component="li" />
+  
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <GiPieSlice size="30" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Dessert:"
+                secondary={
+                  <>
+                    {row.original.desserts &&
+                      row.original.desserts.map((dessertsItem) => (
+                        <Box key={`dessertsItemId_${dessertsItem.id}`}>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {dessertsItem.name}
+                          </Typography>
+                          {` — ${dessertsItem.description}`}
+                        </Box>
+                      ))}
+                  </>
+                }
+              />
+            </ListItem>
+  
+            <Divider variant="inset" component="li" />
+  
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <MdLocalBar size="30" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Drinks:"
+                secondary={
+                  <>
+                    {row.original.drinks &&
+                      row.original.drinks.map((drinksItem, index) => (
+                        <Box key={`drinkItemId_${drinksItem.id}`}>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {drinksItem.name}
+                          </Typography>
+                          {` — `}
+                        </Box>
+                      ))}
+                  </>
+                }
+              />
+            </ListItem>
+          </List>
+        </Container>
+      </Container>
+    );
+  }
 
   //COLUMNS DEFINITION:
   const bundlesDataGridProps = {
@@ -637,6 +704,67 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
     ],
   };
 
+  const reservesDataGridProps = {
+    API_BASE_URL: API_BASE_URL + "booking/",
+    API_BASE_IMAGE_URL: API_BASE_IMAGE_URL,
+    initialState: initialState,
+    columns: [
+      {
+        accessorKey: "bundleName",
+        id: "bundleName",
+        header: "Bundle Name",
+        size: 140,
+      },
+      {
+        accessorKey: "id",
+        id: "id",
+        header: "Reserve number",
+        size: 140,
+      },
+      {
+        accessorKey: "user",
+        id: "user",
+        header: "User ID",
+        size: 140,
+      },
+      {
+        accessorKey: "diners",
+        id: "diners",
+        header: "Diners",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "price",
+        id: "price",
+        header: "Price",
+        isMultiline: true,
+        size: 140,
+      },
+      {
+        accessorKey: "date",
+        id: "date",
+        header: "Date",
+        isMultiline: true,
+        size: 140,
+      },
+      // {
+      //   accessorKey: "drinks",
+      //   id: "drinks",
+      //   header: "Drinks",
+      //   isMultiline: true,
+      //   size: 140,
+      // },
+      {
+        accessorKey: "comment",
+        id: "comment",
+        header: "Comment",
+        isMultiline: true,
+        size: 140,
+      },
+    ],
+  };
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -716,12 +844,9 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
               element={<AdminPanelDataGridDisplay props={usersDataGridProps} />}
             />
             <Route
-              path="characteristic"
-              element={
-                <AdminPanelDataGridDisplay
-                  props={characteristicsDataGridProps}
-                />
-              }
+              path="reserves"
+              element={<AdminPanelDataGridDisplay props={reservesDataGridProps} renderDetailPanel={reservesRenderDetailPanel}/>}
+
             />
             <Route path="/*" element={<NotFoundContainer />} />
           </Routes>

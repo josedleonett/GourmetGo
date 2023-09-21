@@ -117,6 +117,7 @@ const ProductDetailDisplay = ({
   const [totalPrice, setTotalPrice] = useState(0);
   const commentsPerPage = 5;
   const startIndex = (CommentsPage - 1) * commentsPerPage;
+  const [comments, setComments] = useState('');
   const endIndex = startIndex + commentsPerPage;
   const [drinkQuantities, setDrinkQuantities] = useState({});
   const [pricePerPerson, setPricePerPerson] = useState(0);
@@ -538,6 +539,10 @@ const ProductDetailDisplay = ({
     },
   });
 
+  const handleCommentsChange = (event) => {
+    setComments(event.target.value);
+  };
+
   const addReviewHandleCancel = () => {
     setIsCommentFormOpen(false);
     setBadWordsResponse([]);
@@ -557,6 +562,7 @@ const ProductDetailDisplay = ({
         quantity: drinkQuantities[drink?.id] || "",
       })),
       date: formattedDate,
+      comment: comments || '',
       bundle: productData?.id || "",
       price: 0,
     };
@@ -1367,6 +1373,8 @@ const ProductDetailDisplay = ({
                                     variant="outlined"
                                     label="Write your comments here"
                                     sx={{ marginTop: 2 }}
+                                    value={comments}
+                                    onChange={handleCommentsChange}
                                   />
                                 </Box>
                               )}

@@ -43,7 +43,6 @@ public class BookingController {
 
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) throws IOException {
         long id = bookingService.saveBooking(request);
@@ -60,7 +59,6 @@ public class BookingController {
     }
 
     //====================Display by id====================//
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getById(@Valid @NotNull @PathVariable("id") Long id) {
         BookingDto booking = bookingService.searchBookingById(id);
@@ -72,7 +70,6 @@ public class BookingController {
     }
 
     //====================Display by userId====================//
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(path = "/byUser/{id}")
     public ResponseEntity<?> getAllBookingByUserId(@Valid @NotNull @PathVariable("id") Long id) {
         List<BookingDto> bookingDtos = bookingService.searchAllBookingByUserId(id);
@@ -102,7 +99,6 @@ public class BookingController {
     }
 
     //====================Delete====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBookingById(id);

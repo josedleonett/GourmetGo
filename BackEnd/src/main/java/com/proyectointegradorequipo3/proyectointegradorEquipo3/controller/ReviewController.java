@@ -24,7 +24,6 @@ public class ReviewController {
     private final ReviewServiceImpl reviewService;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(path = "/create")
     public ResponseEntity<Long> createReview(@Valid @RequestBody ReviewCreateRequest request) throws Exception {
         long id = reviewService.saveReview(request);
@@ -37,7 +36,6 @@ public class ReviewController {
 
 
     //====================Delete====================//
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         reviewService.deleteReviewById(id);

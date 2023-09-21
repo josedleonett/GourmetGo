@@ -28,7 +28,7 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@ModelAttribute @Valid CategoryCreateRequest request,
                                                @RequestPart MultipartFile image) {
@@ -68,7 +68,6 @@ public class CategoryController {
     }
 
     //====================Update====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyCategory(@PathVariable Long id, @ModelAttribute @Valid CategoryUpdateRequest updateModel) {
@@ -76,7 +75,7 @@ public class CategoryController {
     }
 
     //===================Delete===================//
-    @PreAuthorize("hasRole('ADMIN')")
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable Long id) {
