@@ -170,7 +170,6 @@ public class AuthController {
         return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteUser")
     public String deleteUser(@RequestParam String id) {
         userRepository.deleteById(Long.parseLong(id));

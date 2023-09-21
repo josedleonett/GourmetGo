@@ -38,7 +38,6 @@ public class BundleController {
     private final CharacteristicServiceImpl characteristicService;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
                                              @RequestPart(required = false) MultipartFile image,
@@ -70,14 +69,12 @@ public class BundleController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/byUser/{userId}")
     public ResponseEntity<List<BundleForCardDto>> getFavoriteBundlesForCards(@PathVariable Long userId) {
         List<BundleForCardDto> bundles = bundleService.searchBundlesForCards(userId);
         return ResponseEntity.ok(bundles);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("{userId}/bundleDetail/{bundleId}")
     public ResponseEntity<BundleDtoDetailUser> getFavoriteBundleById(@PathVariable Long userId, @PathVariable Long bundleId) {
         BundleDtoDetailUser bundle = bundleService.searchBundleByIdAndUser(userId, bundleId);
@@ -128,14 +125,12 @@ public class BundleController {
 
     //====================Update====================//
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateBundle(@PathVariable Long id, @ModelAttribute @Valid BundleUpdateRequest request) {
         bundleService.modifyBundle(id, request);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping("/rating/{id}")
     public ResponseEntity<Void> updateRating(@PathVariable Long id, RatingUpdateRequest request) {
         bundleService.ratingModify(id, request);
@@ -144,7 +139,6 @@ public class BundleController {
 
 
     //====================Deletes====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBundle(@PathVariable Long id) {
         bundleService.deleteBundleById(id);

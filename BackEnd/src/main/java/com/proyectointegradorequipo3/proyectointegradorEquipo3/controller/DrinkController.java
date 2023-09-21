@@ -33,7 +33,6 @@ public class DrinkController {
     private final ModelMapper mapper;
 
     //====================Create====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createPlate( @Valid DrinkCreateRequest request) {
         long id = drinkService.saveDrink(request);
@@ -74,7 +73,6 @@ public class DrinkController {
     }
 
     //====================Update====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateDrink(@PathVariable("id") @NotNull Long id, @Valid DrinkUpdateRequest request) throws Exception {
@@ -83,7 +81,6 @@ public class DrinkController {
 
 
     //====================Deletes====================//
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDrink(@PathVariable Long id) {
