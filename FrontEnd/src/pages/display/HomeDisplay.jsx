@@ -59,7 +59,6 @@ const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
               <CarouselCategoryContainer elementsList={categories} />
             </Container>
           </Box>
-
           <Box component="section">
             <Typography
               variant="h4"
