@@ -22,7 +22,7 @@ public class BookingDto {
 
     private LocalDate date;
 
-    private List<Long> drinks;
+    private List<DrinkQuantityDto> drinks;
 
     private Integer diners;
 

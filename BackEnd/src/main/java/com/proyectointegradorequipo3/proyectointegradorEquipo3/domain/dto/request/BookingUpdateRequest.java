@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.DrinkQuantity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class BookingUpdateRequest {
 
     private LocalDate date;
 
-    private List<Long> drinks;
+    private List<DrinkQuantity> drinks;
 
     private Integer diners;
 
