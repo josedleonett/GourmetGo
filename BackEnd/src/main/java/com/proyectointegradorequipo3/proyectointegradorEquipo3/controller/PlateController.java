@@ -8,6 +8,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Pla
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,7 +31,7 @@ public class PlateController {
     private final GetAllServiceImpl getAllService;
 
     //====================Create====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createPlate(@Valid PlateCreateRequest request) {
         long id = plateService.savePlate(request);
@@ -65,7 +66,7 @@ public class PlateController {
 
 
     //====================Update====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePlate(@PathVariable("id") @NotNull Long id, @ModelAttribute @Valid PlateUpdateRequest request) throws Exception {
@@ -73,7 +74,7 @@ public class PlateController {
     }
 
     //====================Delete====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlate(@PathVariable @NotBlank @Valid Long id) throws Exception {

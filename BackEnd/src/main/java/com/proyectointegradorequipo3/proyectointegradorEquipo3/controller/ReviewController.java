@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class ReviewController {
     private final ReviewServiceImpl reviewService;
 
     //====================Create====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(path = "/create")
     public ResponseEntity<Long> createReview(@Valid @RequestBody ReviewCreateRequest request) throws Exception {
         long id = reviewService.saveReview(request);
@@ -35,6 +37,7 @@ public class ReviewController {
 
 
     //====================Delete====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         reviewService.deleteReviewById(id);
