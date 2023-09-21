@@ -336,8 +336,18 @@ const HeaderDisplay = ({ accessToken }) => {
           >
             Favorites
           </Typography>
-          <Typography>
-            <p>Reservations</p>
+          <Typography
+            component={Link}
+            to="/reservations"
+            onClick={() => setUserDrawerOpen(false)}
+            sx={{
+              color: "black",
+              cursor: "pointer",
+              textDecoration: "none",
+              margin: "20px 0",
+            }}
+          >
+            Reservations
           </Typography>
           <Typography
             sx={{ color: "red", cursor: "pointer" }}

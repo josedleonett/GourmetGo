@@ -1111,7 +1111,7 @@ const ProductDetailDisplay = ({
                                   <div style={{ textAlign: "center" }}>
                                     <Typography>
                                       <strong>
-                                        Total price: ${totalPrice}
+                                        Total price: ${totalPrice} USD
                                       </strong>
                                     </Typography>
                                   </div>
@@ -1159,7 +1159,7 @@ const ProductDetailDisplay = ({
                                                       color="textPrimary"
                                                     >
                                                       {drink.name} (Price per
-                                                      unit: {drink.price})
+                                                      unit: {drink.price} USD)
                                                     </Typography>
                                                     <TextField
                                                       type="number"
@@ -1224,7 +1224,7 @@ const ProductDetailDisplay = ({
                               </Box>
                               <div style={{ textAlign: "center" }}>
                                 <Typography>
-                                  <strong>Total price: ${totalPrice}</strong>
+                                  <strong>Total price: ${totalPrice} USD</strong>
                                 </Typography>
                               </div>
                             </Box>
@@ -1269,15 +1269,15 @@ const ProductDetailDisplay = ({
                                 })}
                                 <Divider />
                                 <Typography>
-                                  Drinks price: ${totalDrinkPrice}
+                                  Drinks price: ${totalDrinkPrice} USD
                                 </Typography>
                                 <Typography>
-                                  Diners price: ${pricePerPerson}
+                                  Diners price: ${pricePerPerson} USD
                                 </Typography>
                                 <Divider />
                                 <Divider />
                                 <Typography>
-                                  <strong> Total price: ${totalPrice}</strong>
+                                  <strong> Total price: ${totalPrice} USD</strong>
                                 </Typography>
                               </Box>
                               <Dialog
@@ -1315,7 +1315,7 @@ const ProductDetailDisplay = ({
                                     <li>
                                       <Typography>
                                         <strong>Total price by diners: </strong>{" "}
-                                        ${pricePerPerson}
+                                        ${pricePerPerson} USD
                                       </Typography>
                                     </li>
                                     <li>
@@ -1327,7 +1327,7 @@ const ProductDetailDisplay = ({
                                     <li>
                                       <Typography>
                                         <strong>Total price: </strong> $
-                                        {totalPrice}
+                                        {totalPrice} USD
                                       </Typography>
                                     </li>
                                   </ul>
