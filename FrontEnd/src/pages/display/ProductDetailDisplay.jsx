@@ -50,6 +50,8 @@ import {
   StepLabel,
   formLabelClasses,
   CircularProgress,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -82,6 +84,8 @@ import {
 } from "formik";
 import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
@@ -964,8 +968,7 @@ const ProductDetailDisplay = ({
                         justifyContent: "center",
                         gap: "2vw",
                       }}
-                    >
-                    </Box>
+                    ></Box>
                   </LocalizationProvider>
                 ) : (
                   <Formik
@@ -1155,7 +1158,8 @@ const ProductDetailDisplay = ({
                                                       component="span"
                                                       color="textPrimary"
                                                     >
-                                                      {drink.name} (Price per unit: {drink.price})
+                                                      {drink.name} (Price per
+                                                      unit: {drink.price})
                                                     </Typography>
                                                     <TextField
                                                       type="number"
@@ -1249,11 +1253,12 @@ const ProductDetailDisplay = ({
                               />
                             </Box>
                           )}
-                                                                               {activeStep === 3 && (
+                          {activeStep === 3 && (
                             <Box>
-                              <Box sx={{alignItems: "center"}}>
+                              <Box sx={{ alignItems: "center" }}>
                                 {productData.drinks.map((drink, index) => {
-                                  const quantity = drinkQuantities[drink.id] || 0;
+                                  const quantity =
+                                    drinkQuantities[drink.id] || 0;
                                   const drinkTotal = quantity * drink.price;
 
                                   return (
@@ -1264,13 +1269,13 @@ const ProductDetailDisplay = ({
                                 })}
                                 <Divider />
                                 <Typography>
-                                   Drinks price: ${totalDrinkPrice}
+                                  Drinks price: ${totalDrinkPrice}
                                 </Typography>
                                 <Typography>
-                                   Diners price: ${pricePerPerson}
+                                  Diners price: ${pricePerPerson}
                                 </Typography>
-                                <Divider/>
-                                <Divider/>
+                                <Divider />
+                                <Divider />
                                 <Typography>
                                   <strong> Total price: ${totalPrice}</strong>
                                 </Typography>
@@ -1358,17 +1363,17 @@ const ProductDetailDisplay = ({
                               },
                             }}
                           >
-                          {/* Botones de navegación entre pasos */}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
-                              },
-                            }}
-                          ></Box>
+                            {/* Botones de navegación entre pasos */}
+                            <Box
+                              p={2}
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                "& > button": {
+                                  margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                                },
+                              }}
+                            ></Box>
                             {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
                               <Button
                                 variant="outlined"
@@ -1695,6 +1700,18 @@ const ProductDetailDisplay = ({
                         secondary={comment.date}
                       />
                       <Rating readOnly value={comment.rating} size="small" />
+                      <Tooltip title="Delete" arrow>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => {}}
+                        >
+                          <MoreVertIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Menu>
+                        <DeleteIcon fontSize="small" />
+                        <MenuItem>Delete</MenuItem>
+                      </Menu>
                     </ListItem>
                     <ListItemText
                       primary={comment.title}
