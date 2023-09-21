@@ -37,13 +37,14 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: "30vh", 
+            marginTop: "30vh",
+            height: "20vw" 
           }}
         >
           <Box
             sx={{
-              padding: 1,
-              position: "absolute",
+              position: "relative",
+              bottom: "5vw",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -53,14 +54,6 @@ const ProductSearchDisplay = (filteredOptions, categorieList, bundleList) => {
             <Typography variant="h6">Bundles not found</Typography>
             <Button onClick={() => navigate("/")}>Go home</Button>
           </Box>
-          <Hidden mdDown>
-            <Box
-              sx={{ position: "absolute", right: "-5vw", height: "60%" }}
-              component="img"
-              alt="The house from the offer."
-              src="images/confusing-chef.png"
-            />
-          </Hidden>
         </Box>
       )}
     </Box>
