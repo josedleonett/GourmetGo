@@ -183,9 +183,6 @@ public class BookingServiceImpl implements IBookingService {
             bookingDto.setDate(request.getDate());
         }
 
-        if (request.getDrinks() != null) {
-            bookingDto.setDrinks(request.getDrinks());
-        }
 
         if (request.getDiners() != null) {
             bookingDto.setDiners(request.getDiners());

@@ -5,6 +5,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Bundle;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.DrinkQuantity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DrinkQuantityDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -13,8 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import org.mapstruct.Mapper;
+
 @Mapper(componentModel = "spring")
 public class BookingMapper {
+
+    public static DrinkQuantityDto toDto(DrinkQuantity drinkQuantity) {
+        DrinkQuantityDto dto = new DrinkQuantityDto();
+        dto.setId(drinkQuantity.getId());
+        dto.setDrinkId(drinkQuantity.getDrinkId());
+        dto.setQuantity(drinkQuantity.getQuantity());
+        return dto;
+    }
 
     public static BookingDto toDto(Booking booking) {
         BookingDto dto = new BookingDto();
@@ -28,7 +41,7 @@ public class BookingMapper {
         dto.setComment(booking.getComment());
 
         if (booking.getDrinks() != null) {
-            dto.setDrinks(booking.getDrinks().stream().map(DrinkQuantity::getId).collect(Collectors.toList()));
+            dto.setDrinks(booking.getDrinks().stream().map(BookingMapper::toDto).collect(Collectors.toList()));
         } else {
             dto.setDrinks(new ArrayList<>());
         }
@@ -40,6 +53,7 @@ public class BookingMapper {
         return dto;
     }
 }
+
 
 
 
