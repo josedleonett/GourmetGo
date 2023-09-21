@@ -10,6 +10,10 @@ build:
   script:
     - cd BackEnd
     - docker build -t mi-aplicacion .
+    - docker save -o mi-aplicacion.tar mi-aplicacion
+  artifacts:
+    paths:
+      - mi-aplicacion.tar
 
 deploy:
   image: debian:bullseye-slim
@@ -21,7 +25,6 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > /root/.ssh/id_rsa
     - chmod 600 /root/.ssh/id_rsa
     - eval $(ssh-agent -s)
-    # Intenta agregar la clave. Si falla, conviértela a PEM y luego agrégala.
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - || (echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-keygen -p -m PEM -f /root/.ssh/id_rsa > /root/.ssh/id_rsa.pem && ssh-add /root/.ssh/id_rsa.pem)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
@@ -34,10 +37,9 @@ deploy:
     - echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
     - apt-get update
     - apt-get install -y docker-ce docker-ce-cli containerd.io
-    - docker build -t $DOCKER_USERNAME/mi-aplicacion:latest BackEnd # Aquí está la línea que hemos añadido
+    - docker load -i mi-aplicacion.tar
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker tag mi-aplicacion $DOCKER_USERNAME/mi-aplicacion:latest
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 'docker pull $DOCKER_USERNAME/mi-aplicacion:latest && docker run -d -p 8080:8080 $DOCKER_USERNAME/mi-aplicacion:latest'
-
 
