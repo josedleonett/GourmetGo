@@ -1372,7 +1372,7 @@ const ProductDetailDisplay = ({
                                             <strong>
                                               Total drinks price:{" "}
                                             </strong>{" "}
-                                            ${totalDrinkPrice}
+                                            ${totalDrinkPrice} USD
                                           </Typography>
                                         </li>
                                         <li>
