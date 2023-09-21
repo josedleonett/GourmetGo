@@ -92,8 +92,6 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
   };
   //RENDER DETAIL PANEL:
   const reservesRenderDetailPanel = ({ row }) => {
-
-    console.log(row.original)
     return(
     <Container>
       <Container>
@@ -267,7 +265,7 @@ const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
                             variant="body2"
                             color="text.primary"
                           >
-                            {drinkDetails[index] ? drinkDetails[index].name : 'Unknown Drink'}
+                            {drinksItem.name}
                           </Typography>
                           {` — `}
                         </Box>
