@@ -240,14 +240,14 @@ const ProductDetailDisplay = ({
     const bundleId = id;
     if (isFavorite !== null && isFavorite) {
       fetch(
-        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        `${API_BASE_URL}user/${decodedToken.id}/favorites/${bundleId}`,
         {
           method: "DELETE",
         }
       );
     } else {
       fetch(
-        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        `${API_BASE_URL}user/${decodedToken.id}/favorites/${bundleId}`,
         {
           method: "POST",
         }
@@ -294,7 +294,7 @@ const ProductDetailDisplay = ({
     setTotalRatings(newTotalRatings);
     setAverageRating(newAverageRating);
     fetch(
-      `http://localhost:8080/v1/bundle/rating/${productData.id}?rating=${newAverageRating}&totalRates=${newTotalRatings}`,
+      `${API_BASE_URL}bundle/rating/${productData.id}?rating=${newAverageRating}&totalRates=${newTotalRatings}`,
       {
         method: "PATCH",
         headers: {
@@ -355,7 +355,7 @@ const ProductDetailDisplay = ({
       if (isUnavailable) {
         // Manejar la fecha no disponible si es necesario
       }
-      fetch(`http://localhost:8080/v1/booking/count?date=${formattedDate}`)
+      fetch(`${API_BASE_URL}booking/count?date=${formattedDate}`)
         .then((response) => {
           console.log(response);
           if (!response.ok) {
@@ -569,7 +569,7 @@ const ProductDetailDisplay = ({
   }
 
   const handleSubmitConfirmation = () => {
-    fetch("http://localhost:8080/v1/booking/create", {
+    fetch(`${API_BASE_URL}booking/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1869,7 +1869,7 @@ const ProductDetailDisplay = ({
                             <IconButton
                               id={comment.id}
                               disabled={
-                                (decodedToken &&
+                                (true || decodedToken &&
                                   decodedToken.id !== comment.userId) ||
                                 isAddReviewFormSending
                               }

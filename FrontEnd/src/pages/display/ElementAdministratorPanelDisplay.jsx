@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
 export const ElementAdministratorPanelDisplay = () => {
   const { category } = useParams();
@@ -46,7 +47,7 @@ export const ElementAdministratorPanelDisplay = () => {
   }));
 
   const [data, setData] = useState([]);
-  let apiUrl = `http://localhost:8080/v1/${category}/`;
+  let apiUrl = `${API_BASE_URL}${category}/`;
 
   const apiURLMemoized = useMemo(() => apiUrl, [apiUrl]);
 
@@ -100,7 +101,7 @@ export const ElementAdministratorPanelDisplay = () => {
                     <strong>{key}:</strong>{" "}
                     {key === "image" ? (
                       <img
-                        src={`http://localhost:8080/asset/get-object?key=${item.image}`}
+                        src={`${API_BASE_IMAGE_URL}{item.image}`}
                         alt={item.name}
                         style={{ maxWidth: "100%", maxHeight: "100px" }}
                       />

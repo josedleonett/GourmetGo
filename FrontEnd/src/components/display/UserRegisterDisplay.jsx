@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const UserRegisterDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -83,7 +84,7 @@ const UserRegisterDisplay = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/auth/resendConfirmationEmail?email=${inputs.email}`,
+        `${API_BASE_URL}auth/resendConfirmationEmail?email=${inputs.email}`,
         {
           method: "POST",
           headers: {
@@ -205,7 +206,7 @@ const UserRegisterDisplay = () => {
     if (Object.values(inputSuccess).every((success) => success)) {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:8080/auth/createUser", {
+        const response = await fetch(`http://34.230.52.146:8080/auth/createUser`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

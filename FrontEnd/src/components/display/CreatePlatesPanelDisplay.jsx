@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 // eslint-disable-next-line no-unused-vars
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const CreatePlatesPanelDisplay = () => {
   const navigateTo = useNavigate();
@@ -20,7 +21,7 @@ const CreatePlatesPanelDisplay = () => {
     formData.append("description", description);
     formData.append("image", image);
     try {
-      const response = await fetch("http://localhost:8080/v1/plate/create", {
+      const response = await fetch(`${API_BASE_URL}plate/create`, {
         method: "POST",
         body: formData,
       });

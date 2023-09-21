@@ -1,6 +1,7 @@
 import ProductSearchedDisplay from "../display/ProductSearchedDisplay";
 import { useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const ProductSearchedContainer = () => {
   const [productData, setProductData] = useState(null);
@@ -12,14 +13,14 @@ const ProductSearchedContainer = () => {
   const filteredId = searchParams.get("selectedFiltersId");
 
   useEffect(() => {
-    fetch("http://localhost:8080/v1/category/")
+    fetch(`${API_BASE_URL}category/`)
     .then(response => response.json())
     .then(data => {;
       const categoryNames = data.map(category => ({ id: category.id, name: category.name, bundles: category.bundles }));
       setCategorieList(categoryNames);
     })
     .catch(error => console.error("Error fetching categories:", error));
-    fetch(`http://localhost:8080/v1/bundle/`)
+    fetch(`${API_BASE_URL}bundle/`)
       .then((response) => response.json())
       .then((data) => {
         const categoryIds = filteredId ? filteredId.split(";") : [];

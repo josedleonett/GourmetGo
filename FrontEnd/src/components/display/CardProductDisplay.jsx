@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
 const CardProductDisplay = ({
   id,
@@ -36,14 +37,14 @@ const CardProductDisplay = ({
     if (isFavorite) {
       setIdToDelete(id)
       fetch(
-        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        `${API_BASE_URL}user/${decodedToken.id}/favorites/${bundleId}`,
         {
           method: "DELETE",
         }
       );
     } else {
       fetch(
-        `http://localhost:8080/v1/user/${decodedToken.id}/favorites/${bundleId}`,
+        `${API_BASE_URL}user/${decodedToken.id}/favorites/${bundleId}`,
         {
           method: "POST",
         }
@@ -101,7 +102,7 @@ const CardProductDisplay = ({
               component="img"
               height="150px"
               id={`image-${i}`}
-              image={`http://localhost:8080/asset/get-object?key=${img}`}
+              image={`${API_BASE_IMAGE_URL}${img}`}
               alt={`image-${i}`}
               sx={{ position: "relative" }}
             />

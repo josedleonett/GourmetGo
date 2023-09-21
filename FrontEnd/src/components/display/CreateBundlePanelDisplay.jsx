@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -32,9 +33,9 @@ const CreateBundlePanelDisplay = () => {
     const fetchData = async () => {
       try {
         const [plateRes, drinkRes, categoryRes] = await Promise.all([
-          axios.get("http://localhost:8080/v1/plate/"),
-          axios.get("http://localhost:8080/v1/drink/"),
-          axios.get("http://localhost:8080/v1/category/"),
+          axios.get(`${API_BASE_URL}plate/`),
+          axios.get(`${API_BASE_URL}drink/`),
+          axios.get(`${API_BASE_URL}category/`),
         ]);
         setStarters(plateRes.data.filter((item) => item.type === "starter"));
         setMainCourses(
@@ -79,7 +80,7 @@ const CreateBundlePanelDisplay = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/v1/bundle/create",
+        `${API_BASE_URL}bundle/create`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

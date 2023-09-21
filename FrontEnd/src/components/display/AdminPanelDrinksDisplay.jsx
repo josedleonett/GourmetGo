@@ -22,9 +22,10 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
-const API_BASE_URL = "http://localhost:8080/v1/drink/";
-const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
+const API_BASE_URL_local = `${API_BASE_URL}drink/`;
+const API_BASE_IMAGE_URL_local = API_BASE_IMAGE_URL;
 
 function EditToolbar(props) {
   const { createApiData } = props;
@@ -150,7 +151,7 @@ export default function AdminPanelDrinksDisplay() {
 
   const apiDataGet = async () => {
     try {
-      const response = await axios.get(API_BASE_URL);
+      const response = await axios.get(API_BASE_URL_local);
       setRows(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -165,7 +166,7 @@ export default function AdminPanelDrinksDisplay() {
           formData.append(key, propertiesToCreate[key]);
         }
       }
-      const response = await axios.post(API_BASE_URL + "create", formData);
+      const response = await axios.post(API_BASE_URL_local + "create", formData);
       const responseCode = response.status;
       apiDataGet();
       return responseCode;
@@ -184,7 +185,7 @@ export default function AdminPanelDrinksDisplay() {
           formData.append(key, propertiesToUpdate[key]);
         }
       }
-      await axios.patch(API_BASE_URL + targetToUpdateId, formData);
+      await axios.patch(API_BASE_URL_local + targetToUpdateId, formData);
       apiDataGet();
     } catch (error) {
       console.error("Error update data:", error);
@@ -193,7 +194,7 @@ export default function AdminPanelDrinksDisplay() {
 
   const apiDataDelete = async (targetToDeleteId) => {
     try {
-      await axios.delete(API_BASE_URL + targetToDeleteId);
+      await axios.delete(API_BASE_URL_local + targetToDeleteId);
     } catch (error) {
       console.error("Error delete data:", error.response);
     }
@@ -270,7 +271,7 @@ export default function AdminPanelDrinksDisplay() {
         <Box
           component="img"
           height="90%"
-          src={API_BASE_IMAGE_URL + params.value}
+          src={API_BASE_IMAGE_URL_local + params.value}
         />
       ),
     },

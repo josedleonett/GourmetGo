@@ -4,9 +4,10 @@ import "photoswipe/style.css";
 import { Box } from "@mui/system";
 import { Container, Grid, Skeleton } from "@mui/material";
 import { useParams } from "react-router";
+import { API_BASE_IMAGE_URL } from "../../utils/urlApis";
 
 const CoverProductGalleryDisplay = ({ imgList, galleryId, isLoading }) => {
-  const URL_IMAGE_BASE = "http://localhost:8080/asset/get-object?key="
+  const URL_IMAGE_BASE = API_BASE_IMAGE_URL;
   const { id } = useParams();
 
   useEffect(() => {

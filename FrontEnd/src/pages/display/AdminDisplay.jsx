@@ -22,10 +22,9 @@ import { GiPieSlice } from "react-icons/gi";
 import { MdLocalBar } from "react-icons/md";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import axios from "axios";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
 const AdminDisplay = ({ sidebarMenu, menuSelected }) => {
-  const API_BASE_URL = "http://localhost:8080/v1/";
-  const API_BASE_IMAGE_URL = "http://localhost:8080/asset/get-object?key=";
   const location = useLocation();
 
   const [platesOptions, setPlatesOptions] = useState([]);

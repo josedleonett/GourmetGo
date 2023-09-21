@@ -9,6 +9,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const UserLogInDisplay = () => {
   const [inputs, setInputs] = useState({
@@ -71,7 +72,7 @@ const UserLogInDisplay = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch(`http://34.230.52.146:8080/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,6 +2,7 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const CreateDrinksPanelDisplay = () => {
   const navigateTo = useNavigate();
@@ -16,7 +17,7 @@ const CreateDrinksPanelDisplay = () => {
     formData.append("price", price);
     formData.append("image", image);
     try {
-      const response = await fetch("http://localhost:8080/v1/drink/create", {
+      const response = await fetch(`${API_BASE_URL}drink/create`, {
         method: "POST",
         body: formData,
       });
