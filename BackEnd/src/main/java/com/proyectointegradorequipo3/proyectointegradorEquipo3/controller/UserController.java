@@ -7,6 +7,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Use
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.relation.RoleNotFoundException;
@@ -24,7 +25,7 @@ public class UserController {
 
 
     //====================Display all====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUser() {
         List<UserDto> userDtos = userService.searchAllUser();
@@ -32,6 +33,7 @@ public class UserController {
     }
 
     //====================Get one by id====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         UserDto userDto = userService.searchUserById(id);
@@ -39,6 +41,7 @@ public class UserController {
     }
 
     //====================Get one by email====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/searchByEmail")
     public ResponseEntity<UserDto> searchUserByEmail(@RequestParam String email) {
         UserDto userDto = userService.searchUserByEmail(email);
@@ -52,6 +55,7 @@ public class UserController {
 
 
     //====================Get one by name or lastname====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/searchByNameOrLastName")
     public ResponseEntity<List<UserDto>> searchUserByName(@RequestParam String name, @RequestParam String lastName) {
         List<UserDto> userDtos = userService.searchUsersByNameOrLastName(name, lastName);
@@ -60,6 +64,7 @@ public class UserController {
     }
 
     //===================Delete===================//
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@PathVariable Long id) throws Exception {
@@ -67,7 +72,7 @@ public class UserController {
     }
 
     //====================Update====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyUser(@PathVariable Long userId, @ModelAttribute UserUpdateRequest updateRequest) throws RoleNotFoundException {
@@ -76,6 +81,7 @@ public class UserController {
 
 
     //====================Add favorite====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{userId}/favorites/{bundleId}")
     public synchronized ResponseEntity<Void> addBundleToFavorites(
             @PathVariable Long userId,
@@ -86,6 +92,7 @@ public class UserController {
 
 
     //====================Del favorite====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @DeleteMapping("/{userId}/favorites/{bundleId}")
     public synchronized  ResponseEntity<Void> removeBundleFromFavorites(
             @PathVariable Long userId,

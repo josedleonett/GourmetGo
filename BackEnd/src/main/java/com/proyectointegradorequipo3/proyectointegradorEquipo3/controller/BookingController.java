@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -42,6 +43,7 @@ public class BookingController {
 
 
     //====================Create====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) throws IOException {
         long id = bookingService.saveBooking(request);
@@ -58,6 +60,7 @@ public class BookingController {
     }
 
     //====================Display by id====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getById(@Valid @NotNull @PathVariable("id") Long id) {
         BookingDto booking = bookingService.searchBookingById(id);
@@ -69,6 +72,7 @@ public class BookingController {
     }
 
     //====================Display by userId====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(path = "/byUser/{id}")
     public ResponseEntity<?> getAllBookingByUserId(@Valid @NotNull @PathVariable("id") Long id) {
         List<BookingDto> bookingDtos = bookingService.searchAllBookingByUserId(id);
@@ -98,6 +102,7 @@ public class BookingController {
     }
 
     //====================Delete====================//
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBookingById(id);
