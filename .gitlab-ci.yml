@@ -28,7 +28,7 @@ deploy:
 
   script:
     - apt-get update
-    - apt-get install -y apt-transport-https apt-transport-https ca-certificates curl gnupg lsb-release
+    - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
     - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
     - echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
     - apt-get update
@@ -37,7 +37,9 @@ deploy:
     - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
     - docker push $DOCKER_USERNAME/mi-aplicacion:latest
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker stop $(sudo docker ps -q --filter 'publish=8080') || true"
+    - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker rm $(sudo docker ps -a -q --filter 'publish=8080') || true"
     - ssh -o StrictHostKeyChecking=no ubuntu@$MI_INSTANCIA_EC2 "sudo docker pull ${DOCKER_USERNAME}/mi-aplicacion:latest && sudo docker run -d -p 8080:8080 ${DOCKER_USERNAME}/mi-aplicacion:latest"
+
 
 
 
