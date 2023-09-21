@@ -550,6 +550,10 @@ const ProductDetailDisplay = ({
             title: "Reservation confirmed",
             text: "Your reservation has been confirmed successfully!",
           });
+          setProductData((prevState) => ({
+            ...prevState,
+            canUserReview: true,
+          }));
           return response.json();
         } else {
           Swal.fire({
