@@ -51,6 +51,7 @@ import {
   CircularProgress,
   Menu,
   MenuItem,
+  Backdrop,
 } from "@mui/material";
 import { bundleComments, cateringPackages } from "../../test/dataApiSample";
 import { useNavigate, useParams } from "react-router-dom";
@@ -382,6 +383,19 @@ const ProductDetailDisplay = ({
       .join("");
     return fullnameInitials;
   }
+  function calculateOfflineAverageRating(comments) {
+    if (comments.length === 0) {
+      return 0;
+    }
+
+    const ratings = comments.map((comment) => comment.rating);
+    const sumRatings = ratings.reduce(
+      (accumulator, rating) => accumulator + rating
+    );
+    const averageRating = sumRatings / comments.length;
+
+    return parseFloat(averageRating.toFixed(1));
+  }
 
   const handleSubmit = (values) => {
     console.log("Valores del formulario:", values);
@@ -423,7 +437,7 @@ const ProductDetailDisplay = ({
     setAnchorEl(null);
   };
 
-  const reviewOptionsMenuHandleDelete = async (event, reviewIdToDelete) => {
+  const reviewOptionsMenuHandleDelete = async ( reviewIdToDelete) => {
     setIsAddReviewFormSubmitted(false)
     setIsDeleteReviewFormSubmitted(false)
     setIsAddReviewFormSending(true)
@@ -440,6 +454,7 @@ const ProductDetailDisplay = ({
           return {
             ...prevProductData,
             reviews: updatedReviews,
+            rating: calculateOfflineAverageRating(prevProductData.reviews),
           };
         });
         setIsDeleteReviewFormSubmitted(true)
@@ -494,6 +509,7 @@ const ProductDetailDisplay = ({
             setProductData((prevProductData) => ({
               ...prevProductData,
               reviews: [newReviewValuesWithIdResponse, ...prevProductData.reviews],
+              rating: calculateOfflineAverageRating(prevProductData.reviews)
             }));
 
             setIsAddReviewFormSubmitted(true);
@@ -1818,8 +1834,9 @@ const ProductDetailDisplay = ({
                 {productData ? (
                   productData.reviews
                     .slice(startIndex, endIndex)
-                    .map((comment, index) => (
-                      <Box key={index} py={1}>
+                    .map((comment) => (
+                      <Box key={comment.id} py={1}>
+                        {console.log(comment.id)}
                         <ListItem>
                           <ListItemAvatar>
                             <Avatar>{getFullnameInitials(comment.name)}</Avatar>
@@ -1833,77 +1850,17 @@ const ProductDetailDisplay = ({
                             value={comment.rating}
                             size="small"
                           />
-                          <Tooltip title="Options" arrow>
+                          <Tooltip title="Delete" arrow>
                             <IconButton
-                              id="basic-button"
-                              aria-controls={
-                                isReviewOptionsOpen ? "basic-menu" : undefined
-                              }
-                              aria-haspopup="true"
-                              aria-expanded={
-                                isReviewOptionsOpen ? "true" : undefined
-                              }
-                              onClick={reviewOptionsMenuHandleClick}
-                            >
-                              <MoreVertIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                          <Menu
-                            id="reviews-options-menu"
-                            variant="menu"
-                            anchorEl={anchorEl}
-                            open={isReviewOptionsOpen}
-                            onClose={reviewOptionsMenuHandleClose}
-                            MenuListProps={{
-                              "aria-labelledby": "basic-button",
-                            }}
-                            elevation={1}
-                            sx={{
-                              "& .MuiPaper-root": {
-                                marginTop: 1,
-                                minWidth: 100,
-                                "& .MuiMenu-list": {
-                                  padding: "4px 0",
-                                },
-                                "& .MuiMenuItem-root": {
-                                  "& .MuiSvgIcon-root": {
-                                    fontSize: 18,
-                                    color: "secondary",
-                                    marginRight: 1.5,
-                                  },
-                                },
-                              },
-                            }}
-                          >
-                            <MenuItem
                               id={comment.id}
                               disabled={isAddReviewFormSending}
-                              onClick={(value) => {
-                                reviewOptionsMenuHandleDelete(
-                                  value,
-                                  comment.id
-                                );
+                              onClick={() => {
+                                reviewOptionsMenuHandleDelete(comment.id);
                               }}
                             >
-                              {isAddReviewFormSending ? (
-                                isAddReviewFormSubmitted ? (
-                                  <DoneIcon fontSize="small" color="primary" />
-                                ) : (
-                                  <CircularProgress
-                                    size={18}
-                                    sx={{ mr: 1.5 }}
-                                  />
-                                )
-                              ) : (
-                                <DeleteIcon fontSize="small" color="primary" />
-                              )}{" "}
-                              Delete
-                            </MenuItem>
-                            <MenuItem onClick={reviewOptionsMenuHandleClose}>
-                              <FlagIcon fontSize="small" color="primary" />{" "}
-                              Report
-                            </MenuItem>
-                          </Menu>
+                              <DeleteIcon fontSize="small" color="secondary" />
+                            </IconButton>
+                          </Tooltip>
                         </ListItem>
                         <ListItemText
                           primary={comment.title}
@@ -1977,6 +1934,9 @@ const ProductDetailDisplay = ({
             </Snackbar>
           )}
 
+          <Backdrop open={isAddReviewFormSending}>
+            <CircularProgress color="secondary"/>
+          </Backdrop>
           {
             <Snackbar
               open={isAddReviewFormSubmitted || isDeleteReviewFormSubmitted}
@@ -1998,10 +1958,10 @@ const ProductDetailDisplay = ({
                     : ""}
                 </AlertTitle>
                 {isAddReviewFormSubmitted
-                    ? "Thank you for your Feedback! Your Review Has Been Published."
-                    : isDeleteReviewFormSubmitted
-                    ? "Your review has been successfully removed. We appreciate your feedback!"
-                    : ""}
+                  ? "Thank you for your Feedback! Your Review Has Been Published."
+                  : isDeleteReviewFormSubmitted
+                  ? "Your review has been successfully removed. We appreciate your feedback!"
+                  : ""}
               </Alert>
             </Snackbar>
           }
