@@ -210,7 +210,6 @@ const AdminPanelMainDisplay = () => {
             Nutrition
           </Typography>
         )}
-
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton>
@@ -270,7 +269,6 @@ const AdminPanelMainDisplay = () => {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -289,7 +287,6 @@ const AdminPanelMainDisplay = () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -326,7 +323,6 @@ const AdminPanelMainDisplay = () => {
                 {visibleRows.map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -389,7 +385,6 @@ const AdminPanelMainDisplay = () => {
           label="Dense padding"
         />
       </Box>
-
       <Typography paragraph>
         Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
         ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum

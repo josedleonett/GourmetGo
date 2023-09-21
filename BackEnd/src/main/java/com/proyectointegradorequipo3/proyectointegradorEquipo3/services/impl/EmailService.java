@@ -1,5 +1,6 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.UserEntity;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -60,6 +61,41 @@ public class EmailService {
             throw new IOException(ex.getMessage());
         }
     }
+
+
+    public void sendBookingConfirmationEmail(UserEntity userEntity, Booking bookingEntity) throws IOException {
+        Email from = new Email("noreplygourmetgo@gmail.com");
+        String subject = "\uD83C\uDF89 Thank you for choosing GourmetGo! Your reservation has been confirmed. \uD83C\uDF7D";
+        Email to = new Email(userEntity.getEmail());
+
+        String htmlContent;
+        try {
+            htmlContent = loadHtmlContent("templates/bookingConfirmationEmail.html");
+            htmlContent = htmlContent.replace("{{name}}", userEntity.getName());
+            htmlContent = htmlContent.replace("{{lastName}}", userEntity.getLastName());
+            htmlContent = htmlContent.replace("{{email}}", userEntity.getEmail());
+            htmlContent = htmlContent.replace("{{bookingDate}}", bookingEntity.getDate().toString());
+            htmlContent = htmlContent.replace("{{bundle}}", bookingEntity.getBundle().getName());
+            // Add other placeholders as needed
+        } catch (IOException e) {
+            return;
+        }
+
+        Content content = new Content("text/html", htmlContent);
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sendGrid = new SendGrid(sendGridAPIKey);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sendGrid.api(request);
+        } catch (IOException ex) {
+            throw new IOException(ex.getMessage());
+        }
+    }
+
 }
 
 

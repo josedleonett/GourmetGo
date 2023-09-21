@@ -4,15 +4,19 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BookingCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.DateDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingCounterService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.BookingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,32 +33,79 @@ public class BookingController {
 
     private final BookingServiceImpl bookingService;
 
-    @GetMapping
-    public ResponseEntity<List<BookingDto>> getAllBooking() {
-        List<BookingDto> list = bookingService.searchAllBooking();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    private final BookingCounterService bookingCounter;
+
+    //====================Counter of booking====================//
+    @GetMapping("/count")
+    public ResponseEntity<Long> getBookingCount(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(bookingCounter.getCurrentCount(date));
     }
 
-    @GetMapping("/dates")
-    public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {
-        Set<DateDto> dates = bookingService.getBookingDatesAfterToday();
-        return ResponseEntity.ok(dates);
-    }
 
+    //====================Create====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(path = "/create")
-    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) {
+    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingCreateRequest request) throws IOException {
         long id = bookingService.saveBooking(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
     }
 
+    //====================Display all====================//
+    @GetMapping
+    public ResponseEntity<List<BookingDto>> getAllBooking() {
+        List<BookingDto> list = bookingService.searchAllBooking();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
+    //====================Display by id====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getById(@Valid @NotNull @PathVariable("id") Long id) {
+        BookingDto booking = bookingService.searchBookingById(id);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //====================Display by userId====================//
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping(path = "/byUser/{id}")
+    public ResponseEntity<?> getAllBookingByUserId(@Valid @NotNull @PathVariable("id") Long id) {
+        List<BookingDto> bookingDtos = bookingService.searchAllBookingByUserId(id);
+        if (bookingDtos != null) {
+            return ResponseEntity.ok(bookingDtos);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //====================Display after today====================//
+    @GetMapping("/dates")
+    public ResponseEntity<Set<DateDto>> getBookingDatesAfterToday() {
+        Set<DateDto> dates = bookingService.findBusyBookingDates();
+        return ResponseEntity.ok(dates);
+    }
+
+
+
+    //====================Display between date====================//
     @GetMapping("/betweenDate")
     public ResponseEntity<List<Booking>> getBookingBetweenDate(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         List<Booking> list = bookingService.getBookingBetweenDate(start, end);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //====================Delete====================//
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBookingById(id);
+        return ResponseEntity.noContent().build();
     }
 }

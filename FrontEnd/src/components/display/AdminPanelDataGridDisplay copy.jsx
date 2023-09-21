@@ -23,7 +23,11 @@ import {
   Modal,
   Stack,
   Toolbar,
-  Typography, IconButton, LinearProgress, Autocomplete, TextField,
+  Typography,
+  IconButton,
+  LinearProgress,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 
 export default function AdminPanelDataGridDisplay({ props }) {
@@ -50,10 +54,8 @@ export default function AdminPanelDataGridDisplay({ props }) {
       initialValues: {},
       onSubmit: async (values) => {
         setIsLoading(true);
-        alert(JSON.stringify(values, null, 2));
         const responseCode = await apiDataCreate(values);
         setIsFormSubmitted(true);
-
         if (responseCode === 201) {
           setIsResponseSuccess(true);
         } else {
@@ -158,7 +160,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
                   >
                     {isLoading ? "SAVING..." : "SAVE"}
                   </Button>
-
                   <Button
                     type="reset"
                     variant="contained"
@@ -196,22 +197,18 @@ export default function AdminPanelDataGridDisplay({ props }) {
   const apiDataCreate = async (propertiesToCreate) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToCreate) {
         if (propertiesToCreate.hasOwnProperty(key)) {
           formData.append(key, propertiesToCreate[key]);
         }
       }
-
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
       apiDataGet();
-
       return responseCode;
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error create data:", error);
-
       return responseCode;
     }
   };
@@ -219,7 +216,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
   const apiDataUpdate = async (targetToUpdateId, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
           formData.append(key, propertiesToUpdate[key]);
@@ -227,7 +223,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
       }
       await axios.patch(API_BASE_URL + targetToUpdateId, formData);
       apiDataGet();
-
     } catch (error) {
       console.error("Error update data:", error);
     }
@@ -265,7 +260,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-
     const editedRow = rows.find((row) => row.id === id);
     if (editedRow.isNew) {
       setRows(rows.filter((row) => row.id !== id));
@@ -282,11 +276,9 @@ export default function AdminPanelDataGridDisplay({ props }) {
         }
       }
     }
-
     if (Object.keys(modifiedProperties).length === 0) {
       return null;
     }
-
     return modifiedProperties;
   };
 
@@ -338,7 +330,6 @@ export default function AdminPanelDataGridDisplay({ props }) {
             />,
           ];
         }
-
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
@@ -397,11 +388,10 @@ export default function AdminPanelDataGridDisplay({ props }) {
   );
 }
 
-
 export function multiSelectColumn(params) {
   const apiRef = useGridApiContext();
 
-  apiRef.current.getCellValue
+  apiRef.current.getCellValue;
 
   return (
     <Autocomplete

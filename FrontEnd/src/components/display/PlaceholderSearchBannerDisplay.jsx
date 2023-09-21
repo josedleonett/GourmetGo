@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import IconButton from "@mui/material/IconButton";
-import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
@@ -12,16 +10,12 @@ const PlaceholderSearchBannerDisplay = ({
   handleCategoryId
 }) => {
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const searchSelectOnChange = (event, newValue) => {
     setSelectedFilters(newValue);
-    setIsCategorySelected(newValue.length > 0);
-    onSelectedFiltersChange(newValue);
+    handleCategorySelect(newValue);
   };
-  
-
 
   return (
     <>
@@ -58,6 +52,7 @@ const PlaceholderSearchBannerDisplay = ({
               variant="standard"
               InputProps={{
                 ...params.InputProps,
+                style: { width: "auto" },
                 startAdornment: (
                   <>
                     {selectedFilters.map((filter) => (
@@ -78,6 +73,7 @@ const PlaceholderSearchBannerDisplay = ({
               }}
             />
           )}
+          sx={{ minWidth: "150px" }}
         />
       </FormControl>
     </>

@@ -46,6 +46,7 @@ const ProductDetailContainer = ({ accessToken }) => {
   return (
     <ProductDetailDisplay
       productData={productData}
+      setProductData={setProductData}
       dates={dates}
       accessToken={accessToken}
     />

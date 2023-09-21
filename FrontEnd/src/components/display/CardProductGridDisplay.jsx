@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import CardProductContainer from "../container/CardProductContainer";
 import { Grid, Pagination, Container, Box, Skeleton, Stack } from "@mui/material";
 
-const CardProductGridDisplay = ({ list }) => {
+const CardProductGridDisplay = ({ list, setIdToDelete }) => {
   const [page, setPage] = useState(1);
   const containerRef = useRef(null);
 
@@ -20,7 +20,6 @@ const CardProductGridDisplay = ({ list }) => {
   const handleChange = (event, value) => {
     event.preventDefault();
     setPage(value);
-
     containerRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
@@ -42,6 +41,7 @@ const CardProductGridDisplay = ({ list }) => {
                   rating={item.rating}
                   numberDiners={item.numberDiners}
                   favorite={item.favorite}
+                  setIdToDelete={setIdToDelete}
                 />
               </Grid>
             ))

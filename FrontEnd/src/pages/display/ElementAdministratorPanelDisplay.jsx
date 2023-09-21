@@ -3,9 +3,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 
 export const ElementAdministratorPanelDisplay = () => {
   const { category } = useParams();
@@ -50,7 +48,6 @@ export const ElementAdministratorPanelDisplay = () => {
   const [data, setData] = useState([]);
   let apiUrl = `http://localhost:8080/v1/${category}/`;
 
-  // Utilizamos useMemo para almacenar la URL de la API
   const apiURLMemoized = useMemo(() => apiUrl, [apiUrl]);
 
   useEffect(() => {

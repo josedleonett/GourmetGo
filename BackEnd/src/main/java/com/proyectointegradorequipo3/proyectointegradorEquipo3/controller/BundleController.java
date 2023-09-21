@@ -12,6 +12,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.Cha
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl.GetAllServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,13 +38,20 @@ public class BundleController {
     private final CharacteristicServiceImpl characteristicService;
 
     //====================Create====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createBundle(@ModelAttribute @Valid BundleCreateRequest request,
-                                             @RequestPart MultipartFile image,
-                                             @RequestPart List<MultipartFile> galleryImages) throws ExecutionException, InterruptedException {
-        request.setImage(image);
-        request.setGalleryImages(galleryImages);
+                                             @RequestPart(required = false) MultipartFile image,
+                                             @RequestPart(required = false) List<MultipartFile> galleryImages)
+            throws Exception {
+
+        if (image != null) {
+            request.setImage(image);
+        }
+
+        if (galleryImages != null && !galleryImages.isEmpty()) {
+            request.setGalleryImages(galleryImages);
+        }
 
         Long bundleId = bundleService.saveBundle(request);
 
@@ -51,6 +59,7 @@ public class BundleController {
                 .path("/{id}").buildAndExpand(bundleId).toUri();
         return ResponseEntity.created(location).build();
     }
+
 
     //====================Display all====================//
 
@@ -61,12 +70,14 @@ public class BundleController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/byUser/{userId}")
     public ResponseEntity<List<BundleForCardDto>> getFavoriteBundlesForCards(@PathVariable Long userId) {
         List<BundleForCardDto> bundles = bundleService.searchBundlesForCards(userId);
         return ResponseEntity.ok(bundles);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("{userId}/bundleDetail/{bundleId}")
     public ResponseEntity<BundleDtoDetailUser> getFavoriteBundleById(@PathVariable Long userId, @PathVariable Long bundleId) {
         BundleDtoDetailUser bundle = bundleService.searchBundleByIdAndUser(userId, bundleId);
@@ -117,12 +128,14 @@ public class BundleController {
 
     //====================Update====================//
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateBundle(@PathVariable Long id, @ModelAttribute @Valid BundleUpdateRequest request) {
         bundleService.modifyBundle(id, request);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping("/rating/{id}")
     public ResponseEntity<Void> updateRating(@PathVariable Long id, RatingUpdateRequest request) {
         bundleService.ratingModify(id, request);
@@ -131,7 +144,7 @@ public class BundleController {
 
 
     //====================Deletes====================//
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBundle(@PathVariable Long id) {
         bundleService.deleteBundleById(id);

@@ -4,6 +4,7 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.reques
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BookingUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BookingDto;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IBookingService {
@@ -12,7 +13,7 @@ public interface IBookingService {
 
     BookingDto searchBookingById(Long id);
 
-    Long saveBooking(BookingCreateRequest request);
+    Long saveBooking(BookingCreateRequest request) throws IOException;
 
     void deleteBookingById(Long id) throws Exception;
 

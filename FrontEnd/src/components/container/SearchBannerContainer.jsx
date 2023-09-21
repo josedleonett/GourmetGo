@@ -1,10 +1,8 @@
 import SearchBannerDisplay from '../display/SearchBannerDisplay';
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 
-const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptions }) => {
-  const [selectedBundle, setSelectedBundle] = useState("");
-  const navigate = useNavigate();
+const SearchBannerContainer = ({ filterList, filterBundle }) => {
+  const [dates, setDates] = useState(null);
 
   useEffect(() => {
     const handleBundleSelected = (event) => {
@@ -12,22 +10,22 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
       window.location.href = `http://127.0.0.1:5173/product/${encodeURIComponent(bundleId)}`;
     };
 
+    fetch(`http://localhost:8080/v1/booking/dates`)
+        .then((response) => response.json())
+        .then((data) => setDates(data))
+        .catch((error) => console.error("Error fetching booking dates:", error));
+
     window.addEventListener('bundleSelected', handleBundleSelected);
     return () => {
       window.removeEventListener('bundleSelected', handleBundleSelected);
     };
   }, []);
 
-  const handleSearchSelect = (searchValue) => {
-    if (searchValue !== "" || searchValue !== null) {
-      navigate(`/search?filteredOptions=${searchValue}`);
-    }
-  }
-
   return (
     <SearchBannerDisplay
       filterList={filterList}
       filterBundle={filterBundle}
+      dates={dates}
       onBundleSelected={(bundleName) => {
         const selectedBundle = filterBundle.find((bundle) => bundle.name === bundleName);
         if (selectedBundle) {
@@ -35,7 +33,6 @@ const SearchBannerContainer = ({ filterList, filterBundle, onUpdateFilteredOptio
           window.dispatchEvent(selectedEvent);
         }
       }}
-      onSearchIconClick={handleSearchSelect}
     />
   );
 };

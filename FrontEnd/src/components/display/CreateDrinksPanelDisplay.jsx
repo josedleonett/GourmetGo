@@ -1,41 +1,34 @@
-import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import { Box } from '@mui/material';
-import { useNavigate  } from 'react-router-dom';
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CreateDrinksPanelDisplay = () => {
-
   const navigateTo = useNavigate();
-
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('image', image);
-
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("image", image);
     try {
-      const response = await fetch('http://localhost:8080/v1/drink/create', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/v1/drink/create", {
+        method: "POST",
         body: formData,
       });
-
       if (response.ok) {
         navigateTo(`/administration-panel/drink`);
       } else {
-        console.error('Failed to add drink');
+        console.error("Failed to add drink");
       }
     } catch (error) {
-      console.error('Error:', error.response);
+      console.error("Error:", error.response);
     }
   };
-
-  
 
   return (
     <>

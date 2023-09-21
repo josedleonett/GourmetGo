@@ -4,20 +4,14 @@ import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.BundleUpdateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.RatingUpdateRequest;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDtoDetailUser;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleForCardDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ExistNameException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBundleRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICategoryRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.ICharacteristicRepository;
-import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IUserRepository;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.*;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.IBundleService;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.services.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,10 +19,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -44,15 +36,21 @@ public class BundleServiceImpl implements IBundleService {
 
     private final DrinkServiceImpl drinkService;
 
+    private final IReviewRepository reviewRepository;
+
     private final ICharacteristicRepository characteristicRepository;
 
     private final ICategoryRepository categoryRepository;
 
     private final IUserRepository userRepository;
 
+    private final IBookingRepository bookingRepository;
+
     private final ModelMapper mapper;
 
     private final S3Service s3Service;
+
+    DecimalFormat df = new DecimalFormat("#.#");
 
     Logger logger = Logger.getLogger(BundleServiceImpl.class.getName());
 
@@ -64,7 +62,12 @@ public class BundleServiceImpl implements IBundleService {
     public BundleDto searchBundleDtoById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
-        return modelMapper.map(bundle, BundleDto.class);
+        BundleDto dto = modelMapper.map(bundle, BundleDto.class);
+        List<Review> reviews = reviewRepository.findByBundleId(id);
+        List<ReviewDto> reviewDtos = convertAndSortReviews(reviews);
+        dto.setReviews(reviewDtos);
+        dto.setRating((calculateAverageRating(reviewDtos)));
+        return dto;
     }
 
     public BundleDtoDetailUser searchBundleByIdAndUser(Long userId, Long bundleId) {
@@ -80,9 +83,31 @@ public class BundleServiceImpl implements IBundleService {
 
         BundleDtoDetailUser dto = mapper.map(bundle, BundleDtoDetailUser.class);
         dto.setFavorite(favoriteBundleIds.contains(bundle.getId()));
+        List<Review> reviews = reviewRepository.findByBundleId(bundleId);
+        List<ReviewDto> reviewDtos = convertAndSortReviews(reviews);
+        dto.setReviews(reviewDtos);
+
+        dto.getReviews().stream().map(review -> review.getRating());
+
+        boolean canReview = false;
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+        boolean containsBooking = bookings.stream()
+                .anyMatch(booking -> booking.getBundle().getId().equals(bundleId));
+
+        if (containsBooking) {
+            canReview = true;
+        }
+
+
+        dto.setCanUserReview(canReview);
+        dto.setRating(calculateAverageRating(reviewDtos));
+
+        dto.setPrice(calculateTotalPrice(bundle));
 
         return dto;
     }
+
 
     public List<BundleForCardDto> searchBundlesForCards(Long userId) {
         UserEntity user = userRepository.findById(userId)
@@ -106,7 +131,6 @@ public class BundleServiceImpl implements IBundleService {
     }
 
 
-
     @Cacheable(value = "searchBundleDtoByIdForCards", unless = "#result == null")
     public BundleForCardDto searchBundleDtoByIdForCards(Long id) {
         Bundle bundle = bundleRepository.findById(id)
@@ -118,96 +142,109 @@ public class BundleServiceImpl implements IBundleService {
     //===================Create===================//
     @Override
     @Transactional
-    public Long saveBundle(BundleCreateRequest request) throws ExecutionException, InterruptedException, java.util.concurrent.ExecutionException {
-
-        CompletableFuture<List<Plate>> starterFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getStarter(), "Starter"))
-                .exceptionally(ex -> {
-                    logger.info("Error getting starter plates: ");
-                    return null;
-                });
-
-        CompletableFuture<List<Plate>> mainCourseFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getMainCourse(), "Main course"))
-                .exceptionally(ex -> {
-                    logger.info("Error getting mainCourse plates: ");
-                    return null;
-                });
-
-        CompletableFuture<List<Plate>> dessertFuture = CompletableFuture.supplyAsync(() ->
-                plateService.validateAndGetPlates(request.getDesserts(), "Dessert"))
-                .exceptionally(ex -> {
-                    logger.info("Error getting dessert plates: ");
-                    return null;
-                });
-
-        CompletableFuture<List<Drink>> drinksFuture = CompletableFuture.supplyAsync(() ->
-                drinkService.validateAndGetDrink(request.getDrinks()))
-                .exceptionally(ex -> {
-                    logger.info("Error getting drinks ");
-                    return null;
-                });
-
-        CompletableFuture<List<Characteristic>> characteristicsFuture = CompletableFuture.supplyAsync(() ->
-                characteristicRepository.findByNameIn(request.getCharacteristics()))
-                .exceptionally(ex -> {
-                    logger.info("Error getting characteristics ");
-                    return null;
-                });
-
-        CompletableFuture<List<Category>> categoriesFuture = CompletableFuture.supplyAsync(() ->
-                categoryRepository.findByNameIn(request.getCategories()))
-                .exceptionally(ex -> {
-                    logger.info("Error getting categories ");
-                    return null;
-                });
-
-        CompletableFuture<String> keyImageFuture = CompletableFuture.supplyAsync(() ->
-                s3Service.putObject(request.getImage()))
-                .exceptionally(ex -> {
-                    logger.info("Error getting image");
-                    return null;
-                });
-
-        CompletableFuture<List<String>> keysFuture = CompletableFuture.supplyAsync(() ->
-                request.getGalleryImages().stream()
-                        .map(s3Service::putObject)
-                        .collect(Collectors.toList()))
-                .exceptionally(ex -> {
-                    logger.info("Error getting galleryImages " + ex.getMessage());
-                    return null;
-                });
-
-        CompletableFuture.allOf(starterFuture, mainCourseFuture, dessertFuture, drinksFuture,
-                characteristicsFuture, categoriesFuture, keyImageFuture, keysFuture).join();
-
-        List<Plate> starter = starterFuture.get();
-        List<Plate> mainCourse = mainCourseFuture.get();
-        List<Plate> dessert = dessertFuture.get();
-        List<Drink> drinks = drinksFuture.get();
-        List<Characteristic> characteristics = characteristicsFuture.get();
-        List<Category> categories = categoriesFuture.get();
-        String keyImage = keyImageFuture.get();
-        List<String> keys = keysFuture.get();
-
-        Bundle newBundle = Bundle.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .image(keyImage)
-                .galleryImages(keys)
-                .starter(starter)
-                .mainCourse(mainCourse)
-                .desserts(dessert)
-                .drinks(drinks)
-                .characteristics(characteristics)
-                .categories(categories)
-                .rating(0.0)
-                .terms(request.getTerms())
-                .build();
-
-        existsName(newBundle.getName(), newBundle.getId());
+    public Long saveBundle(BundleCreateRequest request) throws Exception {
+        validateRequest(request);
+        Map<String, CompletableFuture<?>> futureMap = initFutures(request);
+        waitForAllFutures(futureMap);
+        Bundle newBundle = constructBundle(request, futureMap);
+        validateBundleName(newBundle.getName());
         save(newBundle);
         return newBundle.getId();
+    }
+
+    private void validateRequest(BundleCreateRequest request) {
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name is mandatory!");
+        }
+    }
+
+    private Map<String, CompletableFuture<?>> initFutures(BundleCreateRequest request) {
+        Map<String, CompletableFuture<?>> futures = new HashMap<>();
+
+        if (request.getStarter() != null) {
+            futures.put("starter", CompletableFuture.supplyAsync(() ->
+                    plateService.validateAndGetPlates(request.getStarter(), "Starter")));
+        }
+
+        if (request.getMainCourse() != null) {
+            futures.put("mainCourse", CompletableFuture.supplyAsync(() ->
+                    plateService.validateAndGetPlates(request.getMainCourse(), "Main course")));
+        }
+
+        if (request.getDesserts() != null) {
+            futures.put("desserts", CompletableFuture.supplyAsync(() ->
+                    plateService.validateAndGetPlates(request.getDesserts(), "Dessert")));
+        }
+
+        if (request.getDrinks() != null) {
+            futures.put("drinks", CompletableFuture.supplyAsync(() ->
+                    drinkService.validateAndGetDrink(request.getDrinks())));
+        }
+
+        if (request.getCharacteristics() != null) {
+            futures.put("characteristics", CompletableFuture.supplyAsync(() ->
+                    characteristicRepository.findByNameIn(request.getCharacteristics())));
+        }
+
+        if (request.getCategories() != null) {
+            futures.put("categories", CompletableFuture.supplyAsync(() ->
+                    categoryRepository.findByNameIn(request.getCategories())));
+        }
+
+        if (request.getImage() != null) {
+            futures.put("keyImage", CompletableFuture.supplyAsync(() ->
+                    s3Service.putObject(request.getImage())));
+        }
+
+        if (request.getGalleryImages() != null) {
+            futures.put("galleryKeys", CompletableFuture.supplyAsync(() ->
+                    request.getGalleryImages().stream().map(s3Service::putObject).collect(Collectors.toList())));
+        }
+
+        return futures;
+    }
+
+    private void waitForAllFutures(Map<String, CompletableFuture<?>> futureMap) throws Exception {
+        CompletableFuture.allOf(futureMap.values().toArray(new CompletableFuture[0])).join();
+    }
+
+    private Bundle constructBundle(BundleCreateRequest request, Map<String, CompletableFuture<?>> futureMap) throws Exception {
+        double provisionalPrice = 0.;
+        Bundle.BundleBuilder builder = Bundle.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .rating(0.0)
+                .terms(request.getTerms());
+
+        if (futureMap.containsKey("starter"))
+            builder.starter((List<Plate>) futureMap.get("starter").get());
+
+        if (futureMap.containsKey("mainCourse"))
+            builder.mainCourse((List<Plate>) futureMap.get("mainCourse").get());
+
+        if (futureMap.containsKey("desserts"))
+            builder.desserts((List<Plate>) futureMap.get("desserts").get());
+
+        if (futureMap.containsKey("drinks"))
+            builder.drinks((List<Drink>) futureMap.get("drinks").get());
+
+        if (futureMap.containsKey("characteristics"))
+            builder.characteristics((List<Characteristic>) futureMap.get("characteristics").get());
+
+        if (futureMap.containsKey("categories"))
+            builder.categories((List<Category>) futureMap.get("categories").get());
+
+        if (futureMap.containsKey("keyImage"))
+            builder.image((String) futureMap.get("keyImage").get());
+
+        if (futureMap.containsKey("galleryKeys"))
+            builder.galleryImages((List<String>) futureMap.get("galleryKeys").get());
+
+        return builder.build();
+    }
+
+    private void validateBundleName(String name) {
+        existsName(name);
     }
 
     public void save(Bundle bundle) {
@@ -252,11 +289,13 @@ public class BundleServiceImpl implements IBundleService {
             existingBundle.setDrinks(drinks);
         }
 
-        if (request.getCategories() != null) {List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
+        if (request.getCategories() != null) {
+            List<Category> categories = categoryRepository.findByNameIn(request.getCategories());
             existingBundle.setCategories(categories);
         }
 
-        if (request.getCharacteristics() != null) {List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
+        if (request.getCharacteristics() != null) {
+            List<Characteristic> characteristics = characteristicRepository.findByNameIn(request.getCharacteristics());
             existingBundle.setCharacteristics(characteristics);
         }
 
@@ -315,12 +354,17 @@ public class BundleServiceImpl implements IBundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
 
-        s3Service.deleteObject(bundle.getImage());
+        if (bundle.getImage() != null) {
+            s3Service.deleteObject(bundle.getImage());
+        }
 
-        List<CompletableFuture<Void>> futures = bundle.getGalleryImages().stream()
-                .map(image -> CompletableFuture.runAsync(() -> s3Service.deleteObject(image)))
-                .collect(Collectors.toList());
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        if (bundle.getGalleryImages() != null && !bundle.getGalleryImages().isEmpty()) {
+            List<CompletableFuture<Void>> futures = bundle.getGalleryImages().stream()
+                    .filter(Objects::nonNull)
+                    .map(image -> CompletableFuture.runAsync(() -> s3Service.deleteObject(image)))
+                    .collect(Collectors.toList());
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        }
 
         bundleRepository.deleteUserFavoriteBundlesByBundleId(id);
         bundleRepository.deleteById(id);
@@ -328,11 +372,57 @@ public class BundleServiceImpl implements IBundleService {
 
 
     //===================Util===================//
+
+    private void existsName(String name) {
+        Bundle existingBundle = bundleRepository.findByName(name);
+        if (existingBundle != null) {
+            throw new ExistNameException(name);
+        }
+    }
+
     private void existsName(String name, Long excludeId) {
         Bundle existingBundle = bundleRepository.findByName(name);
         if (existingBundle != null && !existingBundle.getId().equals(excludeId)) {
             throw new ExistNameException(name);
         }
+    }
+
+    public List<ReviewDto> convertAndSortReviews(List<Review> reviews) {
+        return reviews.stream()
+                .map(review -> mapper.map(review, ReviewDto.class))
+                .sorted(Comparator.comparing(ReviewDto::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public double calculateTotalPrice(Bundle bundle) {
+        double provisionalPrice = 0.;
+
+        provisionalPrice += bundle.getStarter().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getMainCourse().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        provisionalPrice += bundle.getDesserts().stream()
+                .mapToDouble(Plate::getPrice)
+                .sum();
+
+        return provisionalPrice;
+    }
+
+    public double calculateAverageRating(List<ReviewDto> reviews) {
+        double average = reviews.stream()
+                .mapToDouble(ReviewDto::getRating)
+                .average()
+                .orElse(0.0);
+
+        return roundToOneDecimal(average);
+    }
+
+    double roundToOneDecimal(double value) {
+        return Math.round(value * 10.0) / 10.0;
     }
 
 }

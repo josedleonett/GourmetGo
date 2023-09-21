@@ -1,78 +1,83 @@
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, useTheme, useMediaQuery, Stack, Skeleton } from "@mui/material";
+import {
+  Container,
+  useTheme,
+  useMediaQuery,
+  CircularProgress,
+} from "@mui/material";
 import CardProductGridContainer from "../../components/container/CardProductGridContainer";
 import CarouselCategoryContainer from "../../components/container/CarouselCategoryContainer";
 import SearchBannerContainer from "../../components/container/SearchBannerContainer";
-import { useState } from "react";
 
 const HomeDisplay = ({ categories, bundles, categorieList, bundleList }) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
-  const [filteredOptions, setFilteredOptions] = useState([]);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isLoading, setIsLoading] = useState(true);
 
-  const CardSkeleton = () => {
-    return(
-      <Stack spacing={1}>
-      <Skeleton variant="rectangular" width={210} height={40} />
-      <Skeleton variant="circular" width={40} height={40} />
-      <Skeleton variant="rectangular" width={210} height={60} />
-      <Skeleton variant="rounded" width={210} height={60} />
-    </Stack>
-    )
-  }
-
-  const updateFilteredOptions = (options) => {
-    setFilteredOptions(options);
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
   return (
     <>
-      <SearchBannerContainer filterList={categorieList} filterBundle={bundleList} onUpdateFilteredOptions={updateFilteredOptions}/>
-      
-      <Box component="section">
-        <Typography
-          variant="h4"
-          backgroundColor="secondary.light"
-          marginTop={3}
-          marginBottom={2}
-          paddingX={3}
-          maxWidth="30vw"
-          textAlign="right"
-          sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
         >
-          Categories
-        </Typography>
-        <Container maxWidth="100vw">
-        {categories && categories.length > 0 ? (
-            <CarouselCategoryContainer elementsList={categories} />
-          ) : (
-            <Box sx={{display: "flex", justifyContent: "space-evenly"}}>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CardSkeleton key={index} />
-              ))}
-            </Box>
-          )}
-          </Container>
-      </Box>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <SearchBannerContainer
+            filterList={categorieList}
+            filterBundle={bundleList}
+          />
 
-      <Box component="section">
-        <Typography
-          variant="h4"
-          backgroundColor="secondary.light"
-          marginTop={3}
-          marginBottom={2}
-          paddingX={3}
-          maxWidth="30vw"
-          textAlign="right"
-          sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
-        >
-          Packages
-        </Typography>
-        <Container component="section" maxWidth="100vw">
-          <CardProductGridContainer list={bundles} />
-        </Container>
-      </Box>
+          <Box component="section">
+            <Typography
+              variant="h4"
+              backgroundColor="secondary.light"
+              marginTop={3}
+              marginBottom={2}
+              paddingX={3}
+              maxWidth="30vw"
+              textAlign="right"
+              sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
+            >
+              Categories
+            </Typography>
+            <Container maxWidth="100vw">
+              <CarouselCategoryContainer elementsList={categories} />
+            </Container>
+          </Box>
+          <Box component="section">
+            <Typography
+              variant="h4"
+              backgroundColor="secondary.light"
+              marginTop={3}
+              marginBottom={2}
+              paddingX={3}
+              maxWidth="30vw"
+              textAlign="right"
+              sx={{ fontSize: isSmallScreen ? "1.5rem" : "2rem" }}
+            >
+              Packages
+            </Typography>
+            <Container component="section" maxWidth="100vw">
+              <CardProductGridContainer list={bundles} />
+            </Container>
+          </Box>
+        </>
+      )}
     </>
   );
 };
