@@ -140,6 +140,15 @@ const ProductDetailDisplay = ({
     }));
   };
 
+  const calcularTotalBebidas = (bebidas, cantidades) => {
+    let total = 0;
+    bebidas.forEach((bebida) => {
+      const cantidad = cantidades[bebida.id] || 0;
+      total += cantidad;
+    });
+    return total;
+  };
+
   useEffect(() => {
     // Calcular el precio en función de las cantidades de bebidas y comensales
     let totalPrice = 0;
@@ -171,7 +180,7 @@ const ProductDetailDisplay = ({
   const [activeStep, setActiveStep] = useState(0);
 
   // Define los pasos de tu formulario en un array
-  const steps = ["Step 1", "Step 2", "Step 3"];
+  const steps = ["", "", "", ""];
 
   function countCommentsByRating(comments) {
     const ratingCounts = {};
@@ -472,15 +481,15 @@ const ProductDetailDisplay = ({
     var formattedDate = today;
 
     initialValuesReserveForm = {
-      user: decodedToken.id,
+      user: decodedToken?.id || '',
       diners: diners,
-      drinks: productData.drinks.map((drink) => ({
-        drinkId: drink.id,
-        quantity: drinkQuantities[drink.id] || "",
+      drinks: (productData?.drinks || []).map((drink) => ({
+        drinkId: drink?.id || '',
+        quantity: drinkQuantities[drink?.id] || '',
       })),
       date: formattedDate,
-      bundle: productData.id,
-      price: 0,
+      bundle: productData?.id || '',
+      price: 0
     };
   }
 
@@ -919,7 +928,6 @@ const ProductDetailDisplay = ({
                     <DemoContainer components={["MobileDatePicker"]}>
                       <DemoItem label="Select reserve date">
                         <MobileDatePicker
-                          defaultValue={dayjs()}
                           onAccept={(date) => {
                             handleDateAcceptAndCheckUnavailable(date);
                             setSelectedDate(date);
@@ -957,25 +965,6 @@ const ProductDetailDisplay = ({
                         gap: "2vw",
                       }}
                     >
-                      <Rating
-                        name="combined-rating"
-                        value={userRating !== null ? userRating : averageRating}
-                        precision={0.1}
-                        readOnly={userRating !== null || !isUserLoggedIn}
-                        onChange={(event, newValue) =>
-                          handleRatingChange(newValue)
-                        }
-                        onChangeActive={(event, newHover) => {
-                          setHover(newHover);
-                        }}
-                      />
-                      <Typography>
-                        {userRating !== null
-                          ? userRating.toFixed(1)
-                          : averageRating !== null
-                          ? averageRating.toFixed(1)
-                          : ""}
-                      </Typography>
                     </Box>
                   </LocalizationProvider>
                 ) : (
@@ -1166,7 +1155,7 @@ const ProductDetailDisplay = ({
                                                       component="span"
                                                       color="textPrimary"
                                                     >
-                                                      {drink.name}
+                                                      {drink.name} (Price per unit: {drink.price})
                                                     </Typography>
                                                     <TextField
                                                       type="number"
@@ -1258,6 +1247,34 @@ const ProductDetailDisplay = ({
                                 label="Write your comments here"
                                 sx={{ marginTop: 2 }}
                               />
+                            </Box>
+                          )}
+                                                                               {activeStep === 3 && (
+                            <Box>
+                              <Box sx={{alignItems: "center"}}>
+                                {productData.drinks.map((drink, index) => {
+                                  const quantity = drinkQuantities[drink.id] || 0;
+                                  const drinkTotal = quantity * drink.price;
+
+                                  return (
+                                    <Typography key={index}>
+                                      {`${drink.name}: $${drinkTotal}`}
+                                    </Typography>
+                                  );
+                                })}
+                                <Divider />
+                                <Typography>
+                                   Drinks price: ${totalDrinkPrice}
+                                </Typography>
+                                <Typography>
+                                   Diners price: ${pricePerPerson}
+                                </Typography>
+                                <Divider/>
+                                <Divider/>
+                                <Typography>
+                                  <strong> Total price: ${totalPrice}</strong>
+                                </Typography>
+                              </Box>
                               <Dialog
                                 open={openConfirmationModal}
                                 onClose={handleCancelClick}
@@ -1341,6 +1358,17 @@ const ProductDetailDisplay = ({
                               },
                             }}
                           >
+                          {/* Botones de navegación entre pasos */}
+                          <Box
+                            p={2}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              "& > button": {
+                                margin: "0 8px", // Ajusta el espacio horizontal entre los botones
+                              },
+                            }}
+                          ></Box>
                             {activeStep !== 0 && ( // Muestra "Back" en todos los pasos excepto el primero
                               <Button
                                 variant="outlined"
