@@ -400,6 +400,7 @@ const ProductDetailDisplay = ({
 
   const [badWordsResponse, setBadWordsResponse] = useState([]);
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
+  const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] = useState(false)
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -412,13 +413,14 @@ const ProductDetailDisplay = ({
       body: "",
     },
     validationSchema: validationSchemaAddReview,
-    onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (newReviewValues) => {
+      alert(JSON.stringify(newReviewValues, null, 2));
       setIsAddReviewFormSending(true);
 
       try {
         const moderatorContentResponse = await axios.get(
-          MODERATOR_CONTENT_URL_BASE + `&msg=${values.title} ${values.body} `
+          MODERATOR_CONTENT_URL_BASE +
+            `&msg=${newReviewValues.title} ${newReviewValues.body} `
         );
 
         const hasBadWords = moderatorContentResponse.data.bad_words.length != 0;
@@ -428,7 +430,7 @@ const ProductDetailDisplay = ({
           console.log("POSTING...");
           const response = await axios.post(
             API_BASE_URL + "review/create",
-            JSON.stringify(values),
+            JSON.stringify(newReviewValues),
             {
               headers: {
                 "Content-Type": "application/json",
@@ -436,11 +438,25 @@ const ProductDetailDisplay = ({
             }
           );
           console.log(response);
+          if (response.status === 201) {
+            setProductData((prevProductData) => ({
+              ...prevProductData,
+              reviews: [newReviewValues, ...prevProductData.reviews],
+            }));
+
+            setIsAddReviewFormSubmitted(true)
+            addReviewHandleCancel();
+          }
         }
       } catch (error) {
         console.error(error.message);
+
+      } finally {
+        setIsAddReviewFormSending(false);
+        setTimeout(() => {
+          setIsAddReviewFormSubmitted(true);
+        }, 5000);
       }
-      setIsAddReviewFormSending(false);
     },
   });
 
@@ -448,8 +464,6 @@ const ProductDetailDisplay = ({
     setIsCommentFormOpen(false);
     setBadWordsResponse([]);
     formikAddReview.resetForm();
-
-    return <Dialog open={true}>hi</Dialog>;
   };
 
   let initialValuesReserveForm = {};
@@ -1715,6 +1729,22 @@ const ProductDetailDisplay = ({
           </Alert>
         </Snackbar>
       )}
+
+      {
+        <Snackbar open={isAddReviewFormSubmitted}>
+          <Alert
+            onClose={() => {
+              setIsAddReviewFormSubmitted(false);
+            }}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            <AlertTitle>Review Posted Successfully!</AlertTitle>
+            Thank you for your Feedback! Your Review Has Been Published.
+          </Alert>
+        </Snackbar>
+      }
     </Box>
   );
 };
