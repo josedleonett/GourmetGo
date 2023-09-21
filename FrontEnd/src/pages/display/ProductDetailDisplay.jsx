@@ -316,7 +316,6 @@ const ProductDetailDisplay = ({
   };
 
   const openReserveModal = () => {
-    console.log(dates);
     if (dates && Array.isArray(dates) && dates.length > 0) {
       const unavailableDates = dates.map((item) => item.date);
       setOpenDialog(true);
@@ -359,10 +358,8 @@ const ProductDetailDisplay = ({
   const handleDateAcceptAndCheckUnavailable = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM-DD");
-      console.log("Selected Date:", formattedDate);
       const isUnavailable = isDateUnavailable(dayjs(date));
       if (isUnavailable) {
-        console.log("Selected Date is unavailable.");
       }
       setSelectedDate(formattedDate); // Establecer la fecha seleccionada
     } else {
@@ -403,7 +400,6 @@ const ProductDetailDisplay = ({
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
   const handleConfirmClick = () => {
-    console.log("Form values:", initialValuesReserveForm);
     setOpenConfirmationModal(true);
   };
 
@@ -449,7 +445,6 @@ const ProductDetailDisplay = ({
         setBadWordsResponse(moderatorContentResponse.data.bad_words);
 
         if (!hasBadWords) {
-          console.log("POSTING...");
           const response = await axios.post(
             API_BASE_URL + "review/create",
             JSON.stringify(newReviewValues),
@@ -459,7 +454,6 @@ const ProductDetailDisplay = ({
               },
             }
           );
-          console.log(response);
           if (response.status === 201) {
             setProductData((prevProductData) => ({
               ...prevProductData,
@@ -507,7 +501,6 @@ const ProductDetailDisplay = ({
   }
 
   const handleSubmitConfirmation = () => {
-    console.log(productData);
     fetch("http://localhost:8080/v1/booking/create", {
       method: "POST",
       headers: {
@@ -549,7 +542,6 @@ const ProductDetailDisplay = ({
   };
 
   const validateDiners = (diners) => {
-    console.log("validateDiners called with:", diners);
     setDinerErrors(false);
     if (diners < 1) {
       setDinerErrors(true);
