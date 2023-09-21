@@ -160,22 +160,18 @@ export default function AdminPanelDrinksDisplay() {
   const apiDataCreate = async (propertiesToCreate) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToCreate) {
         if (propertiesToCreate.hasOwnProperty(key)) {
           formData.append(key, propertiesToCreate[key]);
         }
       }
-
       const response = await axios.post(API_BASE_URL + "create", formData);
       const responseCode = response.status;
       apiDataGet();
-
       return responseCode;
     } catch (error) {
       const responseCode = error.response.status;
       console.error("Error create data:", error);
-
       return responseCode;
     }
   };
@@ -183,7 +179,6 @@ export default function AdminPanelDrinksDisplay() {
   const apiDataUpdate = async (targetToUpdateId, propertiesToUpdate = {}) => {
     try {
       const formData = new FormData();
-
       for (const key in propertiesToUpdate) {
         if (propertiesToUpdate.hasOwnProperty(key)) {
           formData.append(key, propertiesToUpdate[key]);
@@ -237,7 +232,6 @@ export default function AdminPanelDrinksDisplay() {
 
   const getModifiedProperties = (newRow, oldRow) => {
     const modifiedProperties = {};
-
     for (const key in newRow) {
       if (newRow.hasOwnProperty(key) && oldRow.hasOwnProperty(key)) {
         if (newRow[key] !== oldRow[key]) {
@@ -245,25 +239,20 @@ export default function AdminPanelDrinksDisplay() {
         }
       }
     }
-
     if (Object.keys(modifiedProperties).length === 0) {
       return null;
     }
-
     return modifiedProperties;
   };
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-
     const oldRow = rows.find((row) => row.id === newRow.id);
     const modifiedProperties = getModifiedProperties(newRow, oldRow);
-
     if (modifiedProperties) {
       apiDataUpdate(newRow.id, modifiedProperties);
     }
-
     return updatedRow;
   };
 
@@ -300,7 +289,6 @@ export default function AdminPanelDrinksDisplay() {
       headerAlign: "left",
       editable: true,
     },
-
     {
       field: "actions",
       type: "actions",
@@ -309,7 +297,6 @@ export default function AdminPanelDrinksDisplay() {
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
         if (isInEditMode) {
           return [
             <GridActionsCellItem
@@ -329,7 +316,6 @@ export default function AdminPanelDrinksDisplay() {
             />,
           ];
         }
-
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
