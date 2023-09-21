@@ -1,11 +1,13 @@
 package com.proyectointegradorequipo3.proyectointegradorEquipo3.services.impl;
 
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Booking;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.DrinkQuantity;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.Review;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.request.ReviewCreateRequest;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.BundleDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.ReviewDto;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.domain.dto.response.UserDto;
+import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ResourceNotFoundException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.exception.ReviewNotAllowedException;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IBookingRepository;
 import com.proyectointegradorequipo3.proyectointegradorEquipo3.persistance.IReviewRepository;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewServiceImpl implements IReviewService {
 
+    private static final String NAME = "Review";
     private final IReviewRepository reviewRepository;
     private final UserServiceImpl userService;
     private final BundleServiceImpl bundleService;
@@ -92,7 +95,9 @@ public class ReviewServiceImpl implements IReviewService {
     //===================Delete===================//
     @Override
     public void deleteReviewById(Long id) {
-
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NAME, id));
+        reviewRepository.delete(review);
     }
 
 }
