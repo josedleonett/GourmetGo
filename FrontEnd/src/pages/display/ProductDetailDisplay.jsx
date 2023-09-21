@@ -83,8 +83,8 @@ import {
 } from "formik";
 import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
 
@@ -122,7 +122,7 @@ const ProductDetailDisplay = ({
   const [formErrors, setFormErrors] = useState({});
   const [drinkErrors, setDrinkErrors] = useState(false);
   const [dinerErrors, setDinerErrors] = useState(false);
-  const [reservationError, setReservationError] = useState('');
+  const [reservationError, setReservationError] = useState("");
   const [selecteDate, setSelecteDate] = useState(null);
 
   useEffect(() => {
@@ -354,7 +354,7 @@ const ProductDetailDisplay = ({
       }
       setSelectedDate(formattedDate);
     } else {
-      setSelectedDate(null); 
+      setSelectedDate(null);
     }
   };
 
@@ -408,7 +408,8 @@ const ProductDetailDisplay = ({
 
   const [badWordsResponse, setBadWordsResponse] = useState([]);
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
-  const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] = useState(false)
+  const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] =
+    useState(false);
 
   const formikAddReview = useFormik({
     initialValues: {
@@ -449,13 +450,12 @@ const ProductDetailDisplay = ({
               reviews: [newReviewValues, ...prevProductData.reviews],
             }));
 
-            setIsAddReviewFormSubmitted(true)
+            setIsAddReviewFormSubmitted(true);
             addReviewHandleCancel();
           }
         }
       } catch (error) {
         console.error(error.message);
-
       } finally {
         setIsAddReviewFormSending(false);
         setTimeout(() => {
@@ -477,15 +477,15 @@ const ProductDetailDisplay = ({
     var formattedDate = selectedDate;
 
     initialValuesReserveForm = {
-      user: decodedToken?.id || '',
+      user: decodedToken?.id || "",
       diners: diners,
       drinks: (productData?.drinks || []).map((drink) => ({
-        drinkId: drink?.id || '',
-        quantity: drinkQuantities[drink?.id] || '',
+        drinkId: drink?.id || "",
+        quantity: drinkQuantities[drink?.id] || "",
       })),
       date: formattedDate,
-      bundle: productData?.id || '',
-      price: 0
+      bundle: productData?.id || "",
+      price: 0,
     };
   }
 
@@ -538,566 +538,732 @@ const ProductDetailDisplay = ({
     }
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
-    <Box padding={2}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <IconButton
-          aria-label="Back"
-          onClick={goBackOnClick}
-          style={{ marginRight: "10px" }}
+    <>
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-      </div>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box padding={2}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              aria-label="Back"
+              onClick={goBackOnClick}
+              style={{ marginRight: "10px" }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </div>
 
-      <CoverProductGalleryContainer
-        imgList={productData ? productData.galleryImages : []}
-        galleryId={"productGallery"}
-        isLoading={!productData}
-      />
+          <CoverProductGalleryContainer
+            imgList={productData ? productData.galleryImages : []}
+            galleryId={"productGallery"}
+            isLoading={!productData}
+          />
 
-      <Container>
-        <Grid container padding={2} lg={12}>
-          <Box>
-            <Box display="flex" minWidth="30vw">
-              <Typography variant="h4">
-                {productData ? (
-                  productData.name
-                ) : (
-                  <Skeleton variant="text" width="30vw" />
-                )}
-              </Typography>
-              <IconButton
-                disabled={!decodedToken}
-                aria-label="Favorite"
-                style={{
-                  marginLeft: 18,
-                  paddingLeft: 2,
-                  transition: "background-color 0.2s ease",
-                }}
-              >
-                {" "}
-                {decodedToken ? (
-                  <span>
-                    <Tooltip
-                      title={
-                        isFavorite
-                          ? "Delete from favorites"
-                          : "Add to favorites"
-                      }
-                      placement="top"
-                    >
-                      {isFavorite ? (
-                        <FavoriteIcon
-                          onClick={handleFavoriteClick}
-                          sx={{
-                            zIndex: 5,
-                            cursor: "pointer",
-                            color: "error.main",
-                          }}
-                        />
-                      ) : (
-                        <FavoriteBorderIcon
-                          onClick={handleFavoriteClick}
-                          sx={{
-                            zIndex: 5,
-                            cursor: "pointer",
-                            color: "error.main",
-                          }}
-                        />
-                      )}
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span></span>
-                )}
-              </IconButton>
-              <IconButton
-                aria-label="Share"
-                onClick={openSocialModalOnClick}
-                style={{
-                  marginLeft: 18,
-                  paddingLeft: 2,
-                  transition: "background-color 0.2s ease",
-                }}
-              >
-                <ShareIcon />
-              </IconButton>
-              <Dialog open={openSocialModal} onClose={closeSocialModal}>
-                <DialogTitle>Share on social media!</DialogTitle>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingLeft: "25px",
-                    paddingBottom: "5px",
-                  }}
-                >
-                  <FacebookShareButton
-                    url={shareUrl}
-                    quote="Take a look at this catering!"
-                  >
-                    <FacebookIcon size={32} round />
-                  </FacebookShareButton>
-                  <div style={{ margin: 12 }}></div>{" "}
-                  <TwitterShareButton
-                    url={shareUrl}
-                    title="Take a look at this catering!"
-                  >
-                    <TwitterIcon size={32} round />
-                  </TwitterShareButton>
-                  <div style={{ margin: 12 }}></div>{" "}
-                  <EmailShareButton
-                    url={shareUrl}
-                    subject="Check this food caterer"
-                    body="Hello! I invite you to take a look at this catering. You can find more details in the following link: "
-                  >
-                    <EmailIcon size={32} round />
-                  </EmailShareButton>
-                  <div style={{ margin: 12 }}></div>{" "}
-                  <WhatsappShareButton
-                    url={shareUrl}
-                    title="Take a look at this catering!"
-                  >
-                    <WhatsappIcon size={32} round />
-                  </WhatsappShareButton>
-                  <div style={{ margin: 12 }}></div>{" "}
-                </div>
-              </Dialog>
-            </Box>
-            <Typography variant="subtitle1" fontStyle="italic">
-              {productData ? (
-                productData.description
-              ) : (
-                <Skeleton variant="text" width="100%" />
-              )}
-            </Typography>
-          </Box>
-          <Divider light />
-
-          <Grid item lg={8} md={7} xs={12}>
-            <Container>
-              <Container>
-                <List>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      {productData ? (
-                        <BiDish size="30" />
-                      ) : (
-                        <Skeleton variant="circular" width={40} height={40} />
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        productData ? (
-                          "Starter:"
-                        ) : (
-                          <Skeleton variant="text" width={150} />
-                        )
-                      }
-                      secondary={
-                        <>
-                          {productData ? (
-                            productData.starter.map((starterItem, index) => (
-                              <div key={index}>
-                                <Typography
-                                  sx={{ display: "inline" }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {starterItem.name}
-                                </Typography>
-                                {` — ${starterItem.description}`}
-                              </div>
-                            ))
-                          ) : (
-                            <>
-                              <Skeleton variant="text" width="80%" />
-                              <Skeleton variant="text" width="50%" />
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                  </ListItem>
-
-                  <Divider variant="inset" component="li" />
-
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      {productData ? (
-                        <RiRestaurant2Line size="30" />
-                      ) : (
-                        <Skeleton variant="circular" width={40} height={40} />
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        productData ? (
-                          "Main course:"
-                        ) : (
-                          <Skeleton variant="text" width={150} />
-                        )
-                      }
-                      secondary={
-                        <>
-                          {productData ? (
-                            productData.mainCourse.map((mainItem, index) => (
-                              <div key={index}>
-                                <Typography
-                                  sx={{ display: "inline" }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {mainItem.name}
-                                </Typography>
-                                {` — ${mainItem.description}`}
-                              </div>
-                            ))
-                          ) : (
-                            <>
-                              <Skeleton variant="text" width="80%" />
-                              <Skeleton variant="text" width="50%" />
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                  </ListItem>
-
-                  <Divider variant="inset" component="li" />
-
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      {productData ? (
-                        <GiPieSlice size="30" />
-                      ) : (
-                        <Skeleton variant="circular" width={40} height={40} />
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        productData ? (
-                          "Dessert:"
-                        ) : (
-                          <Skeleton variant="text" width={150} />
-                        )
-                      }
-                      secondary={
-                        <>
-                          {productData ? (
-                            productData.desserts.map((dessertsItem, index) => (
-                              <div key={index}>
-                                <Typography
-                                  sx={{ display: "inline" }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {dessertsItem.name}
-                                </Typography>
-                                {` — ${dessertsItem.description}`}
-                              </div>
-                            ))
-                          ) : (
-                            <>
-                              <Skeleton variant="text" width="80%" />
-                              <Skeleton variant="text" width="50%" />
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                  </ListItem>
-
-                  <Divider variant="inset" component="li" />
-
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      {productData ? (
-                        <MdLocalBar size="30" />
-                      ) : (
-                        <Skeleton variant="circular" width={40} height={40} />
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        productData ? (
-                          "Drinks:"
-                        ) : (
-                          <Skeleton variant="text" width={150} />
-                        )
-                      }
-                      secondary={
-                        <>
-                          {productData ? (
-                            productData.drinks.map((drinks, index) => (
-                              <div key={index}>
-                                <Typography
-                                  sx={{ display: "inline" }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {drinks.name}
-                                </Typography>
-                              </div>
-                            ))
-                          ) : (
-                            <>
-                              <Skeleton variant="text" width="80%" />
-                              <Skeleton variant="text" width="50%" />
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                  </ListItem>
-
-                  <Divider variant="inset" component="li" />
-
-                  <ListItem alignItems="flex-start" sx={{ pt: 3 }}>
-                    <Button
-                      size="small"
-                      onClick={() => {
-                        setOpenTermsDialog(true);
-                      }}
-                    >
-                      See terms and conditions
-                    </Button>
-                    <Dialog
-                      open={openTermsDialog}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">
-                        {`Terms and conditions for ${
-                          productData ? productData.name : ""
-                        } bundle`}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText
-                          id="alert-dialog-description"
-                          variant="caption"
-                          sx={{
-                            wordBreak: "break-word",
-                            whiteSpace: "pre-line",
-                          }}
-                          align="justify"
-                        >
-                          {productData
-                            ? productData.terms !== null &&
-                              productData.terms !== ""
-                              ? productData.terms
-                              : "Contact us to know our terms and conditions for this bundle"
-                            : "Error loading terms and conditions.."}
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={() => {
-                            setOpenTermsDialog(false);
-                          }}
-                          autoFocus
-                        >
-                          Close
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </ListItem>
-                </List>
-              </Container>
-            </Container>
-          </Grid>
-          <Grid item lg={4} md={5} xs={12}>
-            <Paper elevation={6} sx={{ py: 4, px: 1 }}>
-              <Container
-                sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-              >
-                {!openDialog ? (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["MobileDatePicker"]}>
-                      <DemoItem label="Select reserve date">
-                        <MobileDatePicker
-                          onAccept={(date) => {
-                            handleDateAcceptAndCheckUnavailable(date);
-                            setSelectedDate(date);
-                          }}
-                          minDate={minDate}
-                          shouldDisableDate={isDateUnavailable}
-                          readOnly={!isUserLoggedIn}
-                          renderInput={(props) => (
-                            <input {...props} readOnly={!isUserLoggedIn} />
-                          )}
-                        />
-                      </DemoItem>
-                    </DemoContainer>
+          <Container>
+            <Grid container padding={2} lg={12}>
+              <Box>
+                <Box display="flex" minWidth="30vw">
+                  <Typography variant="h4">
                     {productData ? (
-                      <Typography>
-                        Price per person: ${productData.price} (USD)
-                      </Typography>
+                      productData.name
                     ) : (
-                      ""
+                      <Skeleton variant="text" width="30vw" />
                     )}
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={openReserveModal}
-                      disabled={!isUserLoggedIn || selectedDate === null}
-                    >
-                      RESERVE
-                    </Button>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "2vw",
-                      }}
-                    ></Box>
-                  </LocalizationProvider>
-                ) : (
-                  <Formik
-                    initialValues={initialValuesReserveForm}
-                    onSubmit={handleSubmit}
+                  </Typography>
+                  <IconButton
+                    disabled={!decodedToken}
+                    aria-label="Favorite"
+                    style={{
+                      marginLeft: 18,
+                      paddingLeft: 2,
+                      transition: "background-color 0.2s ease",
+                    }}
                   >
-                    {({ isSubmitting }) => (
-                      <Form>
+                    {" "}
+                    {decodedToken ? (
+                      <span>
+                        <Tooltip
+                          title={
+                            isFavorite
+                              ? "Delete from favorites"
+                              : "Add to favorites"
+                          }
+                          placement="top"
+                        >
+                          {isFavorite ? (
+                            <FavoriteIcon
+                              onClick={handleFavoriteClick}
+                              sx={{
+                                zIndex: 5,
+                                cursor: "pointer",
+                                color: "error.main",
+                              }}
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              onClick={handleFavoriteClick}
+                              sx={{
+                                zIndex: 5,
+                                cursor: "pointer",
+                                color: "error.main",
+                              }}
+                            />
+                          )}
+                        </Tooltip>
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                  </IconButton>
+                  <IconButton
+                    aria-label="Share"
+                    onClick={openSocialModalOnClick}
+                    style={{
+                      marginLeft: 18,
+                      paddingLeft: 2,
+                      transition: "background-color 0.2s ease",
+                    }}
+                  >
+                    <ShareIcon />
+                  </IconButton>
+                  <Dialog open={openSocialModal} onClose={closeSocialModal}>
+                    <DialogTitle>Share on social media!</DialogTitle>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingLeft: "25px",
+                        paddingBottom: "5px",
+                      }}
+                    >
+                      <FacebookShareButton
+                        url={shareUrl}
+                        quote="Take a look at this catering!"
+                      >
+                        <FacebookIcon size={32} round />
+                      </FacebookShareButton>
+                      <div style={{ margin: 12 }}></div>{" "}
+                      <TwitterShareButton
+                        url={shareUrl}
+                        title="Take a look at this catering!"
+                      >
+                        <TwitterIcon size={32} round />
+                      </TwitterShareButton>
+                      <div style={{ margin: 12 }}></div>{" "}
+                      <EmailShareButton
+                        url={shareUrl}
+                        subject="Check this food caterer"
+                        body="Hello! I invite you to take a look at this catering. You can find more details in the following link: "
+                      >
+                        <EmailIcon size={32} round />
+                      </EmailShareButton>
+                      <div style={{ margin: 12 }}></div>{" "}
+                      <WhatsappShareButton
+                        url={shareUrl}
+                        title="Take a look at this catering!"
+                      >
+                        <WhatsappIcon size={32} round />
+                      </WhatsappShareButton>
+                      <div style={{ margin: 12 }}></div>{" "}
+                    </div>
+                  </Dialog>
+                </Box>
+                <Typography variant="subtitle1" fontStyle="italic">
+                  {productData ? (
+                    productData.description
+                  ) : (
+                    <Skeleton variant="text" width="100%" />
+                  )}
+                </Typography>
+              </Box>
+              <Divider light />
+
+              <Grid item lg={8} md={7} xs={12}>
+                <Container>
+                  <Container>
+                    <List>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          {productData ? (
+                            <BiDish size="30" />
+                          ) : (
+                            <Skeleton
+                              variant="circular"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            productData ? (
+                              "Starter:"
+                            ) : (
+                              <Skeleton variant="text" width={150} />
+                            )
+                          }
+                          secondary={
+                            <>
+                              {productData ? (
+                                productData.starter.map(
+                                  (starterItem, index) => (
+                                    <div key={index}>
+                                      <Typography
+                                        sx={{ display: "inline" }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                      >
+                                        {starterItem.name}
+                                      </Typography>
+                                      {` — ${starterItem.description}`}
+                                    </div>
+                                  )
+                                )
+                              ) : (
+                                <>
+                                  <Skeleton variant="text" width="80%" />
+                                  <Skeleton variant="text" width="50%" />
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                      </ListItem>
+
+                      <Divider variant="inset" component="li" />
+
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          {productData ? (
+                            <RiRestaurant2Line size="30" />
+                          ) : (
+                            <Skeleton
+                              variant="circular"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            productData ? (
+                              "Main course:"
+                            ) : (
+                              <Skeleton variant="text" width={150} />
+                            )
+                          }
+                          secondary={
+                            <>
+                              {productData ? (
+                                productData.mainCourse.map(
+                                  (mainItem, index) => (
+                                    <div key={index}>
+                                      <Typography
+                                        sx={{ display: "inline" }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                      >
+                                        {mainItem.name}
+                                      </Typography>
+                                      {` — ${mainItem.description}`}
+                                    </div>
+                                  )
+                                )
+                              ) : (
+                                <>
+                                  <Skeleton variant="text" width="80%" />
+                                  <Skeleton variant="text" width="50%" />
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                      </ListItem>
+
+                      <Divider variant="inset" component="li" />
+
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          {productData ? (
+                            <GiPieSlice size="30" />
+                          ) : (
+                            <Skeleton
+                              variant="circular"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            productData ? (
+                              "Dessert:"
+                            ) : (
+                              <Skeleton variant="text" width={150} />
+                            )
+                          }
+                          secondary={
+                            <>
+                              {productData ? (
+                                productData.desserts.map(
+                                  (dessertsItem, index) => (
+                                    <div key={index}>
+                                      <Typography
+                                        sx={{ display: "inline" }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                      >
+                                        {dessertsItem.name}
+                                      </Typography>
+                                      {` — ${dessertsItem.description}`}
+                                    </div>
+                                  )
+                                )
+                              ) : (
+                                <>
+                                  <Skeleton variant="text" width="80%" />
+                                  <Skeleton variant="text" width="50%" />
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                      </ListItem>
+
+                      <Divider variant="inset" component="li" />
+
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          {productData ? (
+                            <MdLocalBar size="30" />
+                          ) : (
+                            <Skeleton
+                              variant="circular"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            productData ? (
+                              "Drinks:"
+                            ) : (
+                              <Skeleton variant="text" width={150} />
+                            )
+                          }
+                          secondary={
+                            <>
+                              {productData ? (
+                                productData.drinks.map((drinks, index) => (
+                                  <div key={index}>
+                                    <Typography
+                                      sx={{ display: "inline" }}
+                                      component="span"
+                                      variant="body2"
+                                      color="text.primary"
+                                    >
+                                      {drinks.name}
+                                    </Typography>
+                                  </div>
+                                ))
+                              ) : (
+                                <>
+                                  <Skeleton variant="text" width="80%" />
+                                  <Skeleton variant="text" width="50%" />
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                      </ListItem>
+
+                      <Divider variant="inset" component="li" />
+
+                      <ListItem alignItems="flex-start" sx={{ pt: 3 }}>
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            setOpenTermsDialog(true);
+                          }}
+                        >
+                          See terms and conditions
+                        </Button>
+                        <Dialog
+                          open={openTermsDialog}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                          <DialogTitle id="alert-dialog-title">
+                            {`Terms and conditions for ${
+                              productData ? productData.name : ""
+                            } bundle`}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText
+                              id="alert-dialog-description"
+                              variant="caption"
+                              sx={{
+                                wordBreak: "break-word",
+                                whiteSpace: "pre-line",
+                              }}
+                              align="justify"
+                            >
+                              {productData
+                                ? productData.terms !== null &&
+                                  productData.terms !== ""
+                                  ? productData.terms
+                                  : "Contact us to know our terms and conditions for this bundle"
+                                : "Error loading terms and conditions.."}
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={() => {
+                                setOpenTermsDialog(false);
+                              }}
+                              autoFocus
+                            >
+                              Close
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </ListItem>
+                    </List>
+                  </Container>
+                </Container>
+              </Grid>
+              <Grid item lg={4} md={5} xs={12}>
+                <Paper elevation={6} sx={{ py: 4, px: 1 }}>
+                  <Container
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                  >
+                    {!openDialog ? (
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={["MobileDatePicker"]}>
+                          <DemoItem label="Select reserve date">
+                            <MobileDatePicker
+                              onAccept={(date) => {
+                                handleDateAcceptAndCheckUnavailable(date);
+                                setSelectedDate(date);
+                              }}
+                              minDate={minDate}
+                              shouldDisableDate={isDateUnavailable}
+                              readOnly={!isUserLoggedIn}
+                              renderInput={(props) => (
+                                <input {...props} readOnly={!isUserLoggedIn} />
+                              )}
+                            />
+                          </DemoItem>
+                        </DemoContainer>
+                        {productData ? (
+                          <Typography>
+                            Price per person: ${productData.price} (USD)
+                          </Typography>
+                        ) : (
+                          ""
+                        )}
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={openReserveModal}
+                          disabled={!isUserLoggedIn || selectedDate === null}
+                        >
+                          RESERVE
+                        </Button>
+
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: "column",
                             alignItems: "center",
-                            justifyContent: "space-evenly",
-                            gap: 2,
+                            justifyContent: "center",
+                            gap: "2vw",
                           }}
-                        >
-                          {openDialog && (
-                            <IconButton
-                              color="primary"
-                              onClick={closeReserveDialog}
-                              sx={{ marginLeft: "auto" }}
+                        ></Box>
+                      </LocalizationProvider>
+                    ) : (
+                      <Formik
+                        initialValues={initialValuesReserveForm}
+                        onSubmit={handleSubmit}
+                      >
+                        {({ isSubmitting }) => (
+                          <Form>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "space-evenly",
+                                gap: 2,
+                              }}
                             >
-                              <CloseIcon />
-                            </IconButton>
-                          )}
-                          {/* Agrega el Stepper para mostrar los pasos */}
-                          <Stepper activeStep={activeStep}>
-                            {steps.map((label, index) => (
-                              <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                              </Step>
-                            ))}
-                          </Stepper>
-
-                          {activeStep === 0 && (
-                            <Box>
-                              {/* Contenido del primer paso */}
-                              <Box p={2}>
-                                <Typography
-                                  variant="h4"
-                                  sx={{ backgroundColor: "secondary.light" }}
+                              {openDialog && (
+                                <IconButton
+                                  color="primary"
+                                  onClick={closeReserveDialog}
+                                  sx={{ marginLeft: "auto" }}
                                 >
-                                  Reserve catering
-                                </Typography>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 2,
-                                  }}
-                                >
-                                  <TextField
-                                    sx={{
-                                      width: "100%",
-                                      marginTop: 2,
-                                    }}
-                                    disabled
-                                    id="filled-basic"
-                                    fullWidth
-                                    variant="filled"
-                                    label="Name"
-                                    readOnly={true}
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
-                                    value={
-                                      decodedToken.name +
-                                      " " +
-                                      decodedToken.lastName
-                                    }
-                                  />
-                                  <TextField
-                                    sx={{
-                                      width: "100%",
-                                      marginTop: 2,
-                                      marginBottom: 2,
-                                    }}
-                                    disabled
-                                    id="filled-basic"
-                                    name="email"
-                                    fullWidth
-                                    variant="filled"
-                                    label="Email"
-                                    readOnly={true}
-                                    helperText={
-                                      <ErrorMessage name="NumberDinners" />
-                                    }
-                                    value={decodedToken.email}
-                                  />
-                                  <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
-                                  >
-                                    <DatePicker
-                                      disabled
-                                      fullWidth
-                                      readOnly={true}
-                                      value={selectedDate}
-                                    />
-                                  </LocalizationProvider>
-                                  <Typography
-                                    variant="h6"
-                                    sx={{
-                                      backgroundColor: "secondary.light",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    Amount of guests:
-                                  </Typography>
-                                  {/* El tercer campo no necesita ajustes */}
-                                  <Field
-                                    type="number"
-                                    name="diners"
-                                    as={TextField}
-                                    fullWidth
-                                    variant="outlined"
-                                    label="Amount of people"
-                                    helperText={
-                                      formErrors.diners && (
-                                        <div style={{ color: "red" }}>
-                                          {formErrors.diners}
-                                        </div>
-                                      )
-                                    }
-                                    value={diners}
-                                    onChange={(e) => {
-                                      const value = parseInt(
-                                        e.target.value,
-                                        10
-                                      );
-                                      const dinersError = validateDiners(value);
-                                      setFormErrors((prevErrors) => ({
-                                        ...prevErrors,
-                                        diners: dinersError,
-                                      }));
-                                      setDiners(value);
-                                    }}
-                                  />
+                                  <CloseIcon />
+                                </IconButton>
+                              )}
+                              {/* Agrega el Stepper para mostrar los pasos */}
+                              <Stepper activeStep={activeStep}>
+                                {steps.map((label, index) => (
+                                  <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                  </Step>
+                                ))}
+                              </Stepper>
 
+                              {activeStep === 0 && (
+                                <Box>
+                                  {/* Contenido del primer paso */}
+                                  <Box p={2}>
+                                    <Typography
+                                      variant="h4"
+                                      sx={{
+                                        backgroundColor: "secondary.light",
+                                      }}
+                                    >
+                                      Reserve catering
+                                    </Typography>
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: 2,
+                                      }}
+                                    >
+                                      <TextField
+                                        sx={{
+                                          width: "100%",
+                                          marginTop: 2,
+                                        }}
+                                        disabled
+                                        id="filled-basic"
+                                        fullWidth
+                                        variant="filled"
+                                        label="Name"
+                                        readOnly={true}
+                                        helperText={
+                                          <ErrorMessage name="NumberDinners" />
+                                        }
+                                        value={
+                                          decodedToken.name +
+                                          " " +
+                                          decodedToken.lastName
+                                        }
+                                      />
+                                      <TextField
+                                        sx={{
+                                          width: "100%",
+                                          marginTop: 2,
+                                          marginBottom: 2,
+                                        }}
+                                        disabled
+                                        id="filled-basic"
+                                        name="email"
+                                        fullWidth
+                                        variant="filled"
+                                        label="Email"
+                                        readOnly={true}
+                                        helperText={
+                                          <ErrorMessage name="NumberDinners" />
+                                        }
+                                        value={decodedToken.email}
+                                      />
+                                      <LocalizationProvider
+                                        dateAdapter={AdapterDayjs}
+                                      >
+                                        <DatePicker
+                                          disabled
+                                          fullWidth
+                                          readOnly={true}
+                                          value={selectedDate}
+                                        />
+                                      </LocalizationProvider>
+                                      <Typography
+                                        variant="h6"
+                                        sx={{
+                                          backgroundColor: "secondary.light",
+                                          textAlign: "center",
+                                        }}
+                                      >
+                                        Amount of guests:
+                                      </Typography>
+                                      {/* El tercer campo no necesita ajustes */}
+                                      <Field
+                                        type="number"
+                                        name="diners"
+                                        as={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        label="Amount of people"
+                                        helperText={
+                                          formErrors.diners && (
+                                            <div style={{ color: "red" }}>
+                                              {formErrors.diners}
+                                            </div>
+                                          )
+                                        }
+                                        value={diners}
+                                        onChange={(e) => {
+                                          const value = parseInt(
+                                            e.target.value,
+                                            10
+                                          );
+                                          const dinersError =
+                                            validateDiners(value);
+                                          setFormErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            diners: dinersError,
+                                          }));
+                                          setDiners(value);
+                                        }}
+                                      />
+
+                                      <div style={{ textAlign: "center" }}>
+                                        <Typography>
+                                          <strong>
+                                            Total price: ${totalPrice} USD
+                                          </strong>
+                                        </Typography>
+                                      </div>
+                                    </Box>
+                                  </Box>
+                                </Box>
+                              )}
+
+                              {activeStep === 1 && (
+                                <Box>
+                                  {/* Contenido del segundo paso */}
+                                  <Box p={2}>
+                                    <Typography
+                                      variant="h6"
+                                      sx={{
+                                        backgroundColor: "secondary.light",
+                                        textAlign: "center",
+                                      }}
+                                    >
+                                      Number of drinks:
+                                    </Typography>
+                                    <FieldArray name="drinks">
+                                      {({ push, remove }) => (
+                                        <Box
+                                          sx={{
+                                            display: "flex",
+                                            paddingTop: 2,
+                                          }}
+                                        >
+                                          <Paper>
+                                            <Container
+                                              sx={{
+                                                padding: 3,
+                                                height: "100%",
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "space-evenly",
+                                                gap: 2,
+                                              }}
+                                            >
+                                              {productData
+                                                ? productData.drinks.map(
+                                                    (drink, index) => (
+                                                      <div key={index}>
+                                                        <Typography
+                                                          variant="body1"
+                                                          component="span"
+                                                          color="textPrimary"
+                                                        >
+                                                          {drink.name} (Price
+                                                          per unit:{" "}
+                                                          {drink.price} USD)
+                                                        </Typography>
+                                                        <TextField
+                                                          type="number"
+                                                          fullWidth
+                                                          variant="outlined"
+                                                          helperText={
+                                                            formErrors.drinks &&
+                                                            formErrors.drinks[
+                                                              index
+                                                            ] && (
+                                                              <div
+                                                                style={{
+                                                                  color: "red",
+                                                                }}
+                                                              >
+                                                                {
+                                                                  formErrors
+                                                                    .drinks[
+                                                                    index
+                                                                  ]
+                                                                }
+                                                              </div>
+                                                            )
+                                                          }
+                                                          value={
+                                                            drinkQuantities[
+                                                              drink.id
+                                                            ]
+                                                          }
+                                                          onChange={(e) => {
+                                                            const value =
+                                                              parseInt(
+                                                                e.target.value,
+                                                                10
+                                                              );
+                                                            handleQuantityChange(
+                                                              drink.id,
+                                                              value
+                                                            );
+                                                            setFormErrors(
+                                                              (prevErrors) => ({
+                                                                ...prevErrors,
+                                                                drinks: {
+                                                                  ...(prevErrors.drinks ||
+                                                                    {}),
+                                                                  [index]:
+                                                                    validateDrinks(
+                                                                      value
+                                                                    ),
+                                                                },
+                                                              })
+                                                            );
+                                                          }}
+                                                        />
+                                                      </div>
+                                                    )
+                                                  )
+                                                : []}
+                                            </Container>
+                                          </Paper>
+                                        </Box>
+                                      )}
+                                    </FieldArray>
+                                  </Box>
                                   <div style={{ textAlign: "center" }}>
                                     <Typography>
                                       <strong>
@@ -1106,676 +1272,602 @@ const ProductDetailDisplay = ({
                                     </Typography>
                                   </div>
                                 </Box>
-                              </Box>
-                            </Box>
-                          )}
+                              )}
+                              {activeStep === 2 && (
+                                <Box>
+                                  {/* Contenido del tercer paso */}
+                                  <Typography
+                                    variant="h6"
+                                    sx={{
+                                      backgroundColor: "secondary.light",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    Indications:
+                                  </Typography>
+                                  <Field
+                                    name="comments"
+                                    as={TextField}
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                    variant="outlined"
+                                    label="Write your comments here"
+                                    sx={{ marginTop: 2 }}
+                                  />
+                                </Box>
+                              )}
+                              {activeStep === 3 && (
+                                <Box>
+                                  <Box sx={{ alignItems: "center" }}>
+                                    {productData.drinks.map((drink, index) => {
+                                      const quantity =
+                                        drinkQuantities[drink.id] || 0;
+                                      const drinkTotal = quantity * drink.price;
 
-                          {activeStep === 1 && (
-                            <Box>
-                              {/* Contenido del segundo paso */}
-                              <Box p={2}>
-                                <Typography
-                                  variant="h6"
-                                  sx={{
-                                    backgroundColor: "secondary.light",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  Number of drinks:
-                                </Typography>
-                                <FieldArray name="drinks">
-                                  {({ push, remove }) => (
-                                    <Box
-                                      sx={{ display: "flex", paddingTop: 2 }}
-                                    >
-                                      <Paper>
-                                        <Container
-                                          sx={{
-                                            padding: 3,
-                                            height: "100%",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "space-evenly",
-                                            gap: 2,
-                                          }}
-                                        >
-                                          {productData
-                                            ? productData.drinks.map(
-                                                (drink, index) => (
-                                                  <div key={index}>
-                                                    <Typography
-                                                      variant="body1"
-                                                      component="span"
-                                                      color="textPrimary"
-                                                    >
-                                                      {drink.name} (Price per
-                                                      unit: {drink.price} USD)
-                                                    </Typography>
-                                                    <TextField
-                                                      type="number"
-                                                      fullWidth
-                                                      variant="outlined"
-                                                      helperText={
-                                                        formErrors.drinks &&
-                                                        formErrors.drinks[
-                                                          index
-                                                        ] && (
-                                                          <div
-                                                            style={{
-                                                              color: "red",
-                                                            }}
-                                                          >
-                                                            {
-                                                              formErrors.drinks[
-                                                                index
-                                                              ]
-                                                            }
-                                                          </div>
-                                                        )
-                                                      }
-                                                      value={
-                                                        drinkQuantities[
-                                                          drink.id
-                                                        ]
-                                                      }
-                                                      onChange={(e) => {
-                                                        const value = parseInt(
-                                                          e.target.value,
-                                                          10
-                                                        );
-                                                        handleQuantityChange(
-                                                          drink.id,
-                                                          value
-                                                        );
-                                                        setFormErrors(
-                                                          (prevErrors) => ({
-                                                            ...prevErrors,
-                                                            drinks: {
-                                                              ...(prevErrors.drinks ||
-                                                                {}),
-                                                              [index]:
-                                                                validateDrinks(
-                                                                  value
-                                                                ),
-                                                            },
-                                                          })
-                                                        );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                )
-                                              )
-                                            : []}
-                                        </Container>
-                                      </Paper>
-                                    </Box>
-                                  )}
-                                </FieldArray>
-                              </Box>
-                              <div style={{ textAlign: "center" }}>
-                                <Typography>
-                                  <strong>Total price: ${totalPrice} USD</strong>
-                                </Typography>
-                              </div>
-                            </Box>
-                          )}
-                          {activeStep === 2 && (
-                            <Box>
-                              {/* Contenido del tercer paso */}
-                              <Typography
-                                variant="h6"
+                                      return (
+                                        <Typography key={index}>
+                                          {`${drink.name}: $${drinkTotal}`}
+                                        </Typography>
+                                      );
+                                    })}
+                                    <Divider />
+                                    <Typography>
+                                      Drinks price: ${totalDrinkPrice} USD
+                                    </Typography>
+                                    <Typography>
+                                      Diners price: ${pricePerPerson} USD
+                                    </Typography>
+                                    <Divider />
+                                    <Divider />
+                                    <Typography>
+                                      <strong>
+                                        {" "}
+                                        Total price: ${totalPrice} USD
+                                      </strong>
+                                    </Typography>
+                                  </Box>
+                                  <Dialog
+                                    open={openConfirmationModal}
+                                    onClose={handleCancelClick}
+                                  >
+                                    <DialogTitle>
+                                      Catering reservation confirmation
+                                    </DialogTitle>
+                                    <DialogContent>
+                                      <Typography>
+                                        Are you sure you want to confirm the
+                                        reservation for this catering?
+                                      </Typography>
+                                      <ul>
+                                        <li>
+                                          <Typography>
+                                            <strong>Name:</strong>{" "}
+                                            {decodedToken.name}{" "}
+                                            {decodedToken.lastName}
+                                          </Typography>
+                                        </li>
+                                        <li>
+                                          <Typography>
+                                            <strong>Email:</strong>{" "}
+                                            {decodedToken.email}
+                                          </Typography>
+                                        </li>
+                                        <li>
+                                          <Typography>
+                                            <strong>Date:</strong>{" "}
+                                            {selectedDate.format("MM-DD-YYYY")}
+                                          </Typography>
+                                        </li>
+                                        <li>
+                                          <Typography>
+                                            <strong>
+                                              Total price by diners:{" "}
+                                            </strong>{" "}
+                                            ${pricePerPerson} USD
+                                          </Typography>
+                                        </li>
+                                        <li>
+                                          <Typography>
+                                            <strong>
+                                              Total drinks price:{" "}
+                                            </strong>{" "}
+                                            ${totalDrinkPrice}
+                                          </Typography>
+                                        </li>
+                                        <li>
+                                          <Typography>
+                                            <strong>Total price: </strong> $
+                                            {totalPrice} USD
+                                          </Typography>
+                                        </li>
+                                      </ul>
+                                    </DialogContent>
+                                    <DialogActions>
+                                      <Button
+                                        onClick={handleCancelClick}
+                                        color="primary"
+                                      >
+                                        Cancel
+                                      </Button>
+                                      <Button
+                                        onClick={() => {
+                                          handleSubmitConfirmation();
+                                          closeReserveDialog();
+                                        }}
+                                        color="primary"
+                                      >
+                                        Confirm
+                                      </Button>
+                                    </DialogActions>
+                                  </Dialog>
+                                </Box>
+                              )}
+                              <Box
+                                p={2}
                                 sx={{
-                                  backgroundColor: "secondary.light",
-                                  textAlign: "center",
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  "& > button": {
+                                    margin: "0 8px",
+                                  },
                                 }}
                               >
-                                Indications:
-                              </Typography>
-                              <Field
-                                name="comments"
-                                as={TextField}
-                                fullWidth
-                                multiline
-                                rows={4}
-                                variant="outlined"
-                                label="Write your comments here"
-                                sx={{ marginTop: 2 }}
-                              />
-                            </Box>
-                          )}
-                          {activeStep === 3 && (
-                            <Box>
-                              <Box sx={{ alignItems: "center" }}>
-                                {productData.drinks.map((drink, index) => {
-                                  const quantity =
-                                    drinkQuantities[drink.id] || 0;
-                                  const drinkTotal = quantity * drink.price;
-
-                                  return (
-                                    <Typography key={index}>
-                                      {`${drink.name}: $${drinkTotal}`}
-                                    </Typography>
-                                  );
-                                })}
-                                <Divider />
-                                <Typography>
-                                  Drinks price: ${totalDrinkPrice} USD
-                                </Typography>
-                                <Typography>
-                                  Diners price: ${pricePerPerson} USD
-                                </Typography>
-                                <Divider />
-                                <Divider />
-                                <Typography>
-                                  <strong> Total price: ${totalPrice} USD</strong>
-                                </Typography>
-                              </Box>
-                              <Dialog
-                                open={openConfirmationModal}
-                                onClose={handleCancelClick}
-                              >
-                                <DialogTitle>
-                                  Catering reservation confirmation
-                                </DialogTitle>
-                                <DialogContent>
-                                  <Typography>
-                                    Are you sure you want to confirm the
-                                    reservation for this catering?
-                                  </Typography>
-                                  <ul>
-                                    <li>
-                                      <Typography>
-                                        <strong>Name:</strong>{" "}
-                                        {decodedToken.name}{" "}
-                                        {decodedToken.lastName}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Email:</strong>{" "}
-                                        {decodedToken.email}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Date:</strong>{" "}
-                                        {selectedDate.format("MM-DD-YYYY")}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price by diners: </strong>{" "}
-                                        ${pricePerPerson} USD
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total drinks price: </strong> $
-                                        {totalDrinkPrice}
-                                      </Typography>
-                                    </li>
-                                    <li>
-                                      <Typography>
-                                        <strong>Total price: </strong> $
-                                        {totalPrice} USD
-                                      </Typography>
-                                    </li>
-                                  </ul>
-                                </DialogContent>
-                                <DialogActions>
+                                <Box
+                                  p={2}
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    "& > button": {
+                                      margin: "0 8px",
+                                    },
+                                  }}
+                                ></Box>
+                                {activeStep !== 0 && (
                                   <Button
-                                    onClick={handleCancelClick}
+                                    variant="outlined"
                                     color="primary"
+                                    onClick={() =>
+                                      setActiveStep(activeStep - 1)
+                                    }
                                   >
-                                    Cancel
+                                    Back
                                   </Button>
+                                )}
+                                {activeStep < steps.length - 1 && (
                                   <Button
-                                    onClick={() => {
-                                      handleSubmitConfirmation();
-                                      closeReserveDialog();
-                                    }}
+                                    variant="contained"
                                     color="primary"
+                                    onClick={() => {
+                                      if (dinerErrors || drinkErrors) {
+                                        return;
+                                      }
+                                      setActiveStep(activeStep + 1);
+                                    }}
+                                  >
+                                    Next
+                                  </Button>
+                                )}
+                                {activeStep === steps.length - 1 && (
+                                  <Button
+                                    type="button"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleConfirmClick}
                                   >
                                     Confirm
                                   </Button>
-                                </DialogActions>
-                              </Dialog>
+                                )}
+                              </Box>
                             </Box>
-                          )}
-                          <Box
-                            p={2}
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              "& > button": {
-                                margin: "0 8px",
-                              },
-                            }}
-                          >
-                            <Box
-                              p={2}
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                "& > button": {
-                                  margin: "0 8px",
-                                },
-                              }}
-                            ></Box>
-                            {activeStep !== 0 && (
-                              <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={() => setActiveStep(activeStep - 1)}
-                              >
-                                Back
-                              </Button>
-                            )}
-                            {activeStep < steps.length - 1 && (
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => {
-                                  if (dinerErrors || drinkErrors) {
-                                    return;
-                                  }
-                                  setActiveStep(activeStep + 1);
-                                }}
-                              >
-                                Next
-                              </Button>
-                            )}
-                            {activeStep === steps.length - 1 && (
-                              <Button
-                                type="button"
-                                variant="contained"
-                                color="primary"
-                                onClick={handleConfirmClick}
-                              >
-                                Confirm
-                              </Button>
-                            )}
-                          </Box>
-                        </Box>
-                      </Form>
+                          </Form>
+                        )}
+                      </Formik>
                     )}
-                  </Formik>
-                )}
-              </Container>
-            </Paper>
-          </Grid>
-        </Grid>
+                  </Container>
+                </Paper>
+              </Grid>
+            </Grid>
 
-        <Box height={50} />
+            <Box height={50} />
 
-        <Typography variant="h5">Reviews:</Typography>
-        <Box width="lg" display="flex" flexDirection="column" gap={3}>
-          {productData && productData.reviews.length === 0 ? (
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
-              py={2}
-            >
-              <CommentsDisabledIcon
-                color="disabled"
-                style={{ fontSize: 30, marginBottom: 16 }}
-              />
-              <Typography variant="h6" color="GrayText" gutterBottom>
-                This catering package has no reviews yet.
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Be the first to share your experience!
-              </Typography>
-            </Box>
-          ) : (
-            <Box
-              display="flex"
-              flexDirection={{
-                xs: "column-reverse",
-                sm: "row",
-                lg: "row",
-              }}
-              justifyContent="space-around"
-              width="100%"
-              py={2}
-            >
-              <Stack
-                width={{ xs: "100%", sm: "70%", lg: "70%" }}
-                justifyContent="space-evenly"
-              >
-                {productData
-                  ? countCommentsByRating(productData.reviews).map(
-                      (commentRatingCategory) => (
-                        <Box
-                          key={commentRatingCategory.rating}
-                          display="flex"
-                          flexDirection="row"
-                          alignItems="center"
-                          gap={1}
-                        >
-                          <Typography>
-                            {commentRatingCategory.rating}
-                          </Typography>
-                          <LinearProgress
-                            value={
-                              (commentRatingCategory.count /
-                                productData.reviews.length) *
-                              100
-                            }
-                            variant="determinate"
-                            color="warning"
+            <Typography variant="h5">Reviews:</Typography>
+            <Box width="lg" display="flex" flexDirection="column" gap={3}>
+              {productData && productData.reviews.length === 0 ? (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  width="100%"
+                  py={2}
+                >
+                  <CommentsDisabledIcon
+                    color="disabled"
+                    style={{ fontSize: 30, marginBottom: 16 }}
+                  />
+                  <Typography variant="h6" color="GrayText" gutterBottom>
+                    This catering package has no reviews yet.
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Be the first to share your experience!
+                  </Typography>
+                </Box>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection={{
+                    xs: "column-reverse",
+                    sm: "row",
+                    lg: "row",
+                  }}
+                  justifyContent="space-around"
+                  width="100%"
+                  py={2}
+                >
+                  <Stack
+                    width={{ xs: "100%", sm: "70%", lg: "70%" }}
+                    justifyContent="space-evenly"
+                  >
+                    {productData
+                      ? countCommentsByRating(productData.reviews).map(
+                          (commentRatingCategory) => (
+                            <Box
+                              key={commentRatingCategory.rating}
+                              display="flex"
+                              flexDirection="row"
+                              alignItems="center"
+                              gap={1}
+                            >
+                              <Typography>
+                                {commentRatingCategory.rating}
+                              </Typography>
+                              <LinearProgress
+                                value={
+                                  (commentRatingCategory.count /
+                                    productData.reviews.length) *
+                                  100
+                                }
+                                variant="determinate"
+                                color="warning"
+                                sx={{
+                                  width: "100%",
+                                  height: 10,
+                                  borderRadius: 5,
+                                  background: (theme) =>
+                                    theme.palette.grey[200],
+                                }}
+                              />
+                            </Box>
+                          )
+                        )
+                      : Array.from({ length: 5 }).map((_, index) => (
+                          <Skeleton
+                            key={index}
+                            width="100%"
+                            height={20}
                             sx={{
-                              width: "100%",
-                              height: 10,
                               borderRadius: 5,
-                              background: (theme) => theme.palette.grey[200],
                             }}
                           />
-                        </Box>
-                      )
-                    )
-                  : Array.from({ length: 5 }).map((_, index) => (
-                      <Skeleton
-                        key={index}
-                        width="100%"
-                        height={20}
-                        sx={{
-                          borderRadius: 5,
-                        }}
-                      />
-                    ))}
-              </Stack>
-              <Stack
-                width={{ xs: "100%", sm: "30%", lg: "30%" }}
-                alignItems="center"
+                        ))}
+                  </Stack>
+                  <Stack
+                    width={{ xs: "100%", sm: "30%", lg: "30%" }}
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={1}
+                  >
+                    {productData ? (
+                      <>
+                        <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
+                          {productData.rating}
+                        </Typography>
+                        <Rating
+                          value={productData.rating}
+                          precision={0.1}
+                          readOnly
+                          size="large"
+                        />
+                        <Typography variant="caption">
+                          {productData.reviews.length} ratings
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Skeleton
+                          variant="rectangular"
+                          width={60}
+                          height={40}
+                        />
+                        <Skeleton
+                          variant="rectangular"
+                          width={150}
+                          height={20}
+                          sx={{ paddingBottom: 2 }}
+                        />
+                        <Skeleton
+                          variant="rectangular"
+                          width={100}
+                          height={15}
+                        />
+                      </>
+                    )}
+                  </Stack>
+                </Box>
+              )}
+              <Box
+                display={
+                  productData &&
+                  productData.canUserReview &&
+                  !isCommentFormOpen &&
+                  cookies.token !== undefined
+                    ? "flex"
+                    : "none"
+                }
                 justifyContent="center"
-                gap={1}
               >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<AddCommentIcon />}
+                  onClick={() => setIsCommentFormOpen(true)}
+                >
+                  ADD A REVIEW
+                </Button>
+              </Box>
+              <Collapse in={isCommentFormOpen}>
+                <Card raised sx={{ p: 2 }}>
+                  <form onSubmit={formikAddReview.handleSubmit}>
+                    <CardContent>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>{initials}</Avatar>
+                          </ListItemAvatar>
+                          <Stack>
+                            <ListItemText
+                              primary={userFullName}
+                              secondary={
+                                "Please share your experience with the catering service. Your review will help others make informed decisions."
+                              }
+                            />
+                            <Rating
+                              id="rating"
+                              value={formikAddReview.values.rating}
+                              onChange={(event, newValue) => {
+                                formikAddReview.setFieldValue(
+                                  "rating",
+                                  newValue
+                                );
+                              }}
+                              size="large"
+                              sx={{
+                                "& .MuiRating-icon": {
+                                  width: 50,
+                                },
+                              }}
+                            />
+                          </Stack>
+                        </ListItem>
+                      </List>
+                      <Container
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 2,
+                        }}
+                      >
+                        <TextField
+                          id="title"
+                          placeholder="Enter a title for your review"
+                          variant="standard"
+                          fullWidth
+                          value={formikAddReview.values.title}
+                          onChange={formikAddReview.handleChange}
+                          onBlur={formikAddReview.handleBlur}
+                          error={
+                            formikAddReview.touched.title &&
+                            Boolean(formikAddReview.errors.title)
+                          }
+                          helperText={
+                            formikAddReview.touched.title &&
+                            formikAddReview.errors.title
+                          }
+                          inputProps={{
+                            maxLength: 50,
+                          }}
+                        />
+                        <TextField
+                          id="body"
+                          placeholder="Tell us about your catering adventure"
+                          variant="standard"
+                          multiline
+                          fullWidth
+                          value={formikAddReview.values.body}
+                          onChange={formikAddReview.handleChange}
+                          onBlur={formikAddReview.handleBlur}
+                          error={
+                            formikAddReview.touched.body &&
+                            Boolean(formikAddReview.errors.body)
+                          }
+                          helperText={
+                            formikAddReview.touched.body &&
+                            formikAddReview.errors.body
+                          }
+                          rows={5}
+                          inputProps={{
+                            maxLength: 500,
+                          }}
+                        />
+                      </Container>
+                    </CardContent>
+                    <Collapse in={badWordsResponse.length > 0}>
+                      <CardContent>
+                        <Alert severity="warning">
+                          <AlertTitle>
+                            Your review violates our community guidelines
+                          </AlertTitle>
+                          We've noticed that some words in your review may not
+                          align with our community guidelines. Please review
+                          your content and remove any inappropriate language or
+                          content.
+                          <br />
+                          <br />
+                          Inappropriate words:{" "}
+                          <strong>{badWordsResponse.join(", ")}</strong>
+                        </Alert>
+                      </CardContent>
+                    </Collapse>
+                    <CardActions sx={{ justifyContent: "end" }}>
+                      <Button
+                        type="reset"
+                        variant="text"
+                        color="primary"
+                        startIcon={<CancelIcon />}
+                        onClick={addReviewHandleCancel}
+                      >
+                        CANCEL
+                      </Button>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={isAddReviewFormSending}
+                        startIcon={
+                          isAddReviewFormSending ? (
+                            <CircularProgress size={24} />
+                          ) : (
+                            <SendIcon />
+                          )
+                        }
+                        onClick={formikAddReview.handleSubmit}
+                      >
+                        SEND
+                      </Button>
+                    </CardActions>
+                  </form>
+                </Card>
+              </Collapse>
+
+              <List sx={{ width: "100%" }}>
                 {productData ? (
-                  <>
-                    <Typography variant="h3" sx={{ lineHeight: 0.7 }}>
-                      {productData.rating}
-                    </Typography>
-                    <Rating
-                      value={productData.rating}
-                      precision={0.1}
-                      readOnly
-                      size="large"
-                    />
-                    <Typography variant="caption">
-                      {productData.reviews.length} ratings
-                    </Typography>
-                  </>
+                  productData.reviews
+                    .slice(startIndex, endIndex)
+                    .map((comment, index) => (
+                      <Box key={index} py={1}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>{getFullnameInitials(comment.name)}</Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={comment.name}
+                            secondary={comment.date}
+                          />
+                          <Rating
+                            readOnly
+                            value={comment.rating}
+                            size="small"
+                          />
+                          <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete" onClick={() => {}}>
+                              <MoreVertIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                          <Menu>
+                            <DeleteIcon fontSize="small" />
+                            <MenuItem>Delete</MenuItem>
+                          </Menu>
+                        </ListItem>
+                        <ListItemText
+                          primary={comment.title}
+                          secondary={comment.body}
+                        />
+                        <Divider sx={{ paddingTop: 3 }} />
+                      </Box>
+                    ))
                 ) : (
                   <>
-                    <Skeleton variant="rectangular" width={60} height={40} />
-                    <Skeleton
-                      variant="rectangular"
-                      width={150}
-                      height={20}
-                      sx={{ paddingBottom: 2 }}
-                    />
-                    <Skeleton variant="rectangular" width={100} height={15} />
-                  </>
-                )}
-              </Stack>
-            </Box>
-          )}
-          <Box
-            display={
-              productData &&
-              productData.canUserReview &&
-              !isCommentFormOpen &&
-              cookies.token !== undefined
-                ? "flex"
-                : "none"
-            }
-            justifyContent="center"
-          >
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<AddCommentIcon />}
-              onClick={() => setIsCommentFormOpen(true)}
-            >
-              ADD A REVIEW
-            </Button>
-          </Box>
-          <Collapse in={isCommentFormOpen}>
-            <Card raised sx={{ p: 2 }}>
-              <form onSubmit={formikAddReview.handleSubmit}>
-                <CardContent>
-                  <List>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar>{initials}</Avatar>
-                      </ListItemAvatar>
-                      <Stack>
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <Box key={index} py={1}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Skeleton
+                              variant="circular"
+                              width={40}
+                              height={40}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <Skeleton width={`${getRandomNumber()}%`} />
+                            }
+                            secondary={<Skeleton width="20%" />}
+                          />
+                          <Skeleton width={100} height={30} />
+                        </ListItem>
                         <ListItemText
-                          primary={userFullName}
+                          primary={
+                            <Skeleton
+                              height={30}
+                              width={`${getRandomNumber()}%`}
+                            />
+                          }
                           secondary={
-                            "Please share your experience with the catering service. Your review will help others make informed decisions."
+                            <>
+                              <Skeleton width={`${getRandomNumber()}%`} />
+                              <Skeleton width={`${getRandomNumber()}%`} />
+                            </>
                           }
                         />
-                        <Rating
-                          id="rating"
-                          value={formikAddReview.values.rating}
-                          onChange={(event, newValue) => {
-                            formikAddReview.setFieldValue("rating", newValue);
-                          }}
-                          size="large"
-                          sx={{
-                            "& .MuiRating-icon": {
-                              width: 50,
-                            },
-                          }}
-                        />
-                      </Stack>
-                    </ListItem>
-                  </List>
-                  <Container
-                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                  >
-                    <TextField
-                      id="title"
-                      placeholder="Enter a title for your review"
-                      variant="standard"
-                      fullWidth
-                      value={formikAddReview.values.title}
-                      onChange={formikAddReview.handleChange}
-                      onBlur={formikAddReview.handleBlur}
-                      error={
-                        formikAddReview.touched.title &&
-                        Boolean(formikAddReview.errors.title)
-                      }
-                      helperText={
-                        formikAddReview.touched.title &&
-                        formikAddReview.errors.title
-                      }
-                      inputProps={{
-                        maxLength: 50,
-                      }}
-                    />
-                    <TextField
-                      id="body"
-                      placeholder="Tell us about your catering adventure"
-                      variant="standard"
-                      multiline
-                      fullWidth
-                      value={formikAddReview.values.body}
-                      onChange={formikAddReview.handleChange}
-                      onBlur={formikAddReview.handleBlur}
-                      error={
-                        formikAddReview.touched.body &&
-                        Boolean(formikAddReview.errors.body)
-                      }
-                      helperText={
-                        formikAddReview.touched.body &&
-                        formikAddReview.errors.body
-                      }
-                      rows={5}
-                      inputProps={{
-                        maxLength: 500,
-                      }}
-                    />
-                  </Container>
-                </CardContent>
-                <Collapse in={badWordsResponse.length > 0}>
-                  <CardContent>
-                    <Alert severity="warning">
-                      <AlertTitle>
-                        Your review violates our community guidelines
-                      </AlertTitle>
-                      We've noticed that some words in your review may not align
-                      with our community guidelines. Please review your content
-                      and remove any inappropriate language or content.
-                      <br />
-                      <br />
-                      Inappropriate words:{" "}
-                      <strong>{badWordsResponse.join(", ")}</strong>
-                    </Alert>
-                  </CardContent>
-                </Collapse>
-                <CardActions sx={{ justifyContent: "end" }}>
-                  <Button
-                    type="reset"
-                    variant="text"
-                    color="primary"
-                    startIcon={<CancelIcon />}
-                    onClick={addReviewHandleCancel}
-                  >
-                    CANCEL
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    disabled={isAddReviewFormSending}
-                    startIcon={
-                      isAddReviewFormSending ? (
-                        <CircularProgress size={24} />
-                      ) : (
-                        <SendIcon />
-                      )
-                    }
-                    onClick={formikAddReview.handleSubmit}
-                  >
-                    SEND
-                  </Button>
-                </CardActions>
-              </form>
-            </Card>
-          </Collapse>
-
-          <List sx={{ width: "100%" }}>
-            {productData ? (
-              productData.reviews
-                .slice(startIndex, endIndex)
-                .map((comment, index) => (
-                  <Box key={index} py={1}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar>{getFullnameInitials(comment.name)}</Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={comment.name}
-                        secondary={comment.date}
-                      />
-                      <Rating readOnly value={comment.rating} size="small" />
-                      <Tooltip title="Delete" arrow>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => {}}
-                        >
-                          <MoreVertIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Menu>
-                        <DeleteIcon fontSize="small" />
-                        <MenuItem>Delete</MenuItem>
-                      </Menu>
-                    </ListItem>
-                    <ListItemText
-                      primary={comment.title}
-                      secondary={comment.body}
-                    />
-                    <Divider sx={{ paddingTop: 3 }} />
-                  </Box>
-                ))
-            ) : (
-              <>
-                {Array.from({ length: 5 }, (_, index) => (
-                  <Box key={index} py={1}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Skeleton variant="circular" width={40} height={40} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Skeleton width={`${getRandomNumber()}%`} />}
-                        secondary={<Skeleton width="20%" />}
-                      />
-                      <Skeleton width={100} height={30} />
-                    </ListItem>
-                    <ListItemText
-                      primary={
-                        <Skeleton height={30} width={`${getRandomNumber()}%`} />
-                      }
-                      secondary={
-                        <>
-                          <Skeleton width={`${getRandomNumber()}%`} />
-                          <Skeleton width={`${getRandomNumber()}%`} />
-                        </>
-                      }
-                    />
-                    <Divider sx={{ paddingTop: 3 }} />
-                  </Box>
-                ))}
-              </>
-            )}
-            <Stack spacing={2} alignItems="center">
-              <Pagination
-                count={Math.ceil(
-                  productData && productData.reviews.length / commentsPerPage
+                        <Divider sx={{ paddingTop: 3 }} />
+                      </Box>
+                    ))}
+                  </>
                 )}
-                page={CommentsPage}
-                onChange={(event, value) => setCommentsPage(value)}
-              />
-            </Stack>
-          </List>
+                <Stack spacing={2} alignItems="center">
+                  <Pagination
+                    count={Math.ceil(
+                      productData &&
+                        productData.reviews.length / commentsPerPage
+                    )}
+                    page={CommentsPage}
+                    onChange={(event, value) => setCommentsPage(value)}
+                  />
+                </Stack>
+              </List>
+            </Box>
+          </Container>
+          {showWarning && (
+            <Snackbar
+              open={showWarning}
+              autoHideDuration={3000}
+              onClose={() => setShowWarning(false)}
+            >
+              <Alert severity="warning">
+                <AlertTitle>Error</AlertTitle>
+                You need to be logged in to perform this action.
+              </Alert>
+            </Snackbar>
+          )}
+          {
+            <Snackbar open={isAddReviewFormSubmitted}>
+              <Alert
+                onClose={() => {
+                  setIsAddReviewFormSubmitted(false);
+                }}
+                severity="success"
+                variant="filled"
+                sx={{ width: "100%" }}
+              >
+                <AlertTitle>Review Posted Successfully!</AlertTitle>
+                Thank you for your Feedback! Your Review Has Been Published.
+              </Alert>
+            </Snackbar>
+          }
         </Box>
-      </Container>
-      {showWarning && (
-        <Snackbar
-          open={showWarning}
-          autoHideDuration={3000}
-          onClose={() => setShowWarning(false)}
-        >
-          <Alert severity="warning">
-            <AlertTitle>Error</AlertTitle>
-            You need to be logged in to perform this action.
-          </Alert>
-        </Snackbar>
       )}
-
-      {
-        <Snackbar open={isAddReviewFormSubmitted}>
-          <Alert
-            onClose={() => {
-              setIsAddReviewFormSubmitted(false);
-            }}
-            severity="success"
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            <AlertTitle>Review Posted Successfully!</AlertTitle>
-            Thank you for your Feedback! Your Review Has Been Published.
-          </Alert>
-        </Snackbar>
-      }
-    </Box>
+    </>
   );
 };
 
