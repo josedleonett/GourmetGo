@@ -85,6 +85,7 @@ import * as yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from '@mui/icons-material/Done';
 import FlagIcon from "@mui/icons-material/Flag";
 import { API_BASE_URL, MODERATOR_CONTENT_URL_BASE } from "../../utils/urlApis";
 import axios from "axios";
@@ -411,6 +412,8 @@ const ProductDetailDisplay = ({
   const [isAddReviewFormSending, setIsAddReviewFormSending] = useState(false);
   const [isAddReviewFormSubmitted, setIsAddReviewFormSubmitted] =
     useState(false);
+  const [isDeleteReviewFormSubmitted, setIsDeleteReviewFormSubmitted] =
+    useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const isReviewOptionsOpen = Boolean(anchorEl);
   const reviewOptionsMenuHandleClick = (event) => {
@@ -421,12 +424,14 @@ const ProductDetailDisplay = ({
   };
 
   const reviewOptionsMenuHandleDelete = async (event, reviewIdToDelete) => {
+    setIsAddReviewFormSubmitted(false)
+    setIsDeleteReviewFormSubmitted(false)
+    setIsAddReviewFormSending(true)
     console.log("to delete", reviewIdToDelete);
     try {
       const response = await axios.delete(
         API_BASE_URL + "review/" + reviewIdToDelete
       );
-      console.log(response);
       if (response.status === 204) {
         setProductData((prevProductData) => {
           const updatedReviews = prevProductData.reviews.filter(
@@ -437,10 +442,13 @@ const ProductDetailDisplay = ({
             reviews: updatedReviews,
           };
         });
+        setIsDeleteReviewFormSubmitted(true)
         reviewOptionsMenuHandleClose();
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsAddReviewFormSending(false)
     }
   };
 
@@ -478,9 +486,14 @@ const ProductDetailDisplay = ({
             }
           );
           if (response.status === 201) {
+            const idResponse = response.data
+            const newReviewValuesWithIdResponse = {
+              ...newReviewValues,
+              id: idResponse,
+            };
             setProductData((prevProductData) => ({
               ...prevProductData,
-              reviews: [newReviewValues, ...prevProductData.reviews],
+              reviews: [newReviewValuesWithIdResponse, ...prevProductData.reviews],
             }));
 
             setIsAddReviewFormSubmitted(true);
@@ -492,7 +505,7 @@ const ProductDetailDisplay = ({
       } finally {
         setIsAddReviewFormSending(false);
         setTimeout(() => {
-          setIsAddReviewFormSubmitted(true);
+          setIsAddReviewFormSubmitted(false);
         }, 5000);
       }
     },
@@ -1860,6 +1873,7 @@ const ProductDetailDisplay = ({
                           >
                             <MenuItem
                               id={comment.id}
+                              disabled={isAddReviewFormSending}
                               onClick={(value) => {
                                 reviewOptionsMenuHandleDelete(
                                   value,
@@ -1867,11 +1881,18 @@ const ProductDetailDisplay = ({
                                 );
                               }}
                             >
-                              {console.log(comment)}
-                              <DeleteIcon
-                                fontSize="small"
-                                color="primary"
-                              />{" "}
+                              {isAddReviewFormSending ? (
+                                isAddReviewFormSubmitted ? (
+                                  <DoneIcon fontSize="small" color="primary" />
+                                ) : (
+                                  <CircularProgress
+                                    size={18}
+                                    sx={{ mr: 1.5 }}
+                                  />
+                                )
+                              ) : (
+                                <DeleteIcon fontSize="small" color="primary" />
+                              )}{" "}
                               Delete
                             </MenuItem>
                             <MenuItem onClick={reviewOptionsMenuHandleClose}>
@@ -1953,17 +1974,30 @@ const ProductDetailDisplay = ({
           )}
 
           {
-            <Snackbar open={isAddReviewFormSubmitted}>
+            <Snackbar
+              open={isAddReviewFormSubmitted || isDeleteReviewFormSubmitted}
+            >
               <Alert
                 onClose={() => {
                   setIsAddReviewFormSubmitted(false);
+                  setIsDeleteReviewFormSubmitted(false);
                 }}
                 severity="success"
                 variant="filled"
                 sx={{ width: "100%" }}
               >
-                <AlertTitle>Review Posted Successfully!</AlertTitle>
-                Thank you for your Feedback! Your Review Has Been Published.
+                <AlertTitle>
+                  {isAddReviewFormSubmitted
+                    ? "Review Posted Successfully!"
+                    : isDeleteReviewFormSubmitted
+                    ? "Review Deleted Successfully!"
+                    : ""}
+                </AlertTitle>
+                {isAddReviewFormSubmitted
+                    ? "Thank you for your Feedback! Your Review Has Been Published."
+                    : isDeleteReviewFormSubmitted
+                    ? "Your review has been successfully removed. We appreciate your feedback!"
+                    : ""}
               </Alert>
             </Snackbar>
           }
