@@ -149,7 +149,7 @@ public class AuthController {
         userEntity.setConfirmationToken(null);
         userRepository.save(userEntity);
 
-        return new RedirectView("http://localhost:5173/user-login");
+        return new RedirectView("http://gourmetgo.s3-website-us-east-1.amazonaws.com/user-login");
 
     }
 
