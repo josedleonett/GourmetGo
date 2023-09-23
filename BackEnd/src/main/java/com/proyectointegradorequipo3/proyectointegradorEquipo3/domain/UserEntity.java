@@ -48,7 +48,7 @@ public class UserEntity implements UserDetails {
     private int emailResendAttempts = 0;
     private LocalDateTime lastEmailResendDate;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Booking> bookings;
 
     @ManyToMany

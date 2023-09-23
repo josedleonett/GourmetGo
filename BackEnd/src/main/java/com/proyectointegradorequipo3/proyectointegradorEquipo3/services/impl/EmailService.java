@@ -39,7 +39,7 @@ public class EmailService {
         String htmlContent;
         try {
             htmlContent = loadHtmlContent("templates/confirmationEmail.html");
-            htmlContent = htmlContent.replace("{{token}}", "http://34.230.52.146/:8080/auth/confirm?token=" + token);
+            htmlContent = htmlContent.replace("{{token}}", "http://34.230.52.146:8080/auth/confirm?token=" + token);
             htmlContent = htmlContent.replace("{{name}}", userEntity.getName());
             htmlContent = htmlContent.replace("{{lastName}}", userEntity.getLastName());
             htmlContent = htmlContent.replace("{{email}}", userEntity.getEmail());
@@ -97,5 +97,3 @@ public class EmailService {
     }
 
 }
-
-
