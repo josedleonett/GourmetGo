@@ -24,7 +24,7 @@ import java.util.UUID;
 @Service
 public class S3Service {
 
-    private final static String BUCKET =  "gourmetgo/images";
+    private final static String BUCKET =  "gourmetgo-gourmetgobucket/images-bucket";
 
     @Autowired
     private AmazonS3 s3Client;
