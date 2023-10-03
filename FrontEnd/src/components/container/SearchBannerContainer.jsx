@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../utils/urlApis';
 import SearchBannerDisplay from '../display/SearchBannerDisplay';
 import React, { useEffect, useState } from 'react';
 
@@ -7,10 +8,10 @@ const SearchBannerContainer = ({ filterList, filterBundle }) => {
   useEffect(() => {
     const handleBundleSelected = (event) => {
       const bundleId = event.detail;
-      window.location.href = `http://127.0.0.1:5173/product/${encodeURIComponent(bundleId)}`;
+      window.location.href = `${API_BASE_URL}product/${encodeURIComponent(bundleId)}`;
     };
 
-    fetch(`http://localhost:8080/v1/booking/dates`)
+    fetch(`${API_BASE_URL}booking/dates`)
         .then((response) => response.json())
         .then((data) => setDates(data))
         .catch((error) => console.error("Error fetching booking dates:", error));

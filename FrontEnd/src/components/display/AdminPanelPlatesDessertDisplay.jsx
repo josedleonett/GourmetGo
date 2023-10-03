@@ -3,8 +3,9 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { Delete, Edit, Add } from "@mui/icons-material";
 import { Box, CircularProgress } from "@mui/material";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
-const API_BASE_URL = "http://localhost:8080/v1/drink/";
+const API_BASE_URL_local = `${API_BASE_URL}drink/`;
 
 function AdminPanelPlatesDessertDisplay() {
   const [data, setData] = useState([]);
@@ -27,7 +28,7 @@ function AdminPanelPlatesDessertDisplay() {
         <Box
           component="img"
           height="90%"
-          src={`http://localhost:8080/asset/get-object?key=${params.value}`}
+          src={`${API_BASE_IMAGE_URL}${params.value}`}
         />
       ),
     },
@@ -55,7 +56,7 @@ function AdminPanelPlatesDessertDisplay() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(API_BASE_URL);
+      const response = await axios.get(API_BASE_URL_local);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -68,7 +69,7 @@ function AdminPanelPlatesDessertDisplay() {
       formData.append("name", newDrinkData.name);
       formData.append("image", newDrinkData.imageFile);
       formData.append("price", newDrinkData.price);
-      await axios.post(API_BASE_URL + "create", formData);
+      await axios.post(API_BASE_URL_local + "create", formData);
       fetchData();
       setNewDrinkData({ name: "", image: "", price: 0, imageFile: null });
     } catch (error) {
@@ -93,7 +94,7 @@ function AdminPanelPlatesDessertDisplay() {
       formData.append("name", newDrinkData.name);
       formData.append("image", newDrinkData.imageFile);
       formData.append("price", newDrinkData.price);
-      await axios.patch(API_BASE_URL + editDrinkId, formData);
+      await axios.patch(API_BASE_URL_local + editDrinkId, formData);
       fetchData();
       setEditMode(false);
       setEditDrinkId(null);
@@ -105,7 +106,7 @@ function AdminPanelPlatesDessertDisplay() {
 
   const handleDelete = async (drinkToDelete) => {
     try {
-      await axios.delete(API_BASE_URL + drinkToDelete.id);
+      await axios.delete(API_BASE_URL_local + drinkToDelete.id);
       fetchData();
     } catch (error) {
       console.error("Error deleting data:", error);

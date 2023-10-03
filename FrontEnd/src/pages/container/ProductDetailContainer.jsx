@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { useParams } from "react-router-dom";
 import ProductDetailDisplay from "../display/ProductDetailDisplay";
 import jwtDecode from "jwt-decode";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const ProductDetailContainer = ({ accessToken }) => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const ProductDetailContainer = ({ accessToken }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/v1/booking/dates`)
+    fetch(`${API_BASE_URL}booking/dates`)
       .then((response) => response.json())
       .then((data) => setDates(data))
       .catch((error) => console.error("Error fetching booking dates:", error));
@@ -22,7 +23,7 @@ const ProductDetailContainer = ({ accessToken }) => {
     if (cookies.token !== undefined ) {
       decodedToken = jwtDecode(cookies.token);
         fetch(
-          `http://localhost:8080/v1/bundle/${decodedToken.id}/bundleDetail/${id}`
+          `${API_BASE_URL}bundle/${decodedToken.id}/bundleDetail/${id}`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -32,7 +33,7 @@ const ProductDetailContainer = ({ accessToken }) => {
             console.error("Error fetching product data:", error)
           );
       } else {
-        fetch(`http://localhost:8080/v1/bundle/${id}`)
+        fetch(`${API_BASE_URL}bundle/${id}`)
           .then((response) => response.json())
           .then((data) => {
             setProductData(data);

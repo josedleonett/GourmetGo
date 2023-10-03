@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import { useCookies } from "react-cookie";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import CircularProgress from "@mui/material/CircularProgress";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const UserFavoriteContainer = ({ accessToken }) => {
   const [favorites, setFavorites] = useState([]);
@@ -24,7 +25,7 @@ const UserFavoriteContainer = ({ accessToken }) => {
 
   useEffect(() => {
     if (decodedToken) {
-      fetch(`http://localhost:8080/v1/bundle/byUser/${decodedToken.id}`)
+      fetch(`${API_BASE_URL}bundle/byUser/${decodedToken.id}`)
         .then((response) => {
           if (response.ok) {
             return response.json();

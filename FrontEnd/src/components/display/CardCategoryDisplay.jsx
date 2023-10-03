@@ -4,6 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box, CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
+import { API_BASE_IMAGE_URL, API_BASE_URL } from "../../utils/urlApis";
 
 const CardCategoryDisplay = ({ id, img, title, description }) => {
   return (
@@ -39,7 +40,7 @@ const CardCategoryDisplay = ({ id, img, title, description }) => {
           >
             <CardMedia
               component="img"
-              image={`http://localhost:8080/asset/get-object?key=${img}`}
+              image={`${API_BASE_IMAGE_URL}${img}`}
               alt={title + " cover"}
               sx={{
                 width: {

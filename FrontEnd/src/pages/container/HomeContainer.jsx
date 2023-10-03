@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import HomeDisplay from "../display/HomeDisplay";
 import { useCookies } from "react-cookie";
 import jwtDecode from 'jwt-decode';
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const HomeContainer = () => {
   const [categories, setCategories] = useState([]);
@@ -11,7 +12,7 @@ const HomeContainer = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   
   useEffect(() => {
-    fetch("http://localhost:8080/v1/category/")
+    fetch(`${API_BASE_URL}category/`)
       .then(response => response.json())
       .then(data => {
         setCategories(data);
@@ -27,7 +28,7 @@ const HomeContainer = () => {
     }
 
     if (decodedToken !== undefined && decodedToken !== null) {
-      fetch(`http://localhost:8080/v1/bundle/byUser/${decodedToken.id}`)
+      fetch(`${API_BASE_URL}bundle/byUser/${decodedToken.id}`)
         .then(response => response.json())
         .then(data => {
           setBundles(data);
@@ -35,7 +36,7 @@ const HomeContainer = () => {
         })
         .catch(error => console.error("Error fetching user bundles:", error));
     } else {
-      fetch("http://localhost:8080/v1/bundle/")
+      fetch(`${API_BASE_URL}bundle/`)
         .then(response => response.json())
         .then(data => {
           setBundles(data);

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import jwtDecode from "jwt-decode";
 import { useCookies } from "react-cookie";
+import { API_BASE_URL } from "../../utils/urlApis";
 
 const ReservationItem = ({ reservation, itemSize }) => {
   const reservationItemStyle = {
@@ -73,7 +74,7 @@ const UserReservationContainer = ({ accessToken }) => {
       if (decodedToken) {
         try {
           const response = await fetch(
-            `http://localhost:8080/v1/booking/byUser/${decodedToken.id}`
+            `${API_BASE_URL}booking/byUser/${decodedToken.id}`
           );
           if (!response.ok) {
             throw new Error("Respuesta del servidor no exitosa");
